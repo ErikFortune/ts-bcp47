@@ -48,16 +48,19 @@ export const allRegistryEntryTypes: RegistryEntryType[] = [
     'variant',
 ];
 
-export type RegistryEntryScope = 'collection' | 'macrolanguage' | 'special';
-export const allRegistryEntryScopes: RegistryEntryScope[] = ['collection', 'macrolanguage', 'special'];
+export type RegistryEntryScope = 'collection' | 'macrolanguage' | 'private-use' | 'special';
+export const allRegistryEntryScopes: RegistryEntryScope[] = ['collection', 'macrolanguage', 'private-use', 'special'];
 
 interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType> {
     /* eslint-disable @typescript-eslint/naming-convention */
     Type: TTYPE;
     Description: string[];
-    Added: string;
+    Added: YearMonthDaySpec;
+    Deprecated?: YearMonthDaySpec;
     'Suppress-Script'?: ScriptSubtag;
     Macrolanguage?: LanguageSubtag;
+    'Preferred-Value'?: string;
+    Prefix?: string[];
     Scope?: RegistryEntryScope;
     Comments?: string[];
     /* eslint-enable @typescript-eslint/naming-convention */

@@ -23,43 +23,66 @@
 import * as Converters from './converters';
 import * as Model from './model';
 import * as path from 'path';
+import { Result, captureResult } from '@fgv/ts-utils';
+import { Scope } from './scope';
 
 export class TagRegistry {
+    public readonly languages: Scope<Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry>;
+    public readonly extlangs: Scope<Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry>;
+    public readonly scripts: Scope<Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry>;
+    public readonly regions: Scope<Model.RegionSubtag, Model.RegionSubtagRegistryEntry>;
+    public readonly variants: Scope<Model.VariantSubtag, Model.VariantSubtagRegistryEntry>;
+    public readonly grandfathered: Scope<Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry>;
+    public readonly redundant: Scope<Model.RedundantTag, Model.RedundantTagRegistryEntry>;
+
     protected readonly _all: Model.RegistryEntry[];
-    protected readonly _language: Map<Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry> = new Map();
-    protected readonly _extlang: Map<Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> = new Map();
-    protected readonly _script: Map<Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry> = new Map();
-    protected readonly _region: Map<Model.RegionSubtag, Model.RegionSubtagRegistryEntry> = new Map();
-    protected readonly _variant: Map<Model.VariantSubtag, Model.VariantSubtagRegistryEntry> = new Map();
-    protected readonly _grandfathered: Map<Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> = new Map();
-    protected readonly _redundant: Map<Model.RedundantTag, Model.RedundantTagRegistryEntry> = new Map();
 
     protected constructor(root: string) {
+        const languages: Map<Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry> = new Map();
+        const extlangs: Map<Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> = new Map();
+        const scripts: Map<Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry> = new Map();
+        const regions: Map<Model.RegionSubtag, Model.RegionSubtagRegistryEntry> = new Map();
+        const variants: Map<Model.VariantSubtag, Model.VariantSubtagRegistryEntry> = new Map();
+        const grandfathered: Map<Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> = new Map();
+        const redundant: Map<Model.RedundantTag, Model.RedundantTagRegistryEntry> = new Map();
+
         this._all = Converters.loadIanaRegistrySync(path.join(root, 'registry.json')).getValueOrThrow();
         for (const entry of this._all) {
             switch (entry.Type) {
                 case 'language':
-                    this._language.set(entry.Subtag, entry);
+                    languages.set(entry.Subtag, entry);
                     break;
                 case 'extlang':
-                    this._extlang.set(entry.Subtag, entry);
+                    extlangs.set(entry.Subtag, entry);
                     break;
                 case 'script':
-                    this._script.set(entry.Subtag, entry);
+                    scripts.set(entry.Subtag, entry);
                     break;
                 case 'region':
-                    this._region.set(entry.Subtag, entry);
+                    regions.set(entry.Subtag, entry);
                     break;
                 case 'variant':
-                    this._variant.set(entry.Subtag, entry);
+                    variants.set(entry.Subtag, entry);
                     break;
                 case 'grandfathered':
-                    this._grandfathered.set(entry.Tag, entry);
+                    grandfathered.set(entry.Tag, entry);
                     break;
                 case 'redundant':
-                    this._redundant.set(entry.Tag, entry);
+                    redundant.set(entry.Tag, entry);
                     break;
             }
         }
+
+        this.languages = new Scope(languages);
+        this.extlangs = new Scope(extlangs);
+        this.scripts = new Scope(scripts);
+        this.regions = new Scope(regions);
+        this.variants = new Scope(variants);
+        this.grandfathered = new Scope(grandfathered);
+        this.redundant = new Scope(redundant);
+    }
+
+    public static load(root: string): Result<TagRegistry> {
+        return captureResult(() => new TagRegistry(root));
     }
 }

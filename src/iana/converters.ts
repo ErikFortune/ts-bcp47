@@ -47,12 +47,23 @@ const registryEntryFieldConverters: Converters.FieldConverters<BaseFields> = {
     Description: Converters.arrayOf(Converters.string),
     Added: yearMonthDaySpec,
     Comments: Converters.arrayOf(Converters.string),
+    Deprecated: yearMonthDaySpec,
     Macrolanguage: languageSubtag,
+    'Preferred-Value': Converters.string,
+    Prefix: Converters.arrayOf(Converters.string),
     Scope: registryScopeType,
     'Suppress-Script': scriptSubtag,
     /* eslint-enable @typescript-eslint/naming-convention */
 };
-const optionalFields: (keyof BaseFields)[] = ['Comments', 'Macrolanguage', 'Scope', 'Suppress-Script'];
+const optionalFields: (keyof BaseFields)[] = [
+    'Comments',
+    'Deprecated',
+    'Macrolanguage',
+    'Preferred-Value',
+    'Prefix',
+    'Scope',
+    'Suppress-Script',
+];
 
 function registrySubtagEntry<TTYPE extends Model.RegistryEntryType, TSUBTAG extends string>(
     typeConverter: Converter<TTYPE, unknown>,

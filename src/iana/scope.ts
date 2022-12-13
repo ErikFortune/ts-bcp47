@@ -20,6 +20,24 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export { TagRegistry } from './registry';
+import * as Model from './model';
+
+export class Scope<TTAG extends string, TENTRY extends Model.RegistryEntry> {
+    protected readonly _items: Map<TTAG, TENTRY> = new Map();
+
+    public constructor(items: Map<TTAG, TENTRY>) {
+        this._items = items;
+    }
+
+    public getAllTags(): TTAG[] {
+        return Object.keys(this._items) as TTAG[];
+    }
+
+    public getAll(): TENTRY[] {
+        return Object.values(this._items);
+    }
+
+    public tryGet(want: string): TENTRY | undefined {
+        return this._items.get(want as TTAG);
+    }
+}

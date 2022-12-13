@@ -29,7 +29,7 @@ export class WellFormed {
     }
 
     public static extLangSubtag(val: unknown): val is Model.ExtLangSubtag {
-        return typeof val === 'string' && /^[A-Z][a-z]{3}$/.test(val);
+        return typeof val === 'string' && /^[A-Za-z]{3}$/.test(val);
     }
 
     public static scriptSubtag(val: unknown): val is Model.ScriptSubtag {
@@ -53,7 +53,7 @@ export class WellFormed {
     }
 
     public static variantSubtag(val: unknown): val is Model.VariantSubtag {
-        return typeof val === 'string' && (/^[A-Za-z][A-Za-z0-9]{4,7}$/.test(val) || /^[0-9][A-Za-z0-9]{3}$/.test(val));
+        return typeof val === 'string' && (/^[A-Za-z][A-Za-z0-9]{4,7}$/.test(val) || /^[0-9][A-Za-z0-9]{3,7}$/.test(val));
     }
 
     public static grandfatheredTag(val: unknown): val is Model.GrandfatheredTag {
