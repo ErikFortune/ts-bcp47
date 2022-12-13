@@ -1,0 +1,76 @@
+{
+  "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "prettier",
+      "@typescript-eslint"
+    ],
+    "env": {
+      "es6": true,
+      "browser": true,
+      "node": true,
+      "jest": true,
+    },
+    "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+    "rules": {
+      "prettier/prettier": ["error"],
+      "comma-dangle": ["error", "always-multiline"],
+      "no-extra-parens": ["error", "functions"],
+      "valid-jsdoc": "warn",
+      "curly": "error",
+      "dot-location": ["error", "property"],
+      "no-multi-spaces": ["error", {
+        "exceptions": {
+          "Property":                 true,
+          "VariableDeclarator":       true,
+          "AssignmentExpression":     true,
+          "ArrayExpression":          true,
+          "ObjectExpression":         true,
+          "CallExpression":           true,
+          "BinaryExpression":         true,
+          "ConditionalExpression":    true,
+          "LogicalExpression":        true
+        }
+      }],
+      "no-unused-vars": ["error", {
+        "vars": "all",
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_"
+      }],
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/prefer-optional-chain": "error",
+      "@typescript-eslint/member-ordering": "error",
+      "@typescript-eslint/no-non-null-assertion": "off",
+
+      "@typescript-eslint/naming-convention": ["error",
+          { "selector": "default", "format": ["camelCase"] },
+          { "selector": "memberLike", "format": ["camelCase"] },
+          { "selector": "memberLike", "modifiers": ["private"], "format": ["camelCase"], "leadingUnderscore": "require" },
+          { "selector": "memberLike", "modifiers": ["protected"], "format": ["camelCase"], "leadingUnderscore": "require" },
+          { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
+          { "selector": "typeLike", "format": ["PascalCase"] },
+          { "selector": "variable", "format": ["camelCase", "UPPER_CASE"] }
+      ],
+  
+      "@typescript-eslint/no-unused-vars": ["error", {
+          "vars": "all",
+          "args": "all",
+          "argsIgnorePattern": "^_",
+          "caughtErrors": "all",
+          "caughtErrorsIgnorePattern": "^_"
+      }],
+      "no-use-before-define": "error",
+      "array-bracket-spacing": "error",
+      "block-spacing": "error",
+      "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+      "camelcase": "error",
+      "comma-spacing": "error",
+      "comma-style": "error",
+      "computed-property-spacing": "error",
+      "eol-last": "error",
+      "indent": ["error", 4, { "SwitchCase": 1 }],
+      "key-spacing": ["error", { "mode": "minimum" }],
+      "keyword-spacing": "error"
+    }
+  }
