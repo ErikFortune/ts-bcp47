@@ -69,13 +69,13 @@ interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType>
 export interface RegistrySubtagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TSUBTAG extends string = string>
     extends RegistryEntryBase<TTYPE> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    Subtag: TSUBTAG;
+    Subtag: TSUBTAG | TSUBTAG[];
 }
 
 export interface RegistryTagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TTAG extends string = string>
     extends RegistryEntryBase<TTYPE> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    Tag: TTAG;
+    Tag: TTAG | TTAG[];
 }
 
 export type LanguageSubtagRegistryEntry = RegistrySubtagEntry<'language', LanguageSubtag>;

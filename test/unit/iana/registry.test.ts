@@ -27,7 +27,7 @@ describe('IANA TagRegistry class', () => {
     describe('load static method', () => {
         test('loads a tag registry', () => {
             expect(TagRegistry.load('node_modules/language-subtag-registry/data/json')).toSucceedAndSatisfy((tags) => {
-                expect(tags.languages.getAllTags()).toHaveLength(1);
+                expect(tags.languages.getAllTags()).toHaveLength(8241);
             });
         });
     });

@@ -23,7 +23,7 @@
 import * as Model from './model';
 import * as Validate from './validate';
 
-import { Converter, Converters, Result } from '@fgv/ts-utils';
+import { BaseConverter, Converter, Converters, Result, mapResults } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { strictObject } from '@fgv/ts-utils/converters';
 
@@ -40,6 +40,25 @@ export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryT
 export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);
 
 export const yearMonthDaySpec = Converters.string.map(Validate.yearMonthDaySpec);
+
+export function tagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
+    return new BaseConverter<TTAG[]>((from: unknown): Result<TTAG[]> => {
+        if (typeof from !== 'string') {
+            return fail('tagRange converter: not a string');
+        }
+
+        const parts = from.split('..');
+        if (parts.length !== 2) {
+            return fail(`"${from}: malformed tagRange`);
+        }
+
+        return mapResults(parts.map((tag) => tagConverter.convert(tag)));
+    });
+}
+
+export function tagOrRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | TTAG[]> {
+    return Converters.oneOf<TTAG | TTAG[]>([tagConverter, tagRange(tagConverter)]);
+}
 
 type BaseFields = Omit<Model.RegistrySubtagEntry, 'Type' | 'Subtag'>;
 const registryEntryFieldConverters: Converters.FieldConverters<BaseFields> = {
@@ -73,7 +92,7 @@ function registrySubtagEntry<TTYPE extends Model.RegistryEntryType, TSUBTAG exte
         {
             /* eslint-disable @typescript-eslint/naming-convention */
             Type: typeConverter,
-            Subtag: subtagConverter,
+            Subtag: tagOrRange(subtagConverter),
             ...registryEntryFieldConverters,
             /* eslint-enable @typescript-eslint/naming-convention */
         },
@@ -89,7 +108,7 @@ function registryTagEntry<TTYPE extends Model.RegistryEntryType, TTAG extends st
         {
             /* eslint-disable @typescript-eslint/naming-convention */
             Type: typeConverter,
-            Tag: tagConverter,
+            Tag: tagOrRange(tagConverter),
             ...registryEntryFieldConverters,
             /* eslint-enable @typescript-eslint/naming-convention */
         },

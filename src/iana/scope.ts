@@ -23,21 +23,31 @@
 import * as Model from './model';
 
 export class Scope<TTAG extends string, TENTRY extends Model.RegistryEntry> {
-    protected readonly _items: Map<TTAG, TENTRY> = new Map();
+    protected readonly _items: Map<TTAG, TENTRY>;
 
-    public constructor(items: Map<TTAG, TENTRY>) {
-        this._items = items;
+    public constructor(items?: Map<TTAG, TENTRY>) {
+        this._items = items ?? new Map();
+    }
+
+    protected static _expandRange<TTAG extends string>(tags: TTAG | TTAG[]): TTAG[] {
+        return Array.isArray(tags) ? tags : [tags];
     }
 
     public getAllTags(): TTAG[] {
-        return Object.keys(this._items) as TTAG[];
+        return Array.from(this._items.keys());
     }
 
     public getAll(): TENTRY[] {
-        return Object.values(this._items);
+        return Array.from(this._items.values());
     }
 
     public tryGet(want: string): TENTRY | undefined {
         return this._items.get(want as TTAG);
+    }
+
+    public add(tags: TTAG | TTAG[], entry: TENTRY): void {
+        for (const tag of Scope._expandRange(tags)) {
+            this._items.set(tag, entry);
+        }
     }
 }

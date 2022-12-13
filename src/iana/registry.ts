@@ -38,48 +38,40 @@ export class TagRegistry {
     protected readonly _all: Model.RegistryEntry[];
 
     protected constructor(root: string) {
-        const languages: Map<Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry> = new Map();
-        const extlangs: Map<Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> = new Map();
-        const scripts: Map<Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry> = new Map();
-        const regions: Map<Model.RegionSubtag, Model.RegionSubtagRegistryEntry> = new Map();
-        const variants: Map<Model.VariantSubtag, Model.VariantSubtagRegistryEntry> = new Map();
-        const grandfathered: Map<Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> = new Map();
-        const redundant: Map<Model.RedundantTag, Model.RedundantTagRegistryEntry> = new Map();
+        this.languages = new Scope();
+        this.extlangs = new Scope();
+        this.scripts = new Scope();
+        this.regions = new Scope();
+        this.variants = new Scope();
+        this.grandfathered = new Scope();
+        this.redundant = new Scope();
 
         this._all = Converters.loadIanaRegistrySync(path.join(root, 'registry.json')).getValueOrThrow();
         for (const entry of this._all) {
             switch (entry.Type) {
                 case 'language':
-                    languages.set(entry.Subtag, entry);
+                    this.languages.add(entry.Subtag, entry);
                     break;
                 case 'extlang':
-                    extlangs.set(entry.Subtag, entry);
+                    this.extlangs.add(entry.Subtag, entry);
                     break;
                 case 'script':
-                    scripts.set(entry.Subtag, entry);
+                    this.scripts.add(entry.Subtag, entry);
                     break;
                 case 'region':
-                    regions.set(entry.Subtag, entry);
+                    this.regions.add(entry.Subtag, entry);
                     break;
                 case 'variant':
-                    variants.set(entry.Subtag, entry);
+                    this.variants.add(entry.Subtag, entry);
                     break;
                 case 'grandfathered':
-                    grandfathered.set(entry.Tag, entry);
+                    this.grandfathered.add(entry.Tag, entry);
                     break;
                 case 'redundant':
-                    redundant.set(entry.Tag, entry);
+                    this.redundant.add(entry.Tag, entry);
                     break;
             }
         }
-
-        this.languages = new Scope(languages);
-        this.extlangs = new Scope(extlangs);
-        this.scripts = new Scope(scripts);
-        this.regions = new Scope(regions);
-        this.variants = new Scope(variants);
-        this.grandfathered = new Scope(grandfathered);
-        this.redundant = new Scope(redundant);
     }
 
     public static load(root: string): Result<TagRegistry> {
