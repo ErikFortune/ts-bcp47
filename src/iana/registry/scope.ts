@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-import * as Model from './model';
-import * as Tags from './tags';
+import * as Model from '../model';
+import * as Tags from '../tags';
 
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../common';
 import { Result } from '@fgv/ts-utils';
 
 export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TENTRY extends Model.RegistryEntry> {
@@ -77,43 +78,43 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
     }
 }
 
-export class LanguageScope extends Scope<'language', Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry> {
+export class LanguageScope extends Scope<'language', LanguageSubtag, Model.LanguageSubtagRegistryEntry> {
     public constructor() {
         super(new Tags.Language());
     }
 }
 
-export class ExtLangScope extends Scope<'extlang', Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> {
+export class ExtLangScope extends Scope<'extlang', ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> {
     public constructor() {
         super(new Tags.ExtLang());
     }
 }
 
-export class ScriptScope extends Scope<'script', Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry> {
+export class ScriptScope extends Scope<'script', ScriptSubtag, Model.ScriptSubtagRegistryEntry> {
     public constructor() {
         super(new Tags.Script());
     }
 }
 
-export class RegionScope extends Scope<'region', Model.RegionSubtag, Model.RegionSubtagRegistryEntry> {
+export class RegionScope extends Scope<'region', RegionSubtag, Model.RegionSubtagRegistryEntry> {
     public constructor() {
         super(new Tags.Region());
     }
 }
 
-export class VariantScope extends Scope<'variant', Model.VariantSubtag, Model.VariantSubtagRegistryEntry> {
+export class VariantScope extends Scope<'variant', VariantSubtag, Model.VariantSubtagRegistryEntry> {
     public constructor() {
         super(new Tags.Variant());
     }
 }
 
-export class GrandfatheredScope extends Scope<'grandfathered', Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> {
+export class GrandfatheredScope extends Scope<'grandfathered', GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> {
     public constructor() {
         super(new Tags.Grandfathered());
     }
 }
 
-export class RedundantScope extends Scope<'redundant', Model.RedundantTag, Model.RedundantTagRegistryEntry> {
+export class RedundantScope extends Scope<'redundant', RedundantTag, Model.RedundantTagRegistryEntry> {
     public constructor() {
         super(new Tags.Redundant());
     }

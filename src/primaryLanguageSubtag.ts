@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { Brand, Result, succeed } from '@fgv/ts-utils';
+import { Brand, Result, fail, succeed } from '@fgv/ts-utils';
 import { SubtagHelper } from './subtagHelper';
 
 export type PrimaryLanguageSubtag = Brand<string, 'PrimaryLanguageSubtag'>;

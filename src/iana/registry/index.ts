@@ -20,33 +20,4 @@
  * SOFTWARE.
  */
 
-import { RedundantTag } from '../common';
-import { Result } from '@fgv/ts-utils';
-import { TagOrSubtag } from './tagOrSubtag';
-import { toCanonicalTag } from './helpers';
-
-export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
-    // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = /^[A-Za-z][A-Za-z0-9-]+$/;
-
-    // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'redundant' = 'redundant';
-    public readonly isSubtag: boolean = false;
-
-    public isWellFormed(val: unknown): val is RedundantTag {
-        // not actually validating structure for redundant tags
-        return typeof val === 'string' && Redundant.wellFormed.test(val);
-    }
-
-    public isCanonical(val: unknown): val is RedundantTag {
-        const result = this.toCanonical(val);
-        if (result.isSuccess()) {
-            return result.value === val;
-        }
-        return false;
-    }
-
-    public toCanonical(val: unknown): Result<RedundantTag> {
-        return toCanonicalTag(val);
-    }
-}
+export * from './registry';

@@ -20,36 +20,45 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
-import { Model } from '..';
+import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, RegionSubtag, UnM49RegionCode } from '../common';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { RegionSubtag } from '../model';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class Region implements TagOrSubtag<'region', RegionSubtag> {
+    public static readonly wellFormedAlpha2 = /^[A-Za-z]{2}$/;
+    public static readonly canonicalAlpha2 = /^[A-Z]{2}$/;
+    public static readonly wellFormedAlpha3 = /^[A-Za-z]{3}$/;
+    public static readonly canonicalAlpha3 = /^[A-Z]{3}$/;
+    public static readonly wellFormedUnM49 = /^[0-9]{3}$/;
+    public static readonly canonicalUnM49 = /^[0-9]{3}$/;
+
+    // region is alpha-2, alpha-3 or 3-digit, canonical is upper case
+    public static readonly wellFormed = /^([A-Za-z]{2,3})|([0-9]{3})$/;
+    public static readonly canonical = /^([A-Z]{2,3})|([0-9]{3})$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'region' = 'region';
     public readonly isSubtag: boolean = true;
 
-    public isAlpha2RegionCode(val: unknown): val is Model.IsoAlpha2RegionCode {
+    public isAlpha2RegionCode(val: unknown): val is IsoAlpha2RegionCode {
         return typeof val === 'string' && val.length === 2 && /^[A-Za-z]{2}$/.test(val);
     }
 
-    public isAlpha3RegionCode(val: unknown): val is Model.IsoAlpha3RegionCode {
+    public isAlpha3RegionCode(val: unknown): val is IsoAlpha3RegionCode {
         return typeof val === 'string' && val.length === 3 && /^[A-Za-z]{3}$/.test(val);
     }
 
-    public isUnM49RegionCode(val: unknown): val is Model.UnM49RegionCode {
+    public isUnM49RegionCode(val: unknown): val is UnM49RegionCode {
         return typeof val === 'string' && val.length === 3 && /^[0-9]{3}$/.test(val);
     }
 
     public isWellFormed(val: unknown): val is RegionSubtag {
-        return this.isAlpha2RegionCode(val) || this.isAlpha3RegionCode(val) || this.isUnM49RegionCode(val);
+        return typeof val === 'string' && Region.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is RegionSubtag {
-        // canonical form is upper case
-        return this.isWellFormed(val) && val.toUpperCase() === val;
+        return typeof val === 'string' && Region.canonical.test(val);
     }
 
     public toCanonical(val: unknown): Result<RegionSubtag> {

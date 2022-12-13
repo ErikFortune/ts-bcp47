@@ -20,19 +20,22 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
-
-import { GrandfatheredTag } from '../model';
+import { GrandfatheredTag } from '../common';
+import { Result } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
+import { toCanonicalTag } from './helpers';
 
 export class Grandfathered implements TagOrSubtag<'grandfathered', GrandfatheredTag> {
+    // just validating that there are no invalid characters present, not structure.
+    public static readonly wellFormed = /^[A-Za-z][A-Za-z0-9-]+$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'grandfathered' = 'grandfathered';
     public readonly isSubtag: boolean = false;
 
     public isWellFormed(val: unknown): val is GrandfatheredTag {
         // not actually validating structure for grandfathered tags
-        return typeof val === 'string' && /^[A-Za-z][A-Za-z0-9-]+$/.test(val);
+        return typeof val === 'string' && Grandfathered.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is GrandfatheredTag {
@@ -44,22 +47,6 @@ export class Grandfathered implements TagOrSubtag<'grandfathered', Grandfathered
     }
 
     public toCanonical(val: unknown): Result<GrandfatheredTag> {
-        if (typeof val === 'string') {
-            const parts = val.split('-');
-            const canonical: string[] = [];
-            let isInitial = true;
-            for (const part of parts) {
-                if (isInitial || (part.length !== 2 && part.length !== 4)) {
-                    canonical.push(part.toLowerCase());
-                } else if (part.length === 2) {
-                    canonical.push(part.toUpperCase());
-                } else if (part.length === 4) {
-                    canonical.push(`${part[0].toUpperCase()}${part.slice(1).toLowerCase()}`);
-                }
-                isInitial = part.length === 1;
-            }
-            return succeed(canonical.join('-') as GrandfatheredTag);
-        }
-        return fail(`"${val}: not a well-formed grandfathered tag`);
+        return toCanonicalTag(val);
     }
 }

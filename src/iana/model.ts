@@ -20,22 +20,16 @@
  * SOFTWARE.
  */
 
-import { Brand } from '@fgv/ts-utils';
-
-export type IsoAlpha2RegionCode = Brand<string, 'IsoAlpha2RegionCode'>;
-export type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;
-export type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;
-
-export type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
-export type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
-export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
-export type RegionSubtag = Brand<string, 'RegionSubtag'>;
-export type VariantSubtag = Brand<string, 'VariantSubtag'>;
-export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
-export type RedundantTag = Brand<string, 'RedundantTag'>;
-
-export type UnicodeCharacterSpec = Brand<string, 'UnicodeCharSpec'>;
-export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
+import {
+    ExtLangSubtag,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    VariantSubtag,
+    YearMonthDaySpec,
+} from './common';
 
 export type RegistryEntryType = 'extlang' | 'grandfathered' | 'language' | 'redundant' | 'region' | 'script' | 'variant';
 export const allRegistryEntryTypes: RegistryEntryType[] = [

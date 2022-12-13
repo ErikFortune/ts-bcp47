@@ -20,24 +20,28 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
 import { TagOrSubtag } from './tagOrSubtag';
-import { VariantSubtag } from '../model';
+import { VariantSubtag } from '../common';
 
 export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
+    // variant is: 5*8alphanum or (DIGIT 3alphanum), canonical is lower case
+    public static readonly wellFormed = /^([A-Za-z0-9]{5,8})|([0-9][A-Za-z0-9]{3})$/;
+    public static readonly canonical = /^([a-z0-9]{5,8})|([0-9][a-z0-9]{3})$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'variant' = 'variant';
     public readonly isSubtag: boolean = true;
 
     public isWellFormed(val: unknown): val is VariantSubtag {
         // variant is: 5*8alphanum or (DIGIT 3alphanum)
-        return typeof val === 'string' && (/^[A-Za-z][A-Za-z0-9]{4,7}$/.test(val) || /^[0-9][A-Za-z0-9]{3,7}$/.test(val));
+        return typeof val === 'string' && Variant.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is VariantSubtag {
         // canonical form is lower case
-        return typeof val === 'string' && (/^[a-z][a-z0-9]{4,7}$/.test(val) || /^[0-9][a-z0-9]{3,7}$/.test(val));
+        return typeof val === 'string' && Variant.canonical.test(val);
     }
 
     public toCanonical(val: unknown): Result<VariantSubtag> {

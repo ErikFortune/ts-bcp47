@@ -21,54 +21,69 @@
  */
 
 import * as Model from './model';
+import * as Tags from './tags';
+import {
+    ExtLangSubtag,
+    GrandfatheredTag,
+    IsoAlpha2RegionCode,
+    IsoAlpha3RegionCode,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    UnM49RegionCode,
+    UnicodeCharacterSpec,
+    VariantSubtag,
+    YearMonthDaySpec,
+} from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
 export class WellFormed {
-    public static languageSubtag(val: unknown): val is Model.LanguageSubtag {
-        return typeof val === 'string' && /^[A-Za-z]{2,3}$/.test(val);
+    public static languageSubtag(val: unknown): val is LanguageSubtag {
+        return typeof val === 'string' && Tags.Language.wellFormed.test(val);
     }
 
-    public static extLangSubtag(val: unknown): val is Model.ExtLangSubtag {
-        return typeof val === 'string' && /^[A-Za-z]{3}$/.test(val);
+    public static extLangSubtag(val: unknown): val is ExtLangSubtag {
+        return typeof val === 'string' && Tags.ExtLang.wellFormed.test(val);
     }
 
-    public static scriptSubtag(val: unknown): val is Model.ScriptSubtag {
-        return typeof val === 'string' && /^[A-Za-z]{4}$/.test(val);
+    public static scriptSubtag(val: unknown): val is ScriptSubtag {
+        return typeof val === 'string' && Tags.Script.wellFormed.test(val);
     }
 
-    public static isoAlpha2RegionCode(val: unknown): val is Model.IsoAlpha2RegionCode {
-        return typeof val === 'string' && val.length === 2 && val.toUpperCase() === val;
+    public static isoAlpha2RegionCode(val: unknown): val is IsoAlpha2RegionCode {
+        return typeof val === 'string' && val.length === 2 && Tags.Region.wellFormedAlpha2.test(val);
     }
 
-    public static isoAlpha3RegionCode(val: unknown): val is Model.IsoAlpha3RegionCode {
-        return typeof val === 'string' && val.length === 3 && val.toUpperCase() === val;
+    public static isoAlpha3RegionCode(val: unknown): val is IsoAlpha3RegionCode {
+        return typeof val === 'string' && val.length === 3 && Tags.Region.canonicalAlpha3.test(val);
     }
 
-    public static unM49RegionCode(val: unknown): val is Model.UnM49RegionCode {
-        return typeof val === 'string' && /^[0-9]{1,3}$/.test(val);
+    public static unM49RegionCode(val: unknown): val is UnM49RegionCode {
+        return typeof val === 'string' && val.length === 3 && Tags.Region.wellFormedUnM49.test(val);
     }
 
-    public static regionSubtag(val: unknown): val is Model.RegionSubtag {
-        return WellFormed.isoAlpha2RegionCode(val) || WellFormed.unM49RegionCode(val) || WellFormed.isoAlpha3RegionCode(val);
+    public static regionSubtag(val: unknown): val is RegionSubtag {
+        return typeof val === 'string' && Tags.Region.wellFormed.test(val);
     }
 
-    public static variantSubtag(val: unknown): val is Model.VariantSubtag {
-        return typeof val === 'string' && (/^[A-Za-z][A-Za-z0-9]{4,7}$/.test(val) || /^[0-9][A-Za-z0-9]{3,7}$/.test(val));
+    public static variantSubtag(val: unknown): val is VariantSubtag {
+        return typeof val === 'string' && Tags.Variant.wellFormed.test(val);
     }
 
-    public static grandfatheredTag(val: unknown): val is Model.GrandfatheredTag {
-        return typeof val === 'string' && /^[A-Za-z0-9-]+$/.test(val);
+    public static grandfatheredTag(val: unknown): val is GrandfatheredTag {
+        return typeof val === 'string' && Tags.Grandfathered.wellFormed.test(val);
     }
 
-    public static redundantTag(val: unknown): val is Model.RedundantTag {
-        return typeof val === 'string' && /^[A-Za-z0-9-]+$/.test(val);
+    public static redundantTag(val: unknown): val is RedundantTag {
+        return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
     }
 
-    public static unicodeCharacterSpec(val: string): val is Model.UnicodeCharacterSpec {
+    public static unicodeCharacterSpec(val: string): val is UnicodeCharacterSpec {
         return typeof val === 'string' && /^U\+[0-9A-F]{4}$/.test(val);
     }
 
-    public static yearMonthDaySpec(val: string): val is Model.YearMonthDaySpec {
+    public static yearMonthDaySpec(val: string): val is YearMonthDaySpec {
         // TODO: should probably actually test range on days and months here
         return typeof val === 'string' && /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/.test(val);
     }

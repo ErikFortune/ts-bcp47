@@ -23,4 +23,4 @@
 export * as Model from './model';
 export * as Converters from './converters';
 export * as Tags from './tags';
-export { TagRegistry } from './registry';
+export { TagRegistry } from './registry/registry';

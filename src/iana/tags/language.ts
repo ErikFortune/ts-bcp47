@@ -20,24 +20,28 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { LanguageSubtag } from '../model';
+import { LanguageSubtag } from '../common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class Language implements TagOrSubtag<'language', LanguageSubtag> {
+    // language is 2*3ALPHA, canonical is lower case
+    public static readonly wellFormed = /^[A-Za-z]{2,3}$/;
+    public static readonly canonical = /^[a-z]{2,3}$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'language' = 'language';
     public readonly isSubtag: boolean = true;
 
     public isWellFormed(val: unknown): val is LanguageSubtag {
         // language tag is 2*3ALPHA
-        return typeof val === 'string' && /^[A-Za-z]{2,3}$/.test(val);
+        return typeof val === 'string' && Language.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is LanguageSubtag {
         // canonical form is lower case
-        return typeof val === 'string' && /^[a-z]{2,3}$/.test(val);
+        return typeof val === 'string' && Language.canonical.test(val);
     }
 
     public toCanonical(val: unknown): Result<LanguageSubtag> {

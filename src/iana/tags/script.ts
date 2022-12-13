@@ -20,24 +20,28 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { ScriptSubtag } from '../model';
+import { ScriptSubtag } from '../common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class Script implements TagOrSubtag<'script', ScriptSubtag> {
+    // script is 4ALPHA, canonical is initial caps
+    public static readonly wellFormed = /^[A-Za-z]{4}$/;
+    public static readonly canonical = /^[A-Z][a-z]{3}$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'script' = 'script';
     public readonly isSubtag: boolean = true;
 
     public isWellFormed(val: unknown): val is ScriptSubtag {
         // script tag is 4ALPHA
-        return typeof val === 'string' && /^[A-Za-z]{4}$/.test(val);
+        return typeof val === 'string' && Script.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is ScriptSubtag {
         // canonical form is initial caps
-        return typeof val === 'string' && /^[A-Z][a-z]{3}$/.test(val);
+        return typeof val === 'string' && Script.canonical.test(val);
     }
 
     public toCanonical(val: unknown): Result<ScriptSubtag> {

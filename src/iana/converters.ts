@@ -23,7 +23,7 @@
 import * as Model from './model';
 import * as Validate from './validate';
 
-import { BaseConverter, Converter, Converters, Result, mapResults } from '@fgv/ts-utils';
+import { BaseConverter, Converter, Converters, Result, fail, mapResults } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { strictObject } from '@fgv/ts-utils/converters';
 

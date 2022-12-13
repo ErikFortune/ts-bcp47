@@ -20,28 +20,31 @@
  * SOFTWARE.
  */
 
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { ExtLangSubtag } from '../model';
+import { ExtLangSubtag } from '../common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class ExtLang implements TagOrSubtag<'extlang', ExtLangSubtag> {
+    // extlang is 3ALPHA, canonical is lower case
+    public static readonly wellFormed = /^[A-Za-z]{3}$/;
+    public static readonly canonical = /^[a-z]{3}$/;
+
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'extlang' = 'extlang';
     public readonly isSubtag: boolean = true;
 
     public isWellFormed(val: unknown): val is ExtLangSubtag {
-        // extlang tag is 3ALPHA
-        return typeof val === 'string' && /^[A-Za-z]{3}$/.test(val);
+        return typeof val === 'string' && ExtLang.wellFormed.test(val);
     }
 
     public isCanonical(val: unknown): val is ExtLangSubtag {
-        // canonical form is lower case
-        return typeof val === 'string' && /^[a-z]{3}$/.test(val);
+        return typeof val === 'string' && ExtLang.canonical.test(val);
     }
 
     public toCanonical(val: unknown): Result<ExtLangSubtag> {
         if (this.isWellFormed(val)) {
+            // canonical form is lower case
             return succeed(val.toLowerCase() as ExtLangSubtag);
         }
         return fail(`"${val}: not a well-formed extlang subtag`);

@@ -20,33 +20,24 @@
  * SOFTWARE.
  */
 
-import { RedundantTag } from '../common';
-import { Result } from '@fgv/ts-utils';
-import { TagOrSubtag } from './tagOrSubtag';
-import { toCanonicalTag } from './helpers';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
-    // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = /^[A-Za-z][A-Za-z0-9-]+$/;
-
-    // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'redundant' = 'redundant';
-    public readonly isSubtag: boolean = false;
-
-    public isWellFormed(val: unknown): val is RedundantTag {
-        // not actually validating structure for redundant tags
-        return typeof val === 'string' && Redundant.wellFormed.test(val);
-    }
-
-    public isCanonical(val: unknown): val is RedundantTag {
-        const result = this.toCanonical(val);
-        if (result.isSuccess()) {
-            return result.value === val;
+export function toCanonicalTag<T extends string>(val: unknown): Result<T> {
+    if (typeof val === 'string') {
+        const parts = val.split('-');
+        const canonical: string[] = [];
+        let isInitial = true;
+        for (const part of parts) {
+            if (isInitial || (part.length !== 2 && part.length !== 4)) {
+                canonical.push(part.toLowerCase());
+            } else if (part.length === 2) {
+                canonical.push(part.toUpperCase());
+            } else if (part.length === 4) {
+                canonical.push(`${part[0].toUpperCase()}${part.slice(1).toLowerCase()}`);
+            }
+            isInitial = part.length === 1;
         }
-        return false;
+        return succeed(canonical.join('-') as T);
     }
-
-    public toCanonical(val: unknown): Result<RedundantTag> {
-        return toCanonicalTag(val);
-    }
+    return fail(`"${val}: not a well-formed tag`);
 }
