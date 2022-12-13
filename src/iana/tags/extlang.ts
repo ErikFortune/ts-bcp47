@@ -20,7 +20,30 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export * as Tags from './tags';
-export { TagRegistry } from './registry';
+import { Result, succeed } from '@fgv/ts-utils';
+
+import { ExtLangSubtag } from '../model';
+import { TagOrSubtag } from './tagOrSubtag';
+
+export class ExtLang implements TagOrSubtag<'extlang', ExtLangSubtag> {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
+    public readonly type: 'extlang' = 'extlang';
+    public readonly isSubtag: boolean = true;
+
+    public isWellFormed(val: unknown): val is ExtLangSubtag {
+        // extlang tag is 3ALPHA
+        return typeof val === 'string' && /^[A-Za-z]{3}$/.test(val);
+    }
+
+    public isCanonical(val: unknown): val is ExtLangSubtag {
+        // canonical form is lower case
+        return typeof val === 'string' && /^[a-z]{3}$/.test(val);
+    }
+
+    public toCanonical(val: unknown): Result<ExtLangSubtag> {
+        if (this.isWellFormed(val)) {
+            return succeed(val.toLowerCase() as ExtLangSubtag);
+        }
+        return fail(`"${val}: not a well-formed extlang subtag`);
+    }
+}

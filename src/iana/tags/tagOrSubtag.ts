@@ -20,7 +20,13 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export * as Tags from './tags';
-export { TagRegistry } from './registry';
+import { RegistryEntryType } from '../model';
+import { Result } from '@fgv/ts-utils';
+
+export interface TagOrSubtag<TTYPE extends RegistryEntryType, TTAG extends string> {
+    readonly type: TTYPE;
+    readonly isSubtag: boolean;
+    isWellFormed(val: unknown): val is TTAG;
+    isCanonical(val: unknown): val is TTAG;
+    toCanonical(val: unknown): Result<TTAG>;
+}

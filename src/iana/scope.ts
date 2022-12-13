@@ -21,12 +21,17 @@
  */
 
 import * as Model from './model';
+import * as Tags from './tags';
 
-export class Scope<TTAG extends string, TENTRY extends Model.RegistryEntry> {
+import { Result } from '@fgv/ts-utils';
+
+export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TENTRY extends Model.RegistryEntry> {
     protected readonly _items: Map<TTAG, TENTRY>;
+    protected readonly _tag: Tags.TagOrSubtag<TTYPE, TTAG>;
 
-    public constructor(items?: Map<TTAG, TENTRY>) {
-        this._items = items ?? new Map();
+    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
+        this._items = new Map();
+        this._tag = tag;
     }
 
     protected static _expandRange<TTAG extends string>(tags: TTAG | TTAG[]): TTAG[] {
@@ -49,5 +54,67 @@ export class Scope<TTAG extends string, TENTRY extends Model.RegistryEntry> {
         for (const tag of Scope._expandRange(tags)) {
             this._items.set(tag, entry);
         }
+    }
+
+    public isWellFormed(val: unknown): val is TTAG {
+        return this._tag.isWellFormed(val);
+    }
+
+    public isCanonical(val: unknown): val is TTAG {
+        return this._tag.isCanonical(val);
+    }
+
+    public toCanonical(val: unknown): Result<TTAG> {
+        return this._tag.toCanonical(val);
+    }
+
+    public isValid(val: unknown): val is TTAG {
+        const result = this.toCanonical(val);
+        if (result.isSuccess()) {
+            return this._items.has(result.value);
+        }
+        return false;
+    }
+}
+
+export class LanguageScope extends Scope<'language', Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Language());
+    }
+}
+
+export class ExtLangScope extends Scope<'extlang', Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry> {
+    public constructor() {
+        super(new Tags.ExtLang());
+    }
+}
+
+export class ScriptScope extends Scope<'script', Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Script());
+    }
+}
+
+export class RegionScope extends Scope<'region', Model.RegionSubtag, Model.RegionSubtagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Region());
+    }
+}
+
+export class VariantScope extends Scope<'variant', Model.VariantSubtag, Model.VariantSubtagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Variant());
+    }
+}
+
+export class GrandfatheredScope extends Scope<'grandfathered', Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Grandfathered());
+    }
+}
+
+export class RedundantScope extends Scope<'redundant', Model.RedundantTag, Model.RedundantTagRegistryEntry> {
+    public constructor() {
+        super(new Tags.Redundant());
     }
 }

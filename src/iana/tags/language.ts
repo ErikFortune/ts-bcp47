@@ -20,7 +20,30 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export * as Tags from './tags';
-export { TagRegistry } from './registry';
+import { Result, succeed } from '@fgv/ts-utils';
+
+import { LanguageSubtag } from '../model';
+import { TagOrSubtag } from './tagOrSubtag';
+
+export class Language implements TagOrSubtag<'language', LanguageSubtag> {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
+    public readonly type: 'language' = 'language';
+    public readonly isSubtag: boolean = true;
+
+    public isWellFormed(val: unknown): val is LanguageSubtag {
+        // language tag is 2*3ALPHA
+        return typeof val === 'string' && /^[A-Za-z]{2,3}$/.test(val);
+    }
+
+    public isCanonical(val: unknown): val is LanguageSubtag {
+        // canonical form is lower case
+        return typeof val === 'string' && /^[a-z]{2,3}$/.test(val);
+    }
+
+    public toCanonical(val: unknown): Result<LanguageSubtag> {
+        if (this.isWellFormed(val)) {
+            return succeed(val.toLowerCase() as LanguageSubtag);
+        }
+        return fail(`"${val}: not a well-formed language subtag`);
+    }
+}

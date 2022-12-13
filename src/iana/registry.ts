@@ -22,30 +22,23 @@
 
 import * as Converters from './converters';
 import * as Model from './model';
+import * as Scope from './scope';
 import * as path from 'path';
+
 import { Result, captureResult } from '@fgv/ts-utils';
-import { Scope } from './scope';
 
 export class TagRegistry {
-    public readonly languages: Scope<Model.LanguageSubtag, Model.LanguageSubtagRegistryEntry>;
-    public readonly extlangs: Scope<Model.ExtLangSubtag, Model.ExtLangSubtagRegistryEntry>;
-    public readonly scripts: Scope<Model.ScriptSubtag, Model.ScriptSubtagRegistryEntry>;
-    public readonly regions: Scope<Model.RegionSubtag, Model.RegionSubtagRegistryEntry>;
-    public readonly variants: Scope<Model.VariantSubtag, Model.VariantSubtagRegistryEntry>;
-    public readonly grandfathered: Scope<Model.GrandfatheredTag, Model.GrandfatheredTagRegistryEntry>;
-    public readonly redundant: Scope<Model.RedundantTag, Model.RedundantTagRegistryEntry>;
+    public readonly languages: Scope.LanguageScope = new Scope.LanguageScope();
+    public readonly extlangs: Scope.ExtLangScope = new Scope.ExtLangScope();
+    public readonly scripts: Scope.ScriptScope = new Scope.ScriptScope();
+    public readonly regions: Scope.RegionScope = new Scope.RegionScope();
+    public readonly variants: Scope.VariantScope = new Scope.VariantScope();
+    public readonly grandfathered: Scope.GrandfatheredScope = new Scope.GrandfatheredScope();
+    public readonly redundant: Scope.RedundantScope = new Scope.RedundantScope();
 
     protected readonly _all: Model.RegistryEntry[];
 
     protected constructor(root: string) {
-        this.languages = new Scope();
-        this.extlangs = new Scope();
-        this.scripts = new Scope();
-        this.regions = new Scope();
-        this.variants = new Scope();
-        this.grandfathered = new Scope();
-        this.redundant = new Scope();
-
         this._all = Converters.loadIanaRegistrySync(path.join(root, 'registry.json')).getValueOrThrow();
         for (const entry of this._all) {
             switch (entry.Type) {

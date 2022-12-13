@@ -20,7 +20,32 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export * as Tags from './tags';
-export { TagRegistry } from './registry';
+import { Result, succeed } from '@fgv/ts-utils';
+
+import { ScriptSubtag } from '../model';
+import { TagOrSubtag } from './tagOrSubtag';
+
+export class Script implements TagOrSubtag<'script', ScriptSubtag> {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
+    public readonly type: 'script' = 'script';
+    public readonly isSubtag: boolean = true;
+
+    public isWellFormed(val: unknown): val is ScriptSubtag {
+        // script tag is 4ALPHA
+        return typeof val === 'string' && /^[A-Za-z]{4}$/.test(val);
+    }
+
+    public isCanonical(val: unknown): val is ScriptSubtag {
+        // canonical form is initial caps
+        return typeof val === 'string' && /^[A-Z][a-z]{3}$/.test(val);
+    }
+
+    public toCanonical(val: unknown): Result<ScriptSubtag> {
+        if (this.isCanonical(val)) {
+            return succeed(val);
+        } else if (this.isWellFormed(val)) {
+            return succeed(`${val[0].toUpperCase}${val.slice(1).toLowerCase()}` as ScriptSubtag);
+        }
+        return fail(`"${val}: not a well-formed script subtag`);
+    }
+}
