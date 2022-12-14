@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
-import * as Model from '../model';
+import * as Model from './model';
 import * as Tags from '../tags';
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../common';
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
 import { Result } from '@fgv/ts-utils';
 
 export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TENTRY extends Model.RegistryEntry> {

@@ -23,7 +23,7 @@
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
 import { TagOrSubtag } from './tagOrSubtag';
-import { VariantSubtag } from '../common';
+import { VariantSubtag } from './common';
 
 export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
     // variant is: 5*8alphanum or (DIGIT 3alphanum), canonical is lower case

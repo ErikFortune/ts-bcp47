@@ -20,10 +20,9 @@
  * SOFTWARE.
  */
 
-import { RegistryEntryType } from '../model';
 import { Result } from '@fgv/ts-utils';
 
-export interface TagOrSubtag<TTYPE extends RegistryEntryType, TTAG extends string> {
+export interface TagOrSubtag<TTYPE extends string, TTAG extends string> {
     readonly type: TTYPE;
     readonly isSubtag: boolean;
     isWellFormed(val: unknown): val is TTAG;

@@ -20,8 +20,7 @@
  * SOFTWARE.
  */
 
-import * as Model from './model';
-import * as Tags from './tags';
+import * as Tags from '../tags';
 import {
     ExtLangSubtag,
     GrandfatheredTag,
@@ -32,9 +31,7 @@ import {
     RegionSubtag,
     ScriptSubtag,
     UnM49RegionCode,
-    UnicodeCharacterSpec,
     VariantSubtag,
-    YearMonthDaySpec,
 } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
@@ -78,15 +75,6 @@ export class WellFormed {
     public static redundantTag(val: unknown): val is RedundantTag {
         return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
     }
-
-    public static unicodeCharacterSpec(val: string): val is UnicodeCharacterSpec {
-        return typeof val === 'string' && /^U\+[0-9A-F]{4}$/.test(val);
-    }
-
-    public static yearMonthDaySpec(val: string): val is YearMonthDaySpec {
-        // TODO: should probably actually test range on days and months here
-        return typeof val === 'string' && /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/.test(val);
-    }
 }
 
 type TypeGuard<T extends string> = (val: string) => val is T;
@@ -113,7 +101,3 @@ export const variantSubtag = getValidator(WellFormed.variantSubtag, 'variant sub
 
 export const grandfatheredTag = getValidator(WellFormed.grandfatheredTag, 'grandfathered tag');
 export const redundantTag = getValidator(WellFormed.redundantTag, 'redundant tag');
-
-export const unicodeCharacterSpec = getValidator(WellFormed.unicodeCharacterSpec, 'Unicode character specification');
-
-export const yearMonthDaySpec = getValidator(WellFormed.yearMonthDaySpec, 'year-month-day specification');

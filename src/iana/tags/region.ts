@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, RegionSubtag, UnM49RegionCode } from '../common';
+import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, RegionSubtag, UnM49RegionCode } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
 import { TagOrSubtag } from './tagOrSubtag';

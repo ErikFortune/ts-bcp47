@@ -22,7 +22,7 @@
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { LanguageSubtag } from '../common';
+import { LanguageSubtag } from './common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class Language implements TagOrSubtag<'language', LanguageSubtag> {

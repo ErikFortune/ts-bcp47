@@ -20,16 +20,9 @@
  * SOFTWARE.
  */
 
-import {
-    ExtLangSubtag,
-    GrandfatheredTag,
-    LanguageSubtag,
-    RedundantTag,
-    RegionSubtag,
-    ScriptSubtag,
-    VariantSubtag,
-    YearMonthDaySpec,
-} from './common';
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
+
+import { Brand } from '@fgv/ts-utils';
 
 export type RegistryEntryType = 'extlang' | 'grandfathered' | 'language' | 'redundant' | 'region' | 'script' | 'variant';
 export const allRegistryEntryTypes: RegistryEntryType[] = [
@@ -44,6 +37,8 @@ export const allRegistryEntryTypes: RegistryEntryType[] = [
 
 export type RegistryEntryScope = 'collection' | 'macrolanguage' | 'private-use' | 'special';
 export const allRegistryEntryScopes: RegistryEntryScope[] = ['collection', 'macrolanguage', 'private-use', 'special'];
+
+export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
 
 interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType> {
     /* eslint-disable @typescript-eslint/naming-convention */

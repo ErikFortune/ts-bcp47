@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,26 @@
  * SOFTWARE.
  */
 
-import { Brand } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
+import { YearMonthDaySpec } from './model';
 
-export type IsoAlpha2RegionCode = Brand<string, 'IsoAlpha2RegionCode'>;
-export type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;
-export type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;
+export class WellFormed {
+    public static yearMonthDaySpec(val: string): val is YearMonthDaySpec {
+        // TODO: should probably actually test range on days and months here
+        return typeof val === 'string' && /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/.test(val);
+    }
+}
 
-export type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
-export type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
-export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
-export type RegionSubtag = Brand<string, 'RegionSubtag'>;
-export type VariantSubtag = Brand<string, 'VariantSubtag'>;
-export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
-export type RedundantTag = Brand<string, 'RedundantTag'>;
+type TypeGuard<T extends string> = (val: string) => val is T;
+type Validator<T extends string> = (val: string) => Result<T>;
 
-export type UnicodeCharacterSpec = Brand<string, 'UnicodeCharSpec'>;
-export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
+export function getValidator<T extends string>(validator: TypeGuard<T>, description: string): Validator<T> {
+    return (val: string) => {
+        if (validator(val)) {
+            return succeed(val);
+        }
+        return fail(`${val}: Not a valid ${description}`);
+    };
+}
+
+export const yearMonthDaySpec = getValidator(WellFormed.yearMonthDaySpec, 'year-month-day specification');

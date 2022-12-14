@@ -22,7 +22,7 @@
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { ScriptSubtag } from '../common';
+import { ScriptSubtag } from './common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class Script implements TagOrSubtag<'script', ScriptSubtag> {

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { GrandfatheredTag } from '../common';
+import { GrandfatheredTag } from './common';
 import { Result } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
 import { toCanonicalTag } from './helpers';

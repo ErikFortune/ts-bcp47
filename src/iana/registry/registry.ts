@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Converters from '../converters';
-import * as Model from '../model';
+import * as Converters from './converters';
+import * as Model from './model';
 import * as Scope from './scope';
 import * as path from 'path';
 

@@ -22,7 +22,7 @@
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { ExtLangSubtag } from '../common';
+import { ExtLangSubtag } from './common';
 import { TagOrSubtag } from './tagOrSubtag';
 
 export class ExtLang implements TagOrSubtag<'extlang', ExtLangSubtag> {

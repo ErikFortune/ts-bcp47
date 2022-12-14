@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
+export { TagRegistry } from './registry';
 export * as Tags from './tags';
-export { TagRegistry } from './registry/registry';
+export * as Registry from './registry';
