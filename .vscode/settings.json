@@ -3,15 +3,19 @@
         "alphanum",
         "extlang",
         "extlangs",
+        "lojban",
+        "longvariant",
         "macrolanguage",
         "macrolanguages",
         "Subtag",
         "subtags",
+        "tagrange",
         "TENTRY",
         "TSCRIPT",
         "TSUBTAG",
         "TTAG",
         "TTYPE",
+        "vals",
         "xyzzy"
     ]
 }

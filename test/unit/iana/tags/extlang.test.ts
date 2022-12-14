@@ -37,10 +37,12 @@ describe('extlang subtag', () => {
     describe('isWellFormed', () => {
         test.each(['abc', 'ABC', 'Xyz'])('%p is a well-formed extlang tag', (tag) => {
             expect(extlang.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.extLangSubtag.convert(tag)).toSucceedWith(tag as Tags.ExtLangSubtag);
         });
 
         test.each(['111', 'A', 'xyzzy'])('%p is not a well-formed extlang tag', (tag) => {
             expect(extlang.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.extLangSubtag.convert(tag)).toFailWith(/not a valid extlang subtag/i);
         });
     });
 

@@ -37,10 +37,12 @@ describe('script subtag', () => {
     describe('isWellFormed', () => {
         test.each(['latn', 'CYRL', 'Latn'])('%p is a well-formed script tag', (tag) => {
             expect(script.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.scriptSubtag.convert(tag)).toSucceedWith(tag as Tags.ScriptSubtag);
         });
 
         test.each(['l', 'la', 'lat', 'latin', 'xyzzy', 'Lat1'])('%p is not a well-formed script tag', (tag) => {
             expect(script.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.scriptSubtag.convert(tag)).toFailWith(/not a valid script subtag/i);
         });
     });
 

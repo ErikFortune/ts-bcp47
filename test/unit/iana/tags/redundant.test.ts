@@ -37,10 +37,12 @@ describe('redundant tag', () => {
     describe('isWellFormed', () => {
         test.each(['art-lojban', 'en-gb-oed', 'i-foo'])('%p is a well-formed redundant tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.redundantTag.convert(tag)).toSucceedWith(tag as Tags.RedundantTag);
         });
 
         test.each(['*$!', 'this-that!'])('%p is not a well-formed redundant tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.redundantTag.convert(tag)).toFailWith(/not a valid redundant tag/i);
         });
     });
 

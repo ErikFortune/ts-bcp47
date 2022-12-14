@@ -37,10 +37,12 @@ describe('variant subtag', () => {
     describe('isWellFormed', () => {
         test.each(['1920', 'variant', '1920DE', 'varia', 'varian', 'VariantX', 'variant8'])('%p is a well-formed variant tag', (tag) => {
             expect(variant.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.variantSubtag.convert(tag)).toSucceedWith(tag as Tags.VariantSubtag);
         });
 
         test.each(['l', 'la', 'lat', 'latin-variant', 'longVariant'])('%p is not a well-formed variant tag', (tag) => {
             expect(variant.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.variantSubtag.convert(tag)).toFailWith(/not a valid variant subtag/i);
         });
     });
 

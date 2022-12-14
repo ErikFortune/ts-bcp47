@@ -21,6 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
+import { GrandfatheredTag } from '../../../../src/iana/tags';
 import { Tags } from '../../../../src/iana';
 
 describe('grandfathered tag', () => {
@@ -37,10 +38,12 @@ describe('grandfathered tag', () => {
     describe('isWellFormed', () => {
         test.each(['art-lojban', 'en-gb-oed', 'i-foo'])('%p is a well-formed grandfathered tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.grandfatheredTag.convert(tag)).toSucceedWith(tag as GrandfatheredTag);
         });
 
         test.each(['*$!', 'this-that!'])('%p is not a well-formed grandfathered tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.grandfatheredTag.convert(tag)).toFailWith(/not a valid grandfathered tag/i);
         });
     });
 

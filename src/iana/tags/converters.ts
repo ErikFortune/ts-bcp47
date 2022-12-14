@@ -33,7 +33,7 @@ export const variantSubtag = Converters.string.map(Validate.variantSubtag);
 export const grandfatheredTag = Converters.string.map(Validate.grandfatheredTag);
 export const redundantTag = Converters.string.map(Validate.redundantTag);
 
-export function tagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
+export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
     return new BaseConverter<TTAG[]>((from: unknown): Result<TTAG[]> => {
         if (typeof from !== 'string') {
             return fail('tagRange converter: not a string');
@@ -41,7 +41,7 @@ export function tagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Co
 
         const parts = from.split('..');
         if (parts.length !== 2) {
-            return fail(`"${from}: malformed tagRange`);
+            return fail(`"${from}: malformed tag range`);
         }
 
         return mapResults(parts.map((tag) => tagConverter.convert(tag)));
@@ -49,5 +49,5 @@ export function tagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Co
 }
 
 export function tagOrRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | TTAG[]> {
-    return Converters.oneOf<TTAG | TTAG[]>([tagConverter, tagRange(tagConverter)]);
+    return Converters.oneOf<TTAG | TTAG[]>([tagConverter, rangeOfTags(tagConverter)]);
 }

@@ -37,10 +37,12 @@ describe('language subtag', () => {
     describe('isWellFormed', () => {
         test.each(['en', 'DE', 'abc', 'ABC', 'Xyz'])('%p is a well-formed language tag', (tag) => {
             expect(language.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.languageSubtag.convert(tag)).toSucceedWith(tag as Tags.LanguageSubtag);
         });
 
         test.each(['111', 'A', 'xyzzy', 'en1', 'en-US'])('%p is not a well-formed language tag', (tag) => {
             expect(language.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.languageSubtag.convert(tag)).toFailWith(/not a valid language subtag/i);
         });
     });
 

@@ -67,10 +67,12 @@ describe('region subtag', () => {
     describe('isWellFormed', () => {
         test.each(['en', 'DE', 'USA', '001', '419'])('%p is a well-formed region tag', (tag) => {
             expect(region.isWellFormed(tag)).toBe(true);
+            expect(Tags.Converters.regionSubtag.convert(tag)).toSucceedWith(tag as Tags.RegionSubtag);
         });
 
         test.each(['1', 'A', 'ESPN', 'en-US'])('%p is not a well-formed region tag', (tag) => {
             expect(region.isWellFormed(tag)).toBe(false);
+            expect(Tags.Converters.regionSubtag.convert(tag)).toFailWith(/not a valid region subtag/i);
         });
     });
 
