@@ -21,9 +21,9 @@
  */
 
 import '@fgv/ts-utils-jest';
+import { ExtLangSubtag } from '../../../../src/iana/tags';
 import { TagRegistry } from '../../../../src/iana';
 import { YearMonthDaySpec } from '../../../../src/iana/registry/model';
-import { ExtLangSubtag } from '../../../../src/iana/tags';
 
 describe('IANA tag registry scope', () => {
     const iana = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();

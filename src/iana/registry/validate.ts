@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import { Result } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from './model';
 import { getValidator } from '../tags/validate';
 
