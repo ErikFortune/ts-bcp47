@@ -30,7 +30,7 @@ describe('IANA TagRegistry class', () => {
                 expect(tags.languages.getAllTags()).toHaveLength(8241);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(213);
-                expect(tags.regions.getAllTags()).toHaveLength(304);
+                expect(tags.regions.getAllTags()).toHaveLength(306);
                 expect(tags.variants.getAllTags()).toHaveLength(109);
 
                 expect(tags.collections.getAllTags()).toHaveLength(116);

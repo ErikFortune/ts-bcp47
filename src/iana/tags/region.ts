@@ -34,8 +34,8 @@ export class Region implements TagOrSubtag<'region', RegionSubtag> {
     public static readonly canonicalUnM49 = /^[0-9]{3}$/;
 
     // region is alpha-2, alpha-3 or 3-digit, canonical is upper case
-    public static readonly wellFormed = /^([A-Za-z]{2,3})|([0-9]{3})$/;
-    public static readonly canonical = /^([A-Z]{2,3})|([0-9]{3})$/;
+    public static readonly wellFormed = /^([A-Za-z]{2,3})$|^([0-9]{3})$/;
+    public static readonly canonical = /^([A-Z]{2,3})$|^([0-9]{3})$/;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'region' = 'region';
