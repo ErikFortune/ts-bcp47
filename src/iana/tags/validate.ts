@@ -53,7 +53,7 @@ export class WellFormed {
     }
 
     public static isoAlpha3RegionCode(val: unknown): val is IsoAlpha3RegionCode {
-        return typeof val === 'string' && val.length === 3 && Tags.Region.canonicalAlpha3.test(val);
+        return typeof val === 'string' && val.length === 3 && Tags.Region.wellFormedAlpha3.test(val);
     }
 
     public static unM49RegionCode(val: unknown): val is UnM49RegionCode {

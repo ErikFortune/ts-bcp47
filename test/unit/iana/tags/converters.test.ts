@@ -34,11 +34,12 @@ describe('tag converters', () => {
         });
 
         test.each([
+            [10, /not a string/i],
             ['qaa...qzz', /not a valid language/i],
             ['001..qaa', /not a valid language/i],
             ['qaa..001', /not a valid language/i],
-            ['..en', /not a valid language/i],
-            ['en..', /not a valid language/i],
+            ['..en', /malformed tag range/i],
+            ['en..', /malformed tag range/i],
             ['aa..mmm..zzz', /malformed tag range/i],
             ['en', /malformed tag range/i],
         ])('fails for %p (%p)', (tags, reason) => {

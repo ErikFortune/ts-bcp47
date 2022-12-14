@@ -24,6 +24,10 @@ import * as Validate from './validate';
 
 import { BaseConverter, Converter, Converters, Result, fail, mapResults } from '@fgv/ts-utils';
 
+export const isoAlpha2RegionCode = Converters.string.map(Validate.isoAlpha2RegionCode);
+export const isoAlpha3RegionCode = Converters.string.map(Validate.isoAlpha3RegionCode);
+export const unM49RegionCode = Converters.string.map(Validate.unM49RegionCode);
+
 export const languageSubtag = Converters.string.map(Validate.languageSubtag);
 export const extLangSubtag = Converters.string.map(Validate.extLangSubtag);
 export const scriptSubtag = Converters.string.map(Validate.scriptSubtag);
@@ -40,7 +44,7 @@ export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>):
         }
 
         const parts = from.split('..');
-        if (parts.length !== 2) {
+        if (parts.length !== 2 || parts[0] === '' || parts[1] === '') {
             return fail(`"${from}: malformed tag range`);
         }
 

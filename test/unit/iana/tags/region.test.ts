@@ -37,26 +37,31 @@ describe('region subtag', () => {
     describe('isAlpha2RegionCode', () => {
         test.each(['en', 'DE'])('%p is a well-formed alpha-2 region tag', (tag) => {
             expect(region.isAlpha2RegionCode(tag)).toBe(true);
+            expect(Tags.Converters.isoAlpha2RegionCode.convert(tag)).toSucceedWith(tag as Tags.IsoAlpha2RegionCode);
         });
 
         test.each(['1', 'A', 'DEU', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is not a well-formed alpha-2 region tag', (tag) => {
             expect(region.isAlpha2RegionCode(tag)).toBe(false);
+            expect(Tags.Converters.isoAlpha2RegionCode.convert(tag)).toFailWith(/not a valid.*alpha-2/i);
         });
     });
 
     describe('isAlpha3RegionCode', () => {
         test.each(['usa', 'DEU', 'Jpn'])('%p is a well-formed alpha-3 region tag', (tag) => {
             expect(region.isAlpha3RegionCode(tag)).toBe(true);
+            expect(Tags.Converters.isoAlpha3RegionCode.convert(tag)).toSucceedWith(tag as Tags.IsoAlpha3RegionCode);
         });
 
         test.each(['1', 'us', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is not a well-formed alpha-3 region tag', (tag) => {
             expect(region.isAlpha3RegionCode(tag)).toBe(false);
+            expect(Tags.Converters.isoAlpha3RegionCode.convert(tag)).toFailWith(/not a valid.*alpha-3/i);
         });
     });
 
     describe('isUnM49RegionCode', () => {
         test.each(['001', '419'])('%p is a well-formed UN M.49 region tag', (tag) => {
             expect(region.isUnM49RegionCode(tag)).toBe(true);
+            expect(Tags.Converters.unM49RegionCode.convert(tag)).toSucceedWith(tag as Tags.UnM49RegionCode);
         });
 
         test.each(['1', 'US', 'DEU', '01', '0001', '00!', 'ESPN', 'en-US'])('%p is not a well-formed UN M.49 region tag', (tag) => {
