@@ -20,14 +20,15 @@
  * SOFTWARE.
  */
 
+import { toCanonicalTag, wellFormedTag } from './helpers';
+
 import { RedundantTag } from './common';
 import { Result } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
-import { toCanonicalTag } from './helpers';
 
 export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
     // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = /^[A-Za-z][A-Za-z0-9-]+$/;
+    public static readonly wellFormed = wellFormedTag;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'redundant' = 'redundant';
@@ -47,6 +48,6 @@ export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
     }
 
     public toCanonical(val: unknown): Result<RedundantTag> {
-        return toCanonicalTag(val);
+        return toCanonicalTag(val, 'redundant tag');
     }
 }
