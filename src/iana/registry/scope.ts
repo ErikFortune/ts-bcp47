@@ -47,8 +47,19 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
         return Array.from(this._items.values());
     }
 
-    public tryGet(want: string): TENTRY | undefined {
+    public tryGetCanonical(want: string): TENTRY | undefined {
         return this._items.get(want as TTAG);
+    }
+
+    public tryGet(want: string): TENTRY | undefined {
+        const got = this._items.get(want as TTAG);
+        if (!got) {
+            const result = this.toCanonical(want);
+            if (result.isSuccess()) {
+                return this._items.get(result.value as TTAG);
+            }
+        }
+        return got;
     }
 
     public add(tags: TTAG | TTAG[], entry: TENTRY): Result<true> {

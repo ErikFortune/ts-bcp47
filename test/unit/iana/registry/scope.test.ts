@@ -45,10 +45,19 @@ describe('IANA tag registry scope', () => {
     });
 
     describe('tryGet', () => {
-        test('retrieves valid values only in canonical form', () => {
+        test('retrieves valid values only in canonical or non-canonical form', () => {
             for (const tag of languages.getAllTags()) {
                 expect(languages.tryGet(tag)).toBeDefined();
-                expect(languages.tryGet(tag.toUpperCase())).not.toBeDefined();
+                expect(languages.tryGet(tag.toUpperCase())).toBeDefined();
+            }
+        });
+    });
+
+    describe('tryGetCanonical', () => {
+        test('retrieves valid values only in canonical form', () => {
+            for (const tag of languages.getAllTags()) {
+                expect(languages.tryGetCanonical(tag)).toBeDefined();
+                expect(languages.tryGetCanonical(tag.toUpperCase())).not.toBeDefined();
             }
         });
     });
