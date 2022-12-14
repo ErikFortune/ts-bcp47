@@ -24,7 +24,7 @@ import * as Model from './model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
-import { Result } from '@fgv/ts-utils';
+import { Result, allSucceed, succeed } from '@fgv/ts-utils';
 
 export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TENTRY extends Model.RegistryEntry> {
     protected readonly _items: Map<TTAG, TENTRY>;
@@ -51,10 +51,20 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
         return this._items.get(want as TTAG);
     }
 
-    public add(tags: TTAG | TTAG[], entry: TENTRY): void {
-        for (const tag of Scope._expandRange(tags)) {
-            this._items.set(tag, entry);
-        }
+    public add(tags: TTAG | TTAG[], entry: TENTRY): Result<true> {
+        return this._validateEntry(entry).onSuccess(() => {
+            const expanded = Scope._expandRange(tags);
+            return allSucceed(
+                expanded.map((tag) => {
+                    return this._validateTag(tag, entry).onSuccess(() => {
+                        this._items.set(tag, entry);
+                        return succeed(true);
+                    });
+                }),
+                true
+            );
+            return succeed(true);
+        });
     }
 
     public isWellFormed(val: unknown): val is TTAG {
@@ -75,6 +85,17 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
             return this._items.has(result.value);
         }
         return false;
+    }
+
+    protected _validateTag(tag: TTAG, entry: TENTRY): Result<true> {
+        if (!this.isCanonical(tag)) {
+            return fail(`${tag}: ${entry.Type} (sub) is not in canonical form`);
+        }
+        return succeed(true);
+    }
+
+    protected _validateEntry(_entry: TENTRY): Result<true> {
+        return succeed(true);
     }
 }
 
