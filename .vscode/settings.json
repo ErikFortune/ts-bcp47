@@ -11,6 +11,7 @@
         "TSCRIPT",
         "TSUBTAG",
         "TTAG",
-        "TTYPE"
+        "TTYPE",
+        "xyzzy"
     ]
 }
