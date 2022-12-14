@@ -33,6 +33,12 @@ export class TagRegistry {
     public readonly scripts: Scope.ScriptScope = new Scope.ScriptScope();
     public readonly regions: Scope.RegionScope = new Scope.RegionScope();
     public readonly variants: Scope.VariantScope = new Scope.VariantScope();
+
+    public readonly collections: Scope.LanguageScope = new Scope.LanguageScope();
+    public readonly macrolanguages: Scope.LanguageScope = new Scope.LanguageScope();
+    public readonly privateUse: Scope.LanguageScope = new Scope.LanguageScope();
+    public readonly special: Scope.LanguageScope = new Scope.LanguageScope();
+
     public readonly grandfathered: Scope.GrandfatheredScope = new Scope.GrandfatheredScope();
     public readonly redundant: Scope.RedundantScope = new Scope.RedundantScope();
 
@@ -44,6 +50,15 @@ export class TagRegistry {
             switch (entry.Type) {
                 case 'language':
                     this.languages.add(entry.Subtag, entry);
+                    if (entry.Scope === 'macrolanguage') {
+                        this.macrolanguages.add(entry.Subtag, entry);
+                    } else if (entry.Scope === 'collection') {
+                        this.collections.add(entry.Subtag, entry);
+                    } else if (entry.Scope === 'private-use') {
+                        this.privateUse.add(entry.Subtag, entry);
+                    } else if (entry.Scope === 'special') {
+                        this.special.add(entry.Subtag, entry);
+                    }
                     break;
                 case 'extlang':
                     this.extlangs.add(entry.Subtag, entry);

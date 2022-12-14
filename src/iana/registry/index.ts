@@ -20,6 +20,5 @@
  * SOFTWARE.
  */
 
-export * from './registry';
 export * as Model from './model';
 export * as Converters from './converters';

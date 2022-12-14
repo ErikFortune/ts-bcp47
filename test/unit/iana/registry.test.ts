@@ -28,6 +28,18 @@ describe('IANA TagRegistry class', () => {
         test('loads a tag registry', () => {
             expect(TagRegistry.load('node_modules/language-subtag-registry/data/json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8241);
+                expect(tags.extlangs.getAllTags()).toHaveLength(252);
+                expect(tags.scripts.getAllTags()).toHaveLength(213);
+                expect(tags.regions.getAllTags()).toHaveLength(304);
+                expect(tags.variants.getAllTags()).toHaveLength(109);
+
+                expect(tags.collections.getAllTags()).toHaveLength(116);
+                expect(tags.macrolanguages.getAllTags()).toHaveLength(62);
+                expect(tags.privateUse.getAllTags()).toHaveLength(2);
+                expect(tags.special.getAllTags()).toHaveLength(4);
+
+                expect(tags.grandfathered.getAllTags()).toHaveLength(26);
+                expect(tags.redundant.getAllTags()).toHaveLength(67);
             });
         });
     });
