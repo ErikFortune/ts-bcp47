@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { TagRegistry } from '../../../src/iana';
+import { TagRegistry } from '../../../../src/iana';
 
 describe('IANA TagRegistry class', () => {
     describe('load static method', () => {

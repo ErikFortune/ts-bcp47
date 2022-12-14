@@ -24,7 +24,7 @@ import * as Model from './model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
 export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TENTRY extends Model.RegistryEntry> {
     protected readonly _items: Map<TTAG, TENTRY>;
@@ -63,7 +63,6 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
                 }),
                 true
             );
-            return succeed(true);
         });
     }
 
@@ -83,6 +82,13 @@ export class Scope<TTYPE extends Model.RegistryEntryType, TTAG extends string, T
         const result = this.toCanonical(val);
         if (result.isSuccess()) {
             return this._items.has(result.value);
+        }
+        return false;
+    }
+
+    public isValidCanonical(val: unknown): val is TTAG {
+        if (this.isCanonical(val)) {
+            return this._items.has(val);
         }
         return false;
     }

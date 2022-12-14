@@ -20,26 +20,15 @@
  * SOFTWARE.
  */
 
-import { Result, fail, succeed } from '@fgv/ts-utils';
+import { Result } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from './model';
+import { getValidator } from '../tags/validate';
 
 export class WellFormed {
     public static yearMonthDaySpec(val: string): val is YearMonthDaySpec {
         // TODO: should probably actually test range on days and months here
         return typeof val === 'string' && /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/.test(val);
     }
-}
-
-type TypeGuard<T extends string> = (val: string) => val is T;
-type Validator<T extends string> = (val: string) => Result<T>;
-
-export function getValidator<T extends string>(validator: TypeGuard<T>, description: string): Validator<T> {
-    return (val: string) => {
-        if (validator(val)) {
-            return succeed(val);
-        }
-        return fail(`${val}: Not a valid ${description}`);
-    };
 }
 
 export const yearMonthDaySpec = getValidator(WellFormed.yearMonthDaySpec, 'year-month-day specification');
