@@ -27,8 +27,8 @@ import { VariantSubtag } from './common';
 
 export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
     // variant is: 5*8alphanum or (DIGIT 3alphanum), canonical is lower case
-    public static readonly wellFormed = /^([A-Za-z0-9]{5,8})|([0-9][A-Za-z0-9]{3})$/;
-    public static readonly canonical = /^([a-z0-9]{5,8})|([0-9][a-z0-9]{3})$/;
+    public static readonly wellFormed = /^([A-Za-z0-9]{5,8})$|^([0-9][A-Za-z0-9]{3})$/;
+    public static readonly canonical = /^([a-z0-9]{5,8})$|^([0-9][a-z0-9]{3})$/;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'variant' = 'variant';
@@ -48,7 +48,7 @@ export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
         if (this.isCanonical(val)) {
             return succeed(val);
         } else if (this.isWellFormed(val)) {
-            return succeed(`${val[0].toUpperCase}${val.slice(1).toLowerCase()}` as VariantSubtag);
+            return succeed(val.toLowerCase() as VariantSubtag);
         }
         return fail(`"${val}: not a well-formed variant subtag`);
     }
