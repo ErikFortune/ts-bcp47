@@ -22,8 +22,10 @@
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-export function toCanonicalTag<T extends string>(val: unknown): Result<T> {
-    if (typeof val === 'string') {
+export const wellFormedTag = /^[A-Za-z][A-Za-z0-9-]+$/;
+
+export function toCanonicalTag<T extends string>(val: unknown, what: string = 'tag'): Result<T> {
+    if (typeof val === 'string' && wellFormedTag.test(val)) {
         const parts = val.split('-');
         const canonical: string[] = [];
         let isInitial = true;
@@ -39,5 +41,5 @@ export function toCanonicalTag<T extends string>(val: unknown): Result<T> {
         }
         return succeed(canonical.join('-') as T);
     }
-    return fail(`"${val}: not a well-formed tag`);
+    return fail(`"${val}: not a well-formed ${what}`);
 }

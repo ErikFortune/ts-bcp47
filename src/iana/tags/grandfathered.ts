@@ -20,14 +20,15 @@
  * SOFTWARE.
  */
 
+import { toCanonicalTag, wellFormedTag } from './helpers';
+
 import { GrandfatheredTag } from './common';
 import { Result } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
-import { toCanonicalTag } from './helpers';
 
 export class Grandfathered implements TagOrSubtag<'grandfathered', GrandfatheredTag> {
     // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = /^[A-Za-z][A-Za-z0-9-]+$/;
+    public static readonly wellFormed = wellFormedTag;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
     public readonly type: 'grandfathered' = 'grandfathered';
@@ -47,6 +48,6 @@ export class Grandfathered implements TagOrSubtag<'grandfathered', Grandfathered
     }
 
     public toCanonical(val: unknown): Result<GrandfatheredTag> {
-        return toCanonicalTag(val);
+        return toCanonicalTag(val, 'grandfathered tag');
     }
 }

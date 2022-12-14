@@ -22,7 +22,6 @@
 
 import '@fgv/ts-utils-jest';
 import { Tags } from '../../../../src/iana';
-import { ExtLangSubtag } from '../../../../src/iana/tags';
 
 describe('extlang subtag', () => {
     const extlang = new Tags.ExtLang();
@@ -61,7 +60,7 @@ describe('extlang subtag', () => {
             ['def', 'def'],
             ['Xyz', 'xyz'],
         ])('canonical form of extlang %p is %p', (tag, canonical) => {
-            expect(extlang.toCanonical(tag)).toSucceedWith(canonical as ExtLangSubtag);
+            expect(extlang.toCanonical(tag)).toSucceedWith(canonical as Tags.ExtLangSubtag);
         });
 
         test.each(['001', 'abcd', 'AB1', '1ABC'])('extlang %p has no canonical form', (tag) => {

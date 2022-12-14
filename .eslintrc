@@ -38,6 +38,7 @@
         "caughtErrorsIgnorePattern": "^_"
       }],
       "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/member-ordering": "error",
       "@typescript-eslint/no-non-null-assertion": "off",
