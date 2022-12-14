@@ -48,7 +48,7 @@ export class Script implements TagOrSubtag<'script', ScriptSubtag> {
         if (this.isCanonical(val)) {
             return succeed(val);
         } else if (this.isWellFormed(val)) {
-            return succeed(`${val[0].toUpperCase}${val.slice(1).toLowerCase()}` as ScriptSubtag);
+            return succeed(`${val[0].toUpperCase()}${val.slice(1).toLowerCase()}` as ScriptSubtag);
         }
         return fail(`"${val}: not a well-formed script subtag`);
     }
