@@ -33,3 +33,5 @@ export type RegionSubtag = Brand<string, 'RegionSubtag'>;
 export type VariantSubtag = Brand<string, 'VariantSubtag'>;
 export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
 export type RedundantTag = Brand<string, 'RedundantTag'>;
+
+export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;

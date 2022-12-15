@@ -22,6 +22,7 @@
 
 import * as Tags from '../tags';
 import {
+    ExtendedLanguageRange,
     ExtLangSubtag,
     GrandfatheredTag,
     IsoAlpha2RegionCode,
@@ -75,6 +76,10 @@ export class WellFormed {
     public static redundantTag(val: unknown): val is RedundantTag {
         return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
     }
+
+    public static extendedLanguageRange(val: unknown): val is ExtendedLanguageRange {
+        return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
+    }
 }
 
 type TypeGuard<T extends string> = (val: string) => val is T;
@@ -101,3 +106,5 @@ export const variantSubtag = getValidator(WellFormed.variantSubtag, 'variant sub
 
 export const grandfatheredTag = getValidator(WellFormed.grandfatheredTag, 'grandfathered tag');
 export const redundantTag = getValidator(WellFormed.redundantTag, 'redundant tag');
+
+export const extendedLanguageRange = getValidator(WellFormed.extendedLanguageRange, 'extended language range');

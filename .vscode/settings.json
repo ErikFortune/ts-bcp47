@@ -11,6 +11,7 @@
         "subtags",
         "tagrange",
         "TENTRY",
+        "TITEM",
         "TSCRIPT",
         "TSUBTAG",
         "TTAG",

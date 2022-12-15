@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+import * as Items from './registeredItems';
 import * as Model from './model';
 import * as TagConverters from '../tags/converters';
 import * as Validate from './validate';
@@ -111,4 +112,131 @@ export const registryEntry = Converters.discriminatedObject<Model.RegistryEntry>
 
 export function loadIanaRegistrySync(path: string): Result<Model.RegistryEntry[]> {
     return convertJsonFileSync(path, Converters.arrayOf(registryEntry));
+}
+
+export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'language'>(['language']) },
+        subtag: { from: 'Subtag', converter: TagConverters.languageSubtag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        macrolanguage: { from: 'Macrolanguage', converter: TagConverters.languageSubtag, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.languageSubtag, optional: true },
+        scope: { from: 'Scope', converter: registryScopeType, optional: true },
+        suppressScript: { from: 'Suppress-Script', converter: TagConverters.scriptSubtag, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagRegistryEntry, Items.RegisteredExtLang>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
+        subtag: { from: 'Subtag', converter: TagConverters.extLangSubtag },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange },
+        prefix: { from: 'Prefix', converter: TagConverters.languageSubtag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        macrolanguage: { from: 'Macrolanguage', converter: TagConverters.languageSubtag, optional: true },
+        scope: { from: 'Scope', converter: registryScopeType, optional: true },
+        suppressScript: { from: 'Suppress-Script', converter: TagConverters.scriptSubtag, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredScript = Converters.transformObject<Model.ScriptSubtagRegistryEntry, Items.RegisteredScript>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'script'>(['script']) },
+        subtag: { from: 'Subtag', converter: TagConverters.scriptSubtag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.scriptSubtag, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredRegion = Converters.transformObject<Model.RegionSubtagRegistryEntry, Items.RegisteredRegion>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'region'>(['region']) },
+        subtag: { from: 'Subtag', converter: TagConverters.regionSubtag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.regionSubtag, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredVariant = Converters.transformObject<Model.VariantSubtagRegistryEntry, Items.RegisteredVariant>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'variant'>(['variant']) },
+        subtag: { from: 'Subtag', converter: TagConverters.variantSubtag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.variantSubtag, optional: true },
+        prefix: { from: 'Prefix', converter: Converters.arrayOf(TagConverters.languageSubtag), optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredGrandfatheredTag = Converters.transformObject<Model.GrandfatheredTagRegistryEntry, Items.RegisteredGrandfatheredTag>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'grandfathered'>(['grandfathered']) },
+        tag: { from: 'Tag', converter: TagConverters.grandfatheredTag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredRedundantTag = Converters.transformObject<Model.RedundantTagRegistryEntry, Items.RegisteredRedundantTag>(
+    {
+        type: { from: 'Type', converter: Converters.enumeratedValue<'redundant'>(['redundant']) },
+        tag: { from: 'Tag', converter: TagConverters.redundantTag },
+        description: { from: 'Description', converter: Converters.stringArray },
+        added: { from: 'Added', converter: yearMonthDaySpec },
+        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
+        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
+        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange, optional: true },
+    },
+    {
+        strict: true,
+    }
+);
+
+export const registeredItem = Converters.discriminatedObject<Items.RegisteredItem>('Type', {
+    language: registeredLanguage,
+    extlang: registeredExtLang,
+    script: registeredScript,
+    region: registeredRegion,
+    variant: registeredVariant,
+    grandfathered: registeredGrandfatheredTag,
+    redundant: registeredRedundantTag,
+});
+
+export function loadIanaRegistryItemsSync(path: string): Result<Items.RegisteredItem[]> {
+    return convertJsonFileSync(path, Converters.arrayOf(registeredItem));
 }

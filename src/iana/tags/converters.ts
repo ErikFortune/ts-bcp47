@@ -37,6 +37,8 @@ export const variantSubtag = Converters.string.map(Validate.variantSubtag);
 export const grandfatheredTag = Converters.string.map(Validate.grandfatheredTag);
 export const redundantTag = Converters.string.map(Validate.redundantTag);
 
+export const extendedLanguageRange = Converters.string.map(Validate.extendedLanguageRange);
+
 export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
     return new BaseConverter<TTAG[]>((from: unknown): Result<TTAG[]> => {
         if (typeof from !== 'string') {
