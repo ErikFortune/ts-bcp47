@@ -95,7 +95,7 @@ export interface RegisteredVariant {
     readonly comments?: string[];
     readonly deprecated?: Model.YearMonthDaySpec;
     readonly preferredValue?: VariantSubtag;
-    readonly prefix?: LanguageSubtag[];
+    readonly prefix?: ExtendedLanguageRange[];
 }
 
 export interface RegisteredGrandfatheredTag {

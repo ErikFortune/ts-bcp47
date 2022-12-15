@@ -25,7 +25,7 @@ import * as Model from './model';
 import * as TagConverters from '../tags/converters';
 import * as Validate from './validate';
 
-import { Converter, Converters, Result } from '@fgv/ts-utils';
+import { Converter, Converters, Result, succeed } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { strictObject } from '@fgv/ts-utils/converters';
 
@@ -129,6 +129,7 @@ export const registeredLanguage = Converters.transformObject<Model.LanguageSubta
     },
     {
         strict: true,
+        description: 'language subtag',
     }
 );
 
@@ -137,7 +138,15 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
         type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
         subtag: { from: 'Subtag', converter: TagConverters.extLangSubtag },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange },
-        prefix: { from: 'Prefix', converter: TagConverters.languageSubtag },
+        prefix: {
+            from: 'Prefix',
+            converter: Converters.arrayOf(TagConverters.languageSubtag).map((tags) => {
+                if (tags.length !== 1) {
+                    return fail(`[${tags.join(', ')}]: malformed extlang prefix`);
+                }
+                return succeed(tags[0]);
+            }),
+        },
         description: { from: 'Description', converter: Converters.stringArray },
         added: { from: 'Added', converter: yearMonthDaySpec },
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
@@ -148,6 +157,7 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
     },
     {
         strict: true,
+        description: 'extlang subtag',
     }
 );
 
@@ -163,6 +173,7 @@ export const registeredScript = Converters.transformObject<Model.ScriptSubtagReg
     },
     {
         strict: true,
+        description: 'script subtag',
     }
 );
 
@@ -178,6 +189,7 @@ export const registeredRegion = Converters.transformObject<Model.RegionSubtagReg
     },
     {
         strict: true,
+        description: 'region subtag',
     }
 );
 
@@ -190,10 +202,11 @@ export const registeredVariant = Converters.transformObject<Model.VariantSubtagR
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
         deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.variantSubtag, optional: true },
-        prefix: { from: 'Prefix', converter: Converters.arrayOf(TagConverters.languageSubtag), optional: true },
+        prefix: { from: 'Prefix', converter: Converters.arrayOf(TagConverters.extendedLanguageRange), optional: true },
     },
     {
         strict: true,
+        description: 'variant subtag',
     }
 );
 
@@ -209,6 +222,7 @@ export const registeredGrandfatheredTag = Converters.transformObject<Model.Grand
     },
     {
         strict: true,
+        description: 'grandfathered tag',
     }
 );
 
@@ -224,6 +238,7 @@ export const registeredRedundantTag = Converters.transformObject<Model.Redundant
     },
     {
         strict: true,
+        description: 'redundant tag',
     }
 );
 
