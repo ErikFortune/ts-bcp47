@@ -22,7 +22,7 @@
 
 import * as Validate from './validate';
 
-import { BaseConverter, Converter, Converters, Result, fail, mapResults } from '@fgv/ts-utils';
+import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
 export const isoAlpha2RegionCode = Converters.string.map(Validate.isoAlpha2RegionCode);
 export const isoAlpha3RegionCode = Converters.string.map(Validate.isoAlpha3RegionCode);
@@ -56,4 +56,12 @@ export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>):
 
 export function tagOrRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | TTAG[]> {
     return Converters.oneOf<TTAG | TTAG[]>([tagConverter, rangeOfTags(tagConverter)]);
+}
+
+export function tagOrStartOfTagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG> {
+    return tagOrRange(tagConverter).map((t) => (Array.isArray(t) ? succeed(t[0]) : succeed(t)));
+}
+
+export function endOfTagRangeOrUndefined<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | undefined> {
+    return tagOrRange(tagConverter).map((t) => (Array.isArray(t) ? succeed(t[1]) : succeed(undefined)));
 }

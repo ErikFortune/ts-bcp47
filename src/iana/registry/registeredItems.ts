@@ -46,6 +46,8 @@ export interface RegisteredLanguage {
     readonly preferredValue?: LanguageSubtag;
     readonly scope?: Model.RegistryEntryScope;
     readonly suppressScript?: ScriptSubtag;
+
+    readonly subtagRangeEnd?: LanguageSubtag;
 }
 
 export interface RegisteredExtLang {
@@ -73,6 +75,8 @@ export interface RegisteredScript {
     readonly comments?: string[];
     readonly deprecated?: Model.YearMonthDaySpec;
     readonly preferredValue?: ScriptSubtag;
+
+    readonly subtagRangeEnd?: ScriptSubtag;
 }
 
 export interface RegisteredRegion {
@@ -84,6 +88,8 @@ export interface RegisteredRegion {
     readonly comments?: string[];
     readonly deprecated?: Model.YearMonthDaySpec;
     readonly preferredValue?: RegionSubtag;
+
+    readonly subtagRangeEnd?: RegionSubtag;
 }
 
 export interface RegisteredVariant {

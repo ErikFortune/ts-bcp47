@@ -117,7 +117,7 @@ export function loadIanaRegistrySync(path: string): Result<Model.RegistryEntry[]
 export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'language'>(['language']) },
-        subtag: { from: 'Subtag', converter: TagConverters.languageSubtag },
+        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.languageSubtag) },
         description: { from: 'Description', converter: Converters.stringArray },
         added: { from: 'Added', converter: yearMonthDaySpec },
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
@@ -126,6 +126,7 @@ export const registeredLanguage = Converters.transformObject<Model.LanguageSubta
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.languageSubtag, optional: true },
         scope: { from: 'Scope', converter: registryScopeType, optional: true },
         suppressScript: { from: 'Suppress-Script', converter: TagConverters.scriptSubtag, optional: true },
+        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.languageSubtag), optional: true },
     },
     {
         strict: true,
@@ -164,12 +165,13 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
 export const registeredScript = Converters.transformObject<Model.ScriptSubtagRegistryEntry, Items.RegisteredScript>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'script'>(['script']) },
-        subtag: { from: 'Subtag', converter: TagConverters.scriptSubtag },
+        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.scriptSubtag) },
         description: { from: 'Description', converter: Converters.stringArray },
         added: { from: 'Added', converter: yearMonthDaySpec },
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
         deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.scriptSubtag, optional: true },
+        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.scriptSubtag), optional: true },
     },
     {
         strict: true,
@@ -180,12 +182,13 @@ export const registeredScript = Converters.transformObject<Model.ScriptSubtagReg
 export const registeredRegion = Converters.transformObject<Model.RegionSubtagRegistryEntry, Items.RegisteredRegion>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'region'>(['region']) },
-        subtag: { from: 'Subtag', converter: TagConverters.regionSubtag },
+        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.regionSubtag) },
         description: { from: 'Description', converter: Converters.stringArray },
         added: { from: 'Added', converter: yearMonthDaySpec },
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
         deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.regionSubtag, optional: true },
+        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.regionSubtag), optional: true },
     },
     {
         strict: true,
