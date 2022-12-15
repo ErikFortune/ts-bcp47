@@ -27,15 +27,15 @@ describe('IANA TagRegistry class', () => {
     describe('load static method', () => {
         test('loads a tag registry', () => {
             expect(ItemRegistry.load('node_modules/language-subtag-registry/data/json')).toSucceedAndSatisfy((tags) => {
-                expect(tags.languages.getAllTags()).toHaveLength(8241);
+                expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
-                expect(tags.scripts.getAllTags()).toHaveLength(213);
-                expect(tags.regions.getAllTags()).toHaveLength(306);
+                expect(tags.scripts.getAllTags()).toHaveLength(212);
+                expect(tags.regions.getAllTags()).toHaveLength(304);
                 expect(tags.variants.getAllTags()).toHaveLength(109);
 
                 expect(tags.collections.getAllTags()).toHaveLength(116);
                 expect(tags.macrolanguages.getAllTags()).toHaveLength(62);
-                expect(tags.privateUse.getAllTags()).toHaveLength(2);
+                expect(tags.privateUse.getAllTags()).toHaveLength(1);
                 expect(tags.special.getAllTags()).toHaveLength(4);
 
                 expect(tags.grandfathered.getAllTags()).toHaveLength(26);

@@ -25,7 +25,7 @@ import * as Model from './model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
-import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
 export class ItemScope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TITEM extends Items.RegisteredItem> {
     protected readonly _items: Map<TTAG, TITEM>;
@@ -63,18 +63,12 @@ export class ItemScope<TTYPE extends Model.RegistryEntryType, TTAG extends strin
         return got;
     }
 
-    public add(tags: TTAG | TTAG[], entry: TITEM): Result<true> {
+    public add(tag: TTAG, entry: TITEM): Result<true> {
         return this._validateEntry(entry).onSuccess(() => {
-            const expanded = ItemScope._expandRange(tags);
-            return allSucceed(
-                expanded.map((tag) => {
-                    return this._validateTag(tag, entry).onSuccess(() => {
-                        this._items.set(tag, entry);
-                        return succeed(true);
-                    });
-                }),
-                true
-            );
+            return this._validateTag(tag, entry).onSuccess(() => {
+                this._items.set(tag, entry);
+                return succeed(true);
+            });
         });
     }
 
