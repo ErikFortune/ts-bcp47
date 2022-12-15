@@ -26,6 +26,7 @@ import * as path from 'path';
 
 import { Result, captureResult } from '@fgv/ts-utils';
 import { RegisteredItem } from './registeredItems';
+import { expandTagRange } from '../tags';
 
 export class ItemRegistry {
     public readonly languages: Scope.LanguageItemScope = new Scope.LanguageItemScope();
@@ -49,25 +50,35 @@ export class ItemRegistry {
         for (const entry of this._all) {
             switch (entry.type) {
                 case 'language':
-                    this.languages.add(entry.subtag, entry);
-                    if (entry.scope === 'macrolanguage') {
-                        this.macrolanguages.add(entry.subtag, entry);
-                    } else if (entry.scope === 'collection') {
-                        this.collections.add(entry.subtag, entry);
-                    } else if (entry.scope === 'private-use') {
-                        this.privateUse.add(entry.subtag, entry);
-                    } else if (entry.scope === 'special') {
-                        this.special.add(entry.subtag, entry);
+                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
+                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
+
+                        this.languages.add(subtag, add);
+                        if (entry.scope === 'macrolanguage') {
+                            this.macrolanguages.add(subtag, add);
+                        } else if (entry.scope === 'collection') {
+                            this.collections.add(subtag, add);
+                        } else if (entry.scope === 'private-use') {
+                            this.privateUse.add(subtag, add);
+                        } else if (entry.scope === 'special') {
+                            this.special.add(subtag, add);
+                        }
                     }
                     break;
                 case 'extlang':
                     this.extlangs.add(entry.subtag, entry);
                     break;
                 case 'script':
-                    this.scripts.add(entry.subtag, entry);
+                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
+                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
+                        this.scripts.add(subtag, add);
+                    }
                     break;
                 case 'region':
-                    this.regions.add(entry.subtag, entry);
+                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
+                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
+                        this.regions.add(subtag, add);
+                    }
                     break;
                 case 'variant':
                     this.variants.add(entry.subtag, entry);

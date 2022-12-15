@@ -43,3 +43,10 @@ export function toCanonicalTag<T extends string>(val: unknown, what: string): Re
     }
     return fail(`"${val}: not a well-formed ${what}`);
 }
+
+export function expandTagRange<TTAG extends string>(start: TTAG, end: TTAG | undefined): TTAG[] {
+    if (end === undefined) {
+        return [start];
+    }
+    return [start, end];
+}
