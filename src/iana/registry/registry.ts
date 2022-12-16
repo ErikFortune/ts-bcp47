@@ -21,7 +21,7 @@
  */
 
 import * as Converters from './converters';
-import * as Scope from './itemScope';
+import * as Scope from './scope';
 import * as path from 'path';
 
 import { Result, captureResult } from '@fgv/ts-utils';

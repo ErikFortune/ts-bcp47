@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import { Converters } from '../../../../src/iana/registry';
-import { ItemRegistry } from '../../../../src/iana/registry/itemRegistry';
+import { ItemRegistry } from '../../../../src/iana';
 
 describe('IANA TagRegistry class', () => {
     describe('create static method', () => {
