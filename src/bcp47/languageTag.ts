@@ -63,7 +63,7 @@ export class LanguageTag {
         this.grandfathered = init.grandfathered;
     }
 
-    public static parse(_tag: string, _registry: Iana.TagRegistry): Result<LanguageTagParts> {
+    public static parse(_tag: string, _registry: Iana.ItemRegistry): Result<LanguageTagParts> {
         // const subtags = tag.split('-');
         const parts: LanguageTagParts = {};
 
@@ -82,7 +82,7 @@ export class LanguageTag {
         return succeed(parts);
     }
 
-    public static create(tag: string, registry: Iana.TagRegistry): Result<LanguageTag> {
+    public static create(tag: string, registry: Iana.ItemRegistry): Result<LanguageTag> {
         return captureResult(() => {
             const parts = LanguageTag.parse(tag, registry).getValueOrThrow();
             return new LanguageTag(parts);

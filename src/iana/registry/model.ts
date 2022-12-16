@@ -74,13 +74,3 @@ export type ScriptSubtagRegistryEntry = RegistrySubtagEntry<'script', ScriptSubt
 export type VariantSubtagRegistryEntry = RegistrySubtagEntry<'variant', VariantSubtag>;
 export type GrandfatheredTagRegistryEntry = RegistryTagEntry<'grandfathered', GrandfatheredTag>;
 export type RedundantTagRegistryEntry = RegistryTagEntry<'redundant', RedundantTag>;
-export type RegistryEntry =
-    | LanguageSubtagRegistryEntry
-    | ExtLangSubtagRegistryEntry
-    | RegionSubtagRegistryEntry
-    | ScriptSubtagRegistryEntry
-    | VariantSubtagRegistryEntry
-    | GrandfatheredTagRegistryEntry
-    | RedundantTagRegistryEntry;
-
-export type RegistryScope<TSUBTAG extends string = string> = Record<TSUBTAG, number>;

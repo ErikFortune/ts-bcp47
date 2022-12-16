@@ -25,93 +25,13 @@ import * as Model from './model';
 import * as TagConverters from '../tags/converters';
 import * as Validate from './validate';
 
-import { Converter, Converters, Result, fail, succeed } from '@fgv/ts-utils';
+import { Converters, Result, fail, succeed } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 
 export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
 export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);
 
 export const yearMonthDaySpec = Converters.string.map(Validate.yearMonthDaySpec);
-
-type BaseFields = Omit<Model.RegistrySubtagEntry, 'Type' | 'Subtag'>;
-const registryEntryFieldConverters: Converters.FieldConverters<BaseFields> = {
-    /* eslint-disable @typescript-eslint/naming-convention */
-    Description: Converters.arrayOf(Converters.string),
-    Added: yearMonthDaySpec,
-    Comments: Converters.arrayOf(Converters.string),
-    Deprecated: yearMonthDaySpec,
-    Macrolanguage: TagConverters.languageSubtag,
-    'Preferred-Value': Converters.string,
-    Prefix: Converters.arrayOf(Converters.string),
-    Scope: registryScopeType,
-    'Suppress-Script': TagConverters.scriptSubtag,
-    /* eslint-enable @typescript-eslint/naming-convention */
-};
-const optionalFields: (keyof BaseFields)[] = [
-    'Comments',
-    'Deprecated',
-    'Macrolanguage',
-    'Preferred-Value',
-    'Prefix',
-    'Scope',
-    'Suppress-Script',
-];
-
-function registrySubtagEntry<TTYPE extends Model.RegistryEntryType, TSUBTAG extends string>(
-    typeConverter: Converter<TTYPE, unknown>,
-    subtagConverter: Converter<TSUBTAG, unknown>
-): Converter<Model.RegistrySubtagEntry<TTYPE, TSUBTAG>> {
-    return Converters.strictObject<Model.RegistrySubtagEntry<TTYPE, TSUBTAG>>(
-        {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            Type: typeConverter,
-            Subtag: TagConverters.tagOrRange(subtagConverter),
-            ...registryEntryFieldConverters,
-            /* eslint-enable @typescript-eslint/naming-convention */
-        },
-        { optionalFields }
-    );
-}
-
-function registryTagEntry<TTYPE extends Model.RegistryEntryType, TTAG extends string>(
-    typeConverter: Converter<TTYPE, unknown>,
-    tagConverter: Converter<TTAG, unknown>
-): Converter<Model.RegistryTagEntry<TTYPE, TTAG>> {
-    return Converters.strictObject<Model.RegistryTagEntry<TTYPE, TTAG>>(
-        {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            Type: typeConverter,
-            Tag: TagConverters.tagOrRange(tagConverter),
-            ...registryEntryFieldConverters,
-            /* eslint-enable @typescript-eslint/naming-convention */
-        },
-        { optionalFields }
-    );
-}
-
-export const languageSubtagRegistryEntry = registrySubtagEntry(Converters.enumeratedValue(['language']), TagConverters.languageSubtag);
-export const extLangSubtagRegistryEntry = registrySubtagEntry(Converters.enumeratedValue(['extlang']), TagConverters.extLangSubtag);
-export const regionSubtagRegistryEntry = registrySubtagEntry(Converters.enumeratedValue(['region']), TagConverters.regionSubtag);
-export const scriptSubtagRegistryEntry = registrySubtagEntry(Converters.enumeratedValue(['script']), TagConverters.scriptSubtag);
-export const variantSubtagRegistryEntry = registrySubtagEntry(Converters.enumeratedValue(['variant']), TagConverters.variantSubtag);
-export const grandfatheredTagRegistryEntry = registryTagEntry(
-    Converters.enumeratedValue(['grandfathered']),
-    TagConverters.grandfatheredTag
-);
-export const redundantTagRegistryEntry = registryTagEntry(Converters.enumeratedValue(['redundant']), TagConverters.redundantTag);
-export const registryEntry = Converters.discriminatedObject<Model.RegistryEntry>('Type', {
-    language: languageSubtagRegistryEntry,
-    extlang: extLangSubtagRegistryEntry,
-    region: regionSubtagRegistryEntry,
-    script: scriptSubtagRegistryEntry,
-    variant: variantSubtagRegistryEntry,
-    grandfathered: grandfatheredTagRegistryEntry,
-    redundant: redundantTagRegistryEntry,
-});
-
-export function loadIanaRegistrySync(path: string): Result<Model.RegistryEntry[]> {
-    return convertJsonFileSync(path, Converters.arrayOf(registryEntry));
-}
 
 export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
     {

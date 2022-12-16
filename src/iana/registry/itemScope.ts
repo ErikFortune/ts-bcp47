@@ -25,7 +25,7 @@ import * as Model from './model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
 abstract class ItemScope<
     TTYPE extends Model.RegistryEntryType,
@@ -90,11 +90,15 @@ abstract class ItemScope<
         return false;
     }
 
-    protected _validateEntry(_entry: TITEM): Result<true> {
+    protected _validateTag(tag: TTAG): Result<true> {
+        if (!this.isCanonical(tag)) {
+            return fail(`${tag}: ${this._tag.type} is not in canonical form`);
+        }
         return succeed(true);
     }
 
     public abstract add(entry: TITEM): Result<true>;
+    protected abstract _validateEntry(entry: TITEM): Result<true>;
 }
 
 class SubtagItemScope<
@@ -112,13 +116,17 @@ class SubtagItemScope<
             return succeed(true);
         });
     }
+
+    protected _validateEntry(entry: TITEM): Result<true> {
+        return this._validateTag(entry.subtag);
+    }
 }
 
 class SubtagItemScopeWithRange<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
     TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>
-> extends ItemScope<TTYPE, TTAG, TITEM> {
+> extends SubtagItemScope<TTYPE, TTAG, TITEM> {
     protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
         super(tag);
     }
@@ -145,6 +153,10 @@ class TagItemScope<
             this._items.set(entry.tag, entry);
             return succeed(true);
         });
+    }
+
+    protected _validateEntry(entry: TITEM): Result<true> {
+        return this._validateTag(entry.tag);
     }
 }
 
