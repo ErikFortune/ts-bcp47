@@ -25,19 +25,19 @@ import * as Model from './model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
-import { Result, fail, succeed } from '@fgv/ts-utils';
+import { Result, succeed } from '@fgv/ts-utils';
 
-export class ItemScope<TTYPE extends Model.RegistryEntryType, TTAG extends string, TITEM extends Items.RegisteredItem> {
+abstract class ItemScope<
+    TTYPE extends Model.RegistryEntryType,
+    TTAG extends string,
+    TITEM extends Items.RegisteredTagOrSubtag<TTYPE, TTAG>
+> {
     protected readonly _items: Map<TTAG, TITEM>;
     protected readonly _tag: Tags.TagOrSubtag<TTYPE, TTAG>;
 
     protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
         this._items = new Map();
         this._tag = tag;
-    }
-
-    protected static _expandRange<TTAG extends string>(tags: TTAG | TTAG[]): TTAG[] {
-        return Array.isArray(tags) ? tags : [tags];
     }
 
     public getAllTags(): TTAG[] {
@@ -61,15 +61,6 @@ export class ItemScope<TTYPE extends Model.RegistryEntryType, TTAG extends strin
             }
         }
         return got;
-    }
-
-    public add(tag: TTAG, entry: TITEM): Result<true> {
-        return this._validateEntry(entry).onSuccess(() => {
-            return this._validateTag(tag, entry).onSuccess(() => {
-                this._items.set(tag, entry);
-                return succeed(true);
-            });
-        });
     }
 
     public isWellFormed(val: unknown): val is TTAG {
@@ -99,55 +90,101 @@ export class ItemScope<TTYPE extends Model.RegistryEntryType, TTAG extends strin
         return false;
     }
 
-    protected _validateTag(tag: TTAG, entry: TITEM): Result<true> {
-        if (!this.isCanonical(tag)) {
-            return fail(`${tag}: ${entry.type} (sub) is not in canonical form`);
-        }
-        return succeed(true);
-    }
-
     protected _validateEntry(_entry: TITEM): Result<true> {
         return succeed(true);
     }
+
+    public abstract add(entry: TITEM): Result<true>;
 }
 
-export class LanguageItemScope extends ItemScope<'language', LanguageSubtag, Items.RegisteredLanguage> {
+class SubtagItemScope<
+    TTYPE extends Model.RegistryEntryType,
+    TTAG extends string,
+    TITEM extends Items.RegisteredSubtag<TTYPE, TTAG>
+> extends ItemScope<TTYPE, TTAG, TITEM> {
+    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
+        super(tag);
+    }
+
+    public add(entry: TITEM): Result<true> {
+        return this._validateEntry(entry).onSuccess(() => {
+            this._items.set(entry.subtag, entry);
+            return succeed(true);
+        });
+    }
+}
+
+class SubtagItemScopeWithRange<
+    TTYPE extends Model.RegistryEntryType,
+    TTAG extends string,
+    TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>
+> extends ItemScope<TTYPE, TTAG, TITEM> {
+    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
+        super(tag);
+    }
+
+    public add(entry: TITEM): Result<true> {
+        return this._validateEntry(entry).onSuccess(() => {
+            this._items.set(entry.subtag, entry);
+            return succeed(true);
+        });
+    }
+}
+
+class TagItemScope<
+    TTYPE extends Model.RegistryEntryType,
+    TTAG extends string,
+    TITEM extends Items.RegisteredTag<TTYPE, TTAG>
+> extends ItemScope<TTYPE, TTAG, TITEM> {
+    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
+        super(tag);
+    }
+
+    public add(entry: TITEM): Result<true> {
+        return this._validateEntry(entry).onSuccess(() => {
+            this._items.set(entry.tag, entry);
+            return succeed(true);
+        });
+    }
+}
+
+export class LanguageItemScope extends SubtagItemScopeWithRange<'language', LanguageSubtag, Items.RegisteredLanguage> {
     public constructor() {
         super(new Tags.Language());
     }
 }
 
-export class ExtLangItemScope extends ItemScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
+export class ExtLangItemScope extends SubtagItemScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
     public constructor() {
         super(new Tags.ExtLang());
     }
 }
 
-export class ScriptItemScope extends ItemScope<'script', ScriptSubtag, Items.RegisteredScript> {
+export class ScriptItemScope extends SubtagItemScopeWithRange<'script', ScriptSubtag, Items.RegisteredScript> {
     public constructor() {
         super(new Tags.Script());
     }
 }
 
-export class RegionItemScope extends ItemScope<'region', RegionSubtag, Items.RegisteredRegion> {
+export class RegionItemScope extends SubtagItemScopeWithRange<'region', RegionSubtag, Items.RegisteredRegion> {
     public constructor() {
         super(new Tags.Region());
     }
 }
 
-export class VariantItemScope extends ItemScope<'variant', VariantSubtag, Items.RegisteredVariant> {
+export class VariantItemScope extends SubtagItemScope<'variant', VariantSubtag, Items.RegisteredVariant> {
     public constructor() {
         super(new Tags.Variant());
     }
 }
 
-export class GrandfatheredTagScope extends ItemScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
+export class GrandfatheredTagScope extends TagItemScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
     public constructor() {
         super(new Tags.Grandfathered());
     }
 }
 
-export class RedundantTagScope extends ItemScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
+export class RedundantTagScope extends TagItemScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
     public constructor() {
         super(new Tags.Redundant());
     }

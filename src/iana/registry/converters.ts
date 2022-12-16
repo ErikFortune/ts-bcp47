@@ -25,9 +25,8 @@ import * as Model from './model';
 import * as TagConverters from '../tags/converters';
 import * as Validate from './validate';
 
-import { Converter, Converters, Result, succeed } from '@fgv/ts-utils';
+import { Converter, Converters, Result, fail, succeed } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
-import { strictObject } from '@fgv/ts-utils/converters';
 
 export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
 export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);
@@ -62,7 +61,7 @@ function registrySubtagEntry<TTYPE extends Model.RegistryEntryType, TSUBTAG exte
     typeConverter: Converter<TTYPE, unknown>,
     subtagConverter: Converter<TSUBTAG, unknown>
 ): Converter<Model.RegistrySubtagEntry<TTYPE, TSUBTAG>> {
-    return strictObject<Model.RegistrySubtagEntry<TTYPE, TSUBTAG>>(
+    return Converters.strictObject<Model.RegistrySubtagEntry<TTYPE, TSUBTAG>>(
         {
             /* eslint-disable @typescript-eslint/naming-convention */
             Type: typeConverter,
@@ -78,7 +77,7 @@ function registryTagEntry<TTYPE extends Model.RegistryEntryType, TTAG extends st
     typeConverter: Converter<TTYPE, unknown>,
     tagConverter: Converter<TTAG, unknown>
 ): Converter<Model.RegistryTagEntry<TTYPE, TTAG>> {
-    return strictObject<Model.RegistryTagEntry<TTYPE, TTAG>>(
+    return Converters.strictObject<Model.RegistryTagEntry<TTYPE, TTAG>>(
         {
             /* eslint-disable @typescript-eslint/naming-convention */
             Type: typeConverter,

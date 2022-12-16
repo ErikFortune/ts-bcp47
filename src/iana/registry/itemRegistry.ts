@@ -26,7 +26,6 @@ import * as path from 'path';
 
 import { Result, captureResult } from '@fgv/ts-utils';
 import { RegisteredItem } from './registeredItems';
-import { expandTagRange } from '../tags';
 
 export class ItemRegistry {
     public readonly languages: Scope.LanguageItemScope = new Scope.LanguageItemScope();
@@ -45,55 +44,54 @@ export class ItemRegistry {
 
     protected readonly _all: RegisteredItem[];
 
-    protected constructor(root: string) {
-        this._all = Converters.loadIanaRegistryItemsSync(path.join(root, 'registry.json')).getValueOrThrow();
+    protected constructor(items: RegisteredItem[]) {
+        this._all = items;
         for (const entry of this._all) {
             switch (entry.type) {
                 case 'language':
-                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
-                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
-
-                        this.languages.add(subtag, add);
-                        if (entry.scope === 'macrolanguage') {
-                            this.macrolanguages.add(subtag, add);
-                        } else if (entry.scope === 'collection') {
-                            this.collections.add(subtag, add);
-                        } else if (entry.scope === 'private-use') {
-                            this.privateUse.add(subtag, add);
-                        } else if (entry.scope === 'special') {
-                            this.special.add(subtag, add);
-                        }
+                    this.languages.add(entry);
+                    if (entry.scope === 'macrolanguage') {
+                        this.macrolanguages.add(entry);
+                    } else if (entry.scope === 'collection') {
+                        this.collections.add(entry);
+                    } else if (entry.scope === 'private-use') {
+                        this.privateUse.add(entry);
+                    } else if (entry.scope === 'special') {
+                        this.special.add(entry);
                     }
                     break;
                 case 'extlang':
-                    this.extlangs.add(entry.subtag, entry);
+                    this.extlangs.add(entry);
                     break;
                 case 'script':
-                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
-                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
-                        this.scripts.add(subtag, add);
-                    }
+                    this.scripts.add(entry);
                     break;
                 case 'region':
-                    for (const subtag of expandTagRange(entry.subtag, entry.subtagRangeEnd)) {
-                        const add = subtag !== entry.subtag ? { ...entry, subtag } : entry;
-                        this.regions.add(subtag, add);
-                    }
+                    this.regions.add(entry);
                     break;
                 case 'variant':
-                    this.variants.add(entry.subtag, entry);
+                    this.variants.add(entry);
                     break;
                 case 'grandfathered':
-                    this.grandfathered.add(entry.tag, entry);
+                    this.grandfathered.add(entry);
                     break;
                 case 'redundant':
-                    this.redundant.add(entry.tag, entry);
+                    this.redundant.add(entry);
                     break;
             }
         }
     }
 
+    public static create(items: RegisteredItem[]): Result<ItemRegistry> {
+        return captureResult(() => {
+            return new ItemRegistry(items);
+        });
+    }
+
     public static load(root: string): Result<ItemRegistry> {
-        return captureResult(() => new ItemRegistry(root));
+        return captureResult(() => {
+            const items = Converters.loadIanaRegistryItemsSync(path.join(root, 'registry.json')).getValueOrThrow();
+            return new ItemRegistry(items);
+        });
     }
 }

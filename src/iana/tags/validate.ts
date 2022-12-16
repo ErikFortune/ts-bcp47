@@ -22,8 +22,8 @@
 
 import * as Tags from '../tags';
 import {
-    ExtendedLanguageRange,
     ExtLangSubtag,
+    ExtendedLanguageRange,
     GrandfatheredTag,
     IsoAlpha2RegionCode,
     IsoAlpha3RegionCode,

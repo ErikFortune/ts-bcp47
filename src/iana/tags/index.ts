@@ -30,4 +30,3 @@ export * from './redundant';
 export * from './region';
 export * from './script';
 export * from './variant';
-export { expandTagRange } from './helpers';
