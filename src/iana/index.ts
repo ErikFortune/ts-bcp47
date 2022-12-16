@@ -22,4 +22,4 @@
 
 export * as Tags from './tags';
 export * as Registry from './registry';
-export { ItemRegistry } from './registry/registry';
+export { TagRegistry } from './registry/registry';

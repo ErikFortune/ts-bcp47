@@ -22,11 +22,11 @@
 
 import '@fgv/ts-utils-jest';
 import { ExtLangSubtag, ExtendedLanguageRange, LanguageSubtag } from '../../../../src/iana/tags';
-import { ItemRegistry } from '../../../../src/iana';
+import { TagRegistry } from '../../../../src/iana';
 import { YearMonthDaySpec } from '../../../../src/iana/registry/model';
 
 describe('IANA tag registry scope', () => {
-    const iana = ItemRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
+    const iana = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
     const languages = iana.languages;
 
     describe('getAll and getAllTags', () => {
@@ -101,7 +101,7 @@ describe('IANA tag registry scope', () => {
     });
 
     describe('add method', () => {
-        const iana2 = ItemRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
+        const iana2 = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
         const extlangs = iana2.extlangs;
         test('fails to add an item with a non-canonical tag', () => {
             const validNonCanonical = 'DEU' as ExtLangSubtag;

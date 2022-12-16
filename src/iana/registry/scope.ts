@@ -27,7 +27,7 @@ import * as Tags from '../tags';
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-abstract class ItemScope<
+abstract class RegisteredItemScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
     TITEM extends Items.RegisteredTagOrSubtag<TTYPE, TTAG>
@@ -101,11 +101,11 @@ abstract class ItemScope<
     protected abstract _validateEntry(entry: TITEM): Result<true>;
 }
 
-class SubtagItemScope<
+class SubtagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
     TITEM extends Items.RegisteredSubtag<TTYPE, TTAG>
-> extends ItemScope<TTYPE, TTAG, TITEM> {
+> extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
     protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
         super(tag);
     }
@@ -122,11 +122,11 @@ class SubtagItemScope<
     }
 }
 
-class SubtagItemScopeWithRange<
+class SubtagScopeWithRange<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
     TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>
-> extends SubtagItemScope<TTYPE, TTAG, TITEM> {
+> extends SubtagScope<TTYPE, TTAG, TITEM> {
     protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
         super(tag);
     }
@@ -139,11 +139,11 @@ class SubtagItemScopeWithRange<
     }
 }
 
-class TagItemScope<
+class TagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
     TITEM extends Items.RegisteredTag<TTYPE, TTAG>
-> extends ItemScope<TTYPE, TTAG, TITEM> {
+> extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
     protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
         super(tag);
     }
@@ -160,43 +160,43 @@ class TagItemScope<
     }
 }
 
-export class LanguageItemScope extends SubtagItemScopeWithRange<'language', LanguageSubtag, Items.RegisteredLanguage> {
+export class LanguageSubtagScope extends SubtagScopeWithRange<'language', LanguageSubtag, Items.RegisteredLanguage> {
     public constructor() {
         super(new Tags.Language());
     }
 }
 
-export class ExtLangItemScope extends SubtagItemScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
+export class ExtLangSubtagScope extends SubtagScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
     public constructor() {
         super(new Tags.ExtLang());
     }
 }
 
-export class ScriptItemScope extends SubtagItemScopeWithRange<'script', ScriptSubtag, Items.RegisteredScript> {
+export class ScriptSubtagScope extends SubtagScopeWithRange<'script', ScriptSubtag, Items.RegisteredScript> {
     public constructor() {
         super(new Tags.Script());
     }
 }
 
-export class RegionItemScope extends SubtagItemScopeWithRange<'region', RegionSubtag, Items.RegisteredRegion> {
+export class RegionSubtagScope extends SubtagScopeWithRange<'region', RegionSubtag, Items.RegisteredRegion> {
     public constructor() {
         super(new Tags.Region());
     }
 }
 
-export class VariantItemScope extends SubtagItemScope<'variant', VariantSubtag, Items.RegisteredVariant> {
+export class VariantSubtagScope extends SubtagScope<'variant', VariantSubtag, Items.RegisteredVariant> {
     public constructor() {
         super(new Tags.Variant());
     }
 }
 
-export class GrandfatheredTagScope extends TagItemScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
+export class GrandfatheredTagScope extends TagScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
     public constructor() {
         super(new Tags.Grandfathered());
     }
 }
 
-export class RedundantTagScope extends TagItemScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
+export class RedundantTagScope extends TagScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
     public constructor() {
         super(new Tags.Redundant());
     }

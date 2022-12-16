@@ -27,17 +27,17 @@ import * as path from 'path';
 import { Result, captureResult } from '@fgv/ts-utils';
 import { RegisteredItem } from './registeredItems';
 
-export class ItemRegistry {
-    public readonly languages: Scope.LanguageItemScope = new Scope.LanguageItemScope();
-    public readonly extlangs: Scope.ExtLangItemScope = new Scope.ExtLangItemScope();
-    public readonly scripts: Scope.ScriptItemScope = new Scope.ScriptItemScope();
-    public readonly regions: Scope.RegionItemScope = new Scope.RegionItemScope();
-    public readonly variants: Scope.VariantItemScope = new Scope.VariantItemScope();
+export class TagRegistry {
+    public readonly languages: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
+    public readonly extlangs: Scope.ExtLangSubtagScope = new Scope.ExtLangSubtagScope();
+    public readonly scripts: Scope.ScriptSubtagScope = new Scope.ScriptSubtagScope();
+    public readonly regions: Scope.RegionSubtagScope = new Scope.RegionSubtagScope();
+    public readonly variants: Scope.VariantSubtagScope = new Scope.VariantSubtagScope();
 
-    public readonly collections: Scope.LanguageItemScope = new Scope.LanguageItemScope();
-    public readonly macrolanguages: Scope.LanguageItemScope = new Scope.LanguageItemScope();
-    public readonly privateUse: Scope.LanguageItemScope = new Scope.LanguageItemScope();
-    public readonly special: Scope.LanguageItemScope = new Scope.LanguageItemScope();
+    public readonly collections: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
+    public readonly macrolanguages: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
+    public readonly privateUse: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
+    public readonly special: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
 
     public readonly grandfathered: Scope.GrandfatheredTagScope = new Scope.GrandfatheredTagScope();
     public readonly redundant: Scope.RedundantTagScope = new Scope.RedundantTagScope();
@@ -82,16 +82,16 @@ export class ItemRegistry {
         }
     }
 
-    public static create(items: RegisteredItem[]): Result<ItemRegistry> {
+    public static create(items: RegisteredItem[]): Result<TagRegistry> {
         return captureResult(() => {
-            return new ItemRegistry(items);
+            return new TagRegistry(items);
         });
     }
 
-    public static load(root: string): Result<ItemRegistry> {
+    public static load(root: string): Result<TagRegistry> {
         return captureResult(() => {
             const items = Converters.loadIanaRegistryItemsSync(path.join(root, 'registry.json')).getValueOrThrow();
-            return new ItemRegistry(items);
+            return new TagRegistry(items);
         });
     }
 }

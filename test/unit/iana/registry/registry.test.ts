@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import { Converters } from '../../../../src/iana/registry';
-import { ItemRegistry } from '../../../../src/iana';
+import { TagRegistry } from '../../../../src/iana';
 
 describe('IANA TagRegistry class', () => {
     describe('create static method', () => {
@@ -30,7 +30,7 @@ describe('IANA TagRegistry class', () => {
             const items = Converters.loadIanaRegistryItemsSync(
                 'node_modules/language-subtag-registry/data/json/registry.json'
             ).getValueOrThrow();
-            expect(ItemRegistry.create(items)).toSucceedAndSatisfy((tags) => {
+            expect(TagRegistry.create(items)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(212);
@@ -50,7 +50,7 @@ describe('IANA TagRegistry class', () => {
 
     describe('load static method', () => {
         test('loads a tag registry', () => {
-            expect(ItemRegistry.load('node_modules/language-subtag-registry/data/json')).toSucceedAndSatisfy((tags) => {
+            expect(TagRegistry.load('node_modules/language-subtag-registry/data/json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(212);
