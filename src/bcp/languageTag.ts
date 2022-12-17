@@ -22,7 +22,7 @@
 
 import * as Iana from '../iana';
 
-import { Result, captureResult, succeed } from '@fgv/ts-utils';
+import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 
 export interface ExtensionTag {
     readonly singleton: string;
@@ -30,15 +30,15 @@ export interface ExtensionTag {
 }
 
 export interface LanguageTagParts {
-    readonly primaryLanguage?: Iana.Tags.LanguageSubtag;
-    readonly extlangs?: Iana.Tags.ExtLangSubtag[];
-    readonly script?: Iana.Tags.ScriptSubtag;
-    readonly region?: Iana.Tags.RegionSubtag;
-    readonly variants?: Iana.Tags.Variant[];
-    readonly extensions?: ExtensionTag[];
-    readonly private?: string[];
+    primaryLanguage?: Iana.Tags.LanguageSubtag;
+    extlangs?: Iana.Tags.ExtLangSubtag[];
+    script?: Iana.Tags.ScriptSubtag;
+    region?: Iana.Tags.RegionSubtag;
+    variants?: Iana.Tags.VariantSubtag[];
+    extensions?: ExtensionTag[];
+    private?: string[];
 
-    readonly grandfathered?: Iana.Tags.GrandfatheredTag;
+    grandfathered?: Iana.Tags.GrandfatheredTag;
 }
 
 export class LanguageTag {
@@ -46,7 +46,7 @@ export class LanguageTag {
     public readonly extlangs?: Iana.Tags.ExtLangSubtag[];
     public readonly script?: Iana.Tags.ScriptSubtag;
     public readonly region?: Iana.Tags.RegionSubtag;
-    public readonly variants?: Iana.Tags.Variant[];
+    public readonly variants?: Iana.Tags.VariantSubtag[];
     public readonly extensions?: ExtensionTag[];
     public readonly private?: string[];
 
@@ -63,22 +63,58 @@ export class LanguageTag {
         this.grandfathered = init.grandfathered;
     }
 
-    public static parse(_tag: string, _registry: Iana.TagRegistry): Result<LanguageTagParts> {
-        // const subtags = tag.split('-');
-        const parts: LanguageTagParts = {};
+    public static parse(tag: string, iana: Iana.TagRegistry): Result<LanguageTagParts> {
+        const subtags = tag.split('-');
+        const parts: Partial<LanguageTagParts> = {};
 
         // first tag must be primary language
-        /*
         let next = subtags.shift();
-        if (!registry.languages.isWellFormed(next)) {
-            if (next === 'i' || next === 'I') {
-                const grandfathered = registry.grandfathered.tryGet(tag);
-                if (grandfathered) {
-                    return { grandfathered: grandfathered.Tag };
-                }
+        if (iana.languages.isWellFormed(next)) {
+            parts.primaryLanguage = next;
+            next = subtags.shift();
+        } else if (next === 'i' || next === 'I') {
+            const grandfathered = iana.grandfathered.tryGet(tag);
+            if (grandfathered) {
+                return succeed({ grandfathered: grandfathered.tag });
             }
+            return fail(`${tag}: unrecognized grandfathered tag`);
+        } else {
+            return fail(`${tag}: no primary language subtag`);
         }
-        */
+
+        while (iana.extlangs.isWellFormed(next)) {
+            if (parts.extlangs === undefined) {
+                parts.extlangs = [next];
+            } else if (parts.extlangs.length < 3) {
+                parts.extlangs.push(next);
+            } else {
+                return fail(`${next}: too many extlang subtags`);
+            }
+            next = subtags.shift();
+        }
+
+        if (iana.scripts.isWellFormed(next)) {
+            parts.script = next;
+            next = subtags.shift();
+        }
+
+        if (iana.regions.isWellFormed(next)) {
+            parts.region = next;
+            next = subtags.shift();
+        }
+
+        while (iana.variants.isWellFormed(next)) {
+            if (parts.variants === undefined) {
+                parts.variants = [next];
+            } else {
+                parts.variants.push(next);
+            }
+            next = subtags.shift();
+        }
+
+        if (next !== undefined) {
+            return fail(`${next}: unexpected subtag`);
+        }
         return succeed(parts);
     }
 
