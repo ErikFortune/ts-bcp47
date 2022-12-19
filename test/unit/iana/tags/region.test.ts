@@ -40,7 +40,7 @@ describe('region subtag', () => {
             expect(Tags.Converters.isoAlpha2RegionCode.convert(tag)).toSucceedWith(tag as Tags.IsoAlpha2RegionCode);
         });
 
-        test.each(['1', 'A', 'DEU', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is not a well-formed alpha-2 region tag', (tag) => {
+        test.each(['1', 'A', 'DEU', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is malformed alpha-2 region tag', (tag) => {
             expect(region.isAlpha2RegionCode(tag)).toBe(false);
             expect(Tags.Converters.isoAlpha2RegionCode.convert(tag)).toFailWith(/not a valid.*alpha-2/i);
         });
@@ -52,7 +52,7 @@ describe('region subtag', () => {
             expect(Tags.Converters.isoAlpha3RegionCode.convert(tag)).toSucceedWith(tag as Tags.IsoAlpha3RegionCode);
         });
 
-        test.each(['1', 'us', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is not a well-formed alpha-3 region tag', (tag) => {
+        test.each(['1', 'us', '01', '001', 'a!', 'ESPN', 'en-US'])('%p is malformed alpha-3 region tag', (tag) => {
             expect(region.isAlpha3RegionCode(tag)).toBe(false);
             expect(Tags.Converters.isoAlpha3RegionCode.convert(tag)).toFailWith(/not a valid.*alpha-3/i);
         });
@@ -64,7 +64,7 @@ describe('region subtag', () => {
             expect(Tags.Converters.unM49RegionCode.convert(tag)).toSucceedWith(tag as Tags.UnM49RegionCode);
         });
 
-        test.each(['1', 'US', 'DEU', '01', '0001', '00!', 'ESPN', 'en-US'])('%p is not a well-formed UN M.49 region tag', (tag) => {
+        test.each(['1', 'US', 'DEU', '01', '0001', '00!', 'ESPN', 'en-US'])('%p is malformed UN M.49 region tag', (tag) => {
             expect(region.isUnM49RegionCode(tag)).toBe(false);
         });
     });
@@ -75,7 +75,7 @@ describe('region subtag', () => {
             expect(Tags.Converters.regionSubtag.convert(tag)).toSucceedWith(tag as Tags.RegionSubtag);
         });
 
-        test.each(['1', 'A', 'ESPN', 'en-US'])('%p is not a well-formed region tag', (tag) => {
+        test.each(['1', 'A', 'ESPN', 'en-US'])('%p is malformed region tag', (tag) => {
             expect(region.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.regionSubtag.convert(tag)).toFailWith(/not a valid region subtag/i);
         });
@@ -102,7 +102,7 @@ describe('region subtag', () => {
         });
 
         test.each(['0001', 'abcd', 'AB1', '1ABC', 'U!'])('extlang %p has no canonical form', (tag) => {
-            expect(region.toCanonical(tag)).toFailWith(/not a well-formed region/i);
+            expect(region.toCanonical(tag)).toFailWith(/malformed region/i);
         });
     });
 });

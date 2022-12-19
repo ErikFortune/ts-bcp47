@@ -41,7 +41,7 @@ describe('grandfathered tag', () => {
             expect(Tags.Converters.grandfatheredTag.convert(tag)).toSucceedWith(tag as GrandfatheredTag);
         });
 
-        test.each(['*$!', 'this-that!'])('%p is not a well-formed grandfathered tag', (tag) => {
+        test.each(['*$!', 'this-that!'])('%p is malformed grandfathered tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.grandfatheredTag.convert(tag)).toFailWith(/not a valid grandfathered tag/i);
         });
@@ -69,7 +69,7 @@ describe('grandfathered tag', () => {
         });
 
         test.each(['en-us+something'])('grandfathered %p has no canonical form', (tag) => {
-            expect(gf.toCanonical(tag)).toFailWith(/not a well-formed grandfathered tag/i);
+            expect(gf.toCanonical(tag)).toFailWith(/malformed grandfathered tag/i);
         });
     });
 });

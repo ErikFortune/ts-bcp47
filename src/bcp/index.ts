@@ -21,3 +21,4 @@
  */
 export * from './common';
 export * from './wellFormedTag';
+export * from './validTag';

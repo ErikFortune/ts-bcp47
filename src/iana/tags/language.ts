@@ -48,6 +48,6 @@ export class Language implements TagOrSubtag<'language', LanguageSubtag> {
         if (this.isWellFormed(val)) {
             return succeed(val.toLowerCase() as LanguageSubtag);
         }
-        return fail(`"${val}: not a well-formed language subtag`);
+        return fail(`"${val}: malformed language subtag`);
     }
 }

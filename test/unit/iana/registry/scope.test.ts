@@ -100,6 +100,22 @@ describe('IANA tag registry scope', () => {
         });
     });
 
+    describe('conversion methods', () => {
+        test.each([
+            ['en', 'en', 'well-formed, canonical valid'],
+            ['EN', 'en', 'well-formed, non-canonical valid'],
+        ])('toValidCanonical converts %p to %p (%p)', (tag, expected) => {
+            expect(languages.toValidCanonical(tag)).toSucceedWith(expected as LanguageSubtag);
+        });
+
+        test.each([
+            ['feh', /invalid language/i],
+            ['001', /malformed/i],
+        ])('toValidCanonical fails for %p (%p)', (tag, expected) => {
+            expect(languages.toValidCanonical(tag)).toFailWith(expected);
+        });
+    });
+
     describe('add method', () => {
         const iana2 = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
         const extlangs = iana2.extlangs;

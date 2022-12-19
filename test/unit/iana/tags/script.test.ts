@@ -40,7 +40,7 @@ describe('script subtag', () => {
             expect(Tags.Converters.scriptSubtag.convert(tag)).toSucceedWith(tag as Tags.ScriptSubtag);
         });
 
-        test.each(['l', 'la', 'lat', 'latin', 'xyzzy', 'Lat1'])('%p is not a well-formed script tag', (tag) => {
+        test.each(['l', 'la', 'lat', 'latin', 'xyzzy', 'Lat1'])('%p is malformed script tag', (tag) => {
             expect(script.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.scriptSubtag.convert(tag)).toFailWith(/not a valid script subtag/i);
         });
@@ -66,7 +66,7 @@ describe('script subtag', () => {
         });
 
         test.each(['001', 'abcde', 'AB1', '1ABC'])('script %p has no canonical form', (tag) => {
-            expect(script.toCanonical(tag)).toFailWith(/not a well-formed script/i);
+            expect(script.toCanonical(tag)).toFailWith(/malformed script/i);
         });
     });
 });

@@ -40,7 +40,7 @@ describe('redundant tag', () => {
             expect(Tags.Converters.redundantTag.convert(tag)).toSucceedWith(tag as Tags.RedundantTag);
         });
 
-        test.each(['*$!', 'this-that!'])('%p is not a well-formed redundant tag', (tag) => {
+        test.each(['*$!', 'this-that!'])('%p is malformed redundant tag', (tag) => {
             expect(gf.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.redundantTag.convert(tag)).toFailWith(/not a valid redundant tag/i);
         });
@@ -68,7 +68,7 @@ describe('redundant tag', () => {
         });
 
         test.each(['en-us+something'])('redundant %p has no canonical form', (tag) => {
-            expect(gf.toCanonical(tag)).toFailWith(/not a well-formed redundant tag/i);
+            expect(gf.toCanonical(tag)).toFailWith(/malformed redundant tag/i);
         });
     });
 });
