@@ -68,7 +68,8 @@ export class LanguageTag {
         const subtags = tag.split('-');
         const parts: Partial<LanguageTagParts> = {};
 
-        // first tag must be primary language
+        // first tag must be primary language, 'i' (indicating a grandfathered tag)
+        // or 'x' indicating a private-use tag.
         let next = subtags.shift();
         if (iana.languages.isWellFormed(next)) {
             parts.primaryLanguage = next;
@@ -83,6 +84,7 @@ export class LanguageTag {
             return fail(`${tag}: no primary language subtag`);
         }
 
+        // optional extlangs subtags
         while (iana.extlangs.isWellFormed(next)) {
             if (parts.extlangs === undefined) {
                 parts.extlangs = [next];
@@ -94,16 +96,19 @@ export class LanguageTag {
             next = subtags.shift();
         }
 
+        // optional script subtag
         if (iana.scripts.isWellFormed(next)) {
             parts.script = next;
             next = subtags.shift();
         }
 
+        // optional region subtag
         if (iana.regions.isWellFormed(next)) {
             parts.region = next;
             next = subtags.shift();
         }
 
+        // optional variant subtags
         while (iana.variants.isWellFormed(next)) {
             if (parts.variants === undefined) {
                 parts.variants = [next];
@@ -113,6 +118,7 @@ export class LanguageTag {
             next = subtags.shift();
         }
 
+        // optional extension subtags
         while (next !== undefined && Validate.WellFormed.extensionSingleton(next)) {
             const singleton = next;
             const values: Model.ExtensionSubtag[] = [];
@@ -136,6 +142,7 @@ export class LanguageTag {
             }
         }
 
+        // optional private use subtags
         while (next != undefined && Validate.WellFormed.privateUsePrefix(next)) {
             const values: string[] = [];
             next = subtags.shift();
