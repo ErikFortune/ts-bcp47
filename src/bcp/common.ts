@@ -19,5 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export * from './common';
-export * from './wellFormedTag';
+
+import * as Iana from '../iana';
+
+import { Model } from './subtags';
+
+export interface ExtensionSubtagValue {
+    readonly singleton: Model.ExtensionSingleton;
+    readonly value: Iana.Tags.ExtendedLanguageRange;
+}
+
+export interface LanguageTagParts {
+    primaryLanguage?: Iana.Tags.LanguageSubtag;
+    extlangs?: Iana.Tags.ExtLangSubtag[];
+    script?: Iana.Tags.ScriptSubtag;
+    region?: Iana.Tags.RegionSubtag;
+    variants?: Iana.Tags.VariantSubtag[];
+    extensions?: ExtensionSubtagValue[];
+    private?: Iana.Tags.ExtendedLanguageRange[];
+
+    grandfathered?: Iana.Tags.GrandfatheredTag;
+}

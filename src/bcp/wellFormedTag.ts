@@ -19,5 +19,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export * from './common';
-export * from './wellFormedTag';
+
+import * as Iana from '../iana';
+import * as Parser from './languageTagParser';
+
+import { Result, succeed } from '@fgv/ts-utils';
+import { LanguageTagParts } from './common';
+
+export class WellFormedTag {
+    public readonly parts: Readonly<LanguageTagParts>;
+
+    protected constructor(init: Readonly<LanguageTagParts>) {
+        this.parts = Object.freeze({ ...init });
+    }
+
+    public static create(tag: string, registry: Iana.TagRegistry): Result<WellFormedTag> {
+        return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
+            return succeed(new WellFormedTag(parts));
+        });
+    }
+}

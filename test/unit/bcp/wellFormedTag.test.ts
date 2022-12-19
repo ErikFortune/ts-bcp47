@@ -62,7 +62,9 @@ describe('BCP-47 languageTag class', () => {
             ['multiple private tags', 'en-US-x-tag-x-pig-latin', { primaryLanguage: 'en', region: 'US', private: ['tag', 'pig-latin'] }],
             ['only private tags', 'x-en-US-x-some-other-tag', { private: ['en-US', 'some-other-tag'] }],
         ])('succeeds for %p (%p)', (_desc, tag, expected) => {
-            expect(Bcp.LanguageTag.parse(tag, iana)).toSucceedWith(expected as Bcp.LanguageTagParts);
+            expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
+                expect(wellFormed.parts).toEqual(expected);
+            });
         });
 
         test.each([
@@ -78,7 +80,7 @@ describe('BCP-47 languageTag class', () => {
             ['empty private use subtag', 'en-US-x-tag--other', /malformed private-use subtag/i],
             ['extra subtags', 'en-US-US', /unexpected subtag/i],
         ])('fails for %p (%p)', (_desc, tag, expected) => {
-            expect(Bcp.LanguageTag.parse(tag, iana)).toFailWith(expected);
+            expect(Bcp.WellFormedTag.create(tag, iana)).toFailWith(expected);
         });
     });
 });
