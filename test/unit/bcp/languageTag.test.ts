@@ -48,13 +48,13 @@ describe('BCP-47 languageTag class', () => {
             ],
             [
                 'multiple extensions',
-                'en-US-u-US-t-translation',
+                'en-US-u-US-t-tl',
                 {
                     primaryLanguage: 'en',
                     region: 'US',
                     extensions: [
                         { singleton: 'u', value: 'US' },
-                        { singleton: 't', value: 'translation' },
+                        { singleton: 't', value: 'tl' },
                     ],
                 },
             ],
@@ -71,7 +71,11 @@ describe('BCP-47 languageTag class', () => {
             ['too many extlang', 'zh-cmn-han-yue-abc', /too many extlang/i],
             ['extension without subtags', 'en-US-u', /at least one subtag/i],
             ['extensions without subtags', 'en-US-u-t-translation', /at least one subtag/i],
+            ['long extension subtag', 'en-US-u-veryLongTag', /malformed extension subtag/i],
+            ['empty extension subtag', 'en-us-u--t-mt', /malformed extension subtag/i],
             ['private tag without subtags', 'en-US-x', /at least one subtag/i],
+            ['long private subtag', 'en-US-x-veryLongTag', /malformed private-use subtag/i],
+            ['empty private use subtag', 'en-US-x-tag--other', /malformed private-use subtag/i],
             ['extra subtags', 'en-US-US', /unexpected subtag/i],
         ])('fails for %p (%p)', (_desc, tag, expected) => {
             expect(Bcp.LanguageTag.parse(tag, iana)).toFailWith(expected);

@@ -22,11 +22,12 @@
 
 import * as Iana from '../iana';
 
+import { Model, Validate } from './subtags';
 import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 
-export interface ExtensionTag {
-    readonly singleton: string;
-    readonly value: string;
+export interface ExtensionSubtagValue {
+    readonly singleton: Model.ExtensionSingleton;
+    readonly value: Iana.Tags.ExtendedLanguageRange;
 }
 
 export interface LanguageTagParts {
@@ -35,8 +36,8 @@ export interface LanguageTagParts {
     script?: Iana.Tags.ScriptSubtag;
     region?: Iana.Tags.RegionSubtag;
     variants?: Iana.Tags.VariantSubtag[];
-    extensions?: ExtensionTag[];
-    private?: string[];
+    extensions?: ExtensionSubtagValue[];
+    private?: Iana.Tags.ExtendedLanguageRange[];
 
     grandfathered?: Iana.Tags.GrandfatheredTag;
 }
@@ -47,7 +48,7 @@ export class LanguageTag {
     public readonly script?: Iana.Tags.ScriptSubtag;
     public readonly region?: Iana.Tags.RegionSubtag;
     public readonly variants?: Iana.Tags.VariantSubtag[];
-    public readonly extensions?: ExtensionTag[];
+    public readonly extensions?: ExtensionSubtagValue[];
     public readonly private?: string[];
 
     public readonly grandfathered?: Iana.Tags.GrandfatheredTag;
@@ -78,7 +79,7 @@ export class LanguageTag {
                 return succeed({ grandfathered: grandfathered.tag });
             }
             return fail(`${tag}: unrecognized grandfathered tag`);
-        } else if (!this._isPrivateUsePrefix(next)) {
+        } else if (!Validate.WellFormed.privateUsePrefix(next)) {
             return fail(`${tag}: no primary language subtag`);
         }
 
@@ -112,19 +113,22 @@ export class LanguageTag {
             next = subtags.shift();
         }
 
-        while (next && this._isExtensionPrefix(next)) {
+        while (next !== undefined && Validate.WellFormed.extensionSingleton(next)) {
             const singleton = next;
-            const values: string[] = [];
+            const values: Model.ExtensionSubtag[] = [];
             next = subtags.shift();
-            while (next !== undefined && !this._isExtensionPrefix(next) && !this._isPrivateUsePrefix(next)) {
+
+            while (Validate.WellFormed.extensionSubtag(next)) {
                 values.push(next);
                 next = subtags.shift();
             }
-            if (values.length < 1) {
+            if (next !== undefined && !Validate.WellFormed.extensionSingleton(next) && !Validate.WellFormed.privateUsePrefix(next)) {
+                return fail(`${next}: malformed extension subtag`);
+            } else if (values.length < 1) {
                 return fail(`${tag}: extension '${singleton}' must have at least one subtag.`);
             }
 
-            const value = values.join('-');
+            const value = values.join('-') as Iana.Tags.ExtendedLanguageRange;
             if (parts.extensions === undefined) {
                 parts.extensions = [{ singleton, value }];
             } else {
@@ -132,19 +136,22 @@ export class LanguageTag {
             }
         }
 
-        while (next && this._isPrivateUsePrefix(next)) {
+        while (next != undefined && Validate.WellFormed.privateUsePrefix(next)) {
             const values: string[] = [];
             next = subtags.shift();
 
-            while (next !== undefined && !this._isPrivateUsePrefix(next)) {
+            while (next && Validate.WellFormed.privateUseSubtag(next)) {
                 values.push(next);
                 next = subtags.shift();
             }
-            if (values.length < 1) {
+
+            if (next !== undefined && !Validate.WellFormed.privateUsePrefix(next)) {
+                return fail(`${next}: malformed private-use subtag`);
+            } else if (values.length < 1) {
                 return fail(`${tag}: private-use tag must have at least one subtag.`);
             }
 
-            const value = values.join('-');
+            const value = values.join('-') as Iana.Tags.ExtendedLanguageRange;
             if (parts.private === undefined) {
                 parts.private = [value];
             } else {
@@ -163,13 +170,5 @@ export class LanguageTag {
             const parts = LanguageTag.parse(tag, registry).getValueOrThrow();
             return new LanguageTag(parts);
         });
-    }
-
-    protected static _isExtensionPrefix(s: string | undefined): boolean {
-        return s !== undefined && s.length === 1 && /^[0-9a-wyzA-WYZ]$/.test(s);
-    }
-
-    protected static _isPrivateUsePrefix(s: string | undefined): boolean {
-        return s !== undefined && s.length === 1 && (s === 'x' || s === 'X');
     }
 }
