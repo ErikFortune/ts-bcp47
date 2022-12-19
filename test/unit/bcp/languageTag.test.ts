@@ -41,6 +41,26 @@ describe('BCP-47 languageTag class', () => {
             ['canonical language with region', 'en-US', { primaryLanguage: 'en', region: 'US' }],
             ['canonical language with numeric region', 'es-419', { primaryLanguage: 'es', region: '419' }],
             ['grandfathered tag', 'i-klingon', { grandfathered: 'i-klingon' }],
+            [
+                'single extension',
+                'en-US-u-en-US',
+                { primaryLanguage: 'en', region: 'US', extensions: [{ singleton: 'u', value: 'en-US' }] },
+            ],
+            [
+                'multiple extensions',
+                'en-US-u-US-t-translation',
+                {
+                    primaryLanguage: 'en',
+                    region: 'US',
+                    extensions: [
+                        { singleton: 'u', value: 'US' },
+                        { singleton: 't', value: 'translation' },
+                    ],
+                },
+            ],
+            ['single private tag', 'en-US-x-pig-latin', { primaryLanguage: 'en', region: 'US', private: ['pig-latin'] }],
+            ['multiple private tags', 'en-US-x-tag-x-pig-latin', { primaryLanguage: 'en', region: 'US', private: ['tag', 'pig-latin'] }],
+            ['only private tags', 'x-en-US-x-some-other-tag', { private: ['en-US', 'some-other-tag'] }],
         ])('succeeds for %p (%p)', (_desc, tag, expected) => {
             expect(Bcp.LanguageTag.parse(tag, iana)).toSucceedWith(expected as Bcp.LanguageTagParts);
         });
@@ -49,6 +69,9 @@ describe('BCP-47 languageTag class', () => {
             ['no primary language', 'Latn', /no primary language/i],
             ['unknown grandfathered tag', 'i-dothraki', /unrecognized grandfathered/i],
             ['too many extlang', 'zh-cmn-han-yue-abc', /too many extlang/i],
+            ['extension without subtags', 'en-US-u', /at least one subtag/i],
+            ['extensions without subtags', 'en-US-u-t-translation', /at least one subtag/i],
+            ['private tag without subtags', 'en-US-x', /at least one subtag/i],
             ['extra subtags', 'en-US-US', /unexpected subtag/i],
         ])('fails for %p (%p)', (_desc, tag, expected) => {
             expect(Bcp.LanguageTag.parse(tag, iana)).toFailWith(expected);

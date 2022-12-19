@@ -78,7 +78,7 @@ export class LanguageTag {
                 return succeed({ grandfathered: grandfathered.tag });
             }
             return fail(`${tag}: unrecognized grandfathered tag`);
-        } else {
+        } else if (!this._isPrivateUsePrefix(next)) {
             return fail(`${tag}: no primary language subtag`);
         }
 
@@ -112,6 +112,46 @@ export class LanguageTag {
             next = subtags.shift();
         }
 
+        while (next && this._isExtensionPrefix(next)) {
+            const singleton = next;
+            const values: string[] = [];
+            next = subtags.shift();
+            while (next !== undefined && !this._isExtensionPrefix(next) && !this._isPrivateUsePrefix(next)) {
+                values.push(next);
+                next = subtags.shift();
+            }
+            if (values.length < 1) {
+                return fail(`${tag}: extension '${singleton}' must have at least one subtag.`);
+            }
+
+            const value = values.join('-');
+            if (parts.extensions === undefined) {
+                parts.extensions = [{ singleton, value }];
+            } else {
+                parts.extensions.push({ singleton, value });
+            }
+        }
+
+        while (next && this._isPrivateUsePrefix(next)) {
+            const values: string[] = [];
+            next = subtags.shift();
+
+            while (next !== undefined && !this._isPrivateUsePrefix(next)) {
+                values.push(next);
+                next = subtags.shift();
+            }
+            if (values.length < 1) {
+                return fail(`${tag}: private-use tag must have at least one subtag.`);
+            }
+
+            const value = values.join('-');
+            if (parts.private === undefined) {
+                parts.private = [value];
+            } else {
+                parts.private.push(value);
+            }
+        }
+
         if (next !== undefined) {
             return fail(`${next}: unexpected subtag`);
         }
@@ -123,5 +163,13 @@ export class LanguageTag {
             const parts = LanguageTag.parse(tag, registry).getValueOrThrow();
             return new LanguageTag(parts);
         });
+    }
+
+    protected static _isExtensionPrefix(s: string | undefined): boolean {
+        return s !== undefined && s.length === 1 && /^[0-9a-wyzA-WYZ]$/.test(s);
+    }
+
+    protected static _isPrivateUsePrefix(s: string | undefined): boolean {
+        return s !== undefined && s.length === 1 && (s === 'x' || s === 'X');
     }
 }
