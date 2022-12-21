@@ -69,8 +69,24 @@ export interface RegistryTagEntry<TTYPE extends RegistryEntryType = RegistryEntr
 
 export type LanguageSubtagRegistryEntry = RegistrySubtagEntry<'language', LanguageSubtag>;
 export type ExtLangSubtagRegistryEntry = RegistrySubtagEntry<'extlang', ExtLangSubtag>;
-export type RegionSubtagRegistryEntry = RegistrySubtagEntry<'region', RegionSubtag>;
 export type ScriptSubtagRegistryEntry = RegistrySubtagEntry<'script', ScriptSubtag>;
+export type RegionSubtagRegistryEntry = RegistrySubtagEntry<'region', RegionSubtag>;
 export type VariantSubtagRegistryEntry = RegistrySubtagEntry<'variant', VariantSubtag>;
 export type GrandfatheredTagRegistryEntry = RegistryTagEntry<'grandfathered', GrandfatheredTag>;
 export type RedundantTagRegistryEntry = RegistryTagEntry<'redundant', RedundantTag>;
+
+export type RegistryEntry =
+    | LanguageSubtagRegistryEntry
+    | ExtLangSubtagRegistryEntry
+    | ScriptSubtagRegistryEntry
+    | RegionSubtagRegistryEntry
+    | VariantSubtagRegistryEntry
+    | GrandfatheredTagRegistryEntry
+    | RedundantTagRegistryEntry;
+
+export interface RegistryFile {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    'File-Date': YearMonthDaySpec;
+    Entries: RegistryEntry[];
+    /* eslint-enable @typescript-eslint/naming-convention */
+}

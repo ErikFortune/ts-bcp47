@@ -63,6 +63,37 @@ export class ValidTag {
                 );
             }
         }
+
+        if (parts.script !== undefined) {
+            results.push(
+                iana.scripts.toValidCanonical(parts.script).onSuccess((script) => {
+                    validated.script = script;
+                    return succeed(script);
+                })
+            );
+        }
+
+        if (parts.region !== undefined) {
+            results.push(
+                iana.regions.toValidCanonical(parts.region).onSuccess((region) => {
+                    validated.region = region;
+                    return succeed(region);
+                })
+            );
+        }
+
+        if (parts.variants !== undefined) {
+            validated.variants = [];
+            for (const original of parts.variants) {
+                results.push(
+                    iana.variants.toValidCanonical(original).onSuccess((variant) => {
+                        validated.variants!.push(variant);
+                        return succeed(variant);
+                    })
+                );
+            }
+        }
+
         return allSucceed(results, validated);
     }
 }

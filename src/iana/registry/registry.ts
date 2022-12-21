@@ -24,10 +24,12 @@ import * as Converters from './converters';
 import * as Scope from './scope';
 import * as path from 'path';
 
+import { RegisteredItem, RegistryFile } from './registeredItems';
 import { Result, captureResult } from '@fgv/ts-utils';
-import { RegisteredItem } from './registeredItems';
+import { YearMonthDaySpec } from './model';
 
 export class TagRegistry {
+    public readonly fileDate: YearMonthDaySpec;
     public readonly languages: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
     public readonly extlangs: Scope.ExtLangSubtagScope = new Scope.ExtLangSubtagScope();
     public readonly scripts: Scope.ScriptSubtagScope = new Scope.ScriptSubtagScope();
@@ -44,8 +46,9 @@ export class TagRegistry {
 
     protected readonly _all: RegisteredItem[];
 
-    protected constructor(items: RegisteredItem[]) {
-        this._all = items;
+    protected constructor(registry: RegistryFile) {
+        this.fileDate = registry.fileDate;
+        this._all = registry.items;
         for (const entry of this._all) {
             switch (entry.type) {
                 case 'language':
@@ -82,16 +85,16 @@ export class TagRegistry {
         }
     }
 
-    public static create(items: RegisteredItem[]): Result<TagRegistry> {
+    public static create(registry: RegistryFile): Result<TagRegistry> {
         return captureResult(() => {
-            return new TagRegistry(items);
+            return new TagRegistry(registry);
         });
     }
 
     public static load(root: string): Result<TagRegistry> {
         return captureResult(() => {
-            const items = Converters.loadIanaRegistryItemsSync(path.join(root, 'registry.json')).getValueOrThrow();
-            return new TagRegistry(items);
+            const registry = Converters.loadIanaRegistryFileSync(path.join(root)).getValueOrThrow();
+            return new TagRegistry(registry);
         });
     }
 }

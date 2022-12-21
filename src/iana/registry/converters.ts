@@ -174,6 +174,17 @@ export const registeredItem = Converters.discriminatedObject<Items.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
-export function loadIanaRegistryItemsSync(path: string): Result<Items.RegisteredItem[]> {
-    return convertJsonFileSync(path, Converters.arrayOf(registeredItem));
+export const registryFile = Converters.transformObject<Model.RegistryFile, Items.RegistryFile>(
+    {
+        fileDate: { from: 'File-Date', converter: yearMonthDaySpec },
+        items: { from: 'Entries', converter: Converters.arrayOf(registeredItem) },
+    },
+    {
+        strict: true,
+        description: 'IANA registry file (json)',
+    }
+);
+
+export function loadIanaRegistryFileSync(path: string): Result<Items.RegistryFile> {
+    return convertJsonFileSync(path, registryFile);
 }
