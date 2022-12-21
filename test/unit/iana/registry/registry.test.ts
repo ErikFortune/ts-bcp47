@@ -27,7 +27,7 @@ import { TagRegistry } from '../../../../src/iana';
 describe('IANA TagRegistry class', () => {
     describe('create static method', () => {
         test('creates from a supplied a tag registry', () => {
-            const registry = Converters.loadIanaRegistryJsonFileSync('data/iana/registry.json').getValueOrThrow();
+            const registry = Converters.loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
             expect(TagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
@@ -48,7 +48,7 @@ describe('IANA TagRegistry class', () => {
 
     describe('load static method', () => {
         test('loads a tag registry', () => {
-            expect(TagRegistry.load('data/iana/registry.json')).toSucceedAndSatisfy((tags) => {
+            expect(TagRegistry.load('data/iana/language-subtag-registry.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(212);

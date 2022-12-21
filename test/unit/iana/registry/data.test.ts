@@ -26,18 +26,18 @@ import { Converters as RegistryConverters } from '../../../../src/iana/registry'
 
 describe('IANA registry data files', () => {
     test('can load registry JSON', () => {
-        expect(loadIanaRegistryJsonFileSync('data/iana/registry.json')).toSucceed();
+        expect(loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json')).toSucceed();
     });
 
     test('can load registry.txt and convert to JSON', () => {
-        expect(loadIanaRegistryTxtFileSync('data/iana/registry.txt')).toSucceedAndSatisfy((records) => {
+        expect(loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')).toSucceedAndSatisfy((records) => {
             expect(RegistryConverters.registryFile.convert(records)).toSucceed();
         });
     });
 
     test('registry.json and registry.txt are equivalent', () => {
-        const json = loadIanaRegistryJsonFileSync('data/iana/registry.json').getValueOrThrow();
-        const txt = loadIanaRegistryTxtFileSync('data/iana/registry.txt')
+        const json = loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
+        const txt = loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')
             .onSuccess((r) => {
                 return RegistryConverters.registryFile.convert(r);
             })
