@@ -33,6 +33,14 @@ describe('ValidTag class', () => {
             ['valid primary language', { primaryLanguage: 'EN' }, { primaryLanguage: 'en' }],
             ['valid canonical extlangs', { extlangs: ['yue', 'cmn'] }, { extlangs: ['yue', 'cmn'] }],
             ['valid extlangs', { extlangs: ['Yue', 'Cmn'] }, { extlangs: ['yue', 'cmn'] }],
+            // ['private use primary language', { primaryLanguage: 'qpn' }, { primaryLanguage: 'qpn' }],
+            ['valid script', { script: 'LATN' }, { script: 'Latn' }],
+            // ['private use script', { script: 'Qabc' }, { script: 'Qabc' }],
+            ['valid iso3166 region', { region: 'aq' }, { region: 'AQ' }],
+            ['valid UN M.49 region', { region: '419' }, { region: '419' }],
+            // ['private use region', { region: 'QX' }, { region: 'QX' }],
+            ['valid variant', { variants: ['Valencia'] }, { variants: ['valencia'] }],
+            ['valid variants', { variants: ['Valencia', 'lipaw'] }, { variants: ['valencia', 'lipaw'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedWith(
                 expected as unknown as Bcp.LanguageTagParts
@@ -42,6 +50,9 @@ describe('ValidTag class', () => {
         test.each([
             ['invalid primary language', { primaryLanguage: 'ENG' }, /invalid language/i],
             ['invalid extlang', { extlangs: ['han'] }, /invalid extlang/i],
+            ['invalid script', { script: 'AAAA' }, /invalid script/i],
+            ['invalid region', { region: 'aj' }, /invalid region/i],
+            ['invalid variant', { variants: ['xyzzy'] }, /invalid variant/i],
         ])('fails for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
         });
