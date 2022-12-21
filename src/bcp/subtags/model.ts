@@ -20,9 +20,42 @@
  * SOFTWARE.
  */
 
+import * as Iana from '../../iana';
+
 import { Brand } from '@fgv/ts-utils';
 
 export type ExtensionSingleton = Brand<string, 'ExtensionSingleton'>;
 export type ExtensionSubtag = Brand<string, 'ExtensionSubtag'>;
 export type PrivateUseSubtag = Brand<string, 'PrivateUseSubtag'>;
 export type PrivateUsePrefix = Brand<string, 'PrivateUsePrefix'>;
+
+export interface LanguageTagExtensionRegistryEntry {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    Identifier: ExtensionSingleton;
+    Description: string[];
+    Comments: string[];
+    Added: Iana.Registry.Model.YearMonthDaySpec;
+    RFC: string;
+    Authority: string;
+    Contact_Email: string;
+    Mailing_List: string;
+    URL: string;
+    /* eslint-enable @typescript-eslint/naming-convention */
+}
+
+export interface LanguageTagExtension {
+    identifier: ExtensionSingleton;
+    description: string[];
+    comments: string[];
+    added: Iana.Registry.Model.YearMonthDaySpec;
+    rfc: string;
+    authority: string;
+    contactEmail: string;
+    mailingList: string;
+    url: string;
+}
+
+export interface LanguageTagExtensionRegistryFile {
+    fileDate: Iana.Registry.Model.YearMonthDaySpec;
+    extensions: LanguageTagExtension[];
+}

@@ -21,6 +21,7 @@
  */
 
 import * as Subtags from './model';
+import { Result, succeed } from '@fgv/ts-utils';
 
 export class WellFormed {
     public static extensionSingleton(val: unknown): val is Subtags.ExtensionSingleton {
@@ -39,3 +40,17 @@ export class WellFormed {
         return typeof val === 'string' && val !== 'x' && val !== 'X' && /^[0-9a-zA-Z]{1,8}$/.test(val);
     }
 }
+
+type TypeGuard<T extends string> = (val: string) => val is T;
+type Validator<T extends string> = (val: string) => Result<T>;
+
+export function getValidator<T extends string>(validator: TypeGuard<T>, description: string): Validator<T> {
+    return (val: string) => {
+        if (validator(val)) {
+            return succeed(val);
+        }
+        return fail(`${val}: Not a valid ${description}`);
+    };
+}
+
+export const extensionSingleton = getValidator(WellFormed.extensionSingleton, 'language tag extension singleton');
