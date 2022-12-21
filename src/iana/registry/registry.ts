@@ -93,7 +93,7 @@ export class TagRegistry {
 
     public static load(root: string): Result<TagRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadIanaRegistryFileSync(path.join(root)).getValueOrThrow();
+            const registry = Converters.loadIanaRegistryJsonFileSync(path.join(root)).getValueOrThrow();
             return new TagRegistry(registry);
         });
     }

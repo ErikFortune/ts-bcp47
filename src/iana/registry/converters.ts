@@ -25,7 +25,9 @@ import * as Model from './model';
 import * as TagConverters from '../tags/converters';
 import * as Validate from './validate';
 
-import { Converters, Result, fail, succeed } from '@fgv/ts-utils';
+import { Converters, RecordJar, Result, fail, isKeyOf, succeed } from '@fgv/ts-utils';
+
+import { DateTime } from 'luxon';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 
 export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
@@ -185,6 +187,26 @@ export const registryFile = Converters.transformObject<Model.RegistryFile, Items
     }
 );
 
-export function loadIanaRegistryFileSync(path: string): Result<Items.RegistryFile> {
+export function loadIanaRegistryJsonFileSync(path: string): Result<Items.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
+}
+
+export function jarRecordsToRegistryFile(records: RecordJar.JarRecord[]): Result<Model.RegistryFile> {
+    let fileDate = DateTime.now().toFormat('yyyy-LL-dd') as Model.YearMonthDaySpec;
+    if (isKeyOf('File-Date', records[0])) {
+        fileDate = records[0]['File-Date'] as Model.YearMonthDaySpec;
+        records.shift();
+    }
+    // okay, this is truly not type safe but it's also an intermediate format
+    // that will be validated by much smarter type-safe converters before use.
+    //
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    return succeed({ 'File-Date': fileDate, Entries: records as unknown as Model.RegistryEntry[] } as Model.RegistryFile);
+}
+
+export function loadIanaRegistryTxtFileSync(path: string): Result<Model.RegistryFile> {
+    return RecordJar.readRecordJarFileSync(path, {
+        arrayFields: ['Comments', 'Description', 'Prefix'],
+        fixedContinuationSize: 1,
+    }).onSuccess(jarRecordsToRegistryFile);
 }

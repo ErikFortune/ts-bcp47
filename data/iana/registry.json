@@ -1,5 +1,5 @@
 {
-    "File-Date": "2022-06-28",
+    "File-Date": "2022-08-08",
     "Entries": [
         {
             "Type": "language",
@@ -74479,6 +74479,7 @@
             "Type": "region",
             "Subtag": "TR",
             "Description": [
+                "Türkiye",
                 "Turkey"
             ],
             "Added": "2005-10-16"
@@ -75781,6 +75782,17 @@
             ],
             "Comments": [
                 "The dialect of Lipovaz/Lipovec is one of the minor local dialects of Resian"
+            ]
+        },
+        {
+            "Type": "variant",
+            "Subtag": "ltg1929",
+            "Description": [
+                "The Latgalian language orthography codified in 1929"
+            ],
+            "Added": "2022-08-05",
+            "Prefix": [
+                "ltg"
             ]
         },
         {

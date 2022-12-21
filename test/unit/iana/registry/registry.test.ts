@@ -27,13 +27,13 @@ import { TagRegistry } from '../../../../src/iana';
 describe('IANA TagRegistry class', () => {
     describe('create static method', () => {
         test('creates from a supplied a tag registry', () => {
-            const registry = Converters.loadIanaRegistryFileSync('data/iana/registry.json').getValueOrThrow();
+            const registry = Converters.loadIanaRegistryJsonFileSync('data/iana/registry.json').getValueOrThrow();
             expect(TagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(212);
                 expect(tags.regions.getAllTags()).toHaveLength(304);
-                expect(tags.variants.getAllTags()).toHaveLength(109);
+                expect(tags.variants.getAllTags()).toHaveLength(110);
 
                 expect(tags.collections.getAllTags()).toHaveLength(116);
                 expect(tags.macrolanguages.getAllTags()).toHaveLength(62);
@@ -53,7 +53,7 @@ describe('IANA TagRegistry class', () => {
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);
                 expect(tags.scripts.getAllTags()).toHaveLength(212);
                 expect(tags.regions.getAllTags()).toHaveLength(304);
-                expect(tags.variants.getAllTags()).toHaveLength(109);
+                expect(tags.variants.getAllTags()).toHaveLength(110);
 
                 expect(tags.collections.getAllTags()).toHaveLength(116);
                 expect(tags.macrolanguages.getAllTags()).toHaveLength(62);
