@@ -155,3 +155,8 @@ export interface RegisteredRedundantTag extends RegisteredTag<'redundant', Redun
 export type RegisteredSubtagItem = RegisteredLanguage | RegisteredExtLang | RegisteredScript | RegisteredRegion | RegisteredVariant;
 export type RegisteredTagItem = RegisteredGrandfatheredTag | RegisteredRedundantTag;
 export type RegisteredItem = RegisteredSubtagItem | RegisteredTagItem;
+
+export interface RegistryFile {
+    fileDate: Model.YearMonthDaySpec;
+    items: RegisteredItem[];
+}

@@ -50,6 +50,6 @@ export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
         } else if (this.isWellFormed(val)) {
             return succeed(val.toLowerCase() as VariantSubtag);
         }
-        return fail(`"${val}: not a well-formed variant subtag`);
+        return fail(`"${val}: malformed variant subtag`);
     }
 }

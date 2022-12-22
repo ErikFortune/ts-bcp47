@@ -40,7 +40,7 @@ describe('variant subtag', () => {
             expect(Tags.Converters.variantSubtag.convert(tag)).toSucceedWith(tag as Tags.VariantSubtag);
         });
 
-        test.each(['l', 'la', 'lat', 'latin-variant', 'longVariant'])('%p is not a well-formed variant tag', (tag) => {
+        test.each(['l', 'la', 'lat', 'latin-variant', 'longVariant'])('%p is malformed variant tag', (tag) => {
             expect(variant.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.variantSubtag.convert(tag)).toFailWith(/not a valid variant subtag/i);
         });
@@ -68,7 +68,7 @@ describe('variant subtag', () => {
         });
 
         test.each(['001', 'bad!var', 'AB1', 'longvariant'])('variant %p has no canonical form', (tag) => {
-            expect(variant.toCanonical(tag)).toFailWith(/not a well-formed variant/i);
+            expect(variant.toCanonical(tag)).toFailWith(/malformed variant/i);
         });
     });
 });

@@ -19,27 +19,3 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-import { Result, fail, succeed } from '@fgv/ts-utils';
-
-export const wellFormedTag = /^[A-Za-z][A-Za-z0-9-]+$/;
-
-export function toCanonicalTag<T extends string>(val: unknown, what: string): Result<T> {
-    if (typeof val === 'string' && wellFormedTag.test(val)) {
-        const parts = val.split('-');
-        const canonical: string[] = [];
-        let isInitial = true;
-        for (const part of parts) {
-            if (isInitial || (part.length !== 2 && part.length !== 4)) {
-                canonical.push(part.toLowerCase());
-            } else if (part.length === 2) {
-                canonical.push(part.toUpperCase());
-            } else if (part.length === 4) {
-                canonical.push(`${part[0].toUpperCase()}${part.slice(1).toLowerCase()}`);
-            }
-            isInitial = part.length === 1;
-        }
-        return succeed(canonical.join('-') as T);
-    }
-    return fail(`"${val}: malformed ${what}`);
-}

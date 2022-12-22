@@ -40,7 +40,7 @@ describe('extlang subtag', () => {
             expect(Tags.Converters.extLangSubtag.convert(tag)).toSucceedWith(tag as Tags.ExtLangSubtag);
         });
 
-        test.each(['111', 'A', 'xyzzy'])('%p is not a well-formed extlang tag', (tag) => {
+        test.each(['111', 'A', 'xyzzy'])('%p is malformed extlang tag', (tag) => {
             expect(extlang.isWellFormed(tag)).toBe(false);
             expect(Tags.Converters.extLangSubtag.convert(tag)).toFailWith(/not a valid extlang subtag/i);
         });
@@ -66,7 +66,7 @@ describe('extlang subtag', () => {
         });
 
         test.each(['001', 'abcd', 'AB1', '1ABC'])('extlang %p has no canonical form', (tag) => {
-            expect(extlang.toCanonical(tag)).toFailWith(/not a well-formed extlang/i);
+            expect(extlang.toCanonical(tag)).toFailWith(/malformed extlang/i);
         });
     });
 });

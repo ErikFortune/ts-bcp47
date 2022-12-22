@@ -65,6 +65,6 @@ export class Region implements TagOrSubtag<'region', RegionSubtag> {
         if (this.isWellFormed(val)) {
             return succeed(val.toUpperCase() as RegionSubtag);
         }
-        return fail(`"${val}: not a well-formed region subtag`);
+        return fail(`"${val}: malformed region subtag`);
     }
 }

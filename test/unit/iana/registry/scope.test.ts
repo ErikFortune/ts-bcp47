@@ -26,7 +26,7 @@ import { TagRegistry } from '../../../../src/iana';
 import { YearMonthDaySpec } from '../../../../src/iana/registry/model';
 
 describe('IANA tag registry scope', () => {
-    const iana = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
+    const iana = TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
     const languages = iana.languages;
 
     describe('getAll and getAllTags', () => {
@@ -100,8 +100,24 @@ describe('IANA tag registry scope', () => {
         });
     });
 
+    describe('conversion methods', () => {
+        test.each([
+            ['en', 'en', 'well-formed, canonical valid'],
+            ['EN', 'en', 'well-formed, non-canonical valid'],
+        ])('toValidCanonical converts %p to %p (%p)', (tag, expected) => {
+            expect(languages.toValidCanonical(tag)).toSucceedWith(expected as LanguageSubtag);
+        });
+
+        test.each([
+            ['feh', /invalid language/i],
+            ['001', /malformed/i],
+        ])('toValidCanonical fails for %p (%p)', (tag, expected) => {
+            expect(languages.toValidCanonical(tag)).toFailWith(expected);
+        });
+    });
+
     describe('add method', () => {
-        const iana2 = TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
+        const iana2 = TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
         const extlangs = iana2.extlangs;
         test('fails to add an item with a non-canonical tag', () => {
             const validNonCanonical = 'DEU' as ExtLangSubtag;

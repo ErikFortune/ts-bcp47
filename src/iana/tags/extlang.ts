@@ -47,6 +47,6 @@ export class ExtLang implements TagOrSubtag<'extlang', ExtLangSubtag> {
             // canonical form is lower case
             return succeed(val.toLowerCase() as ExtLangSubtag);
         }
-        return fail(`"${val}: not a well-formed extlang subtag`);
+        return fail(`"${val}: malformed extlang subtag`);
     }
 }

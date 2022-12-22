@@ -48,10 +48,6 @@ abstract class RegisteredItemScope<
         return Array.from(this._items.values());
     }
 
-    public tryGetCanonical(want: string): TITEM | undefined {
-        return this._items.get(want as TTAG);
-    }
-
     public tryGet(want: string): TITEM | undefined {
         const got = this._items.get(want as TTAG);
         if (!got) {
@@ -61,6 +57,10 @@ abstract class RegisteredItemScope<
             }
         }
         return got;
+    }
+
+    public tryGetCanonical(want: string): TITEM | undefined {
+        return this._items.get(want as TTAG);
     }
 
     public isWellFormed(val: unknown): val is TTAG {
@@ -73,6 +73,15 @@ abstract class RegisteredItemScope<
 
     public toCanonical(val: unknown): Result<TTAG> {
         return this._tag.toCanonical(val);
+    }
+
+    public toValidCanonical(val: unknown): Result<TTAG> {
+        return this._tag.toCanonical(val).onSuccess((canonical) => {
+            if (this._items.has(canonical)) {
+                return succeed(canonical);
+            }
+            return fail(`${val}: invalid ${this._tag.type}`);
+        });
     }
 
     public isValid(val: unknown): val is TTAG {

@@ -24,10 +24,10 @@ import '@fgv/ts-utils-jest';
 import * as Bcp from '../../../src/bcp';
 import * as Iana from '../../../src/iana';
 
-describe('BCP-47 languageTag class', () => {
-    const iana = Iana.TagRegistry.load('node_modules/language-subtag-registry/data/json').getValueOrThrow();
+describe('BCP-47 WellFormedTag class', () => {
+    const iana = Iana.TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
 
-    describe('parse static method', () => {
+    describe('create static method', () => {
         test.each([
             ['canonical alpha-2 language', 'en', { primaryLanguage: 'en' }],
             ['canonical alpha-3 language', 'deu', { primaryLanguage: 'deu' }],
