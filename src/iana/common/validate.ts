@@ -22,35 +22,42 @@
 
 import * as Model from './model';
 import { RegExpValidationHelpers } from '../../utils';
+import { succeed } from '@fgv/ts-utils';
 
 /**
  * @internal
  */
 export const yearMonthDateSpec = new RegExpValidationHelpers<Model.YearMonthDaySpec>({
-    wellFormed: /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/,
-    canonical: /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/,
+    description: 'Year-Month-Date value',
+    wellFormed: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+    canonical: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
 });
 
 /**
  * @internal
  */
-export const isoAlpha2RegionCode = new RegExpValidationHelpers<Model.YearMonthDaySpec>({
+export const isoAlpha2RegionCode = new RegExpValidationHelpers<Model.IsoAlpha2RegionCode>({
+    description: 'ISO 3166-2 Alpha-2 region code',
     wellFormed: /^[A-Za-z]{2}$/,
     canonical: /^[A-Z]{2}$/,
+    toCanonical: (from: Model.IsoAlpha2RegionCode) => succeed(from.toUpperCase() as Model.IsoAlpha2RegionCode),
 });
 
 /**
  * @internal
  */
-export const isoAlpha3RegionCode = new RegExpValidationHelpers<Model.YearMonthDaySpec>({
+export const isoAlpha3RegionCode = new RegExpValidationHelpers<Model.IsoAlpha3RegionCode>({
+    description: 'ISO 3166-2 Alpha-3 region code',
     wellFormed: /^[A-Za-z]{3}$/,
     canonical: /^[A-Z]{3}$/,
+    toCanonical: (from: Model.IsoAlpha3RegionCode) => succeed(from.toUpperCase() as Model.IsoAlpha3RegionCode),
 });
 
 /**
  * @internal
  */
-export const unM49RegionCode = new RegExpValidationHelpers<Model.YearMonthDaySpec>({
+export const unM49RegionCode = new RegExpValidationHelpers<Model.UnM49RegionCode>({
+    description: 'UN M.49 3-digit region code',
     wellFormed: /^[0-9]{3}$/,
     canonical: /^[0-9]{3}$/,
 });

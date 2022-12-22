@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { Converter, Converters, Result, Validation, succeed } from '@fgv/ts-utils';
+import { Converter, Converters, Result, Validation, fail, succeed } from '@fgv/ts-utils';
 import { TypeGuardWithContext } from '@fgv/ts-utils/validation';
 
 /**
@@ -67,7 +67,7 @@ export class ValidationHelpers<T extends string, TC = unknown> {
             }
             return fail(`cannot convert "${from}" to canonical ${this.description}`);
         }
-        return fail(`malformed ${this.description} ("${JSON.stringify(from)}")`);
+        return fail(`invalid ${this.description} ("${JSON.stringify(from)}")`);
     }
 }
 
