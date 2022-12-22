@@ -22,8 +22,8 @@
 
 import * as Items from './registeredItems';
 import * as Model from './model';
-import * as TagConverters from '../tags/converters';
-import * as Validate from './validate';
+import * as TagConverters from '../../jar/language-subtags/tags/converters';
+import * as Validate from '../common/validate';
 
 import { Converters, RecordJar, Result, fail, isKeyOf, succeed } from '@fgv/ts-utils';
 

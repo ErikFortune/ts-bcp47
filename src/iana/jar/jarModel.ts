@@ -20,5 +20,15 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+import { RecordJar } from '@fgv/ts-utils';
+import { YearMonthDaySpec } from '../common/model';
+
+/**
+ * File date record entry typically placed at the head of a registry
+ * file.
+ * @public
+ */
+export interface FileDateEntry extends RecordJar.JarRecord {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    'File-Date': YearMonthDaySpec;
+}

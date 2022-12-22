@@ -20,34 +20,32 @@
  * SOFTWARE.
  */
 
-import { toCanonicalTag, wellFormedTag } from './helpers';
-
-import { RedundantTag } from './common';
-import { Result } from '@fgv/ts-utils';
+import * as Jar from '../../jar/language-subtags/tags';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
 
-export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
-    // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = wellFormedTag;
+export class ExtLang implements TagOrSubtag<'extlang', Jar.ExtLangSubtag> {
+    // extlang is 3ALPHA, canonical is lower case
+    public static readonly wellFormed = /^[A-Za-z]{3}$/;
+    public static readonly canonical = /^[a-z]{3}$/;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'redundant' = 'redundant';
-    public readonly isSubtag: boolean = false;
+    public readonly type: 'extlang' = 'extlang';
+    public readonly isSubtag: boolean = true;
 
-    public isWellFormed(val: unknown): val is RedundantTag {
-        // not actually validating structure for redundant tags
-        return typeof val === 'string' && Redundant.wellFormed.test(val);
+    public isWellFormed(val: unknown): val is Jar.ExtLangSubtag {
+        return typeof val === 'string' && ExtLang.wellFormed.test(val);
     }
 
-    public isCanonical(val: unknown): val is RedundantTag {
-        const result = this.toCanonical(val);
-        if (result.isSuccess()) {
-            return result.value === val;
+    public isCanonical(val: unknown): val is Jar.ExtLangSubtag {
+        return typeof val === 'string' && ExtLang.canonical.test(val);
+    }
+
+    public toCanonical(val: unknown): Result<Jar.ExtLangSubtag> {
+        if (this.isWellFormed(val)) {
+            // canonical form is lower case
+            return succeed(val.toLowerCase() as Jar.ExtLangSubtag);
         }
-        return false;
-    }
-
-    public toCanonical(val: unknown): Result<RedundantTag> {
-        return toCanonicalTag(val, 'redundant tag');
+        return fail(`"${val}: malformed extlang subtag`);
     }
 }

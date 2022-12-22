@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Erik Fortune
+ * Copyright (c) 2022 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,4 @@
  * SOFTWARE.
  */
 
-import { YearMonthDaySpec } from './model';
-import { getValidator } from '../tags/validate';
-
-export class WellFormed {
-    public static yearMonthDaySpec(val: string): val is YearMonthDaySpec {
-        // TODO: should probably actually test range on days and months here
-        return typeof val === 'string' && /-?[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/.test(val);
-    }
-}
-
-export const yearMonthDaySpec = getValidator(WellFormed.yearMonthDaySpec, 'year-month-day specification');
+export * as Tags from './tags/converters';

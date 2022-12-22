@@ -20,5 +20,4 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+export * as Tags from './tags/model';

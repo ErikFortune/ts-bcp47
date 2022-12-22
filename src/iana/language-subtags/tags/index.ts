@@ -20,5 +20,13 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+export * from '../../jar/language-subtags/model';
+export * as Converters from '../../jar/language-subtags/tags/converters';
+export * from './tagOrSubtag';
+export * from './extlang';
+export * from './grandfathered';
+export * from './language';
+export * from './redundant';
+export * from './region';
+export * from './script';
+export * from './variant';

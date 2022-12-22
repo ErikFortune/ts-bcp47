@@ -24,7 +24,7 @@ import * as Items from './registeredItems';
 import * as Model from './model';
 import * as Tags from '../tags';
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../../jar/language-subtags/model';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
 abstract class RegisteredItemScope<

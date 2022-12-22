@@ -20,5 +20,14 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+import { Brand } from '@fgv/ts-utils';
+
+export type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
+export type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
+export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
+export type RegionSubtag = Brand<string, 'RegionSubtag'>;
+export type VariantSubtag = Brand<string, 'VariantSubtag'>;
+export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
+export type RedundantTag = Brand<string, 'RedundantTag'>;
+
+export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;

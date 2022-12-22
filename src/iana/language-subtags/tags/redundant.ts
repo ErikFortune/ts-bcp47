@@ -20,36 +20,34 @@
  * SOFTWARE.
  */
 
-import { Result, fail, succeed } from '@fgv/ts-utils';
+import { toCanonicalTag, wellFormedTag } from './helpers';
 
+import { RedundantTag } from '../../jar/language-subtags/model';
+import { Result } from '@fgv/ts-utils';
 import { TagOrSubtag } from './tagOrSubtag';
-import { VariantSubtag } from './common';
 
-export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
-    // variant is: 5*8alphanum or (DIGIT 3alphanum), canonical is lower case
-    public static readonly wellFormed = /^([A-Za-z0-9]{5,8})$|^([0-9][A-Za-z0-9]{3})$/;
-    public static readonly canonical = /^([a-z0-9]{5,8})$|^([0-9][a-z0-9]{3})$/;
+export class Redundant implements TagOrSubtag<'redundant', RedundantTag> {
+    // just validating that there are no invalid characters present, not structure.
+    public static readonly wellFormed = wellFormedTag;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'variant' = 'variant';
-    public readonly isSubtag: boolean = true;
+    public readonly type: 'redundant' = 'redundant';
+    public readonly isSubtag: boolean = false;
 
-    public isWellFormed(val: unknown): val is VariantSubtag {
-        // variant is: 5*8alphanum or (DIGIT 3alphanum)
-        return typeof val === 'string' && Variant.wellFormed.test(val);
+    public isWellFormed(val: unknown): val is RedundantTag {
+        // not actually validating structure for redundant tags
+        return typeof val === 'string' && Redundant.wellFormed.test(val);
     }
 
-    public isCanonical(val: unknown): val is VariantSubtag {
-        // canonical form is lower case
-        return typeof val === 'string' && Variant.canonical.test(val);
-    }
-
-    public toCanonical(val: unknown): Result<VariantSubtag> {
-        if (this.isCanonical(val)) {
-            return succeed(val);
-        } else if (this.isWellFormed(val)) {
-            return succeed(val.toLowerCase() as VariantSubtag);
+    public isCanonical(val: unknown): val is RedundantTag {
+        const result = this.toCanonical(val);
+        if (result.isSuccess()) {
+            return result.value === val;
         }
-        return fail(`"${val}: malformed variant subtag`);
+        return false;
+    }
+
+    public toCanonical(val: unknown): Result<RedundantTag> {
+        return toCanonicalTag(val, 'redundant tag');
     }
 }

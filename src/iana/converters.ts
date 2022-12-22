@@ -20,5 +20,5 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+export * from './common/converters';
+export * as Jar from './jar/jarConverters';

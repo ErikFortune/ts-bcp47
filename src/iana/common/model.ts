@@ -20,5 +20,37 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+import { Brand } from '@fgv/ts-utils';
+
+/**
+ * Represents an ISO 3166 Alpha-2 region code.
+ * @public
+ */
+export type IsoAlpha2RegionCode = Brand<string, 'IsoAlpha2RegionCode'>;
+
+/**
+ * Represents an ISO 3166 Alpha-3 region code.
+ * @public
+ */
+export type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;
+
+/**
+ * Represents a UN M.49 numeric region code.
+ * @public
+ */
+export type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;
+
+/**
+ * Represents a date string in the format YYYY-MM-DD.
+ * @public
+ */
+export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
+
+/**
+ * A dated collection of registry entries of a specified templated type.
+ * @public
+ */
+export interface DatedRegistry<T> {
+    fileDate: YearMonthDaySpec;
+    entries: T[];
+}

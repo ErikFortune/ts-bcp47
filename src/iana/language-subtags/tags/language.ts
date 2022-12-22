@@ -20,34 +20,34 @@
  * SOFTWARE.
  */
 
-import { toCanonicalTag, wellFormedTag } from './helpers';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { GrandfatheredTag } from './common';
-import { Result } from '@fgv/ts-utils';
+import { LanguageSubtag } from '../../jar/language-subtags/model';
 import { TagOrSubtag } from './tagOrSubtag';
 
-export class Grandfathered implements TagOrSubtag<'grandfathered', GrandfatheredTag> {
-    // just validating that there are no invalid characters present, not structure.
-    public static readonly wellFormed = wellFormedTag;
+export class Language implements TagOrSubtag<'language', LanguageSubtag> {
+    // language is 2*3ALPHA, canonical is lower case
+    public static readonly wellFormed = /^[A-Za-z]{2,3}$/;
+    public static readonly canonical = /^[a-z]{2,3}$/;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'grandfathered' = 'grandfathered';
-    public readonly isSubtag: boolean = false;
+    public readonly type: 'language' = 'language';
+    public readonly isSubtag: boolean = true;
 
-    public isWellFormed(val: unknown): val is GrandfatheredTag {
-        // not actually validating structure for grandfathered tags
-        return typeof val === 'string' && Grandfathered.wellFormed.test(val);
+    public isWellFormed(val: unknown): val is LanguageSubtag {
+        // language tag is 2*3ALPHA
+        return typeof val === 'string' && Language.wellFormed.test(val);
     }
 
-    public isCanonical(val: unknown): val is GrandfatheredTag {
-        const result = this.toCanonical(val);
-        if (result.isSuccess()) {
-            return result.value === val;
+    public isCanonical(val: unknown): val is LanguageSubtag {
+        // canonical form is lower case
+        return typeof val === 'string' && Language.canonical.test(val);
+    }
+
+    public toCanonical(val: unknown): Result<LanguageSubtag> {
+        if (this.isWellFormed(val)) {
+            return succeed(val.toLowerCase() as LanguageSubtag);
         }
-        return false;
-    }
-
-    public toCanonical(val: unknown): Result<GrandfatheredTag> {
-        return toCanonicalTag(val, 'grandfathered tag');
+        return fail(`"${val}: malformed language subtag`);
     }
 }

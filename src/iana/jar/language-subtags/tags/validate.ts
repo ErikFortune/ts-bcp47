@@ -20,25 +20,23 @@
  * SOFTWARE.
  */
 
-import * as Tags from '../tags';
 import {
     ExtLangSubtag,
     ExtendedLanguageRange,
     GrandfatheredTag,
-    IsoAlpha2RegionCode,
-    IsoAlpha3RegionCode,
     LanguageSubtag,
     RedundantTag,
     RegionSubtag,
     ScriptSubtag,
-    UnM49RegionCode,
     VariantSubtag,
-} from './common';
-import { Result, fail, succeed } from '@fgv/ts-utils';
+} from './model';
+import { getValidatingMapper } from '../../../../utils/validatingMapper';
 
 export class WellFormed {
+    public static readonly languageSubtagRegexp = /^[A-Za-z]{2,3}$/;
+
     public static languageSubtag(val: unknown): val is LanguageSubtag {
-        return typeof val === 'string' && Tags.Language.wellFormed.test(val);
+        return typeof val === 'string' && this.languageSubtagRegexp.test(val);
     }
 
     public static extLangSubtag(val: unknown): val is ExtLangSubtag {
@@ -49,17 +47,6 @@ export class WellFormed {
         return typeof val === 'string' && Tags.Script.wellFormed.test(val);
     }
 
-    public static isoAlpha2RegionCode(val: unknown): val is IsoAlpha2RegionCode {
-        return typeof val === 'string' && val.length === 2 && Tags.Region.wellFormedAlpha2.test(val);
-    }
-
-    public static isoAlpha3RegionCode(val: unknown): val is IsoAlpha3RegionCode {
-        return typeof val === 'string' && val.length === 3 && Tags.Region.wellFormedAlpha3.test(val);
-    }
-
-    public static unM49RegionCode(val: unknown): val is UnM49RegionCode {
-        return typeof val === 'string' && val.length === 3 && Tags.Region.wellFormedUnM49.test(val);
-    }
 
     public static regionSubtag(val: unknown): val is RegionSubtag {
         return typeof val === 'string' && Tags.Region.wellFormed.test(val);
@@ -82,29 +69,17 @@ export class WellFormed {
     }
 }
 
-type TypeGuard<T extends string> = (val: string) => val is T;
-type Validator<T extends string> = (val: string) => Result<T>;
+export const isoAlpha2RegionCode = getValidatingMapper(WellFormed.isoAlpha2RegionCode, 'ISO 3166 Alpha-2 region code');
+export const isoAlpha3RegionCode = getValidatingMapper(WellFormed.isoAlpha3RegionCode, 'ISO 3166 Alpha-3 region code');
+export const unM49RegionCode = getValidatingMapper(WellFormed.unM49RegionCode, 'UN M.49 region code');
 
-export function getValidator<T extends string>(validator: TypeGuard<T>, description: string): Validator<T> {
-    return (val: string) => {
-        if (validator(val)) {
-            return succeed(val);
-        }
-        return fail(`${val}: Not a valid ${description}`);
-    };
-}
+export const languageSubtag = getValidatingMapper(WellFormed.languageSubtag, 'language subtag');
+export const extLangSubtag = getValidatingMapper(WellFormed.extLangSubtag, 'extlang subtag');
+export const scriptSubtag = getValidatingMapper(WellFormed.scriptSubtag, 'script subtag');
+export const regionSubtag = getValidatingMapper(WellFormed.regionSubtag, 'region subtag');
+export const variantSubtag = getValidatingMapper(WellFormed.variantSubtag, 'variant subtag');
 
-export const isoAlpha2RegionCode = getValidator(WellFormed.isoAlpha2RegionCode, 'ISO 3166 Alpha-2 region code');
-export const isoAlpha3RegionCode = getValidator(WellFormed.isoAlpha3RegionCode, 'ISO 3166 Alpha-3 region code');
-export const unM49RegionCode = getValidator(WellFormed.unM49RegionCode, 'UN M.49 region code');
+export const grandfatheredTag = getValidatingMapper(WellFormed.grandfatheredTag, 'grandfathered tag');
+export const redundantTag = getValidatingMapper(WellFormed.redundantTag, 'redundant tag');
 
-export const languageSubtag = getValidator(WellFormed.languageSubtag, 'language subtag');
-export const extLangSubtag = getValidator(WellFormed.extLangSubtag, 'extlang subtag');
-export const scriptSubtag = getValidator(WellFormed.scriptSubtag, 'script subtag');
-export const regionSubtag = getValidator(WellFormed.regionSubtag, 'region subtag');
-export const variantSubtag = getValidator(WellFormed.variantSubtag, 'variant subtag');
-
-export const grandfatheredTag = getValidator(WellFormed.grandfatheredTag, 'grandfathered tag');
-export const redundantTag = getValidator(WellFormed.redundantTag, 'redundant tag');
-
-export const extendedLanguageRange = getValidator(WellFormed.extendedLanguageRange, 'extended language range');
+export const extendedLanguageRange = getValidatingMapper(WellFormed.extendedLanguageRange, 'extended language range');

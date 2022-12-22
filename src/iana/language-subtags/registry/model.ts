@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../tags/common';
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../../jar/language-subtags/model';
 
 import { Brand } from '@fgv/ts-utils';
 

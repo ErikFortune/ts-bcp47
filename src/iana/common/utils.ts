@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,12 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
+import { DateTime } from 'luxon';
+import { YearMonthDaySpec } from './model';
+
+/**
+ * Gets the current date as an {@link Iana.YearMonthDaySpec}.
+ */
+export function nowAsYearMonthDay(): YearMonthDaySpec {
+    return DateTime.now().toFormat('yyyy-LL-dd') as YearMonthDaySpec;
+}

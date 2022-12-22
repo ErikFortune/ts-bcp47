@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,16 @@
  * SOFTWARE.
  */
 
-import { Brand } from '@fgv/ts-utils';
+import { Result, succeed } from '@fgv/ts-utils';
 
-export type IsoAlpha2RegionCode = Brand<string, 'IsoAlpha2RegionCode'>;
-export type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;
-export type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;
+export type TypeGuard<T extends string> = (val: string) => val is T;
+export type ValidatingMapper<T extends string> = (val: string) => Result<T>;
 
-export type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
-export type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
-export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
-export type RegionSubtag = Brand<string, 'RegionSubtag'>;
-export type VariantSubtag = Brand<string, 'VariantSubtag'>;
-export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
-export type RedundantTag = Brand<string, 'RedundantTag'>;
-
-export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;
+export function getValidatingMapper<T extends string>(guard: TypeGuard<T>, description: string): ValidatingMapper<T> {
+    return (val: string) => {
+        if (guard(val)) {
+            return succeed(val);
+        }
+        return fail(`${val}: Not a valid ${description}`);
+    };
+}

@@ -22,34 +22,34 @@
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
 
-import { ScriptSubtag } from './common';
 import { TagOrSubtag } from './tagOrSubtag';
+import { VariantSubtag } from '../../jar/language-subtags/model';
 
-export class Script implements TagOrSubtag<'script', ScriptSubtag> {
-    // script is 4ALPHA, canonical is initial caps
-    public static readonly wellFormed = /^[A-Za-z]{4}$/;
-    public static readonly canonical = /^[A-Z][a-z]{3}$/;
+export class Variant implements TagOrSubtag<'variant', VariantSubtag> {
+    // variant is: 5*8alphanum or (DIGIT 3alphanum), canonical is lower case
+    public static readonly wellFormed = /^([A-Za-z0-9]{5,8})$|^([0-9][A-Za-z0-9]{3})$/;
+    public static readonly canonical = /^([a-z0-9]{5,8})$|^([0-9][a-z0-9]{3})$/;
 
     // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    public readonly type: 'script' = 'script';
+    public readonly type: 'variant' = 'variant';
     public readonly isSubtag: boolean = true;
 
-    public isWellFormed(val: unknown): val is ScriptSubtag {
-        // script tag is 4ALPHA
-        return typeof val === 'string' && Script.wellFormed.test(val);
+    public isWellFormed(val: unknown): val is VariantSubtag {
+        // variant is: 5*8alphanum or (DIGIT 3alphanum)
+        return typeof val === 'string' && Variant.wellFormed.test(val);
     }
 
-    public isCanonical(val: unknown): val is ScriptSubtag {
-        // canonical form is initial caps
-        return typeof val === 'string' && Script.canonical.test(val);
+    public isCanonical(val: unknown): val is VariantSubtag {
+        // canonical form is lower case
+        return typeof val === 'string' && Variant.canonical.test(val);
     }
 
-    public toCanonical(val: unknown): Result<ScriptSubtag> {
+    public toCanonical(val: unknown): Result<VariantSubtag> {
         if (this.isCanonical(val)) {
             return succeed(val);
         } else if (this.isWellFormed(val)) {
-            return succeed(`${val[0].toUpperCase()}${val.slice(1).toLowerCase()}` as ScriptSubtag);
+            return succeed(val.toLowerCase() as VariantSubtag);
         }
-        return fail(`"${val}: malformed script subtag`);
+        return fail(`"${val}: malformed variant subtag`);
     }
 }
