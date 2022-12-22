@@ -24,20 +24,16 @@ import * as Validate from './validate';
 
 import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
-export const isoAlpha2RegionCode = Converters.string.map(Validate.isoAlpha2RegionCode);
-export const isoAlpha3RegionCode = Converters.string.map(Validate.isoAlpha3RegionCode);
-export const unM49RegionCode = Converters.string.map(Validate.unM49RegionCode);
+export const languageSubtag = Validate.languageSubtag.converter;
+export const extLangSubtag = Validate.extlangSubtag.converter;
+export const scriptSubtag = Validate.scriptSubtag.converter;
+export const regionSubtag = Validate.regionSubtag.converter;
+export const variantSubtag = Validate.variantSubtag.converter;
 
-export const languageSubtag = Converters.string.map(Validate.languageSubtag);
-export const extLangSubtag = Converters.string.map(Validate.extLangSubtag);
-export const scriptSubtag = Converters.string.map(Validate.scriptSubtag);
-export const regionSubtag = Converters.string.map(Validate.regionSubtag);
-export const variantSubtag = Converters.string.map(Validate.variantSubtag);
+export const grandfatheredTag = Validate.grandfatheredTag.converter;
+export const redundantTag = Validate.redundantTag.converter;
 
-export const grandfatheredTag = Converters.string.map(Validate.grandfatheredTag);
-export const redundantTag = Converters.string.map(Validate.redundantTag);
-
-export const extendedLanguageRange = Converters.string.map(Validate.extendedLanguageRange);
+export const extendedLanguageRange = Validate.extendedLanguageRange.converter;
 
 export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
     return new BaseConverter<TTAG[]>((from: unknown): Result<TTAG[]> => {

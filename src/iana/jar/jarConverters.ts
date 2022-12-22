@@ -22,7 +22,7 @@
 
 import * as CommonConverters from '../common/converters';
 
-import { BaseConverter, Converter, Converters, Result, succeed } from '@fgv/ts-utils';
+import { BaseConverter, Converter, Converters, Result, fail, succeed } from '@fgv/ts-utils';
 import { DatedRegistry } from '../common/model';
 import { FileDateEntry } from './jarModel';
 

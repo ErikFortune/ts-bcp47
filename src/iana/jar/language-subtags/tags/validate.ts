@@ -30,56 +30,86 @@ import {
     ScriptSubtag,
     VariantSubtag,
 } from './model';
-import { getValidatingMapper } from '../../../../utils/validatingMapper';
+import { Result, succeed } from '@fgv/ts-utils';
+import { RegExpValidationHelpers, ValidationHelpers } from '../../../../utils';
 
-export class WellFormed {
-    public static readonly languageSubtagRegexp = /^[A-Za-z]{2,3}$/;
+export const languageSubtag = new RegExpValidationHelpers<LanguageSubtag>({
+    description: 'language subtag',
+    wellFormed: /^[A-Za-z]{2,3}$/,
+    canonical: /^[a-z]{2,3}$/,
+    toCanonical: (from: LanguageSubtag) => succeed(from.toLowerCase() as LanguageSubtag),
+});
 
-    public static languageSubtag(val: unknown): val is LanguageSubtag {
-        return typeof val === 'string' && this.languageSubtagRegexp.test(val);
+export const extlangSubtag = new RegExpValidationHelpers<ExtLangSubtag>({
+    description: 'extlang subtag',
+    wellFormed: /^[A-Za-z]{3}$/,
+    canonical: /^[a-z]{3}$/,
+    toCanonical: (from: ExtLangSubtag) => succeed(from.toLowerCase() as ExtLangSubtag),
+});
+
+export const scriptSubtag = new RegExpValidationHelpers<ScriptSubtag>({
+    description: 'script subtag',
+    wellFormed: /^[A-Za-z]{4}$/,
+    canonical: /^[A-Z][a-z]{3}$/,
+    toCanonical: (from: ScriptSubtag) => {
+        return succeed(`${from[0].toUpperCase()}${from.slice(1).toLowerCase()}` as ScriptSubtag);
+    },
+});
+
+export const regionSubtag = new RegExpValidationHelpers<RegionSubtag>({
+    description: 'region subtag',
+    wellFormed: /^([A-Za-z]{2,3})$|^([0-9]{3})$/,
+    canonical: /^([A-Z]{2,3})$|^([0-9]{3})$/,
+    toCanonical: (from: RegionSubtag) => succeed(from.toUpperCase() as RegionSubtag),
+});
+
+export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
+    description: 'variant subtag',
+    wellFormed: /^([A-Za-z0-9]{5,8})$|^([0-9][A-Za-z0-9]{3})$/,
+    canonical: /^([a-z0-9]{5,8})$|^([0-9][a-z0-9]{3})$/,
+    toCanonical: (from: VariantSubtag) => succeed(from.toLowerCase() as VariantSubtag),
+});
+
+class TagValidationHelpers<T extends string, TC = unknown> extends ValidationHelpers<T, TC> {
+    public readonly wellFormed: RegExp = /^[A-Za-z][A-Za-z0-9-]+$/;
+
+    public constructor(description: string) {
+        super({
+            description,
+            toCanonical: TagValidationHelpers.toCanonicalTag,
+            isWellFormed: (from: unknown): from is T => {
+                return typeof from === 'string' && this.wellFormed.test(from);
+            },
+            isCanonical: (from: unknown): from is T => {
+                if (this.isWellFormed(from)) {
+                    const result = this.toCanonical(from);
+                    if (result.isSuccess()) {
+                        return result.value === from;
+                    }
+                }
+                return false;
+            },
+        });
     }
 
-    public static extLangSubtag(val: unknown): val is ExtLangSubtag {
-        return typeof val === 'string' && Tags.ExtLang.wellFormed.test(val);
-    }
-
-    public static scriptSubtag(val: unknown): val is ScriptSubtag {
-        return typeof val === 'string' && Tags.Script.wellFormed.test(val);
-    }
-
-
-    public static regionSubtag(val: unknown): val is RegionSubtag {
-        return typeof val === 'string' && Tags.Region.wellFormed.test(val);
-    }
-
-    public static variantSubtag(val: unknown): val is VariantSubtag {
-        return typeof val === 'string' && Tags.Variant.wellFormed.test(val);
-    }
-
-    public static grandfatheredTag(val: unknown): val is GrandfatheredTag {
-        return typeof val === 'string' && Tags.Grandfathered.wellFormed.test(val);
-    }
-
-    public static redundantTag(val: unknown): val is RedundantTag {
-        return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
-    }
-
-    public static extendedLanguageRange(val: unknown): val is ExtendedLanguageRange {
-        return typeof val === 'string' && Tags.Redundant.wellFormed.test(val);
+    public static toCanonicalTag<T extends string>(val: T): Result<T> {
+        const parts = val.split('-');
+        const canonical: string[] = [];
+        let isInitial = true;
+        for (const part of parts) {
+            if (isInitial || (part.length !== 2 && part.length !== 4)) {
+                canonical.push(part.toLowerCase());
+            } else if (part.length === 2) {
+                canonical.push(part.toUpperCase());
+            } else if (part.length === 4) {
+                canonical.push(`${part[0].toUpperCase()}${part.slice(1).toLowerCase()}`);
+            }
+            isInitial = part.length === 1;
+        }
+        return succeed(canonical.join('-') as T);
     }
 }
 
-export const isoAlpha2RegionCode = getValidatingMapper(WellFormed.isoAlpha2RegionCode, 'ISO 3166 Alpha-2 region code');
-export const isoAlpha3RegionCode = getValidatingMapper(WellFormed.isoAlpha3RegionCode, 'ISO 3166 Alpha-3 region code');
-export const unM49RegionCode = getValidatingMapper(WellFormed.unM49RegionCode, 'UN M.49 region code');
-
-export const languageSubtag = getValidatingMapper(WellFormed.languageSubtag, 'language subtag');
-export const extLangSubtag = getValidatingMapper(WellFormed.extLangSubtag, 'extlang subtag');
-export const scriptSubtag = getValidatingMapper(WellFormed.scriptSubtag, 'script subtag');
-export const regionSubtag = getValidatingMapper(WellFormed.regionSubtag, 'region subtag');
-export const variantSubtag = getValidatingMapper(WellFormed.variantSubtag, 'variant subtag');
-
-export const grandfatheredTag = getValidatingMapper(WellFormed.grandfatheredTag, 'grandfathered tag');
-export const redundantTag = getValidatingMapper(WellFormed.redundantTag, 'redundant tag');
-
-export const extendedLanguageRange = getValidatingMapper(WellFormed.extendedLanguageRange, 'extended language range');
+export const grandfatheredTag = new TagValidationHelpers<GrandfatheredTag>('grandfathered tag');
+export const redundantTag = new TagValidationHelpers<RedundantTag>('redundant tag');
+export const extendedLanguageRange = new TagValidationHelpers<ExtendedLanguageRange>('extended language range');
