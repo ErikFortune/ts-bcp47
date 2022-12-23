@@ -32,7 +32,7 @@ describe('JAR converters', () => {
         const entry = Converters.strictObject({
             value: Converters.string,
         });
-        const converter = Jar.Converters.datedRegistryJar(entry);
+        const converter = Jar.Converters.datedRegistryFromJarRecords(entry);
 
         test('succeeds for a well-formed JAR format dated registry', () => {
             const t = [

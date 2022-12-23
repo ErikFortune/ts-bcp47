@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import * as Converters from '../../../../../../src/iana/jar/language-subtags/tags/converters';
-import { LanguageSubtag } from '../../../../../../src/iana/jar/language-subtags/tags';
+import { ExtLangSubtag, LanguageSubtag, ScriptSubtag } from '../../../../../../src/iana/jar/language-subtags/tags';
 import { Validate } from '../../../../../../src/iana/jar/language-subtags/tags';
 
 describe('Iana common validators', () => {
@@ -55,6 +55,74 @@ describe('Iana common validators', () => {
 
             expect(v.isCanonical(code)).toBe(false);
             expect(v.toCanonical(code)).toFailWith(/invalid.*language subtag/i);
+        });
+    });
+
+    describe('extlang subtag', () => {
+        const v = Validate.extlangSubtag;
+        const c = Converters.extlangSubtag;
+
+        test.each(['enu', 'cmn', 'yue'])('%p is a well-formed canonical extlang subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as ExtLangSubtag);
+            expect(c.convert(code)).toSucceedWith(code as ExtLangSubtag);
+
+            expect(v.isCanonical(code)).toBe(true);
+            expect(v.toCanonical(code)).toSucceedWith(code as ExtLangSubtag);
+        });
+
+        test.each(['ENU', 'SpA', 'DEu'])('%p is a well-formed non-canonical extlang subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as ExtLangSubtag);
+            expect(c.convert(code)).toSucceedWith(code as ExtLangSubtag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(code.toLowerCase() as ExtLangSubtag);
+        });
+
+        test.each(['us1', 'Deutsch', 'f', '123'])('%p is not a well-formed or canonical extlang subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*extlang subtag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*extlang subtag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*extlang subtag/i);
+        });
+    });
+
+    describe('script subtag', () => {
+        const v = Validate.scriptSubtag;
+        const c = Converters.scriptSubtag;
+
+        test.each(['Cyrl', 'Latn'])('%p is a well-formed canonical script subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as ScriptSubtag);
+            expect(c.convert(code)).toSucceedWith(code as ScriptSubtag);
+
+            expect(v.isCanonical(code)).toBe(true);
+            expect(v.toCanonical(code)).toSucceedWith(code as ScriptSubtag);
+        });
+
+        test.each([
+            ['latn', 'Latn'],
+            ['LATN', 'Latn'],
+            ['cyrl', 'Cyrl'],
+        ])('%p is a well-formed non-canonical script subtag', (code, canonical) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as ScriptSubtag);
+            expect(c.convert(code)).toSucceedWith(code as ScriptSubtag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(canonical as ScriptSubtag);
+        });
+
+        test.each(['001', 'abcde', 'AB1', '1ABC'])('%p is not a well-formed or canonical script subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*script subtag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*script subtag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*script subtag/i);
         });
     });
 });

@@ -52,7 +52,7 @@ export const registeredLanguage = Converters.strictObject<Model.RegisteredLangua
 export const registeredExtLang = Converters.strictObject<Model.RegisteredExtLang>(
     {
         type: Converters.enumeratedValue<'extlang'>(['extlang']),
-        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.extLangSubtag),
+        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.extlangSubtag),
         preferredValue: TagConverters.extendedLanguageRange,
         prefix: Converters.arrayOf(TagConverters.languageSubtag).map((tags) => {
             if (tags.length !== 1) {

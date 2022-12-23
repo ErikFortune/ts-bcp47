@@ -54,7 +54,7 @@ export const registeredLanguage = Converters.transformObject<Model.LanguageSubta
 export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagRegistryEntry, Items.RegisteredExtLang>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
-        subtag: { from: 'Subtag', converter: TagConverters.extLangSubtag },
+        subtag: { from: 'Subtag', converter: TagConverters.extlangSubtag },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange },
         prefix: {
             from: 'Prefix',

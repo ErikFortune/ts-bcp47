@@ -25,7 +25,7 @@ import * as Validate from './validate';
 import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
 export const languageSubtag = Validate.languageSubtag.converter;
-export const extLangSubtag = Validate.extlangSubtag.converter;
+export const extlangSubtag = Validate.extlangSubtag.converter;
 export const scriptSubtag = Validate.scriptSubtag.converter;
 export const regionSubtag = Validate.regionSubtag.converter;
 export const variantSubtag = Validate.variantSubtag.converter;
