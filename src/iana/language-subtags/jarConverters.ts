@@ -56,15 +56,7 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
         type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
         subtag: { from: 'Subtag', converter: TagConverters.extlangSubtag },
         preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange },
-        prefix: {
-            from: 'Prefix',
-            converter: Converters.arrayOf(TagConverters.languageSubtag).map((tags) => {
-                if (tags.length !== 1) {
-                    return fail(`[${tags.join(', ')}]: malformed extlang prefix`);
-                }
-                return succeed(tags[0]);
-            }),
-        },
+        prefix: { from: 'Prefix', converter: TagConverters.extlangPrefix },
         description: { from: 'Description', converter: Converters.stringArray },
         added: { from: 'Added', converter: yearMonthDaySpec },
         comments: { from: 'Comments', converter: Converters.stringArray, optional: true },

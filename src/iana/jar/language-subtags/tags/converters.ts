@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+import { LanguageSubtag } from './model';
 import * as Validate from './validate';
 
 import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed } from '@fgv/ts-utils';
@@ -61,3 +62,10 @@ export function tagOrStartOfTagRange<TTAG extends string>(tagConverter: Converte
 export function endOfTagRangeOrUndefined<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | undefined> {
     return tagOrRange(tagConverter).map((t) => (Array.isArray(t) ? succeed(t[1]) : succeed(undefined)));
 }
+
+export const extlangPrefix = Converters.arrayOf(languageSubtag).map((tags) => {
+    if (tags.length !== 1) {
+        return fail<LanguageSubtag>(`[${tags.join(', ')}]: malformed extlang prefix`);
+    }
+    return succeed(tags[0]);
+});

@@ -65,6 +65,7 @@ export class ValidationHelpers<T extends string, TC = unknown> {
             if (this.isCanonical(from, context)) {
                 return succeed(from);
             }
+            // istanbul ignore next
             return fail(`cannot convert "${from}" to canonical ${this.description}`);
         }
         return fail(`invalid ${this.description} ("${JSON.stringify(from)}")`);
