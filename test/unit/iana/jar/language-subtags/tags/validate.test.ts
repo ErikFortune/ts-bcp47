@@ -22,7 +22,15 @@
 
 import '@fgv/ts-utils-jest';
 import * as Converters from '../../../../../../src/iana/jar/language-subtags/tags/converters';
-import { ExtLangSubtag, LanguageSubtag, ScriptSubtag } from '../../../../../../src/iana/jar/language-subtags/tags';
+import {
+    ExtLangSubtag,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    VariantSubtag,
+} from '../../../../../../src/iana/jar/language-subtags/tags';
 import { Validate } from '../../../../../../src/iana/jar/language-subtags/tags';
 
 describe('Iana common validators', () => {
@@ -123,6 +131,149 @@ describe('Iana common validators', () => {
 
             expect(v.isCanonical(code)).toBe(false);
             expect(v.toCanonical(code)).toFailWith(/invalid.*script subtag/i);
+        });
+    });
+
+    describe('region subtag', () => {
+        const v = Validate.regionSubtag;
+        const c = Converters.regionSubtag;
+
+        test.each(['CH', 'DE', 'US', '001', '419'])('%p is a well-formed canonical region subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as RegionSubtag);
+            expect(c.convert(code)).toSucceedWith(code as RegionSubtag);
+
+            expect(v.isCanonical(code)).toBe(true);
+            expect(v.toCanonical(code)).toSucceedWith(code as RegionSubtag);
+        });
+
+        test.each(['us', 'Jp', 'cA'])('%p is a well-formed non-canonical region subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as RegionSubtag);
+            expect(c.convert(code)).toSucceedWith(code as RegionSubtag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(code.toUpperCase() as RegionSubtag);
+        });
+
+        test.each(['0001', 'abcde', 'AB1', '1ABC'])('%p is not a well-formed or canonical region subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*region subtag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*region subtag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*region subtag/i);
+        });
+    });
+
+    describe('variant subtag', () => {
+        const v = Validate.variantSubtag;
+        const c = Converters.variantSubtag;
+
+        test.each(['1920', 'variant', '1920de', 'varia', 'varian', 'variantx', 'variant8'])(
+            '%p is a well-formed canonical variant subtag',
+            (code) => {
+                expect(v.isWellFormed(code)).toBe(true);
+                expect(v.converter.convert(code)).toSucceedWith(code as VariantSubtag);
+                expect(c.convert(code)).toSucceedWith(code as VariantSubtag);
+
+                expect(v.isCanonical(code)).toBe(true);
+                expect(v.toCanonical(code)).toSucceedWith(code as VariantSubtag);
+            }
+        );
+
+        test.each(['Variant', '1920DE'])('%p is a well-formed non-canonical variant subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as VariantSubtag);
+            expect(c.convert(code)).toSucceedWith(code as VariantSubtag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(code.toLowerCase() as VariantSubtag);
+        });
+
+        test.each(['l', 'la', 'lat', 'latin-variant', 'longVariant'])('%p is not a well-formed or variant subtag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*variant subtag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*variant subtag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*variant subtag/i);
+        });
+    });
+
+    describe('grandfathered tag', () => {
+        const v = Validate.grandfatheredTag;
+        const c = Converters.grandfatheredTag;
+
+        test.each(['art-lojban', 'en-GB-oed', 'i-klingon', 'sgn-BE-FR', 'zh-min-nan'])('%p is a well-formed grandfathered tag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as GrandfatheredTag);
+            expect(c.convert(code)).toSucceedWith(code as GrandfatheredTag);
+
+            expect(v.isCanonical(code)).toBe(true);
+            expect(v.toCanonical(code)).toSucceedWith(code as GrandfatheredTag);
+        });
+
+        test.each([
+            ['en-gb-oed', 'en-GB-oed'],
+            ['i-Klingon', 'i-klingon'],
+            ['SGN-BE-FR', 'sgn-BE-FR'],
+            ['sgn-be-nl', 'sgn-BE-NL'],
+            ['zh-min-Nan', 'zh-min-nan'],
+        ])('%p is a well-formed non-canonical grandfathered tag', (code, canonical) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as GrandfatheredTag);
+            expect(c.convert(code)).toSucceedWith(code as GrandfatheredTag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(canonical as GrandfatheredTag);
+        });
+
+        test.each(['*$!', 'this-that!', 'en-us+something'])('%p is not a well-formed or grandfathered tag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*grandfathered tag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*grandfathered tag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*grandfathered tag/i);
+        });
+    });
+
+    describe('redundant tag', () => {
+        const v = Validate.redundantTag;
+        const c = Converters.redundantTag;
+
+        test.each(['art-lojban', 'en-GB-oed', 'i-klingon', 'sgn-BE-FR', 'zh-min-nan'])('%p is a well-formed redundant tag', (code) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as RedundantTag);
+            expect(c.convert(code)).toSucceedWith(code as RedundantTag);
+
+            expect(v.isCanonical(code)).toBe(true);
+            expect(v.toCanonical(code)).toSucceedWith(code as RedundantTag);
+        });
+
+        test.each([
+            ['en-gb-oed', 'en-GB-oed'],
+            ['i-Klingon', 'i-klingon'],
+            ['SGN-BE-FR', 'sgn-BE-FR'],
+            ['sgn-be-nl', 'sgn-BE-NL'],
+            ['zh-min-Nan', 'zh-min-nan'],
+        ])('%p is a well-formed non-canonical redundant tag', (code, canonical) => {
+            expect(v.isWellFormed(code)).toBe(true);
+            expect(v.converter.convert(code)).toSucceedWith(code as RedundantTag);
+            expect(c.convert(code)).toSucceedWith(code as RedundantTag);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toSucceedWith(canonical as RedundantTag);
+        });
+
+        test.each(['*$!', 'this-that!', 'en-us+something'])('%p is not a well-formed or redundant tag', (code) => {
+            expect(v.isWellFormed(code)).toBe(false);
+            expect(v.converter.convert(code)).toFailWith(/invalid.*redundant tag/i);
+            expect(c.convert(code)).toFailWith(/invalid.*redundant tag/i);
+
+            expect(v.isCanonical(code)).toBe(false);
+            expect(v.toCanonical(code)).toFailWith(/invalid.*redundant tag/i);
         });
     });
 });
