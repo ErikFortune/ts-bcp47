@@ -23,7 +23,7 @@
 import * as Model from './model';
 import * as TagConverters from '../jar/language-subtags/tags/converters';
 
-import { Converters, Result, fail, succeed } from '@fgv/ts-utils';
+import { Converters, Result } from '@fgv/ts-utils';
 import { datedRegistry, yearMonthDaySpec } from '../common/converters';
 
 import { convertJsonFileSync } from '@fgv/ts-json/file';

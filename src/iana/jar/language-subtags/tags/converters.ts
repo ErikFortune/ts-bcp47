@@ -20,10 +20,11 @@
  * SOFTWARE.
  */
 
-import { LanguageSubtag } from './model';
 import * as Validate from './validate';
 
 import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed } from '@fgv/ts-utils';
+
+import { LanguageSubtag } from './model';
 
 export const languageSubtag = Validate.languageSubtag.converter;
 export const extlangSubtag = Validate.extlangSubtag.converter;
