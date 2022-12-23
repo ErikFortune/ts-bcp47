@@ -32,7 +32,7 @@ import { registryScopeType } from '../jar/language-subtags/registry/converters';
 export const registeredLanguage = Converters.strictObject<Model.RegisteredLanguage>(
     {
         type: Converters.enumeratedValue<'language'>(['language']),
-        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.languageSubtag),
+        subtag: TagConverters.languageSubtag,
         description: Converters.stringArray,
         added: yearMonthDaySpec,
         comments: Converters.stringArray,
@@ -41,11 +41,11 @@ export const registeredLanguage = Converters.strictObject<Model.RegisteredLangua
         preferredValue: TagConverters.languageSubtag,
         scope: registryScopeType,
         suppressScript: TagConverters.scriptSubtag,
-        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.languageSubtag),
+        subtagRangeEnd: TagConverters.languageSubtag,
     },
     {
         description: 'language subtag registry entry',
-        optionalFields: ['deprecated', 'macrolanguage', 'preferredValue', 'scope', 'suppressScript', 'subtagRangeEnd'],
+        optionalFields: ['comments', 'deprecated', 'macrolanguage', 'preferredValue', 'scope', 'suppressScript', 'subtagRangeEnd'],
     }
 );
 
@@ -72,13 +72,13 @@ export const registeredExtLang = Converters.strictObject<Model.RegisteredExtLang
 export const registeredScript = Converters.strictObject<Model.RegisteredScript>(
     {
         type: Converters.enumeratedValue<'script'>(['script']),
-        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.scriptSubtag),
+        subtag: TagConverters.scriptSubtag,
         description: Converters.stringArray,
         added: yearMonthDaySpec,
         comments: Converters.stringArray,
         deprecated: yearMonthDaySpec,
         preferredValue: TagConverters.scriptSubtag,
-        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.scriptSubtag),
+        subtagRangeEnd: TagConverters.scriptSubtag,
     },
     {
         description: 'script subtag registry entry',
@@ -89,13 +89,13 @@ export const registeredScript = Converters.strictObject<Model.RegisteredScript>(
 export const registeredRegion = Converters.strictObject<Model.RegisteredRegion>(
     {
         type: Converters.enumeratedValue<'region'>(['region']),
-        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.regionSubtag),
+        subtag: TagConverters.regionSubtag,
         description: Converters.stringArray,
         added: yearMonthDaySpec,
         comments: Converters.stringArray,
         deprecated: yearMonthDaySpec,
         preferredValue: TagConverters.regionSubtag,
-        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.regionSubtag),
+        subtagRangeEnd: TagConverters.regionSubtag,
     },
     {
         description: 'region subtag registry entry',
@@ -152,7 +152,7 @@ export const registeredRedundantTag = Converters.strictObject<Model.RegisteredRe
     }
 );
 
-export const registeredItem = Converters.discriminatedObject<Model.RegisteredItem>('Type', {
+export const registeredItem = Converters.discriminatedObject<Model.RegisteredItem>('type', {
     language: registeredLanguage,
     extlang: registeredExtLang,
     script: registeredScript,
@@ -164,6 +164,6 @@ export const registeredItem = Converters.discriminatedObject<Model.RegisteredIte
 
 export const registryFile = datedRegistry(registeredItem);
 
-export function loadIanaRegistryJsonFileSync(path: string): Result<Model.RegistryFile> {
+export function loadLanguageSubtagsJsonFileSync(path: string): Result<Model.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
 }
