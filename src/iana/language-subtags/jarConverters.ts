@@ -183,10 +183,6 @@ export function loadIanaRegistryTxtFileSync(path: string): Result<Items.Registry
         arrayFields: ['Comments', 'Description', 'Prefix'],
         fixedContinuationSize: 1,
     }).onSuccess((jar) => {
-        return datedRegistryFromJarRecords(registeredItem)
-            .convert(jar)
-            .onSuccess((dr) => {
-                return registryFile.convert(dr);
-            });
+        return datedRegistryFromJarRecords(registeredItem).convert(jar);
     });
 }

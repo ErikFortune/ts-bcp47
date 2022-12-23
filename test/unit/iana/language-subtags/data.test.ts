@@ -21,27 +21,20 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { loadIanaRegistryJsonFileSync, loadIanaRegistryTxtFileSync } from '../../../../src/iana/registry/converters';
-import { Converters as RegistryConverters } from '../../../../src/iana/registry';
+import * as JarConverters from '../../../../src/iana/language-subtags/jarConverters';
 
 describe('IANA registry data files', () => {
     test('can load registry JSON', () => {
-        expect(loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json')).toSucceed();
+        expect(JarConverters.loadJsonIanaRegistryFileSync('data/iana/language-subtag-registry.json')).toSucceed();
     });
 
-    test('can load registry.txt and convert to JSON', () => {
-        expect(loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')).toSucceedAndSatisfy((records) => {
-            expect(RegistryConverters.registryFile.convert(records)).toSucceed();
-        });
+    test('can load registry.txt', () => {
+        expect(JarConverters.loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')).toSucceed();
     });
 
     test('registry.json and registry.txt are equivalent', () => {
-        const json = loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
-        const txt = loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')
-            .onSuccess((r) => {
-                return RegistryConverters.registryFile.convert(r);
-            })
-            .getValueOrThrow();
+        const json = JarConverters.loadJsonIanaRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
+        const txt = JarConverters.loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt').getValueOrThrow();
         expect(json).toEqual(txt);
     });
 });
