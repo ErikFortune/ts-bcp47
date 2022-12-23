@@ -21,15 +21,15 @@
  */
 
 import * as Items from './model';
-import * as Model from '../../jar/language-subtags/registry/model';
-import * as TagConverters from '../../jar/language-subtags/tags/converters';
+import * as Model from '../jar/language-subtags/registry/model';
+import * as TagConverters from '../jar/language-subtags/tags/converters';
 
 import { Converters, RecordJar, Result, fail, succeed } from '@fgv/ts-utils';
+import { datedRegistry, yearMonthDaySpec } from '../common/converters';
 
 import { convertJsonFileSync } from '@fgv/ts-json/file';
-import { datedRegistryJar } from '../../jar/jarConverters';
-import { registryScopeType } from '../../jar/language-subtags/registry/converters';
-import { yearMonthDaySpec } from '../../common/converters';
+import { datedRegistryFromJarRecords } from '../jar/jarConverters';
+import { registryScopeType } from '../jar/language-subtags/registry/converters';
 
 export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
     {
@@ -172,7 +172,7 @@ export const registeredItem = Converters.discriminatedObject<Items.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
-export const registryFile = datedRegistryJar(registeredItem);
+export const registryFile = datedRegistry(registeredItem);
 
 export function loadJsonIanaRegistryFileSync(path: string): Result<Items.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
@@ -183,6 +183,10 @@ export function loadIanaRegistryTxtFileSync(path: string): Result<Items.Registry
         arrayFields: ['Comments', 'Description', 'Prefix'],
         fixedContinuationSize: 1,
     }).onSuccess((jar) => {
-        return registryFile.convert(jar);
+        return datedRegistryFromJarRecords(registeredItem)
+            .convert(jar)
+            .onSuccess((dr) => {
+                return registryFile.convert(dr);
+            });
     });
 }

@@ -42,7 +42,7 @@ export const fileDateEntry = Converters.strictObject<FileDateEntry>({
  * @returns A new validating `Converter` which yields {@Link Iana.DatedRegistry | DatedRegistry<T>}
  * @public
  */
-export function datedRegistryJar<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC> {
+export function datedRegistryFromJarRecords<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC> {
     return new BaseConverter<DatedRegistry<T>, TC>(
         (from: unknown, _self: Converter<DatedRegistry<T>, TC>, _context?: TC): Result<DatedRegistry<T>> => {
             if (typeof from === 'string' || !Array.isArray(from)) {

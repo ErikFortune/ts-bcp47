@@ -21,11 +21,20 @@
  */
 
 import * as Items from './model';
-import * as Model from '../../jar/language-subtags/registry/model';
-import * as Tags from '../tags';
+import * as Model from '../jar/language-subtags/registry/model';
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../../jar/language-subtags/model';
+import {
+    ExtLangSubtag,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    Validate,
+    VariantSubtag,
+} from '../jar/language-subtags/tags';
 import { Result, fail, succeed } from '@fgv/ts-utils';
+import { ValidationHelpers } from '../../utils';
 
 abstract class RegisteredItemScope<
     TTYPE extends Model.RegistryEntryType,
@@ -33,11 +42,13 @@ abstract class RegisteredItemScope<
     TITEM extends Items.RegisteredTagOrSubtag<TTYPE, TTAG>
 > {
     protected readonly _items: Map<TTAG, TITEM>;
-    protected readonly _tag: Tags.TagOrSubtag<TTYPE, TTAG>;
+    protected readonly _type: TTYPE;
+    protected readonly _validate: ValidationHelpers<TTAG>;
 
-    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
+    protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
         this._items = new Map();
-        this._tag = tag;
+        this._type = type;
+        this._validate = validate;
     }
 
     public getAllTags(): TTAG[] {
@@ -64,23 +75,23 @@ abstract class RegisteredItemScope<
     }
 
     public isWellFormed(val: unknown): val is TTAG {
-        return this._tag.isWellFormed(val);
+        return this._validate.isWellFormed(val);
     }
 
     public isCanonical(val: unknown): val is TTAG {
-        return this._tag.isCanonical(val);
+        return this._validate.isCanonical(val);
     }
 
     public toCanonical(val: unknown): Result<TTAG> {
-        return this._tag.toCanonical(val);
+        return this._validate.toCanonical(val);
     }
 
     public toValidCanonical(val: unknown): Result<TTAG> {
-        return this._tag.toCanonical(val).onSuccess((canonical) => {
+        return this._validate.toCanonical(val).onSuccess((canonical) => {
             if (this._items.has(canonical)) {
                 return succeed(canonical);
             }
-            return fail(`${val}: invalid ${this._tag.type}`);
+            return fail(`${val}: invalid ${this._type}`);
         });
     }
 
@@ -101,7 +112,7 @@ abstract class RegisteredItemScope<
 
     protected _validateTag(tag: TTAG): Result<true> {
         if (!this.isCanonical(tag)) {
-            return fail(`${tag}: ${this._tag.type} is not in canonical form`);
+            return fail(`${tag}: ${this._type} is not in canonical form`);
         }
         return succeed(true);
     }
@@ -115,8 +126,8 @@ class SubtagScope<
     TTAG extends string,
     TITEM extends Items.RegisteredSubtag<TTYPE, TTAG>
 > extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
-    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
-        super(tag);
+    protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
+        super(type, validate);
     }
 
     public add(entry: TITEM): Result<true> {
@@ -136,8 +147,8 @@ class SubtagScopeWithRange<
     TTAG extends string,
     TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>
 > extends SubtagScope<TTYPE, TTAG, TITEM> {
-    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
-        super(tag);
+    protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
+        super(type, validate);
     }
 
     public add(entry: TITEM): Result<true> {
@@ -153,8 +164,8 @@ class TagScope<
     TTAG extends string,
     TITEM extends Items.RegisteredTag<TTYPE, TTAG>
 > extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
-    protected constructor(tag: Tags.TagOrSubtag<TTYPE, TTAG>) {
-        super(tag);
+    protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
+        super(type, validate);
     }
 
     public add(entry: TITEM): Result<true> {
@@ -171,42 +182,42 @@ class TagScope<
 
 export class LanguageSubtagScope extends SubtagScopeWithRange<'language', LanguageSubtag, Items.RegisteredLanguage> {
     public constructor() {
-        super(new Tags.Language());
+        super('language', Validate.languageSubtag);
     }
 }
 
 export class ExtLangSubtagScope extends SubtagScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
     public constructor() {
-        super(new Tags.ExtLang());
+        super('extlang', Validate.extlangSubtag);
     }
 }
 
 export class ScriptSubtagScope extends SubtagScopeWithRange<'script', ScriptSubtag, Items.RegisteredScript> {
     public constructor() {
-        super(new Tags.Script());
+        super('script', Validate.scriptSubtag);
     }
 }
 
 export class RegionSubtagScope extends SubtagScopeWithRange<'region', RegionSubtag, Items.RegisteredRegion> {
     public constructor() {
-        super(new Tags.Region());
+        super('region', Validate.regionSubtag);
     }
 }
 
 export class VariantSubtagScope extends SubtagScope<'variant', VariantSubtag, Items.RegisteredVariant> {
     public constructor() {
-        super(new Tags.Variant());
+        super('variant', Validate.variantSubtag);
     }
 }
 
 export class GrandfatheredTagScope extends TagScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
     public constructor() {
-        super(new Tags.Grandfathered());
+        super('grandfathered', Validate.grandfatheredTag);
     }
 }
 
 export class RedundantTagScope extends TagScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
     public constructor() {
-        super(new Tags.Redundant());
+        super('redundant', Validate.redundantTag);
     }
 }

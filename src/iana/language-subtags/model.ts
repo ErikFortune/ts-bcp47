@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import * as Model from '../../jar/language-subtags/registry/model';
+import * as Model from '../jar/language-subtags/registry/model';
 
 import {
     ExtLangSubtag,
@@ -31,9 +31,9 @@ import {
     RegionSubtag,
     ScriptSubtag,
     VariantSubtag,
-} from '../common';
+} from './common';
 
-import { DatedRegistry } from '../../common/model';
+import { DatedRegistry } from '../common/model';
 
 export interface RegisteredSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> {
     readonly type: TTYPE;

@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { Converters } from '../../../../src/iana/registry';
+import * as Converters from '../../../../src/iana/language-subtags/jarConverters';
 
 /*
  * Most converters are tested indirectly via other tests, but a few error cases
@@ -42,7 +42,7 @@ describe('IANA registry converters', () => {
                     Macrolanguage: 'ar',
                     /* eslint-enable @typescript-eslint/naming-convention */
                 })
-            ).toFailWith(/not a valid language subtag/i);
+            ).toFailWith(/invalid language subtag/i);
         });
 
         test('fails for a prefix with more than one tag', () => {

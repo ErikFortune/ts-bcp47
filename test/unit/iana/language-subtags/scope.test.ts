@@ -21,9 +21,9 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { ExtLangSubtag, ExtendedLanguageRange, LanguageSubtag } from '../../../../src/iana/tags';
-import { TagRegistry } from '../../../../src/iana';
-import { YearMonthDaySpec } from '../../../../src/iana/registry/model';
+
+import { ExtLangSubtag, ExtendedLanguageRange, LanguageSubtag, TagRegistry } from '../../../../src/iana/language-subtags';
+import { YearMonthDaySpec } from '../../../../src/iana/common/model';
 
 describe('IANA tag registry scope', () => {
     const iana = TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
@@ -110,7 +110,7 @@ describe('IANA tag registry scope', () => {
 
         test.each([
             ['feh', /invalid language/i],
-            ['001', /malformed/i],
+            ['001', /invalid language/i],
         ])('toValidCanonical fails for %p (%p)', (tag, expected) => {
             expect(languages.toValidCanonical(tag)).toFailWith(expected);
         });

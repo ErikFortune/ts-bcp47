@@ -21,13 +21,13 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { Converters } from '../../../../src/iana/registry';
-import { TagRegistry } from '../../../../src/iana';
+import * as JarConverters from '../../../../src/iana/language-subtags/jarConverters';
+import { TagRegistry } from '../../../../src/iana/language-subtags';
 
 describe('IANA TagRegistry class', () => {
     describe('create static method', () => {
         test('creates from a supplied a tag registry', () => {
-            const registry = Converters.loadIanaRegistryJsonFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
+            const registry = JarConverters.loadJsonIanaRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
             expect(TagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllTags()).toHaveLength(8240);
                 expect(tags.extlangs.getAllTags()).toHaveLength(252);

@@ -22,8 +22,8 @@
 
 import '@fgv/ts-utils-jest';
 import * as Converters from '../../../../../../src/iana/jar/language-subtags/tags/converters';
-import * as Validate from '../../../../../../src/iana/jar/language-subtags/tags/validate';
 import { LanguageSubtag } from '../../../../../../src/iana/jar/language-subtags/tags';
+import { Validate } from '../../../../../../src/iana/jar/language-subtags/tags';
 
 describe('Iana common validators', () => {
     describe('language subtag', () => {

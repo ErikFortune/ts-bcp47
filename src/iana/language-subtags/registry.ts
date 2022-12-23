@@ -26,7 +26,7 @@ import * as path from 'path';
 
 import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
-import { YearMonthDaySpec } from '../../jar/language-subtags/registry/model';
+import { YearMonthDaySpec } from '../jar/language-subtags/registry/model';
 
 export class TagRegistry {
     public readonly fileDate: YearMonthDaySpec;
@@ -48,7 +48,7 @@ export class TagRegistry {
 
     protected constructor(registry: RegistryFile) {
         this.fileDate = registry.fileDate;
-        this._all = registry.items;
+        this._all = registry.entries;
         for (const entry of this._all) {
             switch (entry.type) {
                 case 'language':
@@ -93,7 +93,7 @@ export class TagRegistry {
 
     public static load(root: string): Result<TagRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadIanaRegistryJsonFileSync(path.join(root)).getValueOrThrow();
+            const registry = Converters.loadJsonIanaRegistryFileSync(path.join(root)).getValueOrThrow();
             return new TagRegistry(registry);
         });
     }

@@ -21,13 +21,13 @@
  */
 
 import * as Model from './model';
-import * as TagConverters from '../../jar/language-subtags/tags/converters';
+import * as TagConverters from '../jar/language-subtags/tags/converters';
 
 import { Converters, Result, fail, succeed } from '@fgv/ts-utils';
+import { datedRegistry, yearMonthDaySpec } from '../common/converters';
 
 import { convertJsonFileSync } from '@fgv/ts-json/file';
-import { registryScopeType } from '../../jar/language-subtags/registry/converters';
-import { yearMonthDaySpec } from '../../common/converters';
+import { registryScopeType } from '../jar/language-subtags/registry/converters';
 
 export const registeredLanguage = Converters.strictObject<Model.RegisteredLanguage>(
     {
@@ -167,10 +167,7 @@ export const registeredItem = Converters.discriminatedObject<Model.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
-export const registryFile = Converters.strictObject<Model.RegistryFile>({
-    fileDate: yearMonthDaySpec,
-    items: Converters.arrayOf(registeredItem),
-});
+export const registryFile = datedRegistry(registeredItem);
 
 export function loadIanaRegistryJsonFileSync(path: string): Result<Model.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
