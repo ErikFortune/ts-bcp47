@@ -20,30 +20,9 @@
  * SOFTWARE.
  */
 
-import '@fgv/ts-utils-jest';
-import { Converters, LanguageSubtag } from '../../../../src/iana/tags';
+import * as Model from './model';
 
-describe('tag converters', () => {
-    describe('tagRange converter', () => {
-        const range = Converters.rangeOfTags(Converters.languageSubtag);
-        test.each([
-            ['qaa..qzz', ['qaa', 'qzz']],
-            ['xa..xz', ['xa', 'xz']],
-        ])('converts %p to %p', (tags, vals) => {
-            expect(range.convert(tags)).toSucceedWith(vals as LanguageSubtag[]);
-        });
+import { Converters } from '@fgv/ts-utils';
 
-        test.each([
-            [10, /not a string/i],
-            ['qaa...qzz', /not a valid language/i],
-            ['001..qaa', /not a valid language/i],
-            ['qaa..001', /not a valid language/i],
-            ['..en', /malformed tag range/i],
-            ['en..', /malformed tag range/i],
-            ['aa..mmm..zzz', /malformed tag range/i],
-            ['en', /malformed tag range/i],
-        ])('fails for %p (%p)', (tags, reason) => {
-            expect(range.convert(tags)).toFailWith(reason);
-        });
-    });
-});
+export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
+export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);

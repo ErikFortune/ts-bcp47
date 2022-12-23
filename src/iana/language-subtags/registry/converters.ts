@@ -20,153 +20,144 @@
  * SOFTWARE.
  */
 
-import * as Items from './registeredItems';
 import * as Model from './model';
 import * as TagConverters from '../../jar/language-subtags/tags/converters';
-import * as Validate from '../common/validate';
 
-import { Converters, RecordJar, Result, fail, isKeyOf, succeed } from '@fgv/ts-utils';
+import { Converters, Result, fail, succeed } from '@fgv/ts-utils';
 
-import { DateTime } from 'luxon';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
+import { registryScopeType } from '../../jar/language-subtags/registry/converters';
+import { yearMonthDaySpec } from '../../common/converters';
 
-export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
-export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);
-
-export const yearMonthDaySpec = Converters.string.map(Validate.yearMonthDaySpec);
-
-export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
+export const registeredLanguage = Converters.strictObject<Model.RegisteredLanguage>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'language'>(['language']) },
-        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.languageSubtag) },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        macrolanguage: { from: 'Macrolanguage', converter: TagConverters.languageSubtag, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.languageSubtag, optional: true },
-        scope: { from: 'Scope', converter: registryScopeType, optional: true },
-        suppressScript: { from: 'Suppress-Script', converter: TagConverters.scriptSubtag, optional: true },
-        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.languageSubtag), optional: true },
+        type: Converters.enumeratedValue<'language'>(['language']),
+        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.languageSubtag),
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        macrolanguage: TagConverters.languageSubtag,
+        preferredValue: TagConverters.languageSubtag,
+        scope: registryScopeType,
+        suppressScript: TagConverters.scriptSubtag,
+        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.languageSubtag),
     },
     {
-        strict: true,
-        description: 'language subtag',
+        description: 'language subtag registry entry',
+        optionalFields: ['deprecated', 'macrolanguage', 'preferredValue', 'scope', 'suppressScript', 'subtagRangeEnd'],
     }
 );
 
-export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagRegistryEntry, Items.RegisteredExtLang>(
+export const registeredExtLang = Converters.strictObject<Model.RegisteredExtLang>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
-        subtag: { from: 'Subtag', converter: TagConverters.extLangSubtag },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange },
-        prefix: {
-            from: 'Prefix',
-            converter: Converters.arrayOf(TagConverters.languageSubtag).map((tags) => {
-                if (tags.length !== 1) {
-                    return fail(`[${tags.join(', ')}]: malformed extlang prefix`);
-                }
-                return succeed(tags[0]);
-            }),
-        },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        macrolanguage: { from: 'Macrolanguage', converter: TagConverters.languageSubtag, optional: true },
-        scope: { from: 'Scope', converter: registryScopeType, optional: true },
-        suppressScript: { from: 'Suppress-Script', converter: TagConverters.scriptSubtag, optional: true },
+        type: Converters.enumeratedValue<'extlang'>(['extlang']),
+        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.extLangSubtag),
+        preferredValue: TagConverters.extendedLanguageRange,
+        prefix: Converters.arrayOf(TagConverters.languageSubtag).map((tags) => {
+            if (tags.length !== 1) {
+                return fail(`[${tags.join(', ')}]: malformed extlang prefix`);
+            }
+            return succeed(tags[0]);
+        }),
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        macrolanguage: TagConverters.languageSubtag,
+        scope: registryScopeType,
+        suppressScript: TagConverters.scriptSubtag,
     },
     {
-        strict: true,
-        description: 'extlang subtag',
+        description: 'extlang subtag registry entry',
+        optionalFields: ['comments', 'deprecated', 'macrolanguage', 'scope', 'suppressScript'],
     }
 );
 
-export const registeredScript = Converters.transformObject<Model.ScriptSubtagRegistryEntry, Items.RegisteredScript>(
+export const registeredScript = Converters.strictObject<Model.RegisteredScript>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'script'>(['script']) },
-        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.scriptSubtag) },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.scriptSubtag, optional: true },
-        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.scriptSubtag), optional: true },
+        type: Converters.enumeratedValue<'script'>(['script']),
+        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.scriptSubtag),
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        preferredValue: TagConverters.scriptSubtag,
+        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.scriptSubtag),
     },
     {
-        strict: true,
-        description: 'script subtag',
+        description: 'script subtag registry entry',
+        optionalFields: ['comments', 'deprecated', 'preferredValue', 'subtagRangeEnd'],
     }
 );
 
-export const registeredRegion = Converters.transformObject<Model.RegionSubtagRegistryEntry, Items.RegisteredRegion>(
+export const registeredRegion = Converters.strictObject<Model.RegisteredRegion>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'region'>(['region']) },
-        subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.regionSubtag) },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.regionSubtag, optional: true },
-        subtagRangeEnd: { from: 'Subtag', converter: TagConverters.endOfTagRangeOrUndefined(TagConverters.regionSubtag), optional: true },
+        type: Converters.enumeratedValue<'region'>(['region']),
+        subtag: TagConverters.tagOrStartOfTagRange(TagConverters.regionSubtag),
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        preferredValue: TagConverters.regionSubtag,
+        subtagRangeEnd: TagConverters.endOfTagRangeOrUndefined(TagConverters.regionSubtag),
     },
     {
-        strict: true,
-        description: 'region subtag',
+        description: 'region subtag registry entry',
+        optionalFields: ['comments', 'deprecated', 'preferredValue', 'subtagRangeEnd'],
     }
 );
 
-export const registeredVariant = Converters.transformObject<Model.VariantSubtagRegistryEntry, Items.RegisteredVariant>(
+export const registeredVariant = Converters.strictObject<Model.RegisteredVariant>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'variant'>(['variant']) },
-        subtag: { from: 'Subtag', converter: TagConverters.variantSubtag },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.variantSubtag, optional: true },
-        prefix: { from: 'Prefix', converter: Converters.arrayOf(TagConverters.extendedLanguageRange), optional: true },
+        type: Converters.enumeratedValue<'variant'>(['variant']),
+        subtag: TagConverters.variantSubtag,
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        preferredValue: TagConverters.variantSubtag,
+        prefix: Converters.arrayOf(TagConverters.extendedLanguageRange),
     },
     {
-        strict: true,
-        description: 'variant subtag',
+        description: 'variant subtag registry entry',
+        optionalFields: ['comments', 'deprecated', 'preferredValue', 'prefix'],
     }
 );
 
-export const registeredGrandfatheredTag = Converters.transformObject<Model.GrandfatheredTagRegistryEntry, Items.RegisteredGrandfatheredTag>(
+export const registeredGrandfatheredTag = Converters.strictObject<Model.RegisteredGrandfatheredTag>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'grandfathered'>(['grandfathered']) },
-        tag: { from: 'Tag', converter: TagConverters.grandfatheredTag },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange, optional: true },
+        type: Converters.enumeratedValue<'grandfathered'>(['grandfathered']),
+        tag: TagConverters.grandfatheredTag,
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        preferredValue: TagConverters.extendedLanguageRange,
     },
     {
-        strict: true,
-        description: 'grandfathered tag',
+        description: 'grandfathered tag registry entry',
+        optionalFields: ['comments', 'deprecated', 'preferredValue'],
     }
 );
 
-export const registeredRedundantTag = Converters.transformObject<Model.RedundantTagRegistryEntry, Items.RegisteredRedundantTag>(
+export const registeredRedundantTag = Converters.strictObject<Model.RegisteredRedundantTag>(
     {
-        type: { from: 'Type', converter: Converters.enumeratedValue<'redundant'>(['redundant']) },
-        tag: { from: 'Tag', converter: TagConverters.redundantTag },
-        description: { from: 'Description', converter: Converters.stringArray },
-        added: { from: 'Added', converter: yearMonthDaySpec },
-        comments: { from: 'Comments', converter: Converters.stringArray, optional: true },
-        deprecated: { from: 'Deprecated', converter: yearMonthDaySpec, optional: true },
-        preferredValue: { from: 'Preferred-Value', converter: TagConverters.extendedLanguageRange, optional: true },
+        type: Converters.enumeratedValue<'redundant'>(['redundant']),
+        tag: TagConverters.redundantTag,
+        description: Converters.stringArray,
+        added: yearMonthDaySpec,
+        comments: Converters.stringArray,
+        deprecated: yearMonthDaySpec,
+        preferredValue: TagConverters.extendedLanguageRange,
     },
     {
-        strict: true,
-        description: 'redundant tag',
+        description: 'redundant tag registry entry',
+        optionalFields: ['comments', 'deprecated', 'preferredValue'],
     }
 );
 
-export const registeredItem = Converters.discriminatedObject<Items.RegisteredItem>('Type', {
+export const registeredItem = Converters.discriminatedObject<Model.RegisteredItem>('Type', {
     language: registeredLanguage,
     extlang: registeredExtLang,
     script: registeredScript,
@@ -176,37 +167,11 @@ export const registeredItem = Converters.discriminatedObject<Items.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
-export const registryFile = Converters.transformObject<Model.RegistryFile, Items.RegistryFile>(
-    {
-        fileDate: { from: 'File-Date', converter: yearMonthDaySpec },
-        items: { from: 'Entries', converter: Converters.arrayOf(registeredItem) },
-    },
-    {
-        strict: true,
-        description: 'IANA registry file (json)',
-    }
-);
+export const registryFile = Converters.strictObject<Model.RegistryFile>({
+    fileDate: yearMonthDaySpec,
+    items: Converters.arrayOf(registeredItem),
+});
 
-export function loadIanaRegistryJsonFileSync(path: string): Result<Items.RegistryFile> {
+export function loadIanaRegistryJsonFileSync(path: string): Result<Model.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
-}
-
-export function jarRecordsToRegistryFile(records: RecordJar.JarRecord[]): Result<Model.RegistryFile> {
-    let fileDate = DateTime.now().toFormat('yyyy-LL-dd') as Model.YearMonthDaySpec;
-    if (isKeyOf('File-Date', records[0])) {
-        fileDate = records[0]['File-Date'] as Model.YearMonthDaySpec;
-        records.shift();
-    }
-    // okay, this is truly not type safe but it's also an intermediate format
-    // that will be validated by much smarter type-safe converters before use.
-    //
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    return succeed({ 'File-Date': fileDate, Entries: records as unknown as Model.RegistryEntry[] } as Model.RegistryFile);
-}
-
-export function loadIanaRegistryTxtFileSync(path: string): Result<Model.RegistryFile> {
-    return RecordJar.readRecordJarFileSync(path, {
-        arrayFields: ['Comments', 'Description', 'Prefix'],
-        fixedContinuationSize: 1,
-    }).onSuccess(jarRecordsToRegistryFile);
 }

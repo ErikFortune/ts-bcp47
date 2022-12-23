@@ -30,9 +30,13 @@ import {
     ScriptSubtag,
     VariantSubtag,
 } from './model';
-import { Result, succeed } from '@fgv/ts-utils';
-import { RegExpValidationHelpers, ValidationHelpers } from '../../../../utils';
 
+import { RegExpValidationHelpers, ValidationHelpers } from '../../../../utils';
+import { Result, succeed } from '@fgv/ts-utils';
+
+/**
+ * @internal
+ */
 export const languageSubtag = new RegExpValidationHelpers<LanguageSubtag>({
     description: 'language subtag',
     wellFormed: /^[A-Za-z]{2,3}$/,
@@ -40,6 +44,9 @@ export const languageSubtag = new RegExpValidationHelpers<LanguageSubtag>({
     toCanonical: (from: LanguageSubtag) => succeed(from.toLowerCase() as LanguageSubtag),
 });
 
+/**
+ * @internal
+ */
 export const extlangSubtag = new RegExpValidationHelpers<ExtLangSubtag>({
     description: 'extlang subtag',
     wellFormed: /^[A-Za-z]{3}$/,
@@ -47,6 +54,9 @@ export const extlangSubtag = new RegExpValidationHelpers<ExtLangSubtag>({
     toCanonical: (from: ExtLangSubtag) => succeed(from.toLowerCase() as ExtLangSubtag),
 });
 
+/**
+ * @internal
+ */
 export const scriptSubtag = new RegExpValidationHelpers<ScriptSubtag>({
     description: 'script subtag',
     wellFormed: /^[A-Za-z]{4}$/,
@@ -56,6 +66,9 @@ export const scriptSubtag = new RegExpValidationHelpers<ScriptSubtag>({
     },
 });
 
+/**
+ * @internal
+ */
 export const regionSubtag = new RegExpValidationHelpers<RegionSubtag>({
     description: 'region subtag',
     wellFormed: /^([A-Za-z]{2,3})$|^([0-9]{3})$/,
@@ -63,6 +76,9 @@ export const regionSubtag = new RegExpValidationHelpers<RegionSubtag>({
     toCanonical: (from: RegionSubtag) => succeed(from.toUpperCase() as RegionSubtag),
 });
 
+/**
+ * @internal
+ */
 export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
     description: 'variant subtag',
     wellFormed: /^([A-Za-z0-9]{5,8})$|^([0-9][A-Za-z0-9]{3})$/,
@@ -110,6 +126,17 @@ class TagValidationHelpers<T extends string, TC = unknown> extends ValidationHel
     }
 }
 
+/**
+ * @internal
+ */
 export const grandfatheredTag = new TagValidationHelpers<GrandfatheredTag>('grandfathered tag');
+
+/**
+ * @internal
+ */
 export const redundantTag = new TagValidationHelpers<RedundantTag>('redundant tag');
+
+/**
+ * @internal
+ */
 export const extendedLanguageRange = new TagValidationHelpers<ExtendedLanguageRange>('extended language range');

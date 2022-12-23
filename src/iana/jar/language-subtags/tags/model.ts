@@ -22,12 +22,46 @@
 
 import { Brand } from '@fgv/ts-utils';
 
+/**
+ * Primary language subtag in the IANA language subtag registry.
+ * @public
+ */
 export type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
+
+/**
+ * Extlang subtag in the IANA language subtag registry.
+ * @public
+ */
 export type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
+
+/**
+ * Script subtag in the IANA language subtag registry.
+ * @public
+ */
 export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
+
+/**
+ * Region subtag in the IANA language subtag registry.
+ * @public
+ */
 export type RegionSubtag = Brand<string, 'RegionSubtag'>;
+
+/**
+ * Variant subtag in the IANA language subtag registry.
+ */
 export type VariantSubtag = Brand<string, 'VariantSubtag'>;
+
+/**
+ * Legacy language tag registered as grandfathered in the IANA language subtag registry.
+ */
 export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
+
+/**
+ * Legacy language tag registered as redundant in the IANA language subtag registry.
+ */
 export type RedundantTag = Brand<string, 'RedundantTag'>;
 
+/**
+ * An extended language subtag as used in the IANA language registry.
+ */
 export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;

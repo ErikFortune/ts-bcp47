@@ -20,6 +20,18 @@
  * SOFTWARE.
  */
 
-export * from '../common';
-export * as Model from '../../jar/language-subtags/registry/model';
-export * as Converters from './jarConverters';
+import {
+    ExtLangSubtag,
+    ExtendedLanguageRange,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    VariantSubtag,
+} from '../jar/language-subtags/tags';
+
+import { RegistryEntryScope, RegistryEntryType } from '../jar/language-subtags/registry/model';
+
+export { ExtLangSubtag, ExtendedLanguageRange, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag };
+export { RegistryEntryScope, RegistryEntryType };

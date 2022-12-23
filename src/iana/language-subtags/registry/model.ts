@@ -20,73 +20,142 @@
  * SOFTWARE.
  */
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../../jar/language-subtags/model';
+import * as Model from '../../jar/language-subtags/registry/model';
 
-import { Brand } from '@fgv/ts-utils';
+import {
+    ExtLangSubtag,
+    ExtendedLanguageRange,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RedundantTag,
+    RegionSubtag,
+    ScriptSubtag,
+    VariantSubtag,
+} from '../common';
 
-export type RegistryEntryType = 'extlang' | 'grandfathered' | 'language' | 'redundant' | 'region' | 'script' | 'variant';
-export const allRegistryEntryTypes: RegistryEntryType[] = [
-    'extlang',
-    'grandfathered',
-    'language',
-    'redundant',
-    'region',
-    'script',
-    'variant',
-];
+import { DatedRegistry } from '../../common/model';
 
-export type RegistryEntryScope = 'collection' | 'macrolanguage' | 'private-use' | 'special';
-export const allRegistryEntryScopes: RegistryEntryScope[] = ['collection', 'macrolanguage', 'private-use', 'special'];
-
-export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
-
-interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType> {
-    /* eslint-disable @typescript-eslint/naming-convention */
-    Type: TTYPE;
-    Description: string[];
-    Added: YearMonthDaySpec;
-    Deprecated?: YearMonthDaySpec;
-    'Suppress-Script'?: ScriptSubtag;
-    Macrolanguage?: LanguageSubtag;
-    'Preferred-Value'?: string;
-    Prefix?: string[];
-    Scope?: RegistryEntryScope;
-    Comments?: string[];
-    /* eslint-enable @typescript-eslint/naming-convention */
+export interface RegisteredSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> {
+    readonly type: TTYPE;
+    readonly subtag: TTAG;
+    readonly description: string[];
 }
 
-export interface RegistrySubtagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TSUBTAG extends string = string>
-    extends RegistryEntryBase<TTYPE> {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    Subtag: TSUBTAG | TSUBTAG[];
+export interface RegisteredSubtagWithRange<TTYPE extends Model.RegistryEntryType, TTAG extends string>
+    extends RegisteredSubtag<TTYPE, TTAG> {
+    readonly type: TTYPE;
+    readonly subtag: TTAG;
+    readonly description: string[];
+
+    readonly subtagRangeEnd?: TTAG;
 }
 
-export interface RegistryTagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TTAG extends string = string>
-    extends RegistryEntryBase<TTYPE> {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    Tag: TTAG | TTAG[];
+export interface RegisteredTag<TTYPE extends Model.RegistryEntryType, TTAG extends string> {
+    readonly type: TTYPE;
+    readonly tag: TTAG;
+    readonly description: string[];
 }
 
-export type LanguageSubtagRegistryEntry = RegistrySubtagEntry<'language', LanguageSubtag>;
-export type ExtLangSubtagRegistryEntry = RegistrySubtagEntry<'extlang', ExtLangSubtag>;
-export type ScriptSubtagRegistryEntry = RegistrySubtagEntry<'script', ScriptSubtag>;
-export type RegionSubtagRegistryEntry = RegistrySubtagEntry<'region', RegionSubtag>;
-export type VariantSubtagRegistryEntry = RegistrySubtagEntry<'variant', VariantSubtag>;
-export type GrandfatheredTagRegistryEntry = RegistryTagEntry<'grandfathered', GrandfatheredTag>;
-export type RedundantTagRegistryEntry = RegistryTagEntry<'redundant', RedundantTag>;
+export type RegisteredTagOrSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> =
+    | RegisteredSubtag<TTYPE, TTAG>
+    | RegisteredSubtagWithRange<TTYPE, TTAG>
+    | RegisteredTag<TTYPE, TTAG>;
 
-export type RegistryEntry =
-    | LanguageSubtagRegistryEntry
-    | ExtLangSubtagRegistryEntry
-    | ScriptSubtagRegistryEntry
-    | RegionSubtagRegistryEntry
-    | VariantSubtagRegistryEntry
-    | GrandfatheredTagRegistryEntry
-    | RedundantTagRegistryEntry;
+export interface RegisteredLanguage extends RegisteredSubtagWithRange<'language', LanguageSubtag> {
+    readonly type: 'language';
+    readonly subtag: LanguageSubtag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
 
-export interface RegistryFile {
-    /* eslint-disable @typescript-eslint/naming-convention */
-    'File-Date': YearMonthDaySpec;
-    Entries: RegistryEntry[];
-    /* eslint-enable @typescript-eslint/naming-convention */
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+
+    readonly macrolanguage?: LanguageSubtag;
+    readonly preferredValue?: LanguageSubtag;
+    readonly scope?: Model.RegistryEntryScope;
+    readonly suppressScript?: ScriptSubtag;
+
+    readonly subtagRangeEnd?: LanguageSubtag;
 }
+
+export interface RegisteredExtLang extends RegisteredSubtag<'extlang', ExtLangSubtag> {
+    readonly type: 'extlang';
+    readonly subtag: ExtLangSubtag;
+    readonly preferredValue: ExtendedLanguageRange;
+    readonly prefix: LanguageSubtag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+
+    readonly macrolanguage?: LanguageSubtag;
+    readonly scope?: Model.RegistryEntryScope;
+    readonly suppressScript?: ScriptSubtag;
+}
+
+export interface RegisteredScript extends RegisteredSubtagWithRange<'script', ScriptSubtag> {
+    readonly type: 'script';
+    readonly subtag: ScriptSubtag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+    readonly preferredValue?: ScriptSubtag;
+
+    readonly subtagRangeEnd?: ScriptSubtag;
+}
+
+export interface RegisteredRegion extends RegisteredSubtagWithRange<'region', RegionSubtag> {
+    readonly type: 'region';
+    readonly subtag: RegionSubtag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+    readonly preferredValue?: RegionSubtag;
+
+    readonly subtagRangeEnd?: RegionSubtag;
+}
+
+export interface RegisteredVariant extends RegisteredSubtag<'variant', VariantSubtag> {
+    readonly type: 'variant';
+    readonly subtag: VariantSubtag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+    readonly preferredValue?: VariantSubtag;
+    readonly prefix?: ExtendedLanguageRange[];
+}
+
+export interface RegisteredGrandfatheredTag extends RegisteredTag<'grandfathered', GrandfatheredTag> {
+    readonly type: 'grandfathered';
+    readonly tag: GrandfatheredTag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+    readonly preferredValue?: ExtendedLanguageRange;
+}
+
+export interface RegisteredRedundantTag extends RegisteredTag<'redundant', RedundantTag> {
+    readonly type: 'redundant';
+    readonly tag: RedundantTag;
+    readonly description: string[];
+    readonly added: Model.YearMonthDaySpec;
+
+    readonly comments?: string[];
+    readonly deprecated?: Model.YearMonthDaySpec;
+    readonly preferredValue?: ExtendedLanguageRange;
+}
+
+export type RegisteredSubtagItem = RegisteredLanguage | RegisteredExtLang | RegisteredScript | RegisteredRegion | RegisteredVariant;
+export type RegisteredTagItem = RegisteredGrandfatheredTag | RegisteredRedundantTag;
+export type RegisteredItem = RegisteredSubtagItem | RegisteredTagItem;
+
+export type RegistryFile = DatedRegistry<RegisteredItem>;

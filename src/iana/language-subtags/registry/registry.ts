@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 
-import * as Converters from './converters';
+import * as Converters from './jarConverters';
 import * as Scope from './scope';
 import * as path from 'path';
 
-import { RegisteredItem, RegistryFile } from './registeredItems';
+import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
-import { YearMonthDaySpec } from './model';
+import { YearMonthDaySpec } from '../../jar/language-subtags/registry/model';
 
 export class TagRegistry {
     public readonly fileDate: YearMonthDaySpec;

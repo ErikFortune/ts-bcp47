@@ -21,3 +21,4 @@
  */
 
 export * as Tags from './tags/model';
+export * as Registry from './registry/model';

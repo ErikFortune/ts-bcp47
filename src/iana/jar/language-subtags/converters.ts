@@ -21,3 +21,4 @@
  */
 
 export * as Tags from './tags/converters';
+export * as Registry from './registry/converters';

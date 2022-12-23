@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Items from './registeredItems';
-import * as Model from './model';
+import * as Items from './model';
+import * as Model from '../../jar/language-subtags/registry/model';
 import * as Tags from '../tags';
 
 import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSubtag, ScriptSubtag, VariantSubtag } from '../../jar/language-subtags/model';

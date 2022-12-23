@@ -20,6 +20,5 @@
  * SOFTWARE.
  */
 
-export * from '../common';
-export * as Model from '../../jar/language-subtags/registry/model';
-export * as Converters from './jarConverters';
+export * from './model';
+export * as Converters from './converters';
