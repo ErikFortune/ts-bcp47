@@ -53,4 +53,4 @@ export interface LanguageTagExtension {
     url: string;
 }
 
-export type LanguageTagExtensionRegistryFile = DatedRegistry<LanguageTagExtension>;
+export type LanguageTagExtensions = DatedRegistry<LanguageTagExtension>;

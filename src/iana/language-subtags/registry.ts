@@ -20,7 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Converters from './jarConverters';
+import * as Converters from './converters';
+import * as JarConverters from './jarConverters';
 import * as Scope from './scope';
 import * as path from 'path';
 
@@ -93,7 +94,21 @@ export class TagRegistry {
 
     public static load(root: string): Result<TagRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadJsonIanaRegistryFileSync(path.join(root)).getValueOrThrow();
+            const registry = Converters.loadLanguageSubtagsJsonFileSync(path.join(root)).getValueOrThrow();
+            return new TagRegistry(registry);
+        });
+    }
+
+    public static loadJsonRegistryFile(root: string): Result<TagRegistry> {
+        return captureResult(() => {
+            const registry = JarConverters.loadJsonSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
+            return new TagRegistry(registry);
+        });
+    }
+
+    public static loadTxtRegistryFile(root: string): Result<TagRegistry> {
+        return captureResult(() => {
+            const registry = JarConverters.loadTxtSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
             return new TagRegistry(registry);
         });
     }

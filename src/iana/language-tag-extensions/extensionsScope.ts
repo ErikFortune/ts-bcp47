@@ -19,3 +19,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import * as Model from './model';
+import * as Validate from './validate';
+
+import { Result, succeed } from '@fgv/ts-utils';
+
+import { RegisteredItemScope } from '../common/registeredItems';
+
+export class TagExtensionsScope extends RegisteredItemScope<
+    'language-tag-extension',
+    Model.ExtensionSingleton,
+    Model.LanguageTagExtension
+> {
+    public constructor() {
+        super('language-tag-extension', Validate.extensionSingleton);
+    }
+
+    public add(entry: Model.LanguageTagExtension): Result<true> {
+        return this._validateEntry(entry).onSuccess(() => {
+            this._items.set(entry.identifier, entry);
+            return succeed(true);
+        });
+    }
+
+    protected _validateEntry(entry: Model.LanguageTagExtension): Result<true> {
+        return this._validateKey(entry.identifier);
+    }
+}

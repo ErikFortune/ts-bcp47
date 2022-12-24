@@ -33,93 +33,10 @@ import {
     Validate,
     VariantSubtag,
 } from '../jar/language-subtags/tags';
-import { Result, fail, succeed } from '@fgv/ts-utils';
+import { Result, succeed } from '@fgv/ts-utils';
+
+import { RegisteredItemScope } from '../common/registeredItems';
 import { ValidationHelpers } from '../../utils';
-
-abstract class RegisteredItemScope<
-    TTYPE extends Model.RegistryEntryType,
-    TTAG extends string,
-    TITEM extends Items.RegisteredTagOrSubtag<TTYPE, TTAG>
-> {
-    protected readonly _items: Map<TTAG, TITEM>;
-    protected readonly _type: TTYPE;
-    protected readonly _validate: ValidationHelpers<TTAG>;
-
-    protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
-        this._items = new Map();
-        this._type = type;
-        this._validate = validate;
-    }
-
-    public getAllTags(): TTAG[] {
-        return Array.from(this._items.keys());
-    }
-
-    public getAll(): TITEM[] {
-        return Array.from(this._items.values());
-    }
-
-    public tryGet(want: string): TITEM | undefined {
-        const got = this._items.get(want as TTAG);
-        if (!got) {
-            const result = this.toCanonical(want);
-            if (result.isSuccess()) {
-                return this._items.get(result.value as TTAG);
-            }
-        }
-        return got;
-    }
-
-    public tryGetCanonical(want: string): TITEM | undefined {
-        return this._items.get(want as TTAG);
-    }
-
-    public isWellFormed(val: unknown): val is TTAG {
-        return this._validate.isWellFormed(val);
-    }
-
-    public isCanonical(val: unknown): val is TTAG {
-        return this._validate.isCanonical(val);
-    }
-
-    public toCanonical(val: unknown): Result<TTAG> {
-        return this._validate.toCanonical(val);
-    }
-
-    public toValidCanonical(val: unknown): Result<TTAG> {
-        return this._validate.toCanonical(val).onSuccess((canonical) => {
-            if (this._items.has(canonical)) {
-                return succeed(canonical);
-            }
-            return fail(`${val}: invalid ${this._type}`);
-        });
-    }
-
-    public isValid(val: unknown): val is TTAG {
-        const result = this.toCanonical(val);
-        if (result.isSuccess()) {
-            return this._items.has(result.value);
-        }
-        return false;
-    }
-
-    public isValidCanonical(val: unknown): val is TTAG {
-        if (this.isCanonical(val)) {
-            return this._items.has(val);
-        }
-        return false;
-    }
-
-    protected _validateTag(tag: TTAG): Result<true> {
-        if (!this.isCanonical(tag)) {
-            return fail(`${tag}: ${this._type} is not in canonical form`);
-        }
-        return succeed(true);
-    }
-
-    public abstract add(entry: TITEM): Result<true>;
-    protected abstract _validateEntry(entry: TITEM): Result<true>;
-}
 
 class SubtagScope<
     TTYPE extends Model.RegistryEntryType,
@@ -138,7 +55,7 @@ class SubtagScope<
     }
 
     protected _validateEntry(entry: TITEM): Result<true> {
-        return this._validateTag(entry.subtag);
+        return this._validateKey(entry.subtag);
     }
 }
 
@@ -176,7 +93,7 @@ class TagScope<
     }
 
     protected _validateEntry(entry: TITEM): Result<true> {
-        return this._validateTag(entry.tag);
+        return this._validateKey(entry.tag);
     }
 }
 

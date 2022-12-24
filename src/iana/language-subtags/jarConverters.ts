@@ -166,11 +166,11 @@ export const registeredItem = Converters.discriminatedObject<Items.RegisteredIte
 
 export const registryFile = datedRegistry(registeredItem);
 
-export function loadJsonIanaRegistryFileSync(path: string): Result<Items.RegistryFile> {
+export function loadJsonSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
 }
 
-export function loadIanaRegistryTxtFileSync(path: string): Result<Items.RegistryFile> {
+export function loadTxtSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
     return RecordJar.readRecordJarFileSync(path, {
         arrayFields: ['Comments', 'Description', 'Prefix'],
         fixedContinuationSize: 1,

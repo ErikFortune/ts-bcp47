@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
-export * from './model';
+export * as Model from './model';
+export * as Converters from './converters';
 export * as Validate from './validate';
+export { TagExtensionRegistry } from './extensionsRegistry';

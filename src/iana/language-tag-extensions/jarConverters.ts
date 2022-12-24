@@ -23,33 +23,42 @@
 import * as Iana from '../../iana';
 
 import * as Model from './model';
-import * as Validate from './validate';
 
-import { Converters, Result } from '@fgv/ts-utils';
+import { Converters, RecordJar, Result } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { datedRegistry } from '../common/converters';
+import { datedRegistryFromJarRecords } from '../jar/jarConverters';
+import { extensionSingleton } from './validate';
 
-export const extensionSingleton = Validate.extensionSingleton.converter;
-
-export const languageTagExtension = Converters.strictObject<Model.LanguageTagExtension>(
+export const languageTagExtension = Converters.transformObject<Model.LanguageTagExtensionRegistryEntry, Model.LanguageTagExtension>(
     {
-        identifier: extensionSingleton,
-        description: Converters.stringArray,
-        comments: Converters.stringArray,
-        added: Iana.Converters.yearMonthDaySpec,
-        rfc: Converters.string,
-        authority: Converters.string,
-        contactEmail: Converters.string,
-        mailingList: Converters.string,
-        url: Converters.string,
+        identifier: { from: 'Identifier', converter: extensionSingleton.converter },
+        description: { from: 'Description', converter: Converters.stringArray },
+        comments: { from: 'Comments', converter: Converters.stringArray },
+        added: { from: 'Added', converter: Iana.Converters.yearMonthDaySpec },
+        rfc: { from: 'RFC', converter: Converters.string },
+        authority: { from: 'Authority', converter: Converters.string },
+        contactEmail: { from: 'Contact_Email', converter: Converters.string },
+        mailingList: { from: 'Mailing_List', converter: Converters.string },
+        url: { from: 'URL', converter: Converters.string },
     },
     {
+        strict: true,
         description: 'registered language tag extension',
     }
 );
 
 export const languageTagExtensions = datedRegistry(languageTagExtension);
 
-export function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model.LanguageTagExtensions> {
+export function loadJsonLanguageTagExtensionsRegistryFileSync(path: string): Result<Model.LanguageTagExtensions> {
     return convertJsonFileSync(path, languageTagExtensions);
+}
+
+export function loadTxtLanguageTagExtensionsRegistryFileSync(path: string): Result<Model.LanguageTagExtensions> {
+    return RecordJar.readRecordJarFileSync(path, {
+        arrayFields: ['Comments', 'Description'],
+        fixedContinuationSize: 1,
+    }).onSuccess((jar) => {
+        return datedRegistryFromJarRecords(languageTagExtension).convert(jar);
+    });
 }

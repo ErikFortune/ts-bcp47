@@ -25,7 +25,7 @@ import '@fgv/ts-utils-jest';
 import { Bcp, Iana } from '../../../src';
 
 describe('ValidTag class', () => {
-    const iana = Iana.LanguageSubtags.TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
+    const iana = Iana.LanguageSubtags.TagRegistry.load('data/iana/language-subtags.json').getValueOrThrow();
 
     describe('validateParts static method', () => {
         test.each([
