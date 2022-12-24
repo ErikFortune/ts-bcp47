@@ -20,7 +20,36 @@
  * SOFTWARE.
  */
 
+import * as Iana from '../../iana';
+
+import * as Model from './model';
 import * as Validate from './validate';
 
-export const extensionSubtag = Validate.extensionSubtag.converter;
-export const privateUsePrefix = Validate.privateUsePrefix.converter;
+import { Converters, Result } from '@fgv/ts-utils';
+import { convertJsonFileSync } from '@fgv/ts-json/file';
+import { datedRegistry } from '../common/converters';
+
+export const extensionSingleton = Validate.extensionSingleton.converter;
+
+export const languageTagExtension = Converters.strictObject<Model.LanguageTagExtension>(
+    {
+        identifier: extensionSingleton,
+        description: Converters.stringArray,
+        comments: Converters.stringArray,
+        added: Iana.Converters.yearMonthDaySpec,
+        rfc: Converters.string,
+        authority: Converters.string,
+        contactEmail: Converters.string,
+        mailingList: Converters.string,
+        url: Converters.string,
+    },
+    {
+        description: 'registered language tag extension',
+    }
+);
+
+export const languageTagExtensions = datedRegistry(languageTagExtension);
+
+export function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model.LanguageTagExtensions> {
+    return convertJsonFileSync(path, languageTagExtensions);
+}

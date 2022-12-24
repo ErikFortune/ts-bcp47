@@ -20,7 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Converters from './jarConverters';
+import * as Converters from './converters';
+import * as JarConverters from './jarConverters';
 import * as Scope from './scope';
 import * as path from 'path';
 
@@ -28,7 +29,7 @@ import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from '../jar/language-subtags/registry/model';
 
-export class TagRegistry {
+export class LanguageSubtagRegistry {
     public readonly fileDate: YearMonthDaySpec;
     public readonly languages: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
     public readonly extlangs: Scope.ExtLangSubtagScope = new Scope.ExtLangSubtagScope();
@@ -85,16 +86,30 @@ export class TagRegistry {
         }
     }
 
-    public static create(registry: RegistryFile): Result<TagRegistry> {
+    public static create(registry: RegistryFile): Result<LanguageSubtagRegistry> {
         return captureResult(() => {
-            return new TagRegistry(registry);
+            return new LanguageSubtagRegistry(registry);
         });
     }
 
-    public static load(root: string): Result<TagRegistry> {
+    public static load(root: string): Result<LanguageSubtagRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadJsonIanaRegistryFileSync(path.join(root)).getValueOrThrow();
-            return new TagRegistry(registry);
+            const registry = Converters.loadLanguageSubtagsJsonFileSync(path.join(root)).getValueOrThrow();
+            return new LanguageSubtagRegistry(registry);
+        });
+    }
+
+    public static loadJsonRegistryFile(root: string): Result<LanguageSubtagRegistry> {
+        return captureResult(() => {
+            const registry = JarConverters.loadJsonSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
+            return new LanguageSubtagRegistry(registry);
+        });
+    }
+
+    public static loadTxtRegistryFile(root: string): Result<LanguageSubtagRegistry> {
+        return captureResult(() => {
+            const registry = JarConverters.loadTxtSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
+            return new LanguageSubtagRegistry(registry);
         });
     }
 }

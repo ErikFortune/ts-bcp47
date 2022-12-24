@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,7 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export * as Converters from './converters';
 export * as Model from './model';
+export * as Converters from './converters';
 export * as Validate from './validate';
-export { LanguageSubtagRegistry } from './subtagRegistry';
+export { LanguageTagExtensionRegistry } from './extensionsRegistry';

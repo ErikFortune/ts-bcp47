@@ -25,7 +25,52 @@ import '@fgv/ts-utils-jest';
 import { Bcp, Iana } from '../../../src';
 
 describe('ValidTag class', () => {
-    const iana = Iana.LanguageSubtags.TagRegistry.load('data/iana/language-subtag-registry.json').getValueOrThrow();
+    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
+
+    describe('create static method', () => {
+        test.each([
+            ['valid canonical primary language', 'en', { primaryLanguage: 'en' }],
+            ['valid primary language', 'EN', { primaryLanguage: 'en' }],
+            ['valid canonical extlangs', 'zh-yue-cmn', { primaryLanguage: 'zh', extlangs: ['yue', 'cmn'] }],
+            ['valid extlangs', 'ZH-Yue-Cmn', { primaryLanguage: 'zh', extlangs: ['yue', 'cmn'] }],
+            // ['private use primary language', { primaryLanguage: 'qpn' }, { primaryLanguage: 'qpn' }],
+            ['valid script', 'en-LATN', { primaryLanguage: 'en', script: 'Latn' }],
+            // ['private use script', { script: 'Qabc' }, { script: 'Qabc' }],
+            ['valid iso3166 region', 'en-aq', { primaryLanguage: 'en', region: 'AQ' }],
+            ['valid UN M.49 region', 'es-419', { primaryLanguage: 'es', region: '419' }],
+            // ['private use region', { region: 'QX' }, { region: 'QX' }],
+            ['valid variant', 'ca-ES-valencia', { primaryLanguage: 'ca', region: 'ES', variants: ['valencia'] }],
+            ['valid variants', 'sl-rozaj-lipaw', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
+            [
+                'valid extensions',
+                'en-US-u-en-US-t-MT',
+                {
+                    primaryLanguage: 'en',
+                    region: 'US',
+                    extensions: [
+                        { singleton: 'u', value: 'en-US' },
+                        { singleton: 't', value: 'mt' },
+                    ],
+                },
+            ],
+            ['valid private-use subtag', 'en-x-Pig-Latin', { primaryLanguage: 'en', private: ['pig-latin'] }],
+        ])('succeeds for %p', (_desc, tag, expected) => {
+            expect(Bcp.ValidTag.create(tag, iana)).toSucceedAndSatisfy((valid) => {
+                expect(valid.parts).toEqual(expected);
+            });
+        });
+
+        test.each([
+            ['invalid primary language', 'ENG', /invalid language/i],
+            ['invalid extlang', 'zh-han', /invalid extlang/i],
+            ['invalid script', 'en-Aaaa', /invalid script/i],
+            ['invalid region', 'es-AJ', /invalid region/i],
+            ['invalid variant', 'en-US-xyzzy', /invalid variant/i],
+            ['invalid extension', 'en-US-a-extend', /invalid.*extension/i],
+        ])('fails for %p', (_desc, tag, expected) => {
+            expect(Bcp.ValidTag.create(tag, iana)).toFailWith(expected);
+        });
+    });
 
     describe('validateParts static method', () => {
         test.each([

@@ -26,11 +26,11 @@ import * as JarConverters from '../../../../src/iana/language-subtags/jarConvert
 
 describe('IANA registry data files', () => {
     test('can load registry JAR JSON', () => {
-        expect(JarConverters.loadJsonIanaRegistryFileSync('data/iana/language-subtag-registry.json')).toSucceed();
+        expect(JarConverters.loadJsonSubtagRegistryFileSync('data/iana/language-subtag-registry.json')).toSucceed();
     });
 
     test('can load registry.txt', () => {
-        expect(JarConverters.loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt')).toSucceed();
+        expect(JarConverters.loadTxtSubtagRegistryFileSync('data/iana/language-subtag-registry.txt')).toSucceed();
     });
 
     test('can load json', () => {
@@ -38,9 +38,9 @@ describe('IANA registry data files', () => {
     });
 
     test('language-subtag-registry.json, language-subtags.json and registry.txt are equivalent', () => {
-        const jsonJar = JarConverters.loadJsonIanaRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
+        const jsonJar = JarConverters.loadJsonSubtagRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
         const json = Converters.loadLanguageSubtagsJsonFileSync('data/iana/language-subtags.json').getValueOrThrow();
-        const txt = JarConverters.loadIanaRegistryTxtFileSync('data/iana/language-subtag-registry.txt').getValueOrThrow();
+        const txt = JarConverters.loadTxtSubtagRegistryFileSync('data/iana/language-subtag-registry.txt').getValueOrThrow();
         expect(jsonJar).toEqual(json);
         expect(json).toEqual(txt);
     });

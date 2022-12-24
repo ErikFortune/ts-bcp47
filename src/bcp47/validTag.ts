@@ -22,30 +22,32 @@
 
 import * as Iana from '../iana';
 import * as Parser from './languageTagParser';
+import * as Subtags from './subtags';
 
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, captureResult, succeed } from '@fgv/ts-utils';
 import { LanguageTagParts } from './common';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
 
-    protected constructor(init: Readonly<LanguageTagParts>) {
-        this.parts = Object.freeze({ ...init });
+    protected constructor(init: Readonly<LanguageTagParts>, registry: Iana.IanaRegistries) {
+        this.parts = Object.freeze(ValidTag.validateParts(init, registry).getValueOrThrow());
     }
 
-    public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<ValidTag> {
-        return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
-            return succeed(new ValidTag(parts));
+    public static create(tag: string, registry: Iana.IanaRegistries): Result<ValidTag> {
+        return captureResult(() => {
+            const parts = Parser.LanguageTagParser.parse(tag, registry).getValueOrThrow();
+            return new ValidTag(parts, registry);
         });
     }
 
-    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.LanguageSubtags.TagRegistry): Result<LanguageTagParts> {
+    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
 
         if (parts.primaryLanguage !== undefined) {
             results.push(
-                iana.languages.toValidCanonical(parts.primaryLanguage).onSuccess((lang) => {
+                iana.subtags.languages.toValidCanonical(parts.primaryLanguage).onSuccess((lang) => {
                     validated.primaryLanguage = lang;
                     return succeed(lang);
                 })
@@ -56,7 +58,7 @@ export class ValidTag {
             validated.extlangs = [];
             for (const extlang of parts.extlangs) {
                 results.push(
-                    iana.extlangs.toValidCanonical(extlang).onSuccess((lang) => {
+                    iana.subtags.extlangs.toValidCanonical(extlang).onSuccess((lang) => {
                         validated.extlangs!.push(lang);
                         return succeed(lang);
                     })
@@ -66,7 +68,7 @@ export class ValidTag {
 
         if (parts.script !== undefined) {
             results.push(
-                iana.scripts.toValidCanonical(parts.script).onSuccess((script) => {
+                iana.subtags.scripts.toValidCanonical(parts.script).onSuccess((script) => {
                     validated.script = script;
                     return succeed(script);
                 })
@@ -75,7 +77,7 @@ export class ValidTag {
 
         if (parts.region !== undefined) {
             results.push(
-                iana.regions.toValidCanonical(parts.region).onSuccess((region) => {
+                iana.subtags.regions.toValidCanonical(parts.region).onSuccess((region) => {
                     validated.region = region;
                     return succeed(region);
                 })
@@ -86,9 +88,36 @@ export class ValidTag {
             validated.variants = [];
             for (const original of parts.variants) {
                 results.push(
-                    iana.variants.toValidCanonical(original).onSuccess((variant) => {
+                    iana.subtags.variants.toValidCanonical(original).onSuccess((variant) => {
                         validated.variants!.push(variant);
                         return succeed(variant);
+                    })
+                );
+            }
+        }
+
+        if (parts.extensions !== undefined) {
+            validated.extensions = [];
+            for (const original of parts.extensions) {
+                results.push(
+                    iana.extensions.extensions.toValidCanonical(original.singleton).onSuccess((singleton) => {
+                        Subtags.Validate.extensionSubtag.toCanonical(original.value).onSuccess((value) => {
+                            validated.extensions!.push({ singleton, value });
+                            return succeed(true);
+                        });
+                        return succeed(true);
+                    })
+                );
+            }
+        }
+
+        if (parts.private !== undefined) {
+            validated.private = [];
+            for (const original of parts.private) {
+                results.push(
+                    Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(original).onSuccess((canonical) => {
+                        validated.private!.push(canonical);
+                        return succeed(true);
                     })
                 );
             }

@@ -20,22 +20,21 @@
  * SOFTWARE.
  */
 
+import * as ExtensionRegistry from '../../iana/language-tag-extensions';
 import * as Subtags from './model';
+
 import { RegExpValidationHelpers } from '../../utils';
+import { TagValidationHelpers } from '../../iana/jar/language-subtags/tags/tagValidation';
+
 import { succeed } from '@fgv/ts-utils';
 
-export const extensionSingleton = new RegExpValidationHelpers<Subtags.ExtensionSingleton>({
-    description: 'language tag extension singleton',
-    wellFormed: /^[0-9a-wyzA-WYZ]$/,
-    canonical: /^[0-9a-wyz]$/,
-    toCanonical: (from: Subtags.ExtensionSingleton) => succeed(from.toLowerCase() as Subtags.ExtensionSingleton),
-});
+export const extensionSingleton = ExtensionRegistry.Validate.extensionSingleton;
 
 export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubtag>({
     description: 'language tag extension subtag',
-    wellFormed: /^([a-zA-Z][a-zA-Z0-9]{1,7})(-[a-zA-Z][a-zA-Z0-9]{1,7})*$/,
-    canonical: /^([a-z][a-z0-9]{1,7})(-[a-z][a-z0-9]{1,7})*$/,
-    toCanonical: (from: Subtags.ExtensionSubtag) => succeed(from.toLowerCase() as Subtags.ExtensionSubtag),
+    wellFormed: /^([a-zA-Z0-9]{2,8})(-[a-zA-Z0-9]{2,8})*$/,
+    canonical: /^([a-z0-9]{2,8})(-[a-z0-9]{2,8})*$/,
+    toCanonical: (from: Subtags.ExtensionSubtag) => TagValidationHelpers.toCanonicalTag(from),
 });
 
 export const privateUsePrefix = new RegExpValidationHelpers<Subtags.PrivateUsePrefix>({

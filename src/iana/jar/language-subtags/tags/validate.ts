@@ -31,8 +31,9 @@ import {
     VariantSubtag,
 } from './model';
 
-import { RegExpValidationHelpers, ValidationHelpers } from '../../../../utils';
-import { Result, succeed } from '@fgv/ts-utils';
+import { RegExpValidationHelpers } from '../../../../utils';
+import { TagValidationHelpers } from './tagValidation';
+import { succeed } from '@fgv/ts-utils';
 
 /**
  * @internal
@@ -85,46 +86,6 @@ export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
     canonical: /^([a-z0-9]{5,8})$|^([0-9][a-z0-9]{3})$/,
     toCanonical: (from: VariantSubtag) => succeed(from.toLowerCase() as VariantSubtag),
 });
-
-class TagValidationHelpers<T extends string, TC = unknown> extends ValidationHelpers<T, TC> {
-    public readonly wellFormed: RegExp = /^([A-Za-z][A-Za-z0-9-]{0,7})(-[A-Za-z][A-Za-z0-9-]{0,7})*$/;
-
-    public constructor(description: string) {
-        super({
-            description,
-            toCanonical: TagValidationHelpers.toCanonicalTag,
-            isWellFormed: (from: unknown): from is T => {
-                return typeof from === 'string' && this.wellFormed.test(from);
-            },
-            isCanonical: (from: unknown): from is T => {
-                if (this.isWellFormed(from)) {
-                    const result = this.toCanonical(from);
-                    if (result.isSuccess()) {
-                        return result.value === from;
-                    }
-                }
-                return false;
-            },
-        });
-    }
-
-    public static toCanonicalTag<T extends string>(val: T): Result<T> {
-        const parts = val.split('-');
-        const canonical: string[] = [];
-        let isInitial = true;
-        for (const part of parts) {
-            if (isInitial || (part.length !== 2 && part.length !== 4)) {
-                canonical.push(part.toLowerCase());
-            } else if (part.length === 2) {
-                canonical.push(part.toUpperCase());
-            } else if (part.length === 4) {
-                canonical.push(`${part[0].toUpperCase()}${part.slice(1).toLowerCase()}`);
-            }
-            isInitial = part.length === 1;
-        }
-        return succeed(canonical.join('-') as T);
-    }
-}
 
 /**
  * @internal

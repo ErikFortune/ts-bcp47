@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,13 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export * as Converters from './converters';
-export * as Model from './model';
-export * as Validate from './validate';
-export { LanguageSubtagRegistry } from './subtagRegistry';
+import * as Model from './model';
+import { RegExpValidationHelpers } from '../../utils';
+import { succeed } from '@fgv/ts-utils';
+
+export const extensionSingleton = new RegExpValidationHelpers<Model.ExtensionSingleton>({
+    description: 'language tag extension singleton',
+    wellFormed: /^[0-9a-wyzA-WYZ]$/,
+    canonical: /^[0-9a-wyz]$/,
+    toCanonical: (from: Model.ExtensionSingleton) => succeed(from.toLowerCase() as Model.ExtensionSingleton),
+});
