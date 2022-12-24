@@ -30,24 +30,24 @@ import { LanguageTagParts } from './common';
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
 
-    protected constructor(init: Readonly<LanguageTagParts>, registry: Iana.LanguageSubtags.TagRegistry) {
+    protected constructor(init: Readonly<LanguageTagParts>, registry: Iana.IanaRegistries) {
         this.parts = Object.freeze(ValidTag.validateParts(init, registry).getValueOrThrow());
     }
 
-    public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<ValidTag> {
+    public static create(tag: string, registry: Iana.IanaRegistries): Result<ValidTag> {
         return captureResult(() => {
             const parts = Parser.LanguageTagParser.parse(tag, registry).getValueOrThrow();
             return new ValidTag(parts, registry);
         });
     }
 
-    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.LanguageSubtags.TagRegistry): Result<LanguageTagParts> {
+    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
 
         if (parts.primaryLanguage !== undefined) {
             results.push(
-                iana.languages.toValidCanonical(parts.primaryLanguage).onSuccess((lang) => {
+                iana.subtags.languages.toValidCanonical(parts.primaryLanguage).onSuccess((lang) => {
                     validated.primaryLanguage = lang;
                     return succeed(lang);
                 })
@@ -58,7 +58,7 @@ export class ValidTag {
             validated.extlangs = [];
             for (const extlang of parts.extlangs) {
                 results.push(
-                    iana.extlangs.toValidCanonical(extlang).onSuccess((lang) => {
+                    iana.subtags.extlangs.toValidCanonical(extlang).onSuccess((lang) => {
                         validated.extlangs!.push(lang);
                         return succeed(lang);
                     })
@@ -68,7 +68,7 @@ export class ValidTag {
 
         if (parts.script !== undefined) {
             results.push(
-                iana.scripts.toValidCanonical(parts.script).onSuccess((script) => {
+                iana.subtags.scripts.toValidCanonical(parts.script).onSuccess((script) => {
                     validated.script = script;
                     return succeed(script);
                 })
@@ -77,7 +77,7 @@ export class ValidTag {
 
         if (parts.region !== undefined) {
             results.push(
-                iana.regions.toValidCanonical(parts.region).onSuccess((region) => {
+                iana.subtags.regions.toValidCanonical(parts.region).onSuccess((region) => {
                     validated.region = region;
                     return succeed(region);
                 })
@@ -88,7 +88,7 @@ export class ValidTag {
             validated.variants = [];
             for (const original of parts.variants) {
                 results.push(
-                    iana.variants.toValidCanonical(original).onSuccess((variant) => {
+                    iana.subtags.variants.toValidCanonical(original).onSuccess((variant) => {
                         validated.variants!.push(variant);
                         return succeed(variant);
                     })
@@ -100,13 +100,11 @@ export class ValidTag {
             validated.extensions = [];
             for (const original of parts.extensions) {
                 results.push(
-                    Subtags.Validate.extensionSingleton.toCanonical(original.singleton).onSuccess((singleton) => {
-                        results.push(
-                            Subtags.Validate.extensionSubtag.toCanonical(original.value).onSuccess((value) => {
-                                validated.extensions!.push({ singleton, value });
-                                return succeed(true);
-                            })
-                        );
+                    iana.extensions.extensions.toValidCanonical(original.singleton).onSuccess((singleton) => {
+                        Subtags.Validate.extensionSubtag.toCanonical(original.value).onSuccess((value) => {
+                            validated.extensions!.push({ singleton, value });
+                            return succeed(true);
+                        });
                         return succeed(true);
                     })
                 );

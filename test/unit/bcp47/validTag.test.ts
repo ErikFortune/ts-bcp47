@@ -25,7 +25,7 @@ import '@fgv/ts-utils-jest';
 import { Bcp, Iana } from '../../../src';
 
 describe('ValidTag class', () => {
-    const iana = Iana.LanguageSubtags.TagRegistry.load('data/iana/language-subtags.json').getValueOrThrow();
+    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
 
     describe('create static method', () => {
         test.each([
@@ -66,7 +66,7 @@ describe('ValidTag class', () => {
             ['invalid script', 'en-Aaaa', /invalid script/i],
             ['invalid region', 'es-AJ', /invalid region/i],
             ['invalid variant', 'en-US-xyzzy', /invalid variant/i],
-            // ['invalid extension', 'en-US-a-extend', /invalid extension/i],
+            ['invalid extension', 'en-US-a-extend', /invalid.*extension/i],
         ])('fails for %p', (_desc, tag, expected) => {
             expect(Bcp.ValidTag.create(tag, iana)).toFailWith(expected);
         });

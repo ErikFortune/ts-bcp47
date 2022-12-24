@@ -23,3 +23,5 @@
 export * as Converters from './converters';
 export * as Model from './model';
 export * as LanguageSubtags from './language-subtags';
+export * as LanguageTagExtensions from './language-tag-extensions';
+export * from './registries';

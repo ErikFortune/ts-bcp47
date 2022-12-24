@@ -29,7 +29,7 @@ import { Result, captureResult } from '@fgv/ts-utils';
 import { TagExtensionsScope } from './extensionsScope';
 import { YearMonthDaySpec } from '../model';
 
-export class TagExtensionRegistry {
+export class LanguageTagExtensionRegistry {
     public readonly fileDate: YearMonthDaySpec;
     public readonly extensions: TagExtensionsScope = new TagExtensionsScope();
 
@@ -43,30 +43,30 @@ export class TagExtensionRegistry {
         }
     }
 
-    public static create(registry: Model.LanguageTagExtensions): Result<TagExtensionRegistry> {
+    public static create(registry: Model.LanguageTagExtensions): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
-            return new TagExtensionRegistry(registry);
+            return new LanguageTagExtensionRegistry(registry);
         });
     }
 
-    public static load(path: string): Result<TagExtensionRegistry> {
+    public static load(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
             const registry = Converters.loadLanguageTagExtensionsJsonFileSync(path).getValueOrThrow();
-            return new TagExtensionRegistry(registry);
+            return new LanguageTagExtensionRegistry(registry);
         });
     }
 
-    public static loadJsonRegistryFile(path: string): Result<TagExtensionRegistry> {
+    public static loadJsonRegistryFile(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
             const registry = JarConverters.loadJsonLanguageTagExtensionsRegistryFileSync(path).getValueOrThrow();
-            return new TagExtensionRegistry(registry);
+            return new LanguageTagExtensionRegistry(registry);
         });
     }
 
-    public static loadTxtRegistryFile(path: string): Result<TagExtensionRegistry> {
+    public static loadTxtRegistryFile(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
             const registry = JarConverters.loadTxtLanguageTagExtensionsRegistryFileSync(path).getValueOrThrow();
-            return new TagExtensionRegistry(registry);
+            return new LanguageTagExtensionRegistry(registry);
         });
     }
 }

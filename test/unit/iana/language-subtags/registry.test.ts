@@ -22,13 +22,13 @@
 
 import '@fgv/ts-utils-jest';
 import * as JarConverters from '../../../../src/iana/language-subtags/jarConverters';
-import { TagRegistry } from '../../../../src/iana/language-subtags';
+import { LanguageSubtagRegistry } from '../../../../src/iana/language-subtags';
 
-describe('IANA TagRegistry class', () => {
+describe('LanguageSubtagRegistry class', () => {
     describe('create static method', () => {
         test('creates from a supplied a tag registry', () => {
             const registry = JarConverters.loadJsonSubtagRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
-            expect(TagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
+            expect(LanguageSubtagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8240);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);
                 expect(tags.scripts.getAllKeys()).toHaveLength(212);
@@ -48,7 +48,7 @@ describe('IANA TagRegistry class', () => {
 
     describe('load static methods', () => {
         test('loads JSON subtags', () => {
-            expect(TagRegistry.load('data/iana/language-subtags.json')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageSubtagRegistry.load('data/iana/language-subtags.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8240);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);
                 expect(tags.scripts.getAllKeys()).toHaveLength(212);
@@ -66,7 +66,7 @@ describe('IANA TagRegistry class', () => {
         });
 
         test('loads JAR as JSON subtag registry', () => {
-            expect(TagRegistry.loadJsonRegistryFile('data/iana/language-subtag-registry.json')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageSubtagRegistry.loadJsonRegistryFile('data/iana/language-subtag-registry.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8240);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);
                 expect(tags.scripts.getAllKeys()).toHaveLength(212);
@@ -84,7 +84,7 @@ describe('IANA TagRegistry class', () => {
         });
 
         test('loads JAR subtag registry', () => {
-            expect(TagRegistry.loadTxtRegistryFile('data/iana/language-subtag-registry.txt')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageSubtagRegistry.loadTxtRegistryFile('data/iana/language-subtag-registry.txt')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8240);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);
                 expect(tags.scripts.getAllKeys()).toHaveLength(212);

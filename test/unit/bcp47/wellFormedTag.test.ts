@@ -25,7 +25,7 @@ import * as Bcp from '../../../src/bcp47';
 import * as Iana from '../../../src/iana';
 
 describe('BCP-47 WellFormedTag class', () => {
-    const iana = Iana.LanguageSubtags.TagRegistry.load('data/iana/language-subtags.json').getValueOrThrow();
+    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
 
     describe('create static method', () => {
         test.each([

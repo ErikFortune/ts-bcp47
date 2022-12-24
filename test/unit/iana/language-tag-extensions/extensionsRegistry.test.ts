@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import * as JarConverters from '../../../../src/iana/language-tag-extensions/jarConverters';
-import { TagExtensionRegistry } from '../../../../src/iana/language-tag-extensions';
+import { LanguageTagExtensionRegistry } from '../../../../src/iana/language-tag-extensions';
 
 describe('TagExtensionRegistry class', () => {
     describe('create static method', () => {
@@ -30,7 +30,7 @@ describe('TagExtensionRegistry class', () => {
             const registry = JarConverters.loadJsonLanguageTagExtensionsRegistryFileSync(
                 'data/iana/language-tag-extension-registry.json'
             ).getValueOrThrow();
-            expect(TagExtensionRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
+            expect(LanguageTagExtensionRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.extensions.getAllKeys()).toHaveLength(2);
             });
         });
@@ -38,13 +38,13 @@ describe('TagExtensionRegistry class', () => {
 
     describe('load static methods', () => {
         test('loads JSON subtags', () => {
-            expect(TagExtensionRegistry.load('data/iana/language-tag-extensions.json')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageTagExtensionRegistry.load('data/iana/language-tag-extensions.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.extensions.getAllKeys()).toHaveLength(2);
             });
         });
 
         test('loads JAR as JSON tag extension registry', () => {
-            expect(TagExtensionRegistry.loadJsonRegistryFile('data/iana/language-tag-extension-registry.json')).toSucceedAndSatisfy(
+            expect(LanguageTagExtensionRegistry.loadJsonRegistryFile('data/iana/language-tag-extension-registry.json')).toSucceedAndSatisfy(
                 (tags) => {
                     expect(tags.extensions.getAllKeys()).toHaveLength(2);
                 }
@@ -52,7 +52,7 @@ describe('TagExtensionRegistry class', () => {
         });
 
         test('loads JAR tag extension registry', () => {
-            expect(TagExtensionRegistry.loadTxtRegistryFile('data/iana/language-tag-extension-registry.txt')).toSucceedAndSatisfy(
+            expect(LanguageTagExtensionRegistry.loadTxtRegistryFile('data/iana/language-tag-extension-registry.txt')).toSucceedAndSatisfy(
                 (tags) => {
                     expect(tags.extensions.getAllKeys()).toHaveLength(2);
                 }

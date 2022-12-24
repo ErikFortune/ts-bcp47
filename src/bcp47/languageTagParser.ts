@@ -29,7 +29,7 @@ import { LanguageTagParts } from './common';
 import { Validate } from './subtags';
 
 interface ParserStatus {
-    readonly iana: Iana.LanguageSubtags.TagRegistry;
+    readonly iana: Iana.IanaRegistries;
     readonly tag: string;
     readonly subtags: string[];
     readonly parts: LanguageTagParts;
@@ -41,7 +41,7 @@ export class LanguageTagParser {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
-    public static parse(tag: string, iana: Iana.LanguageSubtags.TagRegistry): Result<LanguageTagParts> {
+    public static parse(tag: string, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
         const status: ParserStatus = {
             tag,
             iana,
@@ -70,7 +70,7 @@ export class LanguageTagParser {
 
     protected static _parseGrandfatheredTag(status: ParserStatus): Result<LanguageTagParts> {
         if (status.next === 'i' || status.next === 'I') {
-            const grandfathered = status.iana.grandfathered.tryGet(status.tag);
+            const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
             if (grandfathered) {
                 status.parts.grandfathered = grandfathered.tag;
                 // we consumed the whole thing
@@ -86,7 +86,7 @@ export class LanguageTagParser {
     protected static _parsePrimaryLanguage(status: ParserStatus): Result<LanguageTagParts> {
         // primary language subtag is required unless the entire tag is grandfathered or consists
         // of only private tags
-        if (status.iana.languages.isWellFormed(status.next)) {
+        if (status.iana.subtags.languages.isWellFormed(status.next)) {
             status.parts.primaryLanguage = status.next;
             status.next = status.subtags.shift();
             return succeed(status.parts);
@@ -102,7 +102,7 @@ export class LanguageTagParser {
 
     protected static _parseExtlang(status: ParserStatus): Result<LanguageTagParts> {
         // optional extlangs subtags
-        while (status.iana.extlangs.isWellFormed(status.next)) {
+        while (status.iana.subtags.extlangs.isWellFormed(status.next)) {
             if (status.parts.extlangs === undefined) {
                 status.parts.extlangs = [status.next];
             } else if (status.parts.extlangs.length < 3) {
@@ -117,7 +117,7 @@ export class LanguageTagParser {
 
     protected static _parseScript(status: ParserStatus): Result<LanguageTagParts> {
         // optional script subtag
-        if (status.iana.scripts.isWellFormed(status.next)) {
+        if (status.iana.subtags.scripts.isWellFormed(status.next)) {
             status.parts.script = status.next;
             status.next = status.subtags.shift();
         }
@@ -126,7 +126,7 @@ export class LanguageTagParser {
 
     protected static _parseRegion(status: ParserStatus): Result<LanguageTagParts> {
         // optional region subtag
-        if (status.iana.regions.isWellFormed(status.next)) {
+        if (status.iana.subtags.regions.isWellFormed(status.next)) {
             status.parts.region = status.next;
             status.next = status.subtags.shift();
         }
@@ -135,7 +135,7 @@ export class LanguageTagParser {
 
     protected static _parseVariants(status: ParserStatus): Result<LanguageTagParts> {
         // optional variant subtags
-        while (status.iana.variants.isWellFormed(status.next)) {
+        while (status.iana.subtags.variants.isWellFormed(status.next)) {
             if (status.parts.variants === undefined) {
                 status.parts.variants = [status.next];
             } else {

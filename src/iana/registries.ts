@@ -20,8 +20,26 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export * as Converters from './converters';
-export * as Model from './model';
-export * as Validate from './validate';
-export { LanguageSubtagRegistry } from './subtagRegistry';
+import { Result, captureResult } from '@fgv/ts-utils';
+
+import { LanguageSubtagRegistry } from './language-subtags';
+import { LanguageTagExtensionRegistry } from './language-tag-extensions';
+import path from 'path';
+
+export class IanaRegistries {
+    public readonly subtags: LanguageSubtagRegistry;
+    public readonly extensions: LanguageTagExtensionRegistry;
+
+    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
+        this.subtags = subtags;
+        this.extensions = extensions;
+    }
+
+    public static load(root: string): Result<IanaRegistries> {
+        return captureResult(() => {
+            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).getValueOrThrow();
+            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).getValueOrThrow();
+            return new IanaRegistries(subtags, extensions);
+        });
+    }
+}
