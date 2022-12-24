@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import * as Bcp from '../../../src/bcp';
+import * as Bcp from '../../../src/bcp47';
 import * as Iana from '../../../src/iana';
 
 describe('BCP-47 WellFormedTag class', () => {

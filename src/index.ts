@@ -20,5 +20,5 @@
  * SOFTWARE.
  */
 
-export * as Bcp from './bcp';
+export * as Bcp from './bcp47';
 export * as Iana from './iana';
