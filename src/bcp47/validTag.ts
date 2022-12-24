@@ -22,8 +22,9 @@
 
 import * as Iana from '../iana';
 import * as Parser from './languageTagParser';
+import * as Subtags from './subtags';
 
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, captureResult, succeed } from '@fgv/ts-utils';
 import { LanguageTagParts } from './common';
 
 export class ValidTag {
@@ -34,8 +35,9 @@ export class ValidTag {
     }
 
     public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<ValidTag> {
-        return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
-            return succeed(new ValidTag(parts, registry));
+        return captureResult(() => {
+            const parts = Parser.LanguageTagParser.parse(tag, registry).getValueOrThrow();
+            return new ValidTag(parts, registry);
         });
     }
 
@@ -89,6 +91,35 @@ export class ValidTag {
                     iana.variants.toValidCanonical(original).onSuccess((variant) => {
                         validated.variants!.push(variant);
                         return succeed(variant);
+                    })
+                );
+            }
+        }
+
+        if (parts.extensions !== undefined) {
+            validated.extensions = [];
+            for (const original of parts.extensions) {
+                results.push(
+                    Subtags.Validate.extensionSingleton.toCanonical(original.singleton).onSuccess((singleton) => {
+                        results.push(
+                            Subtags.Validate.extensionSubtag.toCanonical(original.value).onSuccess((value) => {
+                                validated.extensions!.push({ singleton, value });
+                                return succeed(true);
+                            })
+                        );
+                        return succeed(true);
+                    })
+                );
+            }
+        }
+
+        if (parts.private !== undefined) {
+            validated.private = [];
+            for (const original of parts.private) {
+                results.push(
+                    Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(original).onSuccess((canonical) => {
+                        validated.private!.push(canonical);
+                        return succeed(true);
                     })
                 );
             }

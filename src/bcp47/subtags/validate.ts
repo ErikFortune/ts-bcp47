@@ -21,9 +21,11 @@
  */
 
 import * as ExtensionRegistry from '../../iana/language-tag-extensions';
-
 import * as Subtags from './model';
+
 import { RegExpValidationHelpers } from '../../utils';
+import { TagValidationHelpers } from '../../iana/jar/language-subtags/tags/tagValidation';
+
 import { succeed } from '@fgv/ts-utils';
 
 export const extensionSingleton = ExtensionRegistry.Validate.extensionSingleton;
@@ -32,7 +34,7 @@ export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubt
     description: 'language tag extension subtag',
     wellFormed: /^([a-zA-Z0-9]{2,8})(-[a-zA-Z0-9]{2,8})*$/,
     canonical: /^([a-z0-9]{2,8})(-[a-z0-9]{2,8})*$/,
-    toCanonical: (from: Subtags.ExtensionSubtag) => succeed(from.toLowerCase() as Subtags.ExtensionSubtag),
+    toCanonical: (from: Subtags.ExtensionSubtag) => TagValidationHelpers.toCanonicalTag(from),
 });
 
 export const privateUsePrefix = new RegExpValidationHelpers<Subtags.PrivateUsePrefix>({
