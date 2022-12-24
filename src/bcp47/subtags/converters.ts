@@ -23,4 +23,4 @@
 import * as Validate from './validate';
 
 export const extensionSubtag = Validate.extensionSubtag.converter;
-export const privateUsePrefix = Validate.extensionSubtag.converter;
+export const privateUsePrefix = Validate.privateUsePrefix.converter;

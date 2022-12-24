@@ -29,13 +29,13 @@ import { LanguageTagParts } from './common';
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
 
-    protected constructor(init: Readonly<LanguageTagParts>) {
-        this.parts = Object.freeze({ ...init });
+    protected constructor(init: Readonly<LanguageTagParts>, registry: Iana.LanguageSubtags.TagRegistry) {
+        this.parts = Object.freeze(ValidTag.validateParts(init, registry).getValueOrThrow());
     }
 
     public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<ValidTag> {
         return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
-            return succeed(new ValidTag(parts));
+            return succeed(new ValidTag(parts, registry));
         });
     }
 

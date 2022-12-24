@@ -30,8 +30,8 @@ export const extensionSingleton = ExtensionRegistry.Validate.extensionSingleton;
 
 export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubtag>({
     description: 'language tag extension subtag',
-    wellFormed: /^([a-zA-Z][a-zA-Z0-9]{1,7})(-[a-zA-Z][a-zA-Z0-9]{1,7})*$/,
-    canonical: /^([a-z][a-z0-9]{1,7})(-[a-z][a-z0-9]{1,7})*$/,
+    wellFormed: /^([a-zA-Z0-9]{2,8})(-[a-zA-Z0-9]{2,8})*$/,
+    canonical: /^([a-z0-9]{2,8})(-[a-z0-9]{2,8})*$/,
     toCanonical: (from: Subtags.ExtensionSubtag) => succeed(from.toLowerCase() as Subtags.ExtensionSubtag),
 });
 
