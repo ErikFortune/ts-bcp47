@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Erik Fortune
+ * Copyright (c) 2021 Erik Fortune
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,5 @@
  * SOFTWARE.
  */
 
-import * as Validate from './validate';
-
-export const extensionSubtag = Validate.extensionSubtag.converter;
-export const privateUsePrefix = Validate.extensionSubtag.converter;
+export * from './model';
+export * as Validate from './validate';

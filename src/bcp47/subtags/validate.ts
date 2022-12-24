@@ -20,16 +20,13 @@
  * SOFTWARE.
  */
 
+import * as ExtensionRegistry from '../../iana/language-tag-extensions';
+
 import * as Subtags from './model';
 import { RegExpValidationHelpers } from '../../utils';
 import { succeed } from '@fgv/ts-utils';
 
-export const extensionSingleton = new RegExpValidationHelpers<Subtags.ExtensionSingleton>({
-    description: 'language tag extension singleton',
-    wellFormed: /^[0-9a-wyzA-WYZ]$/,
-    canonical: /^[0-9a-wyz]$/,
-    toCanonical: (from: Subtags.ExtensionSingleton) => succeed(from.toLowerCase() as Subtags.ExtensionSingleton),
-});
+export const extensionSingleton = ExtensionRegistry.Validate.extensionSingleton;
 
 export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubtag>({
     description: 'language tag extension subtag',

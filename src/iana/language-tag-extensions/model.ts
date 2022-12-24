@@ -20,7 +20,37 @@
  * SOFTWARE.
  */
 
-import * as Validate from './validate';
+import * as Iana from '../../iana';
 
-export const extensionSubtag = Validate.extensionSubtag.converter;
-export const privateUsePrefix = Validate.extensionSubtag.converter;
+import { Brand } from '@fgv/ts-utils';
+import { DatedRegistry } from '../model';
+
+export type ExtensionSingleton = Brand<string, 'ExtensionSingleton'>;
+
+export interface LanguageTagExtensionRegistryEntry {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    Identifier: ExtensionSingleton;
+    Description: string[];
+    Comments: string[];
+    Added: Iana.Model.YearMonthDaySpec;
+    RFC: string;
+    Authority: string;
+    Contact_Email: string;
+    Mailing_List: string;
+    URL: string;
+    /* eslint-enable @typescript-eslint/naming-convention */
+}
+
+export interface LanguageTagExtension {
+    identifier: ExtensionSingleton;
+    description: string[];
+    comments: string[];
+    added: Iana.Model.YearMonthDaySpec;
+    rfc: string;
+    authority: string;
+    contactEmail: string;
+    mailingList: string;
+    url: string;
+}
+
+export type LanguageTagExtensionRegistryFile = DatedRegistry<LanguageTagExtension>;
