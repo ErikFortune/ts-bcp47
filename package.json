@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@fgv/ts-json": "^1.4.1",
-    "@fgv/ts-utils": "^1.6.2",
+    "@fgv/ts-utils": "^1.6.3",
     "@types/luxon": "^3.1.0",
     "luxon": "^3.1.1"
   }

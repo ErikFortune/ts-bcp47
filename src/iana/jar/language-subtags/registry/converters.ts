@@ -20,6 +20,9 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
+import * as Model from './model';
+
+import { Converters } from '@fgv/ts-utils';
+
+export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
+export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);

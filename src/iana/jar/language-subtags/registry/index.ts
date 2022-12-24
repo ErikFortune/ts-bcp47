@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+// istanbul ignore file
+export * from './model';
 export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';

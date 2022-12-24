@@ -20,6 +20,6 @@
  * SOFTWARE.
  */
 
+export * from './model';
 export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
+export * as Validate from './validate';

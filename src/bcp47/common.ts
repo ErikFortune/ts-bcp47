@@ -20,6 +20,23 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
+import * as Iana from '../iana';
+
+import { Model } from './subtags';
+
+export interface ExtensionSubtagValue {
+    readonly singleton: Model.ExtensionSingleton;
+    readonly value: Model.ExtensionSubtag;
+}
+
+export interface LanguageTagParts {
+    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
+    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
+    script?: Iana.LanguageSubtags.ScriptSubtag;
+    region?: Iana.LanguageSubtags.RegionSubtag;
+    variants?: Iana.LanguageSubtags.VariantSubtag[];
+    extensions?: ExtensionSubtagValue[];
+    private?: Iana.LanguageSubtags.ExtendedLanguageRange[];
+
+    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
+}
