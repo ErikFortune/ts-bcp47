@@ -33,13 +33,13 @@ export class ValidTag {
         this.parts = Object.freeze({ ...init });
     }
 
-    public static create(tag: string, registry: Iana.TagRegistry): Result<ValidTag> {
+    public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<ValidTag> {
         return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
             return succeed(new ValidTag(parts));
         });
     }
 
-    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.TagRegistry): Result<LanguageTagParts> {
+    public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.LanguageSubtags.TagRegistry): Result<LanguageTagParts> {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
 

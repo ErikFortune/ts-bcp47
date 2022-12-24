@@ -29,6 +29,8 @@ import { datedRegistry, yearMonthDaySpec } from '../common/converters';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { registryScopeType } from '../jar/language-subtags/registry/converters';
 
+export const extendedLanguageRange = TagConverters.extendedLanguageRange;
+
 export const registeredLanguage = Converters.strictObject<Model.RegisteredLanguage>(
     {
         type: Converters.enumeratedValue<'language'>(['language']),

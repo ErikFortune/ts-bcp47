@@ -21,36 +21,26 @@
  */
 
 import * as Subtags from './model';
-import { Result, succeed } from '@fgv/ts-utils';
+import { RegExpValidationHelpers } from '../../utils';
+import { succeed } from '@fgv/ts-utils';
 
-export class WellFormed {
-    public static extensionSingleton(val: unknown): val is Subtags.ExtensionSingleton {
-        return typeof val === 'string' && /^[0-9a-wyzA-WYZ]$/.test(val);
-    }
+export const extensionSingleton = new RegExpValidationHelpers<Subtags.ExtensionSingleton>({
+    description: 'language tag extension singleton',
+    wellFormed: /^[0-9a-wyzA-WYZ]$/,
+    canonical: /^[0-9a-wyz]$/,
+    toCanonical: (from: Subtags.ExtensionSingleton) => succeed(from.toLowerCase() as Subtags.ExtensionSingleton),
+});
 
-    public static extensionSubtag(val: unknown): val is Subtags.ExtensionSubtag {
-        return typeof val === 'string' && /^[0-9a-zA-Z]{2,8}$/.test(val);
-    }
+export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubtag>({
+    description: 'language tag extension subtag',
+    wellFormed: /^([a-zA-Z][a-zA-Z0-9]{1,7})(-[a-zA-Z][a-zA-Z0-9]{1,7})*$/,
+    canonical: /^([a-z][a-z0-9]{1,7})(-[a-z][a-z0-9]{1,7})*$/,
+    toCanonical: (from: Subtags.ExtensionSubtag) => succeed(from.toLowerCase() as Subtags.ExtensionSubtag),
+});
 
-    public static privateUsePrefix(val: unknown): val is Subtags.PrivateUsePrefix {
-        return typeof val === 'string' && (val === 'x' || val === 'X');
-    }
-
-    public static privateUseSubtag(val: unknown): val is Subtags.PrivateUseSubtag {
-        return typeof val === 'string' && val !== 'x' && val !== 'X' && /^[0-9a-zA-Z]{1,8}$/.test(val);
-    }
-}
-
-type TypeGuard<T extends string> = (val: string) => val is T;
-type Validator<T extends string> = (val: string) => Result<T>;
-
-export function getValidator<T extends string>(validator: TypeGuard<T>, description: string): Validator<T> {
-    return (val: string) => {
-        if (validator(val)) {
-            return succeed(val);
-        }
-        return fail(`${val}: Not a valid ${description}`);
-    };
-}
-
-export const extensionSingleton = getValidator(WellFormed.extensionSingleton, 'language tag extension singleton');
+export const privateUsePrefix = new RegExpValidationHelpers<Subtags.PrivateUsePrefix>({
+    description: 'language tag private-use prefix',
+    wellFormed: /^[xX]$/,
+    canonical: /^x$/,
+    toCanonical: (from: Subtags.PrivateUsePrefix) => succeed(from.toLowerCase() as Subtags.PrivateUsePrefix),
+});

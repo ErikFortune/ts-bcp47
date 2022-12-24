@@ -27,14 +27,14 @@ import * as Validate from './validate';
 
 import { Converters } from '@fgv/ts-utils';
 
-export const extensionSingleton = Converters.string.map(Validate.extensionSingleton);
+export const extensionSingleton = Validate.extensionSingleton.converter;
 
 export const languageTagExtension = Converters.transformObject<Model.LanguageTagExtensionRegistryEntry, Model.LanguageTagExtension>(
     {
         identifier: { from: 'Identifier', converter: extensionSingleton },
         description: { from: 'Description', converter: Converters.stringArray },
         comments: { from: 'Comments', converter: Converters.stringArray },
-        added: { from: 'Added', converter: Iana.Registry.Converters.yearMonthDaySpec },
+        added: { from: 'Added', converter: Iana.Converters.yearMonthDaySpec },
         rfc: { from: 'RFC', converter: Converters.string },
         authority: { from: 'Authority', converter: Converters.string },
         contactEmail: { from: 'Contact_Email', converter: Converters.string },

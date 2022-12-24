@@ -26,17 +26,17 @@ import { Model } from './subtags';
 
 export interface ExtensionSubtagValue {
     readonly singleton: Model.ExtensionSingleton;
-    readonly value: Iana.Tags.ExtendedLanguageRange;
+    readonly value: Model.ExtensionSubtag;
 }
 
 export interface LanguageTagParts {
-    primaryLanguage?: Iana.Tags.LanguageSubtag;
-    extlangs?: Iana.Tags.ExtLangSubtag[];
-    script?: Iana.Tags.ScriptSubtag;
-    region?: Iana.Tags.RegionSubtag;
-    variants?: Iana.Tags.VariantSubtag[];
+    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
+    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
+    script?: Iana.LanguageSubtags.ScriptSubtag;
+    region?: Iana.LanguageSubtags.RegionSubtag;
+    variants?: Iana.LanguageSubtags.VariantSubtag[];
     extensions?: ExtensionSubtagValue[];
-    private?: Iana.Tags.ExtendedLanguageRange[];
+    private?: Iana.LanguageSubtags.ExtendedLanguageRange[];
 
-    grandfathered?: Iana.Tags.GrandfatheredTag;
+    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
 }

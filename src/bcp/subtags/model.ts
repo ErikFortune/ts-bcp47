@@ -34,7 +34,7 @@ export interface LanguageTagExtensionRegistryEntry {
     Identifier: ExtensionSingleton;
     Description: string[];
     Comments: string[];
-    Added: Iana.Registry.Model.YearMonthDaySpec;
+    Added: Iana.Model.YearMonthDaySpec;
     RFC: string;
     Authority: string;
     Contact_Email: string;
@@ -47,7 +47,7 @@ export interface LanguageTagExtension {
     identifier: ExtensionSingleton;
     description: string[];
     comments: string[];
-    added: Iana.Registry.Model.YearMonthDaySpec;
+    added: Iana.Model.YearMonthDaySpec;
     rfc: string;
     authority: string;
     contactEmail: string;
@@ -56,6 +56,6 @@ export interface LanguageTagExtension {
 }
 
 export interface LanguageTagExtensionRegistryFile {
-    fileDate: Iana.Registry.Model.YearMonthDaySpec;
+    fileDate: Iana.Model.YearMonthDaySpec;
     extensions: LanguageTagExtension[];
 }

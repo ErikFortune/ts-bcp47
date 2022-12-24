@@ -23,4 +23,5 @@
 export * from './common';
 export * as Converters from './converters';
 export * as Model from './model';
+export * as Validate from './validate';
 export { TagRegistry } from './registry';

@@ -87,7 +87,7 @@ export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
 });
 
 class TagValidationHelpers<T extends string, TC = unknown> extends ValidationHelpers<T, TC> {
-    public readonly wellFormed: RegExp = /^[A-Za-z][A-Za-z0-9-]+$/;
+    public readonly wellFormed: RegExp = /^([A-Za-z][A-Za-z0-9-]{0,7})(-[A-Za-z][A-Za-z0-9-]{0,7})*$/;
 
     public constructor(description: string) {
         super({

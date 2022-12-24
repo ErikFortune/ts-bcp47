@@ -22,12 +22,14 @@
 
 import * as Iana from '../iana';
 
-import { Model, Validate } from './subtags';
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+
+import { ExtensionSubtag } from './subtags/model';
 import { LanguageTagParts } from './common';
+import { Validate } from './subtags';
 
 interface ParserStatus {
-    readonly iana: Iana.TagRegistry;
+    readonly iana: Iana.LanguageSubtags.TagRegistry;
     readonly tag: string;
     readonly subtags: string[];
     readonly parts: LanguageTagParts;
@@ -39,7 +41,7 @@ export class LanguageTagParser {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
-    public static parse(tag: string, iana: Iana.TagRegistry): Result<LanguageTagParts> {
+    public static parse(tag: string, iana: Iana.LanguageSubtags.TagRegistry): Result<LanguageTagParts> {
         const status: ParserStatus = {
             tag,
             iana,
@@ -90,7 +92,7 @@ export class LanguageTagParser {
             return succeed(status.parts);
         } else if (status.parts.grandfathered !== undefined) {
             return succeed(status.parts);
-        } else if (Validate.WellFormed.privateUsePrefix(status.next)) {
+        } else if (Validate.privateUsePrefix.isWellFormed(status.next)) {
             // just return with no primary language and the private tag
             // parser will be invoked by the parent flow.
             return succeed(status.parts);
@@ -146,26 +148,26 @@ export class LanguageTagParser {
 
     protected static _parseExtensions(status: ParserStatus): Result<LanguageTagParts> {
         // optional extension subtags
-        while (status.next !== undefined && Validate.WellFormed.extensionSingleton(status.next)) {
+        while (status.next !== undefined && Validate.extensionSingleton.isWellFormed(status.next)) {
             const singleton = status.next;
-            const values: Model.ExtensionSubtag[] = [];
+            const values: ExtensionSubtag[] = [];
             status.next = status.subtags.shift();
 
-            while (Validate.WellFormed.extensionSubtag(status.next)) {
+            while (Validate.extensionSubtag.isWellFormed(status.next)) {
                 values.push(status.next);
                 status.next = status.subtags.shift();
             }
             if (
                 status.next !== undefined &&
-                !Validate.WellFormed.extensionSingleton(status.next) &&
-                !Validate.WellFormed.privateUsePrefix(status.next)
+                !Validate.extensionSingleton.isWellFormed(status.next) &&
+                !Validate.extensionSingleton.isWellFormed(status.next)
             ) {
                 return fail(`${status.next}: malformed extension subtag`);
             } else if (values.length < 1) {
                 return fail(`${status.tag}: extension '${singleton}' must have at least one subtag.`);
             }
 
-            const value = values.join('-') as Iana.Tags.ExtendedLanguageRange;
+            const value = values.join('-') as ExtensionSubtag;
             if (status.parts.extensions === undefined) {
                 status.parts.extensions = [{ singleton, value }];
             } else {
@@ -177,22 +179,26 @@ export class LanguageTagParser {
 
     protected static _parsePrivateSubtags(status: ParserStatus): Result<LanguageTagParts> {
         // optional private use subtags
-        while (status.next != undefined && Validate.WellFormed.privateUsePrefix(status.next)) {
+        while (status.next != undefined && Validate.privateUsePrefix.isWellFormed(status.next)) {
             const values: string[] = [];
             status.next = status.subtags.shift();
 
-            while (status.next && Validate.WellFormed.privateUseSubtag(status.next)) {
+            while (
+                status.next &&
+                !Validate.privateUsePrefix.isWellFormed(status.next) &&
+                Iana.LanguageSubtags.Validate.extendedLanguageRange.isWellFormed(status.next)
+            ) {
                 values.push(status.next);
                 status.next = status.subtags.shift();
             }
 
-            if (status.next !== undefined && !Validate.WellFormed.privateUsePrefix(status.next)) {
+            if (status.next !== undefined && !Validate.privateUsePrefix.isWellFormed(status.next)) {
                 return fail(`${status.next}: malformed private-use subtag`);
             } else if (values.length < 1) {
                 return fail(`${status.tag}: private-use tag must have at least one subtag.`);
             }
 
-            const value = values.join('-') as Iana.Tags.ExtendedLanguageRange;
+            const value = values.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange;
             if (status.parts.private === undefined) {
                 status.parts.private = [value];
             } else {

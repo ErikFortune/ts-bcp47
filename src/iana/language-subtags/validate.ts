@@ -20,6 +20,4 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
+export * from '../jar/language-subtags/tags/validate';

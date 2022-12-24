@@ -33,7 +33,7 @@ export class WellFormedTag {
         this.parts = Object.freeze({ ...init });
     }
 
-    public static create(tag: string, registry: Iana.TagRegistry): Result<WellFormedTag> {
+    public static create(tag: string, registry: Iana.LanguageSubtags.TagRegistry): Result<WellFormedTag> {
         return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
             return succeed(new WellFormedTag(parts));
         });
