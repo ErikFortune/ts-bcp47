@@ -23,6 +23,7 @@
 import '@fgv/ts-utils-jest';
 
 import { Bcp, Iana } from '../../../src';
+import { LanguageTagParts } from '../../../src/bcp47';
 
 describe('ValidTag class', () => {
     const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
@@ -31,8 +32,8 @@ describe('ValidTag class', () => {
         test.each([
             ['valid canonical primary language', 'en', { primaryLanguage: 'en' }],
             ['valid primary language', 'EN', { primaryLanguage: 'en' }],
-            ['valid canonical extlangs', 'zh-yue-cmn', { primaryLanguage: 'zh', extlangs: ['yue', 'cmn'] }],
-            ['valid extlangs', 'ZH-Yue-Cmn', { primaryLanguage: 'zh', extlangs: ['yue', 'cmn'] }],
+            ['valid canonical extlang', 'zh-cmn', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
+            ['valid extlang', 'ZH-Yue', { primaryLanguage: 'zh', extlangs: ['yue'] }],
             // ['private use primary language', { primaryLanguage: 'qpn' }, { primaryLanguage: 'qpn' }],
             ['valid script', 'en-LATN', { primaryLanguage: 'en', script: 'Latn' }],
             // ['private use script', { script: 'Qabc' }, { script: 'Qabc' }],
@@ -63,6 +64,8 @@ describe('ValidTag class', () => {
         test.each([
             ['invalid primary language', 'ENG', /invalid language/i],
             ['invalid extlang', 'zh-han', /invalid extlang/i],
+            ['multiple extlang', 'zh-cmn-yue', /multiple extlang/i],
+            ['invalid extlang prefix', 'en-yue', /invalid prefix/i],
             ['invalid script', 'en-Aaaa', /invalid script/i],
             ['invalid region', 'es-AJ', /invalid region/i],
             ['invalid variant', 'en-US-xyzzy', /invalid variant/i],
@@ -72,20 +75,37 @@ describe('ValidTag class', () => {
         });
     });
 
+    describe('validateExtlang static method', () => {
+        test.each([
+            ['missing primary language', { extlangs: ['cmn', 'yue'] }, /missing primary language/i],
+            ['unknown extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang subtag/i],
+            ['non-canonical extlang', { primaryLanguage: 'zh', extlangs: ['Yue'] }, /invalid extlang subtag/i],
+            ['non-canonical prefix', { primaryLanguage: 'ZH', extlangs: ['yue'] }, /invalid prefix/i],
+            ['incorrect prefix', { primaryLanguage: 'en', extlangs: ['cmn'] }, /invalid prefix/i],
+        ])('fails for %p', (_desc, value, expected) => {
+            const parts = value as LanguageTagParts;
+            expect(Bcp.ValidTag.validateExtlang(parts, iana)).toFailWith(expected);
+        });
+    });
+
     describe('validateParts static method', () => {
         test.each([
             ['valid canonical primary language', { primaryLanguage: 'en' }, { primaryLanguage: 'en' }],
             ['valid primary language', { primaryLanguage: 'EN' }, { primaryLanguage: 'en' }],
-            ['valid canonical extlangs', { extlangs: ['yue', 'cmn'] }, { extlangs: ['yue', 'cmn'] }],
-            ['valid extlangs', { extlangs: ['Yue', 'Cmn'] }, { extlangs: ['yue', 'cmn'] }],
+            ['valid canonical extlang', { primaryLanguage: 'zh', extlangs: ['yue'] }, { primaryLanguage: 'zh', extlangs: ['yue'] }],
+            ['valid extlang', { primaryLanguage: 'zh', extlangs: ['Cmn'] }, { primaryLanguage: 'zh', extlangs: ['cmn'] }],
             // ['private use primary language', { primaryLanguage: 'qpn' }, { primaryLanguage: 'qpn' }],
-            ['valid script', { script: 'LATN' }, { script: 'Latn' }],
+            ['valid script', { primaryLanguage: 'fr', script: 'LATN' }, { primaryLanguage: 'fr', script: 'Latn' }],
             // ['private use script', { script: 'Qabc' }, { script: 'Qabc' }],
-            ['valid iso3166 region', { region: 'aq' }, { region: 'AQ' }],
-            ['valid UN M.49 region', { region: '419' }, { region: '419' }],
+            ['valid iso3166 region', { primaryLanguage: 'en', region: 'aq' }, { primaryLanguage: 'en', region: 'AQ' }],
+            ['valid UN M.49 region', { primaryLanguage: 'es', region: '419' }, { primaryLanguage: 'es', region: '419' }],
             // ['private use region', { region: 'QX' }, { region: 'QX' }],
-            ['valid variant', { variants: ['Valencia'] }, { variants: ['valencia'] }],
-            ['valid variants', { variants: ['Valencia', 'lipaw'] }, { variants: ['valencia', 'lipaw'] }],
+            ['valid variant', { primaryLanguage: 'es', variants: ['Valencia'] }, { primaryLanguage: 'es', variants: ['valencia'] }],
+            [
+                'valid variants',
+                { primaryLanguage: 'es', variants: ['Valencia', 'lipaw'] },
+                { primaryLanguage: 'es', variants: ['valencia', 'lipaw'] },
+            ],
         ])('succeeds for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedWith(
                 expected as unknown as Bcp.LanguageTagParts
@@ -94,10 +114,12 @@ describe('ValidTag class', () => {
 
         test.each([
             ['invalid primary language', { primaryLanguage: 'ENG' }, /invalid language/i],
-            ['invalid extlang', { extlangs: ['han'] }, /invalid extlang/i],
-            ['invalid script', { script: 'AAAA' }, /invalid script/i],
-            ['invalid region', { region: 'aj' }, /invalid region/i],
-            ['invalid variant', { variants: ['xyzzy'] }, /invalid variant/i],
+            ['invalid extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang/i],
+            ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['Yue', 'Cmn'] }, /multiple extlang/i],
+            ['invalid extlang prefix', { primaryLanguage: 'en', extlangs: ['yue'] }, /invalid prefix/i],
+            ['invalid script', { primaryLanguage: 'en', script: 'AAAA' }, /invalid script/i],
+            ['invalid region', { primaryLanguage: 'en', region: 'aj' }, /invalid region/i],
+            ['invalid variant', { primaryLanguage: 'en', variants: ['xyzzy'] }, /invalid variant/i],
         ])('fails for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
         });

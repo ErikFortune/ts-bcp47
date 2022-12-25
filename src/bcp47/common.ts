@@ -40,3 +40,17 @@ export interface LanguageTagParts {
 
     grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
 }
+
+export function languageTagPartsToString(parts: LanguageTagParts): string {
+    return [
+        parts.primaryLanguage,
+        ...(parts.extlangs ?? []),
+        parts.script,
+        parts.region,
+        ...(parts.variants ?? []),
+        ...(parts.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
+        ...(parts.private ?? []).map((p) => `x-${p}`),
+    ]
+        .filter((s): s is string => s !== undefined)
+        .join('-');
+}

@@ -24,8 +24,8 @@ import * as Iana from '../iana';
 import * as Parser from './languageTagParser';
 import * as Subtags from './subtags';
 
-import { Result, allSucceed, captureResult, succeed } from '@fgv/ts-utils';
-import { LanguageTagParts } from './common';
+import { LanguageTagParts, languageTagPartsToString } from './common';
+import { Result, allSucceed, captureResult, fail, succeed } from '@fgv/ts-utils';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -41,6 +41,30 @@ export class ValidTag {
         });
     }
 
+    public static validateExtlang(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
+        if (parts.extlangs) {
+            const prefix = parts.primaryLanguage;
+            if (!prefix) {
+                return fail('missing primary language for extlang prefix validation.');
+            }
+
+            if (parts.extlangs.length > 1) {
+                return fail('multiple extlang subtags not allowed');
+            }
+
+            for (const extlang of parts.extlangs) {
+                const def = iana.subtags.extlangs.tryGetCanonical(extlang);
+                if (!def) {
+                    return fail(`invalid extlang subtag "${extlang}" (not registered).`);
+                }
+                if (prefix !== def.prefix) {
+                    return fail(`invalid prefix "${prefix}" for extlang subtag ${extlang} (expected "${def.prefix}").`);
+                }
+            }
+        }
+        return succeed(true);
+    }
+
     public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
@@ -54,6 +78,21 @@ export class ValidTag {
             );
         }
 
+        if (parts.primaryLanguage === undefined) {
+            const tag = languageTagPartsToString(parts);
+
+            // primary language must be defined except for:
+            // 1: a registered grandfathered tag
+            // 2: a fully private tag
+            const grandfathered = iana.subtags.grandfathered.tryGet(tag);
+            if (grandfathered) {
+                validated.grandfathered = grandfathered.tag;
+                return succeed(validated);
+            } else if (parts.private === undefined || parts.private.length < 1) {
+                results.push(fail(`${tag}: missing primary language`));
+            }
+        }
+
         if (parts.extlangs !== undefined) {
             validated.extlangs = [];
             for (const extlang of parts.extlangs) {
@@ -64,6 +103,7 @@ export class ValidTag {
                     })
                 );
             }
+            results.push(this.validateExtlang(validated, iana));
         }
 
         if (parts.script !== undefined) {
