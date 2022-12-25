@@ -195,10 +195,10 @@ export class LanguageTagParser {
             }
 
             const value = values.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange;
-            if (status.parts.private === undefined) {
-                status.parts.private = [value];
+            if (status.parts.privateUse === undefined) {
+                status.parts.privateUse = [value];
             } else {
-                status.parts.private.push(value);
+                status.parts.privateUse.push(value);
             }
         }
         return succeed(status.parts);

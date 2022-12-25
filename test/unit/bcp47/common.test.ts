@@ -43,8 +43,8 @@ describe('languageTagPartsToString helper function', () => {
             },
             'en-u-en-US-t-ML',
         ],
-        ['private use tag', { private: ['tag-one'] }, 'x-tag-one'],
-        ['private use tags', { primaryLanguage: 'en', private: ['tag-one', 'tag-two'] }, 'en-x-tag-one-x-tag-two'],
+        ['private use tag', { privateUse: ['tag-one'] }, 'x-tag-one'],
+        ['private use tags', { primaryLanguage: 'en', privateUse: ['tag-one', 'tag-two'] }, 'en-x-tag-one-x-tag-two'],
     ])('formats %p correctly', (_desc, value, expected) => {
         const parts = value as LanguageTagParts;
         expect(languageTagPartsToString(parts)).toBe(expected);

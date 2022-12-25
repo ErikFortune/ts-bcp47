@@ -54,7 +54,7 @@ describe('ValidTag class', () => {
                     ],
                 },
             ],
-            ['valid private-use subtag', 'en-x-Pig-Latin', { primaryLanguage: 'en', private: ['pig-latin'] }],
+            ['valid private-use subtag', 'en-x-Pig-Latin', { primaryLanguage: 'en', privateUse: ['pig-latin'] }],
             ['valid i- grandfathered tag', 'i-ami', { grandfathered: 'i-ami' }],
             ['valid other grandfathered tag', 'en-GB-oed', { grandfathered: 'en-GB-oed' }],
         ])('succeeds for %p', (_desc, tag, expected) => {
@@ -108,7 +108,7 @@ describe('ValidTag class', () => {
                 { primaryLanguage: 'es', variants: ['Valencia', 'lipaw'] },
                 { primaryLanguage: 'es', variants: ['valencia', 'lipaw'] },
             ],
-            ['valid private tag', { private: ['Tag-one'] }, { private: ['tag-one'] }],
+            ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedWith(
                 expected as unknown as Bcp.LanguageTagParts
@@ -125,7 +125,7 @@ describe('ValidTag class', () => {
             ['invalid variant', { primaryLanguage: 'en', variants: ['xyzzy'] }, /invalid variant/i],
             ['invalid grandfathered tag', { grandfathered: 'i-dothraki' }, /invalid grandfathered/i],
             ['missing primary language', { script: 'Latn' }, /missing primary language/i],
-            ['missing primary language with malformed private tags', { script: 'Latn', private: [] }, /missing primary language/i],
+            ['missing primary language with malformed private tags', { script: 'Latn', privateUse: [] }, /missing primary language/i],
         ])('fails for %p', (_desc, from, expected) => {
             expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
         });

@@ -58,9 +58,9 @@ describe('BCP-47 WellFormedTag class', () => {
                     ],
                 },
             ],
-            ['single private tag', 'en-US-x-pig-latin', { primaryLanguage: 'en', region: 'US', private: ['pig-latin'] }],
-            ['multiple private tags', 'en-US-x-tag-x-pig-latin', { primaryLanguage: 'en', region: 'US', private: ['tag', 'pig-latin'] }],
-            ['only private tags', 'x-en-US-x-some-other-tag', { private: ['en-US', 'some-other-tag'] }],
+            ['single private tag', 'en-US-x-pig-latin', { primaryLanguage: 'en', region: 'US', privateUse: ['pig-latin'] }],
+            ['multiple private tags', 'en-US-x-tag-x-pig-latin', { primaryLanguage: 'en', region: 'US', privateUse: ['tag', 'pig-latin'] }],
+            ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
         ])('succeeds for %p (%p)', (_desc, tag, expected) => {
             expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
                 expect(wellFormed.parts).toEqual(expected);

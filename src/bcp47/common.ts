@@ -36,12 +36,15 @@ export interface LanguageTagParts {
     region?: Iana.LanguageSubtags.RegionSubtag;
     variants?: Iana.LanguageSubtags.VariantSubtag[];
     extensions?: ExtensionSubtagValue[];
-    private?: Iana.LanguageSubtags.ExtendedLanguageRange[];
+    privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
 
     grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
 }
 
 export function languageTagPartsToString(parts: LanguageTagParts): string {
+    if (parts.grandfathered) {
+        return parts.grandfathered;
+    }
     return [
         parts.primaryLanguage,
         ...(parts.extlangs ?? []),
@@ -49,7 +52,7 @@ export function languageTagPartsToString(parts: LanguageTagParts): string {
         parts.region,
         ...(parts.variants ?? []),
         ...(parts.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
-        ...(parts.private ?? []).map((p) => `x-${p}`),
+        ...(parts.privateUse ?? []).map((p) => `x-${p}`),
     ]
         .filter((s): s is string => s !== undefined)
         .join('-');

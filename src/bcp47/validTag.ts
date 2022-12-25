@@ -93,7 +93,7 @@ export class ValidTag {
 
             // primary language must be defined except for
             // a fully private tag
-            if (parts.private === undefined || parts.private.length < 1) {
+            if (parts.privateUse === undefined || parts.privateUse.length < 1) {
                 results.push(fail(`${tag}: missing primary language`));
             }
         }
@@ -156,12 +156,12 @@ export class ValidTag {
             }
         }
 
-        if (parts.private !== undefined) {
-            validated.private = [];
-            for (const original of parts.private) {
+        if (parts.privateUse !== undefined) {
+            validated.privateUse = [];
+            for (const original of parts.privateUse) {
                 results.push(
                     Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(original).onSuccess((canonical) => {
-                        validated.private!.push(canonical);
+                        validated.privateUse!.push(canonical);
                         return succeed(true);
                     })
                 );
