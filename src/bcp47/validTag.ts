@@ -26,6 +26,8 @@ import * as Subtags from './subtags';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, allSucceed, captureResult, fail, succeed } from '@fgv/ts-utils';
+import { ExtensionSingleton } from './subtags/model';
+import { VariantSubtag } from '../iana/language-subtags';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -41,7 +43,7 @@ export class ValidTag {
         });
     }
 
-    public static validateExtlang(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
+    public static validateExtlangPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
         if (parts.extlangs) {
             const prefix = parts.primaryLanguage;
             if (!prefix) {
@@ -108,7 +110,9 @@ export class ValidTag {
                     })
                 );
             }
-            results.push(this.validateExtlang(validated, iana));
+            if (parts.extlangs.length > 1) {
+                return fail('multiple extlang subtags not allowed');
+            }
         }
 
         if (parts.script !== undefined) {
@@ -130,10 +134,15 @@ export class ValidTag {
         }
 
         if (parts.variants !== undefined) {
+            const present = new Set<VariantSubtag>();
             validated.variants = [];
             for (const original of parts.variants) {
                 results.push(
                     iana.subtags.variants.toValidCanonical(original).onSuccess((variant) => {
+                        if (present.has(variant)) {
+                            return fail(`duplicate variant subtag "${variant}"`);
+                        }
+                        present.add(variant);
                         validated.variants!.push(variant);
                         return succeed(variant);
                     })
@@ -142,10 +151,15 @@ export class ValidTag {
         }
 
         if (parts.extensions !== undefined) {
+            const present = new Set<ExtensionSingleton>();
             validated.extensions = [];
             for (const original of parts.extensions) {
                 results.push(
                     iana.extensions.extensions.toValidCanonical(original.singleton).onSuccess((singleton) => {
+                        if (present.has(singleton)) {
+                            return fail(`duplicate extension subtag "${singleton}"`);
+                        }
+                        present.add(singleton);
                         Subtags.Validate.extensionSubtag.toCanonical(original.value).onSuccess((value) => {
                             validated.extensions!.push({ singleton, value });
                             return succeed(true);
