@@ -24,10 +24,10 @@ import * as Iana from '../iana';
 import * as Parser from './languageTagParser';
 import * as Subtags from './subtags';
 
+import { ExtendedLanguageRange, VariantSubtag } from '../iana/language-subtags';
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, allSucceed, captureResult, fail, succeed } from '@fgv/ts-utils';
 import { ExtensionSingleton } from './subtags/model';
-import { VariantSubtag } from '../iana/language-subtags';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -62,6 +62,27 @@ export class ValidTag {
                 if (prefix !== def.prefix) {
                     return fail(`invalid prefix "${prefix}" for extlang subtag ${extlang} (expected "${def.prefix}").`);
                 }
+            }
+        }
+        return succeed(true);
+    }
+
+    public static validateVariantPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
+        if (parts.variants) {
+            const { primaryLanguage, extlangs, script, region } = parts;
+            let prefix = languageTagPartsToString({ primaryLanguage, extlangs, script, region });
+
+            for (const variant of parts.variants) {
+                const def = iana.subtags.variants.tryGetCanonical(variant);
+                if (!def) {
+                    return fail(`invalid variant subtag "${variant}" (not registered).`);
+                }
+
+                // only fail if registration specifies prefixes but none are present
+                if (def.prefix?.includes(prefix as ExtendedLanguageRange) === false) {
+                    return fail(`invalid prefix "${prefix}" for variant subtag ${variant} (expected "(${def.prefix.join(', ')})").`);
+                }
+                prefix = `${prefix}-${variant}`;
             }
         }
         return succeed(true);

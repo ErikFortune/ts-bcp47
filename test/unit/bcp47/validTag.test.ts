@@ -97,6 +97,29 @@ describe('ValidTag class', () => {
         });
     });
 
+    describe('validateVariantPrefix static method', () => {
+        test.each([
+            ['valid variant prefix', { primaryLanguage: 'sl', variants: ['rozaj'] }],
+            ['valid successive variant prefixes', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
+            ['valid variant sequence prefixes', { primaryLanguage: 'sl', variants: ['rozaj', 'biske', '1994'] }],
+            ['any prefix for variant with no registered prefix', { primaryLanguage: 'en', variants: ['alalc97'] }],
+        ])('succeeds for %p', (_desc, value) => {
+            const parts = value as LanguageTagParts;
+            expect(Bcp.ValidTag.validateVariantPrefix(parts, iana)).toSucceed();
+        });
+
+        test.each([
+            ['unknown variant', { primaryLanguage: 'zh', variants: ['xyzzy'] }, /invalid variant subtag/i],
+            ['non-canonical variant', { primaryLanguage: 'sl', variants: ['Rozaj'] }, /invalid variant subtag/i],
+            ['non-canonical prefix', { primaryLanguage: 'SL', variants: ['rozaj'] }, /invalid prefix/i],
+            ['invalid prefix', { primaryLanguage: 'en', variants: ['rozaj'] }, /invalid prefix/i],
+            ['invalid prefix sequence', { primaryLanguage: 'sl', variants: ['rozaj', '1996'] }, /invalid prefix/i],
+        ])('fails for %p', (_desc, value, expected) => {
+            const parts = value as LanguageTagParts;
+            expect(Bcp.ValidTag.validateVariantPrefix(parts, iana)).toFailWith(expected);
+        });
+    });
+
     describe('validateParts static method', () => {
         test.each([
             ['valid canonical primary language', { primaryLanguage: 'en' }, { primaryLanguage: 'en' }],
