@@ -69,16 +69,12 @@ export class LanguageTagParser {
     }
 
     protected static _parseGrandfatheredTag(status: ParserStatus): Result<LanguageTagParts> {
-        if (status.next === 'i' || status.next === 'I') {
-            const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
-            if (grandfathered) {
-                status.parts.grandfathered = grandfathered.tag;
-                // we consumed the whole thing
-                status.subtags.splice(0, status.subtags.length);
-                status.next = undefined;
-            } else {
-                return fail(`${status.tag}: unrecognized grandfathered tag`);
-            }
+        const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
+        if (grandfathered) {
+            status.parts.grandfathered = grandfathered.tag;
+            // we consumed the whole thing
+            status.subtags.splice(0, status.subtags.length);
+            status.next = undefined;
         }
         return succeed(status.parts);
     }

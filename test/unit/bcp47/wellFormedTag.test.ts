@@ -69,7 +69,7 @@ describe('BCP-47 WellFormedTag class', () => {
 
         test.each([
             ['no primary language', 'Latn', /no primary language/i],
-            ['unknown grandfathered tag', 'i-dothraki', /unrecognized grandfathered/i],
+            ['unknown grandfathered tag', 'i-dothraki', /no primary language/i],
             ['too many extlang', 'zh-cmn-han-yue-abc', /too many extlang/i],
             ['extension without subtags', 'en-US-u', /at least one subtag/i],
             ['extensions without subtags', 'en-US-u-t-translation', /at least one subtag/i],

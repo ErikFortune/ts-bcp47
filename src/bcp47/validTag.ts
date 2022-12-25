@@ -69,6 +69,16 @@ export class ValidTag {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
 
+        if (parts.grandfathered) {
+            // see if this is a grandfathered tag
+            const grandfathered = iana.subtags.grandfathered.tryGet(parts.grandfathered);
+            if (grandfathered) {
+                validated.grandfathered = grandfathered.tag;
+                return succeed(validated);
+            }
+            results.push(fail(`${parts.grandfathered}: invalid grandfathered tag`));
+        }
+
         if (parts.primaryLanguage !== undefined) {
             results.push(
                 iana.subtags.languages.toValidCanonical(parts.primaryLanguage).onSuccess((lang) => {
@@ -81,14 +91,9 @@ export class ValidTag {
         if (parts.primaryLanguage === undefined) {
             const tag = languageTagPartsToString(parts);
 
-            // primary language must be defined except for:
-            // 1: a registered grandfathered tag
-            // 2: a fully private tag
-            const grandfathered = iana.subtags.grandfathered.tryGet(tag);
-            if (grandfathered) {
-                validated.grandfathered = grandfathered.tag;
-                return succeed(validated);
-            } else if (parts.private === undefined || parts.private.length < 1) {
+            // primary language must be defined except for
+            // a fully private tag
+            if (parts.private === undefined || parts.private.length < 1) {
                 results.push(fail(`${tag}: missing primary language`));
             }
         }
