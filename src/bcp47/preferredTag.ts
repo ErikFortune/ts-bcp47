@@ -22,10 +22,10 @@
 
 import * as Iana from '../iana';
 
+import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../iana/language-subtags';
 import { LanguageTagParts, languageTagPartsToString } from './common';
-import { Result, captureResult, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
+import { Result, captureResult, fail, populateObject, succeed } from '@fgv/ts-utils';
 
-import { ExtLangSubtag, LanguageSubtag, RegionSubtag, ScriptSubtag } from '../iana/language-subtags';
 import { ValidTag } from './validTag';
 
 export class PreferredTag {
