@@ -28,29 +28,38 @@ import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 import { ValidTag } from './validTag';
 
 export class PreferredTag {
+    public readonly tag: string;
     public readonly from: ValidTag;
     public readonly parts: LanguageTagParts;
 
-    protected constructor(from: ValidTag, iana: Iana.IanaRegistries) {
+    protected constructor(tag: string, from: ValidTag, iana: Iana.IanaRegistries) {
+        this.tag = tag;
         this.from = from;
 
         const grandfathered = this._checkGrandfathered(from.parts, iana).getValueOrThrow();
+        const redundant = this._checkRedundant(tag, iana).getValueOrThrow();
 
-        this.parts = Object.freeze(grandfathered ?? { ...from.parts });
+        this.parts = Object.freeze(grandfathered ?? redundant ?? { ...from.parts });
     }
 
     public static create(tag: string, iana: Iana.IanaRegistries): Result<PreferredTag>;
     public static create(from: ValidTag, iana: Iana.IanaRegistries): Result<PreferredTag>;
     public static create(from: string | ValidTag, iana: Iana.IanaRegistries): Result<PreferredTag> {
+        let valid: ValidTag | undefined;
+
         if (typeof from === 'string') {
-            const valid = ValidTag.create(from, iana);
-            if (valid.isFailure()) {
-                return fail(`invalid language tag "${from}"`);
+            const validated = ValidTag.create(from, iana);
+            if (validated.isFailure()) {
+                return fail(`invalid language tag "${from}": ${validated.message}`);
             }
-            from = valid.value;
+            valid = validated.value;
+        } else {
+            valid = from;
         }
+
         return captureResult(() => {
-            return new PreferredTag(from as ValidTag, iana);
+            const tag = languageTagPartsToString(valid!.parts);
+            return new PreferredTag(tag, valid!, iana);
         });
     }
 
@@ -61,11 +70,13 @@ export class PreferredTag {
     protected _checkGrandfathered(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts | undefined> {
         if (parts.grandfathered) {
             const grandfathered = iana.subtags.grandfathered.tryGet(parts.grandfathered);
+            // istanbul ignore next - internal error hard to test
             if (!grandfathered) {
                 return fail(`invalid grandfathered tag "${parts.grandfathered}"`);
             }
             if (grandfathered.preferredValue) {
                 const preferred = ValidTag.create(grandfathered.preferredValue, iana);
+                // istanbul ignore next - internal error hard to test
                 if (preferred.isFailure()) {
                     return fail(
                         `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}: ${preferred.message}.`
@@ -73,6 +84,19 @@ export class PreferredTag {
                 }
                 return succeed(preferred.value.parts);
             }
+        }
+        return succeed(undefined);
+    }
+
+    protected _checkRedundant(tag: string, iana: Iana.IanaRegistries): Result<LanguageTagParts | undefined> {
+        const redundant = iana.subtags.redundant.tryGet(tag);
+        if (redundant?.preferredValue !== undefined) {
+            const preferred = ValidTag.create(redundant.preferredValue, iana);
+            // istanbul ignore next - internal error hard to test
+            if (preferred.isFailure()) {
+                return fail(`redundant tag "${tag}" has invalid preferred value "${redundant.preferredValue}: ${preferred.message}.`);
+            }
+            return succeed(preferred.value.parts);
         }
         return succeed(undefined);
     }

@@ -30,36 +30,25 @@ describe('ValidTag class', () => {
 
     describe('create static method', () => {
         test.each([
-            ['valid canonical primary language', 'en', { primaryLanguage: 'en' }],
-            ['valid primary language', 'EN', { primaryLanguage: 'en' }],
-            ['valid canonical extlang', 'zh-cmn', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
-            ['valid extlang', 'ZH-Yue', { primaryLanguage: 'zh', extlangs: ['yue'] }],
+            ['valid canonical primary language', 'en', 'en'],
+            ['valid primary language', 'EN', 'en'],
+            ['valid canonical extlang', 'zh-cmn', 'zh-cmn'],
+            ['valid extlang', 'ZH-Yue', 'zh-yue'],
             // ['private use primary language', { primaryLanguage: 'qpn' }, { primaryLanguage: 'qpn' }],
-            ['valid script', 'en-LATN', { primaryLanguage: 'en', script: 'Latn' }],
+            ['valid script', 'en-LATN', 'en-Latn'],
             // ['private use script', { script: 'Qabc' }, { script: 'Qabc' }],
-            ['valid iso3166 region', 'en-aq', { primaryLanguage: 'en', region: 'AQ' }],
-            ['valid UN M.49 region', 'es-419', { primaryLanguage: 'es', region: '419' }],
+            ['valid iso3166 region', 'en-aq', 'en-AQ'],
+            ['valid UN M.49 region', 'es-419', 'es-419'],
             // ['private use region', { region: 'QX' }, { region: 'QX' }],
-            ['valid variant', 'ca-ES-valencia', { primaryLanguage: 'ca', region: 'ES', variants: ['valencia'] }],
-            ['valid variants', 'sl-rozaj-lipaw', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
-            [
-                'valid extensions',
-                'en-US-u-en-US-t-MT',
-                {
-                    primaryLanguage: 'en',
-                    region: 'US',
-                    extensions: [
-                        { singleton: 'u', value: 'en-US' },
-                        { singleton: 't', value: 'mt' },
-                    ],
-                },
-            ],
-            ['valid private-use subtag', 'en-x-Pig-Latin', { primaryLanguage: 'en', privateUse: ['pig-latin'] }],
-            ['valid i- grandfathered tag', 'i-ami', { grandfathered: 'i-ami' }],
-            ['valid other grandfathered tag', 'en-GB-oed', { grandfathered: 'en-GB-oed' }],
+            ['valid variant', 'ca-ES-Valencia', 'ca-ES-valencia'],
+            ['valid variants', 'sl-Rozaj-Lipaw', 'sl-rozaj-lipaw'],
+            ['valid extensions', 'en-US-u-en-US-t-MT', 'en-US-u-en-US-t-mt'],
+            ['valid private-use subtag', 'en-x-Pig-Latin', 'en-x-pig-latin'],
+            ['valid i- grandfathered tag', 'i-ami', 'i-ami'],
+            ['valid other grandfathered tag', 'en-GB-oed', 'en-GB-oed'],
         ])('succeeds for %p', (_desc, tag, expected) => {
             expect(Bcp.ValidTag.create(tag, iana)).toSucceedAndSatisfy((valid) => {
-                expect(valid.parts).toEqual(expected);
+                expect(valid.toString()).toEqual(expected);
             });
         });
 

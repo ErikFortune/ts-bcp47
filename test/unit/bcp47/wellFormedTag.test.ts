@@ -30,6 +30,7 @@ describe('BCP-47 WellFormedTag class', () => {
     describe('create static method', () => {
         test.each([
             ['canonical alpha-2 language', 'en', { primaryLanguage: 'en' }],
+            ['well-formed alpha-2 language', 'EN', { primaryLanguage: 'EN' }],
             ['canonical alpha-3 language', 'deu', { primaryLanguage: 'deu' }],
             ['canonical language with extlang', 'zh-cmn', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
             ['canonical language with two extlang', 'zh-cmn-han', { primaryLanguage: 'zh', extlangs: ['cmn', 'han'] }],
@@ -64,6 +65,7 @@ describe('BCP-47 WellFormedTag class', () => {
         ])('succeeds for %p (%p)', (_desc, tag, expected) => {
             expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
                 expect(wellFormed.parts).toEqual(expected);
+                expect(wellFormed.toString()).toEqual(tag);
             });
         });
 
