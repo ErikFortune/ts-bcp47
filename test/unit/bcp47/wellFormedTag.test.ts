@@ -23,66 +23,115 @@
 import '@fgv/ts-utils-jest';
 import * as Bcp from '../../../src/bcp47';
 import * as Iana from '../../../src/iana';
+import { LanguageTagParts } from '../../../src/bcp47';
 
 describe('BCP-47 WellFormedTag class', () => {
     const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
 
     describe('create static method', () => {
-        test.each([
-            ['canonical alpha-2 language', 'en', { primaryLanguage: 'en' }],
-            ['well-formed alpha-2 language', 'EN', { primaryLanguage: 'EN' }],
-            ['canonical alpha-3 language', 'deu', { primaryLanguage: 'deu' }],
-            ['canonical language with extlang', 'zh-cmn', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
-            ['canonical language with two extlang', 'zh-cmn-han', { primaryLanguage: 'zh', extlangs: ['cmn', 'han'] }],
-            ['canonical language with script', 'cmn-Hant', { primaryLanguage: 'cmn', script: 'Hant' }],
-            ['canonical language with variant', 'de-1996', { primaryLanguage: 'de', variants: ['1996'] }],
-            ['canonical language with multiple variants', 'sl-rozaj-lipaw', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
-            ['canonical language with extlang and script', 'zh-cmn-Hant', { primaryLanguage: 'zh', extlangs: ['cmn'], script: 'Hant' }],
-            ['canonical language with script and region', 'cmn-Hant-CN', { primaryLanguage: 'cmn', script: 'Hant', region: 'CN' }],
-            ['canonical language with region', 'en-US', { primaryLanguage: 'en', region: 'US' }],
-            ['canonical language with numeric region', 'es-419', { primaryLanguage: 'es', region: '419' }],
-            ['grandfathered tag', 'i-klingon', { grandfathered: 'i-klingon' }],
-            [
-                'single extension',
-                'en-US-u-en-US',
-                { primaryLanguage: 'en', region: 'US', extensions: [{ singleton: 'u', value: 'en-US' }] },
-            ],
-            [
-                'multiple extensions',
-                'en-US-u-US-t-tl',
-                {
-                    primaryLanguage: 'en',
-                    region: 'US',
-                    extensions: [
-                        { singleton: 'u', value: 'US' },
-                        { singleton: 't', value: 'tl' },
-                    ],
-                },
-            ],
-            ['single private tag', 'en-US-x-pig-latin', { primaryLanguage: 'en', region: 'US', privateUse: ['pig-latin'] }],
-            ['multiple private tags', 'en-US-x-tag-x-pig-latin', { primaryLanguage: 'en', region: 'US', privateUse: ['tag', 'pig-latin'] }],
-            ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
-        ])('succeeds for %p (%p)', (_desc, tag, expected) => {
-            expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
-                expect(wellFormed.parts).toEqual(expected);
-                expect(wellFormed.toString()).toEqual(tag);
+        describe('with string', () => {
+            test.each([
+                ['canonical alpha-2 language', 'en', { primaryLanguage: 'en' }],
+                ['well-formed alpha-2 language', 'EN', { primaryLanguage: 'EN' }],
+                ['canonical alpha-3 language', 'deu', { primaryLanguage: 'deu' }],
+                ['canonical language with extlang', 'zh-cmn', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
+                ['canonical language with script', 'cmn-Hant', { primaryLanguage: 'cmn', script: 'Hant' }],
+                ['canonical language with variant', 'de-1996', { primaryLanguage: 'de', variants: ['1996'] }],
+                ['canonical language with multiple variants', 'sl-rozaj-lipaw', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
+                ['canonical language with extlang and script', 'zh-cmn-Hant', { primaryLanguage: 'zh', extlangs: ['cmn'], script: 'Hant' }],
+                ['canonical language with script and region', 'cmn-Hant-CN', { primaryLanguage: 'cmn', script: 'Hant', region: 'CN' }],
+                ['canonical language with region', 'en-US', { primaryLanguage: 'en', region: 'US' }],
+                ['canonical language with numeric region', 'es-419', { primaryLanguage: 'es', region: '419' }],
+                ['grandfathered tag', 'i-klingon', { grandfathered: 'i-klingon' }],
+                [
+                    'single extension',
+                    'en-US-u-en-US',
+                    { primaryLanguage: 'en', region: 'US', extensions: [{ singleton: 'u', value: 'en-US' }] },
+                ],
+                [
+                    'multiple extensions',
+                    'en-US-u-US-t-tl',
+                    {
+                        primaryLanguage: 'en',
+                        region: 'US',
+                        extensions: [
+                            { singleton: 'u', value: 'US' },
+                            { singleton: 't', value: 'tl' },
+                        ],
+                    },
+                ],
+                ['single private tag', 'en-US-x-pig-latin', { primaryLanguage: 'en', region: 'US', privateUse: ['pig-latin'] }],
+                [
+                    'multiple private tags',
+                    'en-US-x-tag-x-pig-latin',
+                    { primaryLanguage: 'en', region: 'US', privateUse: ['tag', 'pig-latin'] },
+                ],
+                ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
+            ])('succeeds for %p (%p)', (_desc, tag, expected) => {
+                expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
+                    expect(wellFormed.parts).toEqual(expected);
+                    expect(wellFormed.toString()).toEqual(tag);
+                });
+            });
+
+            test.each([
+                ['no primary language', 'Latn', /no primary language/i],
+                ['unknown grandfathered tag', 'i-dothraki', /no primary language/i],
+                ['too many extlang', 'zh-cmn-han-yue-abc', /too many extlang/i],
+                ['extension without subtags', 'en-US-u', /at least one subtag/i],
+                ['extensions without subtags', 'en-US-u-t-translation', /at least one subtag/i],
+                ['long extension subtag', 'en-US-u-veryLongTag', /malformed extension subtag/i],
+                ['empty extension subtag', 'en-us-u--t-mt', /malformed extension subtag/i],
+                ['private tag without subtags', 'en-US-x', /at least one subtag/i],
+                ['long private subtag', 'en-US-x-veryLongTag', /malformed private-use subtag/i],
+                ['empty private use subtag', 'en-US-x-tag--other', /malformed private-use subtag/i],
+                ['extra subtags', 'en-US-US', /unexpected subtag/i],
+            ])('fails for %p (%p)', (_desc, tag, expected) => {
+                expect(Bcp.WellFormedTag.create(tag, iana)).toFailWith(expected);
             });
         });
 
-        test.each([
-            ['no primary language', 'Latn', /no primary language/i],
-            ['unknown grandfathered tag', 'i-dothraki', /no primary language/i],
-            ['too many extlang', 'zh-cmn-han-yue-abc', /too many extlang/i],
-            ['extension without subtags', 'en-US-u', /at least one subtag/i],
-            ['extensions without subtags', 'en-US-u-t-translation', /at least one subtag/i],
-            ['long extension subtag', 'en-US-u-veryLongTag', /malformed extension subtag/i],
-            ['empty extension subtag', 'en-us-u--t-mt', /malformed extension subtag/i],
-            ['private tag without subtags', 'en-US-x', /at least one subtag/i],
-            ['long private subtag', 'en-US-x-veryLongTag', /malformed private-use subtag/i],
-            ['empty private use subtag', 'en-US-x-tag--other', /malformed private-use subtag/i],
-            ['extra subtags', 'en-US-US', /unexpected subtag/i],
-        ])('fails for %p (%p)', (_desc, tag, expected) => {
-            expect(Bcp.WellFormedTag.create(tag, iana)).toFailWith(expected);
+        describe('with parts', () => {
+            test.each([
+                ['language only', { primaryLanguage: 'en' }],
+                ['language and extlang', { primaryLanguage: 'ZH', extlangs: ['CMN'] }],
+                ['language and script', { primaryLanguage: 'Sr', script: 'latn' }],
+                ['grandfathered', { grandfathered: 'i-klingon' }],
+                ['private use only', { privateUse: ['some-private-tag'] }],
+            ])('succeeds for %p', (_desc, from) => {
+                const parts = from as LanguageTagParts;
+                expect(Bcp.WellFormedTag.create(parts, iana)).toSucceedAndSatisfy((tag) => {
+                    expect(tag.parts).toEqual(parts);
+                });
+            });
+
+            test.each([
+                ['malformed primary language', { primaryLanguage: 'german' }, /malformed primary language/i],
+                ['missing primary language', { script: 'Latn' }, /missing primary language/i],
+                ['empty extlangs array', { primaryLanguage: 'zh', extlangs: [] }, /empty extlangs/i],
+                ['too many extlangs', { primaryLanguage: 'zh', extlangs: ['cmn', 'yue'] }, /multiple extlang/i],
+                ['malformed extlang', { primaryLanguage: 'ZH', extlangs: ['Cantonese'] }, /malformed extlang/i],
+                ['malformed script', { primaryLanguage: 'sr', script: 'Cyrillic' }, /malformed script/i],
+                ['malformed region', { primaryLanguage: 'en', region: '1234' }, /malformed region/i],
+                ['empty variants array', { primaryLanguage: 'en', variants: [] }, /empty variants/i],
+                ['malformed variant', { primaryLanguage: 'en', variants: ['123'] }, /malformed variant/i],
+                ['empty extensions array', { primaryLanguage: 'en', extensions: [] }, /empty extensions/i],
+                [
+                    'malformed extension singleton',
+                    { primaryLanguage: 'en', extensions: [{ singleton: '!', value: 'hello' }] },
+                    /malformed extension singleton/i,
+                ],
+                [
+                    'malformed extension subtag value',
+                    { primaryLanguage: 'en', extensions: [{ singleton: '1', value: 'veryLongTagNotAllowed' }] },
+                    /malformed extension subtag/i,
+                ],
+                ['empty private-use array', { primaryLanguage: 'en', privateUse: [] }, /empty private-use/i],
+                ['malformed private-use tag', { primaryLanguage: 'en', privateUse: ['veryLongTagsNotAllowed'] }, /malformed private-use/i],
+            ])('fails for %p', (_desc, from, expected) => {
+                const parts = from as LanguageTagParts;
+                expect(Bcp.WellFormedTag.create(parts, iana)).toFailWith(expected);
+            });
         });
     });
 });
