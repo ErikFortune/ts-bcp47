@@ -205,4 +205,8 @@ export class ValidTag {
 
         return allSucceed(results, validated);
     }
+
+    public toString(): string {
+        return languageTagPartsToString(this.parts);
+    }
 }

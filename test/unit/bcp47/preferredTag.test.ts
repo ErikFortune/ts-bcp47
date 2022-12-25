@@ -20,26 +20,21 @@
  * SOFTWARE.
  */
 
-import * as Iana from '../iana';
-import * as Parser from './languageTagParser';
+import '@fgv/ts-utils-jest';
+import * as Iana from '../../../src/iana';;
+import { PreferredTag } from '../../../src/bcp47/preferredTag';
 
-import { LanguageTagParts, languageTagPartsToString } from './common';
-import { Result, succeed } from '@fgv/ts-utils';
+describe('PreferredTag class', () => {
+    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
 
-export class WellFormedTag {
-    public readonly parts: Readonly<LanguageTagParts>;
-
-    protected constructor(init: Readonly<LanguageTagParts>) {
-        this.parts = Object.freeze({ ...init });
-    }
-
-    public static create(tag: string, registry: Iana.IanaRegistries): Result<WellFormedTag> {
-        return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
-            return succeed(new WellFormedTag(parts));
+    describe('static create', () => {
+        test.each([
+            ['valid preferred tag', 'en-US', { primaryLanguage: 'en', region: 'US' }],
+            ['valid grandfathered tag', 'art-lojban', { primaryLanguage: 'jbo' }],
+        ])('succeeds for %p', (_desc, tag, expected) => {
+            expect(PreferredTag.create(tag, iana)).toSucceedAndSatisfy((preferred) => {
+                expect(preferred.parts).toEqual(expected);
+            });
         });
-    }
-
-    public toString(): string {
-        return languageTagPartsToString(this.parts);
-    }
-}
+    });
+});
