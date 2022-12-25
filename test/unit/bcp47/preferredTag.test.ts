@@ -32,8 +32,13 @@ describe('PreferredTag class', () => {
         test.each([
             ['valid preferred tag', 'en-US', { primaryLanguage: 'en', region: 'US' }],
             ['valid grandfathered tag', 'art-lojban', { primaryLanguage: 'jbo' }],
+            ['valid grandfathered tag with variants', 'en-GB-oed', { primaryLanguage: 'en', region: 'GB', variants: ['oxendict'] }],
             ['valid redundant tag with preferred value', 'zh-cmn-Hans', { primaryLanguage: 'cmn', script: 'Hans' }],
             ['valid redundant tag with no preferred value', 'yi-Latn', { primaryLanguage: 'yi', script: 'Latn' }],
+            ['valid tag with deprecated primary language', 'in', { primaryLanguage: 'id' }],
+            ['valid tag with suppressed script', 'en-Latn', { primaryLanguage: 'en' }],
+            ['valid tag with deprecated region', 'en-BU', { primaryLanguage: 'en', region: 'MM' }],
+            ['completely private tag', 'x-en-GB', { privateUse: ['en-GB'] }],
         ])('succeeds for %p', (_desc, tag, expected) => {
             expect(PreferredTag.create(tag, iana)).toSucceedAndSatisfy((preferred) => {
                 expect(preferred.parts).toEqual(expected);

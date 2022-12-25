@@ -23,8 +23,9 @@
 import * as Iana from '../iana';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
-import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
+import { Result, captureResult, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 
+import { ExtLangSubtag, LanguageSubtag, RegionSubtag, ScriptSubtag } from '../iana/language-subtags';
 import { ValidTag } from './validTag';
 
 export class PreferredTag {
@@ -32,14 +33,14 @@ export class PreferredTag {
     public readonly from: ValidTag;
     public readonly parts: LanguageTagParts;
 
-    protected constructor(tag: string, from: ValidTag, iana: Iana.IanaRegistries) {
-        this.tag = tag;
+    protected constructor(from: ValidTag, iana: Iana.IanaRegistries) {
         this.from = from;
 
-        const grandfathered = this._checkGrandfathered(from.parts, iana).getValueOrThrow();
-        const redundant = this._checkRedundant(tag, iana).getValueOrThrow();
+        const tag = from.toString();
+        const parts = this._applyPreferredValues(tag, from.parts, iana).getValueOrThrow();
 
-        this.parts = Object.freeze(grandfathered ?? redundant ?? { ...from.parts });
+        this.parts = Object.freeze(parts);
+        this.tag = languageTagPartsToString(this.parts);
     }
 
     public static create(tag: string, iana: Iana.IanaRegistries): Result<PreferredTag>;
@@ -58,13 +59,77 @@ export class PreferredTag {
         }
 
         return captureResult(() => {
-            const tag = languageTagPartsToString(valid!.parts);
-            return new PreferredTag(tag, valid!, iana);
+            return new PreferredTag(valid!, iana);
         });
     }
 
     public toString(): string {
         return languageTagPartsToString(this.parts);
+    }
+
+    protected _applyPreferredValues(tag: string, parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
+        const grandfathered = this._checkGrandfathered(parts, iana);
+        if (grandfathered.isFailure() || grandfathered.value !== undefined) {
+            return grandfathered as Result<LanguageTagParts>;
+        }
+
+        const redundant = this._checkRedundant(tag, iana);
+        if (redundant.isFailure() || redundant.value !== undefined) {
+            return redundant as Result<LanguageTagParts>;
+        }
+
+        const preferred = populateObject<LanguageTagParts>(
+            {
+                primaryLanguage: () => this._checkLanguage(parts.primaryLanguage, iana),
+                extlangs: () => succeed(parts.extlangs),
+                script: () => this._checkScript(parts, iana),
+                region: () => this._checkRegion(parts.region, iana),
+                variants: () => succeed(parts.variants),
+                extensions: () => succeed(parts.extensions),
+                privateUse: () => succeed(parts.privateUse),
+            },
+            { suppressUndefined: true }
+        );
+
+        return preferred;
+    }
+
+    protected _checkLanguage(from: LanguageSubtag | undefined, iana: Iana.IanaRegistries): Result<LanguageSubtag | undefined> {
+        if (from) {
+            const language = iana.subtags.languages.tryGet(from);
+            // istanbul ignore next - internal error difficult to test
+            if (!language) {
+                return fail(`invalid language subtag "${from}.`);
+            }
+            return succeed(language.preferredValue ?? from);
+        }
+        return succeed(undefined);
+    }
+
+    protected _checkScript(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<ScriptSubtag | undefined> {
+        if (parts.primaryLanguage && parts.script) {
+            const language = iana.subtags.languages.tryGet(parts.primaryLanguage);
+            // istanbul ignore next - internal error difficult to test
+            if (!language) {
+                return fail(`invalid primary language subtag "${parts.primaryLanguage}.`);
+            }
+            if (language.suppressScript !== parts.script) {
+                return succeed(parts.script);
+            }
+        }
+        return succeed(undefined);
+    }
+
+    protected _checkRegion(from: RegionSubtag | undefined, iana: Iana.IanaRegistries): Result<RegionSubtag | undefined> {
+        if (from) {
+            const region = iana.subtags.regions.tryGet(from);
+            // istanbul ignore next - internal error difficult to test
+            if (!region) {
+                return fail(`invalid region subtag "${from}.`);
+            }
+            return succeed(region.preferredValue ?? from);
+        }
+        return succeed(undefined);
     }
 
     protected _checkGrandfathered(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts | undefined> {
