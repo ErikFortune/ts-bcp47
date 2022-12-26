@@ -55,7 +55,7 @@ describe('ValidTag class', () => {
         test.each([
             ['invalid primary language', 'ENG', /invalid language/i],
             ['invalid extlang', 'zh-han', /invalid extlang/i],
-            ['multiple extlang', 'zh-cmn-yue', /multiple extlang/i],
+            ['multiple extlang', 'zh-cmn-yue', /too many extlang/i],
             ['invalid script', 'en-Aaaa', /invalid script/i],
             ['invalid region', 'es-AJ', /invalid region/i],
             ['invalid variant', 'en-US-xyzzy', /invalid variant/i],
@@ -129,23 +129,22 @@ describe('ValidTag class', () => {
             ],
             ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
-            expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedWith(
-                expected as unknown as Bcp.LanguageTagParts
-            );
+            expect(Bcp.ValidTag.create(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedAndSatisfy((valid) => {
+                expect(valid.parts).toEqual(expected);
+            });
         });
 
         test.each([
             ['invalid primary language', { primaryLanguage: 'ENG' }, /invalid language/i],
             ['invalid extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang/i],
-            ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['Yue', 'Cmn'] }, /multiple extlang/i],
+            ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['Yue', 'Cmn'] }, /too many extlang/i],
             ['invalid script', { primaryLanguage: 'en', script: 'AAAA' }, /invalid script/i],
             ['invalid region', { primaryLanguage: 'en', region: 'aj' }, /invalid region/i],
             ['invalid variant', { primaryLanguage: 'en', variants: ['xyzzy'] }, /invalid variant/i],
             ['invalid grandfathered tag', { grandfathered: 'i-dothraki' }, /invalid grandfathered/i],
             ['missing primary language', { script: 'Latn' }, /missing primary language/i],
-            ['missing primary language with malformed private tags', { script: 'Latn', privateUse: [] }, /missing primary language/i],
         ])('fails for %p', (_desc, from, expected) => {
-            expect(Bcp.ValidTag.validateParts(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
+            expect(Bcp.ValidTag.create(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
         });
     });
 });

@@ -21,6 +21,6 @@
  */
 export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
 export { LanguageTag } from './languageTag';
-export { PreferredTag } from './preferredTag';
+export { CanonicalTag as PreferredTag } from './canonicalTag';
 export { ValidTag } from './validTag';
 export { WellFormedTag } from './wellFormedTag';

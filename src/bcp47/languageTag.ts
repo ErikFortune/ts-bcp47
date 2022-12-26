@@ -25,7 +25,7 @@ import * as Iana from '../iana';
 import { LanguageTagInfo, LanguageTagParts } from './common';
 import { Result, allSucceed, captureResult } from '@fgv/ts-utils';
 
-import { PreferredTag } from './preferredTag';
+import { CanonicalTag } from './canonicalTag';
 import { ScriptSubtag } from '../iana/language-subtags';
 import { ValidTag } from './validTag';
 import { WellFormedTag } from './wellFormedTag';
@@ -35,7 +35,7 @@ export class LanguageTag {
 
     protected readonly _wellFormed: WellFormedTag;
     protected _valid?: Result<ValidTag>;
-    protected _canonical?: Result<PreferredTag>;
+    protected _canonical?: Result<CanonicalTag>;
     protected _isStrictlyValid?: Result<true>;
 
     protected _inferredScript?: ScriptSubtag | false;
@@ -111,7 +111,7 @@ export class LanguageTag {
         if (this._canonical === undefined) {
             const validated = this.validate();
             if (validated.isSuccess()) {
-                this._canonical = PreferredTag.create(validated.value, this._iana);
+                this._canonical = CanonicalTag.create(validated.value, this._iana);
             } else {
                 this._canonical = fail(validated.message);
             }

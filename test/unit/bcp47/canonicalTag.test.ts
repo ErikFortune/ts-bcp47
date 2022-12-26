@@ -22,10 +22,10 @@
 
 import '@fgv/ts-utils-jest';
 import * as Iana from '../../../src/iana';
-import { PreferredTag } from '../../../src/bcp47/preferredTag';
+import { CanonicalTag } from '../../../src/bcp47/canonicalTag';
 import { ValidTag } from '../../../src/bcp47/validTag';
 
-describe('PreferredTag class', () => {
+describe('CanonicalTag class', () => {
     const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
 
     describe('static create with string', () => {
@@ -40,20 +40,20 @@ describe('PreferredTag class', () => {
             ['valid tag with deprecated region', 'en-BU', { primaryLanguage: 'en', region: 'MM' }],
             ['completely private tag', 'x-en-GB', { privateUse: ['en-GB'] }],
         ])('succeeds for %p', (_desc, tag, expected) => {
-            expect(PreferredTag.create(tag, iana)).toSucceedAndSatisfy((preferred) => {
+            expect(CanonicalTag.create(tag, iana)).toSucceedAndSatisfy((preferred) => {
                 expect(preferred.parts).toEqual(expected);
             });
         });
 
         test.each([['invalid tag', 'eng-US', /invalid language/i]])('fails for %p', (_desc, tag, expected) => {
-            expect(PreferredTag.create(tag, iana)).toFailWith(expected);
+            expect(CanonicalTag.create(tag, iana)).toFailWith(expected);
         });
     });
 
     describe('static create with ValidTag', () => {
         test.each([['valid redundant tag with preferred value', 'zh-cmn-Hans', 'cmn-Hans']])('succeeds for %p', (_desc, from, expected) => {
             const valid = ValidTag.create(from, iana).getValueOrThrow();
-            expect(PreferredTag.create(valid, iana)).toSucceedAndSatisfy((preferred) => {
+            expect(CanonicalTag.create(valid, iana)).toSucceedAndSatisfy((preferred) => {
                 expect(preferred.toString()).toEqual(expected);
             });
         });

@@ -106,28 +106,24 @@ describe('BCP-47 WellFormedTag class', () => {
             });
 
             test.each([
-                ['malformed primary language', { primaryLanguage: 'german' }, /malformed primary language/i],
+                ['malformed primary language', { primaryLanguage: 'german' }, /malformed language/i],
                 ['missing primary language', { script: 'Latn' }, /missing primary language/i],
-                ['empty extlangs array', { primaryLanguage: 'zh', extlangs: [] }, /empty extlangs/i],
-                ['too many extlangs', { primaryLanguage: 'zh', extlangs: ['cmn', 'yue'] }, /multiple extlang/i],
+                ['too many extlangs', { primaryLanguage: 'zh', extlangs: ['cmn', 'yue', 'abc', 'def'] }, /too many extlang/i],
                 ['malformed extlang', { primaryLanguage: 'ZH', extlangs: ['Cantonese'] }, /malformed extlang/i],
                 ['malformed script', { primaryLanguage: 'sr', script: 'Cyrillic' }, /malformed script/i],
                 ['malformed region', { primaryLanguage: 'en', region: '1234' }, /malformed region/i],
-                ['empty variants array', { primaryLanguage: 'en', variants: [] }, /empty variants/i],
                 ['malformed variant', { primaryLanguage: 'en', variants: ['123'] }, /malformed variant/i],
-                ['empty extensions array', { primaryLanguage: 'en', extensions: [] }, /empty extensions/i],
                 [
                     'malformed extension singleton',
                     { primaryLanguage: 'en', extensions: [{ singleton: '!', value: 'hello' }] },
-                    /malformed extension singleton/i,
+                    /malformed.*extension singleton/i,
                 ],
                 [
                     'malformed extension subtag value',
                     { primaryLanguage: 'en', extensions: [{ singleton: '1', value: 'veryLongTagNotAllowed' }] },
-                    /malformed extension subtag/i,
+                    /malformed.*extension subtag/i,
                 ],
-                ['empty private-use array', { primaryLanguage: 'en', privateUse: [] }, /empty private-use/i],
-                ['malformed private-use tag', { primaryLanguage: 'en', privateUse: ['veryLongTagsNotAllowed'] }, /malformed private-use/i],
+                ['malformed private-use tag', { primaryLanguage: 'en', privateUse: ['veryLongTagsNotAllowed'] }, /malformed extended language range/i],
             ])('fails for %p', (_desc, from, expected) => {
                 const parts = from as LanguageTagParts;
                 expect(Bcp.WellFormedTag.create(parts, iana)).toFailWith(expected);

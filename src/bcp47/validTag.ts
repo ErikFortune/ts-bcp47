@@ -22,31 +22,33 @@
 
 import * as Iana from '../iana';
 import * as Parser from './languageTagParser';
-import * as Subtags from './subtags';
 
-import { ExtendedLanguageRange, VariantSubtag } from '../iana/language-subtags';
 import { LanguageTagParts, languageTagPartsToString } from './common';
-import { Result, allSucceed, captureResult, fail, succeed } from '@fgv/ts-utils';
-import { ExtensionSingleton } from './subtags/model';
+import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
+
+import { ExtendedLanguageRange } from '../iana/language-subtags';
+import { TagNormalizer } from './tagNormalizer';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
 
-    protected constructor(init: Readonly<LanguageTagParts>, registry: Iana.IanaRegistries) {
-        this.parts = Object.freeze(ValidTag.validateParts(init, registry).getValueOrThrow());
+    protected constructor(init: Readonly<LanguageTagParts>) {
+        this.parts = Object.freeze({ ...init });
     }
 
     public get tag(): string {
         return languageTagPartsToString(this.parts);
     }
 
-    public static create(tag: string, registry: Iana.IanaRegistries): Result<ValidTag>;
-    public static create(parts: LanguageTagParts, registry: Iana.IanaRegistries): Result<ValidTag>;
-    public static create(tagOrParts: string | LanguageTagParts, registry: Iana.IanaRegistries): Result<ValidTag> {
+    public static create(tag: string, iana: Iana.IanaRegistries): Result<ValidTag>;
+    public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<ValidTag>;
+    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<ValidTag> {
         return captureResult(() => {
-            const parts =
-                typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, registry).getValueOrThrow() : tagOrParts;
-            return new ValidTag(parts, registry);
+            const parts: LanguageTagParts =
+                typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, iana).getValueOrThrow() : tagOrParts;
+            const normalizer = new TagNormalizer(iana);
+            const normalized = normalizer.process(parts).getValueOrThrow();
+            return new ValidTag(normalized);
         });
     }
 
@@ -95,6 +97,7 @@ export class ValidTag {
         return succeed(true);
     }
 
+    /*
     public static validateParts(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
         const results: Result<unknown>[] = [];
         const validated: LanguageTagParts = {};
@@ -212,6 +215,7 @@ export class ValidTag {
 
         return allSucceed(results, validated);
     }
+    */
 
     public toString(): string {
         return this.tag;
