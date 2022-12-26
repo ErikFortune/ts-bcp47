@@ -123,7 +123,11 @@ describe('BCP-47 WellFormedTag class', () => {
                     { primaryLanguage: 'en', extensions: [{ singleton: '1', value: 'veryLongTagNotAllowed' }] },
                     /malformed.*extension subtag/i,
                 ],
-                ['malformed private-use tag', { primaryLanguage: 'en', privateUse: ['veryLongTagsNotAllowed'] }, /malformed extended language range/i],
+                [
+                    'malformed private-use tag',
+                    { primaryLanguage: 'en', privateUse: ['veryLongTagsNotAllowed'] },
+                    /malformed extended language range/i,
+                ],
             ])('fails for %p', (_desc, from, expected) => {
                 const parts = from as LanguageTagParts;
                 expect(Bcp.WellFormedTag.create(parts, iana)).toFailWith(expected);

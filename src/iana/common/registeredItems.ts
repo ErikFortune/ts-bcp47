@@ -45,19 +45,32 @@ export abstract class RegisteredItemScope<TTYPE extends string, TKEY extends str
         return Array.from(this._items.values());
     }
 
-    public tryGet(want: string): TITEM | undefined {
-        const got = this._items.get(want as TKEY);
-        if (!got) {
-            const result = this.toCanonical(want);
-            if (result.isSuccess()) {
-                return this._items.get(result.value as TKEY);
+    public tryGet(want: string | undefined): TITEM | undefined {
+        if (want) {
+            const got = this._items.get(want as TKEY);
+            if (!got) {
+                const result = this.toCanonical(want);
+                if (result.isSuccess()) {
+                    return this._items.get(result.value as TKEY);
+                }
             }
+            return got;
         }
-        return got;
+        return undefined;
     }
 
-    public tryGetCanonical(want: string): TITEM | undefined {
-        return this._items.get(want as TKEY);
+    public tryGetCanonical(want: string | undefined): TITEM | undefined {
+        return want ? this._items.get(want as TKEY) : undefined;
+    }
+
+    public get(want: string | undefined): Result<TITEM | undefined> {
+        const got = this.tryGet(want);
+        return got ? succeed(got) : fail(`invalid ${this._type}`);
+    }
+
+    public getCanonical(want: string | undefined): Result<TITEM | undefined> {
+        const got = this.tryGetCanonical(want);
+        return got ? succeed(got) : fail(`invalid ${this._type}`);
     }
 
     public isWellFormed(val: unknown): val is TKEY {
