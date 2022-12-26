@@ -27,7 +27,7 @@ import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 
 import { ExtendedLanguageRange } from '../iana/language-subtags';
-import { TagNormalizer } from './tagNormalizer';
+import { TagNormalizer } from './processors/tagNormalizer';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;

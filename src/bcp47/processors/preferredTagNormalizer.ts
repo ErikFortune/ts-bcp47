@@ -20,11 +20,11 @@
  * SOFTWARE.
  */
 
-import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../iana/language-subtags';
+import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../iana/language-subtags';
 import { Result, succeed } from '@fgv/ts-utils';
 
-import { LanguageTagParser } from './languageTagParser';
-import { LanguageTagParts } from './common';
+import { LanguageTagParser } from '../languageTagParser';
+import { LanguageTagParts } from '../common';
 import { TagNormalizer } from './tagNormalizer';
 
 export class PreferredTagNormalizer extends TagNormalizer {

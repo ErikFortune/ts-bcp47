@@ -25,7 +25,7 @@ import * as Parser from './languageTagParser';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
-import { WellFormedTagValidator } from './wellFormedValidator';
+import { WellFormedTagValidator } from './processors/wellFormedValidator';
 
 export class WellFormedTag {
     public readonly parts: Readonly<LanguageTagParts>;

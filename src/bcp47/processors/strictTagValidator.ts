@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import { ExtLangSubtag, ExtendedLanguageRange, VariantSubtag } from '../iana/language-subtags';
-import { LanguageTagParts, languageTagPartsToString } from './common';
+import { ExtLangSubtag, ExtendedLanguageRange, VariantSubtag } from '../../iana/language-subtags';
+import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidator } from './tagValidator';
 

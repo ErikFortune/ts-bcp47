@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Iana from '../iana';
-import * as Subtags from './subtags';
+import * as Iana from '../../iana';
+import * as Subtags from './../subtags';
 
 import {
     ExtLangSubtag,
@@ -31,9 +31,9 @@ import {
     RegionSubtag,
     ScriptSubtag,
     VariantSubtag,
-} from '../iana/language-subtags';
-import { ExtensionSingleton, ExtensionSubtag } from './subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts } from './common';
+} from '../../iana/language-subtags';
+import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagProcessor } from './tagProcessor';
 

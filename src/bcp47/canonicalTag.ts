@@ -103,7 +103,7 @@ export class CanonicalTag {
             if (!language) {
                 return fail(`invalid language subtag "${from}.`);
             }
-            return succeed(language.preferredValue ?? language?.subtag);
+            return succeed(language.preferredValue ?? language.subtag);
         }
         return succeed(undefined);
     }

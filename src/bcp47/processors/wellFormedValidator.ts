@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Iana from '../iana';
-import * as Subtags from './subtags';
+import * as Iana from '../../iana';
+import * as Subtags from '../subtags';
 
 import {
     ExtLangSubtag,
@@ -31,16 +31,16 @@ import {
     RegionSubtag,
     ScriptSubtag,
     VariantSubtag,
-} from '../../src/iana/language-subtags';
-import { ExtensionSingleton, ExtensionSubtag } from './subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts } from './common';
-import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+} from '../../iana/language-subtags';
+import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { LanguageTagParts } from '../common';
 import { TagProcessor } from './tagProcessor';
 
-export class TagValidator extends TagProcessor {
+export class WellFormedTagValidator extends TagProcessor {
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
-            return this.iana.subtags.languages.verifyIsValid(parts.primaryLanguage);
+            return this.iana.subtags.languages.verifyIsWellFormed(parts.primaryLanguage);
         }
         return succeed(parts.primaryLanguage);
     }
@@ -48,7 +48,7 @@ export class TagValidator extends TagProcessor {
     protected _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
             return allSucceed(
-                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsValid(e)),
+                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsWellFormed(e)),
                 parts.extlangs
             );
         }
@@ -57,14 +57,14 @@ export class TagValidator extends TagProcessor {
 
     protected _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined> {
         if (parts.script) {
-            return this.iana.subtags.scripts.verifyIsValid(parts.script);
+            return this.iana.subtags.scripts.verifyIsWellFormed(parts.script);
         }
         return succeed(undefined);
     }
 
     protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
         if (parts.region) {
-            return this.iana.subtags.regions.verifyIsValid(parts.region);
+            return this.iana.subtags.regions.verifyIsWellFormed(parts.region);
         }
         return succeed(undefined);
     }
@@ -72,27 +72,19 @@ export class TagValidator extends TagProcessor {
     protected _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined> {
         if (parts.variants) {
             return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
+                parts.variants.map((v) => this.iana.subtags.variants.verifyIsWellFormed(v)),
                 parts.variants
-            ).onSuccess((v) => {
-                return this._verifyUnique('variant subtag', v, (v) => v);
-            });
+            );
         }
         return succeed(undefined);
     }
 
     protected _processExtensionSingleton(singleton: ExtensionSingleton): Result<ExtensionSingleton> {
-        return this.iana.extensions.extensions.verifyIsValid(singleton);
+        return Subtags.Validate.extensionSingleton.verifyIsWellFormed(singleton);
     }
 
     protected _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
         return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
-    }
-
-    protected _processExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
-        return super._processExtensions(parts).onSuccess((extensions) => {
-            return this._verifyUnique('extensions', extensions, (e) => e.singleton);
-        });
     }
 
     protected _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined> {
@@ -107,17 +99,8 @@ export class TagValidator extends TagProcessor {
 
     protected _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined> {
         if (parts.grandfathered) {
-            return this.iana.subtags.grandfathered.verifyIsValid(parts.grandfathered);
+            return this.iana.subtags.grandfathered.verifyIsWellFormed(parts.grandfathered);
         }
         return succeed(undefined);
-    }
-
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this._basicPostValidation(parts).onSuccess((parts) => {
-            if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs?.join('-')}: too many extlangs`);
-            }
-            return succeed(parts);
-        });
     }
 }
