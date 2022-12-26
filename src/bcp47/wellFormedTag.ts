@@ -34,6 +34,10 @@ export class WellFormedTag {
         this.parts = Object.freeze({ ...init });
     }
 
+    public get tag(): string {
+        return languageTagPartsToString(this.parts);
+    }
+
     public static create(tag: string, iana: Iana.IanaRegistries): Result<WellFormedTag>;
     public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<WellFormedTag>;
     public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<WellFormedTag> {
@@ -123,6 +127,6 @@ export class WellFormedTag {
     }
 
     public toString(): string {
-        return languageTagPartsToString(this.parts);
+        return this.tag;
     }
 }

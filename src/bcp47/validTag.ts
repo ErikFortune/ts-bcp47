@@ -36,9 +36,16 @@ export class ValidTag {
         this.parts = Object.freeze(ValidTag.validateParts(init, registry).getValueOrThrow());
     }
 
-    public static create(tag: string, registry: Iana.IanaRegistries): Result<ValidTag> {
+    public get tag(): string {
+        return languageTagPartsToString(this.parts);
+    }
+
+    public static create(tag: string, registry: Iana.IanaRegistries): Result<ValidTag>;
+    public static create(parts: LanguageTagParts, registry: Iana.IanaRegistries): Result<ValidTag>;
+    public static create(tagOrParts: string | LanguageTagParts, registry: Iana.IanaRegistries): Result<ValidTag> {
         return captureResult(() => {
-            const parts = Parser.LanguageTagParser.parse(tag, registry).getValueOrThrow();
+            const parts =
+                typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, registry).getValueOrThrow() : tagOrParts;
             return new ValidTag(parts, registry);
         });
     }
@@ -207,6 +214,6 @@ export class ValidTag {
     }
 
     public toString(): string {
-        return languageTagPartsToString(this.parts);
+        return this.tag;
     }
 }

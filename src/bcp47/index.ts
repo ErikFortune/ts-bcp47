@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export * from './common';
-export * from './wellFormedTag';
-export * from './validTag';
+export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
+export { LanguageTag } from './languageTag';
+export { PreferredTag } from './preferredTag';
+export { ValidTag } from './validTag';
+export { WellFormedTag } from './wellFormedTag';

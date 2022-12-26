@@ -36,7 +36,7 @@ export class PreferredTag {
     protected constructor(from: ValidTag, iana: Iana.IanaRegistries) {
         this.from = from;
 
-        const tag = from.toString();
+        const tag = from.tag;
         const parts = this._applyPreferredValues(tag, from.parts, iana).getValueOrThrow();
 
         this.parts = Object.freeze(parts);
@@ -64,7 +64,7 @@ export class PreferredTag {
     }
 
     public toString(): string {
-        return languageTagPartsToString(this.parts);
+        return this.tag;
     }
 
     protected _applyPreferredValues(tag: string, parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts> {

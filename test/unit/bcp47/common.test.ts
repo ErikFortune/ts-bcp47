@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageTagParts, languageTagPartsToString } from '../../../src/bcp47';
+import { LanguageTagParts, languageTagPartsToString } from '../../../src/bcp47/common';
 
 describe('languageTagPartsToString helper function', () => {
     test.each([

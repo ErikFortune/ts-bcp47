@@ -41,6 +41,11 @@ export interface LanguageTagParts {
     grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
 }
 
+export interface LanguageTagInfo {
+    readonly tag: string;
+    readonly parts: Readonly<LanguageTagParts>;
+}
+
 export function languageTagPartsToString(parts: LanguageTagParts): string {
     if (parts.grandfathered) {
         return parts.grandfathered;
