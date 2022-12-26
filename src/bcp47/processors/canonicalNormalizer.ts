@@ -33,73 +33,64 @@ import {
     VariantSubtag,
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, mapResults, succeed } from '@fgv/ts-utils';
 import { LanguageTagParts } from '../common';
 import { TagTransform } from './tagTransform';
 
-export class WellFormedTagValidator extends TagTransform {
+export class CanonicalNormalizer extends TagTransform {
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
-            return this.iana.subtags.languages.verifyIsWellFormed(parts.primaryLanguage);
+            return this.iana.subtags.languages.toCanonical(parts.primaryLanguage);
         }
         return succeed(parts.primaryLanguage);
     }
 
     protected _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
-            return allSucceed(
-                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsWellFormed(e)),
-                parts.extlangs
-            );
+            return mapResults(parts.extlangs.map((e) => this.iana.subtags.extlangs.toCanonical(e)));
         }
         return succeed(undefined);
     }
 
     protected _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined> {
         if (parts.script) {
-            return this.iana.subtags.scripts.verifyIsWellFormed(parts.script);
+            return this.iana.subtags.scripts.toCanonical(parts.script);
         }
         return succeed(undefined);
     }
 
     protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
         if (parts.region) {
-            return this.iana.subtags.regions.verifyIsWellFormed(parts.region);
+            return this.iana.subtags.regions.toCanonical(parts.region);
         }
         return succeed(undefined);
     }
 
     protected _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined> {
         if (parts.variants) {
-            return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsWellFormed(v)),
-                parts.variants
-            );
+            return mapResults(parts.variants.map((v) => this.iana.subtags.variants.toCanonical(v)));
         }
         return succeed(undefined);
     }
 
     protected _processExtensionSingleton(singleton: ExtensionSingleton): Result<ExtensionSingleton> {
-        return Subtags.Validate.extensionSingleton.verifyIsWellFormed(singleton);
+        return this.iana.extensions.extensions.toCanonical(singleton);
     }
 
     protected _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
+        return Subtags.Validate.extensionSubtag.toCanonical(value);
     }
 
     protected _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined> {
         if (parts.privateUse) {
-            return allSucceed(
-                parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
-                parts.privateUse
-            );
+            return mapResults(parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
         }
         return succeed(parts.privateUse);
     }
 
     protected _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined> {
         if (parts.grandfathered) {
-            return this.iana.subtags.grandfathered.verifyIsWellFormed(parts.grandfathered);
+            return this.iana.subtags.grandfathered.toCanonical(parts.grandfathered);
         }
         return succeed(undefined);
     }

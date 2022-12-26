@@ -36,7 +36,7 @@ import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 import { LanguageTagParser } from './languageTagParser';
 
-export abstract class TagProcessor {
+export abstract class TagTransform {
     public readonly iana: Iana.IanaRegistries;
 
     public constructor(iana: Iana.IanaRegistries) {

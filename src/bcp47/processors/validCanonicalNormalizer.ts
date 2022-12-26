@@ -35,9 +35,9 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
-import { TagProcessor } from './tagProcessor';
+import { TagTransform } from './tagTransform';
 
-export class ValidCanonicalNormalizer extends TagProcessor {
+export class ValidCanonicalNormalizer extends TagTransform {
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             return this.iana.subtags.languages.toValidCanonical(parts.primaryLanguage);
