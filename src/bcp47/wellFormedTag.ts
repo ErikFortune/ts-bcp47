@@ -21,7 +21,7 @@
  */
 
 import * as Iana from '../iana';
-import * as Parser from './languageTagParser';
+import * as Parser from './processors/languageTagParser';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';

@@ -21,7 +21,7 @@
  */
 
 import * as Iana from '../../iana';
-import * as Subtags from './../subtags';
+import * as Subtags from '../subtags';
 
 import {
     ExtLangSubtag,
@@ -37,7 +37,7 @@ import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagProcessor } from './tagProcessor';
 
-export class TagNormalizer extends TagProcessor {
+export class ValidCanonicalNormalizer extends TagProcessor {
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             return this.iana.subtags.languages.toValidCanonical(parts.primaryLanguage);

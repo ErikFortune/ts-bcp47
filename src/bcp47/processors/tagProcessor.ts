@@ -34,6 +34,7 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
+import { LanguageTagParser } from './languageTagParser';
 
 export abstract class TagProcessor {
     public readonly iana: Iana.IanaRegistries;
@@ -42,7 +43,7 @@ export abstract class TagProcessor {
         this.iana = iana;
     }
 
-    public process(parts: LanguageTagParts): Result<LanguageTagParts> {
+    public processParts(parts: LanguageTagParts): Result<LanguageTagParts> {
         return populateObject<LanguageTagParts>(
             {
                 primaryLanguage: () => this._processLanguage(parts),
@@ -58,6 +59,16 @@ export abstract class TagProcessor {
         ).onSuccess((parts) => {
             return this._postValidate(parts);
         });
+    }
+
+    public processTag(tag: string): Result<LanguageTagParts> {
+        return LanguageTagParser.parse(tag, this.iana).onSuccess((parts) => {
+            return this.process(parts);
+        });
+    }
+
+    public process(tag: string | LanguageTagParts): Result<LanguageTagParser> {
+        return typeof tag === 'string' ? this.processTag(tag) : this.processParts(tag);
     }
 
     protected _basicPostValidation(parts: LanguageTagParts): Result<LanguageTagParts> {

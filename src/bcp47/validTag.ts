@@ -21,13 +21,13 @@
  */
 
 import * as Iana from '../iana';
-import * as Parser from './languageTagParser';
+import * as Parser from './processors/languageTagParser';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 
 import { ExtendedLanguageRange } from '../iana/language-subtags';
-import { TagNormalizer } from './processors/tagNormalizer';
+import { ValidCanonicalNormalizer } from './processors/validCanonicalNormalizer';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -46,7 +46,7 @@ export class ValidTag {
         return captureResult(() => {
             const parts: LanguageTagParts =
                 typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, iana).getValueOrThrow() : tagOrParts;
-            const normalizer = new TagNormalizer(iana);
+            const normalizer = new ValidCanonicalNormalizer(iana);
             const normalized = normalizer.process(parts).getValueOrThrow();
             return new ValidTag(normalized);
         });

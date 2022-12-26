@@ -23,11 +23,11 @@
 import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../iana/language-subtags';
 import { Result, succeed } from '@fgv/ts-utils';
 
-import { LanguageTagParser } from '../languageTagParser';
+import { LanguageTagParser } from './languageTagParser';
 import { LanguageTagParts } from '../common';
-import { TagNormalizer } from './tagNormalizer';
+import { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
 
-export class PreferredTagNormalizer extends TagNormalizer {
+export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             const language = this.iana.subtags.languages.tryGet(parts.primaryLanguage);

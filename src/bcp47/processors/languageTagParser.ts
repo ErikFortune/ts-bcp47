@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 
-import * as Iana from '../iana';
+import * as Iana from '../../iana';
 
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
-import { ExtensionSubtag } from './subtags/model';
-import { LanguageTagParts } from './common';
-import { Validate } from './subtags';
+import { ExtensionSubtag } from '../subtags/model';
+import { LanguageTagParts } from '../common';
+import { Validate } from '../subtags';
 
 interface ParserStatus {
     readonly iana: Iana.IanaRegistries;
