@@ -21,11 +21,11 @@
  */
 
 import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../iana/language-subtags';
+import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, succeed } from '@fgv/ts-utils';
 import { TagNormalization, TagValidity } from '../status';
 
 import { LanguageTagParser } from './languageTagParser';
-import { LanguageTagParts } from '../common';
 import { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
 
 export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
@@ -64,33 +64,52 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
     }
 
     protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
-        return this.iana.subtags.regions.get(parts.region).onSuccess((region) => {
-            return succeed(region?.preferredValue ?? region?.subtag);
-        });
+        if (parts.region) {
+            return this.iana.subtags.regions.get(parts.region).onSuccess((region) => {
+                return succeed(region?.preferredValue ?? region?.subtag);
+            });
+        }
+        return succeed(undefined);
+    }
+
+    protected _postValidateGrandfatheredTag(parts: LanguageTagParts): Result<LanguageTagParts> {
+        if (parts.grandfathered) {
+            return this.iana.subtags.grandfathered.get(parts.grandfathered).onSuccess((grandfathered) => {
+                if (grandfathered.preferredValue) {
+                    return LanguageTagParser.parse(grandfathered.preferredValue, this.iana)
+                        .onSuccess((gfParts) => {
+                            if (gfParts.grandfathered !== undefined) {
+                                return fail(
+                                    `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
+                                );
+                            }
+                            return this.process(gfParts);
+                        })
+                        .onFailure((message) => {
+                            return fail(
+                                `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
+                            );
+                        });
+                }
+                return succeed(parts);
+            });
+        }
+        return succeed(parts);
+    }
+
+    protected _postValidateRedundantTag(parts: LanguageTagParts): Result<LanguageTagParts> {
+        const tag = languageTagPartsToString(parts);
+        const redundant = this.iana.subtags.redundant.tryGetCanonical(tag);
+        if (redundant?.preferredValue) {
+            return LanguageTagParser.parse(redundant.preferredValue, this.iana);
+        }
+        return succeed(parts);
     }
 
     protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
         return super._postValidate(parts).onSuccess((parts) => {
-            return this.iana.subtags.grandfathered.get(parts.grandfathered).onSuccess((grandfathered) => {
-                if (grandfathered) {
-                    if (grandfathered.preferredValue) {
-                        return LanguageTagParser.parse(grandfathered.preferredValue, this.iana)
-                            .onSuccess((gfParts) => {
-                                if (gfParts.grandfathered !== undefined) {
-                                    return fail(
-                                        `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
-                                    );
-                                }
-                                return this.process(gfParts);
-                            })
-                            .onFailure((message) => {
-                                return fail(
-                                    `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
-                                );
-                            });
-                    }
-                }
-                return succeed(parts);
+            return this._postValidateGrandfatheredTag(parts).onSuccess((parts) => {
+                return this._postValidateRedundantTag(parts);
             });
         });
     }

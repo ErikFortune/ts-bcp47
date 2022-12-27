@@ -63,7 +63,7 @@ export abstract class RegisteredItemScope<TTYPE extends string, TKEY extends str
         return want ? this._items.get(want as TKEY) : undefined;
     }
 
-    public get(want: string | undefined): Result<TITEM | undefined> {
+    public get(want: string | undefined): Result<TITEM> {
         const got = this.tryGet(want);
         return got ? succeed(got) : fail(`invalid ${this._type}`);
     }

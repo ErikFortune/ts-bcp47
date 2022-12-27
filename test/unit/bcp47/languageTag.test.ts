@@ -21,12 +21,61 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageTag } from '../../../src/bcp47';
-import { LanguageTagInitOptions } from '../../../src/bcp47/languageTag';
 
-import { GenericLanguageTagTestInit, GenericLanguageTagTest, CreateFromTagTestCase, CreateFromTagTestCaseFactory } from './languageTagHelpers';
+import {
+    GenericLanguageTagTest,
+    GenericLanguageTagTestInit,
+    GenericTagTestCaseFactory,
+    SimpleTagTestCaseBase,
+    TestKey,
+    allCanonicalTestKeys,
+    allNonCanonicalTestKeys,
+    allNonPreferredCanonicalKeys,
+    allPreferredKeys,
+    allTestKeys,
+} from './languageTagHelpers';
+import { LanguageTag } from '../../../src/bcp47';
+
+export class CreateFromTagTestCase extends SimpleTagTestCaseBase {
+    public static create(gtc: GenericLanguageTagTest, which: TestKey) {
+        return new CreateFromTagTestCase(gtc, which);
+    }
+
+    public invoke(): void {
+        if (typeof this.expected === 'string') {
+            expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                expect(lt.tag).toEqual(this.expected);
+            });
+        } else if (this.expected instanceof RegExp) {
+            expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
+        }
+    }
+}
+
+export const createFromTagTestCaseFactory = new GenericTagTestCaseFactory(CreateFromTagTestCase.create);
 
 const testCaseInit: GenericLanguageTagTestInit[] = [
+    {
+        description: 'valid canonical primary language',
+        from: 'en',
+        expected: [['en', allTestKeys]],
+    },
+    {
+        description: 'valid non-canonical primary language',
+        from: 'EN',
+        expected: [
+            ['EN', allNonCanonicalTestKeys],
+            ['en', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'valid canonical extlang',
+        from: 'zh-cmn',
+        expected: [
+            ['zh-cmn', [...allCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['cmn', allPreferredKeys],
+        ],
+    },
     {
         description: 'well-formed, non-canonical language-region',
         from: 'en-us',
@@ -43,27 +92,13 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
                 'art-lojban',
                 ['default', 'wellFormed', 'wellFormedCanonical', 'valid', 'validCanonical', 'strictlyValid', 'strictlyValidCanonical'],
             ],
-            ['lbo', ['preferred', 'strictlyValidPreferred']],
+            ['jbo', ['preferred', 'strictlyValidPreferred']],
         ],
     },
     {
         description: 'malformed tag',
         from: 'invalid-tag',
-        expected: [
-            [
-                /no primary language subtag/i,
-                [
-                    'default',
-                    'wellFormed',
-                    'wellFormedCanonical',
-                    'valid',
-                    'validCanonical',
-                    'strictlyValid',
-                    'strictlyValidCanonical',
-                    'strictlyValidPreferred',
-                ],
-            ],
-        ],
+        expected: [[/no primary language subtag/i, allTestKeys]],
     },
 ];
 
@@ -72,55 +107,55 @@ const genericTests = testCaseInit.map(GenericLanguageTagTest.mapInitToTestCases)
 describe('LanguageTag class', () => {
     describe('create method', () => {
         describe('default options', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('default', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('default', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('well-formed', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('wellFormed', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('wellFormed', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('well-formed canonical', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('wellFormedCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('wellFormedCanonical', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('valid', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('valid', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('valid', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('valid canonical', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('validCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('validCanonical', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('preferred', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('preferred', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('preferred', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('strictlyValid', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValid', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid canonical', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('strictlyValidCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValidCanonical', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid preferred', () => {
-            test.each(CreateFromTagTestCaseFactory.emit('strictlyValidPreferred', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValidPreferred', genericTests))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });

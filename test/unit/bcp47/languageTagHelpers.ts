@@ -21,34 +21,55 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageTag } from '../../../src/bcp47';
 import { LanguageTagInitOptions } from '../../../src/bcp47/languageTag';
 
-interface GenericLanguageTagTestExpected {
-    default?: string | RegExp;
-    wellFormed?: string | RegExp;
-    wellFormedCanonical?: string | RegExp;
-    valid?: string | RegExp;
-    validCanonical?: string | RegExp;
-    preferred?: string | RegExp;
-    strictlyValid?: string | RegExp;
-    strictlyValidCanonical?: string | RegExp;
-    strictlyValidPreferred?: string | RegExp;
+interface GenericLanguageTagTestExpected<TEXPECTED = string | RegExp> {
+    default?: TEXPECTED;
+    wellFormed?: TEXPECTED;
+    wellFormedCanonical?: TEXPECTED;
+    valid?: TEXPECTED;
+    validCanonical?: TEXPECTED;
+    preferred?: TEXPECTED;
+    strictlyValid?: TEXPECTED;
+    strictlyValidCanonical?: TEXPECTED;
+    strictlyValidPreferred?: TEXPECTED;
 }
 
 export type TestKey = keyof GenericLanguageTagTestExpected;
+export const allTestKeys: TestKey[] = [
+    'default',
+    'wellFormed',
+    'wellFormedCanonical',
+    'valid',
+    'validCanonical',
+    'preferred',
+    'strictlyValid',
+    'strictlyValidCanonical',
+    'strictlyValidPreferred',
+];
 
-export interface GenericLanguageTagTestInit {
+export const allNonCanonicalTestKeys: TestKey[] = ['default', 'wellFormed', 'valid', 'strictlyValid'];
+export const allCanonicalTestKeys: TestKey[] = [
+    'wellFormedCanonical',
+    'validCanonical',
+    'preferred',
+    'strictlyValidCanonical',
+    'strictlyValidPreferred',
+];
+export const allNonPreferredCanonicalKeys: TestKey[] = ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical'];
+export const allPreferredKeys: TestKey[] = ['preferred', 'strictlyValidPreferred'];
+
+export interface GenericLanguageTagTestInit<TFROM = string, TEXPECTED = string | RegExp> {
     description: string;
-    from: string;
-    expected: [string | RegExp | undefined, TestKey[]][];
+    from: TFROM;
+    expected: [TEXPECTED | undefined, TestKey[]][];
 }
 
-export class GenericLanguageTagTest {
+export class GenericLanguageTagTest<TFROM = string, TEXPECTED = string | RegExp> {
     public readonly description: string;
-    public readonly from: string;
-    public readonly expected: GenericLanguageTagTestExpected;
-    public constructor(init: GenericLanguageTagTestInit) {
+    public readonly from: TFROM;
+    public readonly expected: GenericLanguageTagTestExpected<TEXPECTED>;
+    public constructor(init: GenericLanguageTagTestInit<TFROM, TEXPECTED>) {
         this.description = init.description;
         this.from = init.from;
 
@@ -60,7 +81,9 @@ export class GenericLanguageTagTest {
         }
     }
 
-    public static mapInitToTestCases(init: GenericLanguageTagTestInit): GenericLanguageTagTest {
+    public static mapInitToTestCases<TFROM = string, TEXPECTED = string | RegExp>(
+        init: GenericLanguageTagTestInit<TFROM, TEXPECTED>
+    ): GenericLanguageTagTest<TFROM, TEXPECTED> {
         return new GenericLanguageTagTest(init);
     }
 }
@@ -86,7 +109,29 @@ export interface TagTestCase<TFROM = string, TEXPECTED = string | RegExp> {
 
 export type TagTestCaseEntry<TTESTCASE extends TagTestCase> = [string, TTESTCASE];
 
-export class CreateFromTagTestCase implements TagTestCase {
+export abstract class TagTestCaseFactoryBase<TTESTCASE extends TagTestCase> {
+    public emitOne(gtc: GenericLanguageTagTest, which: TestKey): TagTestCaseEntry<TTESTCASE> | undefined {
+        const tc = this._construct(gtc, which);
+        return tc.expected ? [tc.description, tc] : undefined;
+    }
+
+    public emit(which: TestKey, all: GenericLanguageTagTest[]): TagTestCaseEntry<TTESTCASE>[] {
+        return all.map((gtc) => this.emitOne(gtc, which)).filter((tc): tc is TagTestCaseEntry<TTESTCASE> => tc !== undefined);
+    }
+
+    protected abstract _construct(gtc: GenericLanguageTagTest, which: TestKey): TTESTCASE;
+}
+
+export class GenericTagTestCaseFactory<TTESTCASE extends TagTestCase> extends TagTestCaseFactoryBase<TTESTCASE> {
+    protected _construct: (gtc: GenericLanguageTagTest, which: TestKey) => TTESTCASE;
+
+    public constructor(construct: (gtc: GenericLanguageTagTest, which: TestKey) => TTESTCASE) {
+        super();
+        this._construct = construct;
+    }
+}
+
+export abstract class SimpleTagTestCaseBase implements TagTestCase {
     public readonly description: string;
     public readonly from: string;
     public readonly options: LanguageTagInitOptions | undefined;
@@ -98,34 +143,13 @@ export class CreateFromTagTestCase implements TagTestCase {
         this.expected = gtc.expected[which];
 
         if (typeof this.expected === 'string') {
-            this.description = `${gtc.description} "${gtc.from}" succeeds with "${this.expected}" for ${which}`;
+            this.description = `${which} succeeds for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
         } else if (this.expected instanceof RegExp) {
-            this.description = `${gtc.description} "${gtc.from}" fails with "${this.expected}" for ${which}`;
+            this.description = `${which} fails for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
         } else {
-            this.description = `${gtc.description} "${gtc.from}" ignored (not expected value)`;
+            this.description = `${gtc.description} "${gtc.from}" ignored due to expected value {${gtc.description}})`;
         }
     }
 
-    public invoke(): void {
-        if (this.expected === 'string') {
-            expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
-                expect(lt.tag).toEqual(this.expected);
-            });
-        } else if (this.expected instanceof RegExp) {
-            expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
-        }
-    }
-}
-
-export class CreateFromTagTestCaseFactory {
-    public static emitOne(gtc: GenericLanguageTagTest, which: TestKey): TagTestCaseEntry<CreateFromTagTestCase> | undefined {
-        const tc = new CreateFromTagTestCase(gtc, which);
-        return tc.expected ? [tc.description, tc] : undefined;
-    }
-
-    public static emit(which: TestKey, all: GenericLanguageTagTest[]): TagTestCaseEntry<CreateFromTagTestCase>[] {
-        return all
-            .map((gtc) => CreateFromTagTestCaseFactory.emitOne(gtc, which))
-            .filter((tc): tc is TagTestCaseEntry<CreateFromTagTestCase> => tc !== undefined);
-    }
+    public abstract invoke(): void;
 }
