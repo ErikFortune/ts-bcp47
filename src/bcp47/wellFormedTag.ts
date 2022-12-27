@@ -21,11 +21,11 @@
  */
 
 import * as Iana from '../iana';
-import * as Parser from './processors/languageTagParser';
+import * as Parser from './transforms/languageTagParser';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
-import { WellFormedTagValidator } from './processors/wellFormedValidator';
+import { WellFormedTagValidator } from './transforms/wellFormedValidator';
 
 export class WellFormedTag {
     public readonly parts: Readonly<LanguageTagParts>;

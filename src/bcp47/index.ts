@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
-export { LanguageTag } from './languageTag';
+export { LanguageTag1 as LanguageTag } from './languageTag1';
 export { CanonicalTag as PreferredTag } from './canonicalTag';
 export { ValidTag } from './validTag';
 export { WellFormedTag } from './wellFormedTag';

@@ -30,7 +30,7 @@ import { ScriptSubtag } from '../iana/language-subtags';
 import { ValidTag } from './validTag';
 import { WellFormedTag } from './wellFormedTag';
 
-export class LanguageTag {
+export class LanguageTag1 {
     protected readonly _iana: Iana.IanaRegistries;
 
     protected readonly _wellFormed: WellFormedTag;
@@ -83,11 +83,11 @@ export class LanguageTag {
         return this.strictValidate().isSuccess();
     }
 
-    public static create(tag: string, iana: Iana.IanaRegistries): Result<LanguageTag>;
-    public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTag>;
-    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTag> {
+    public static create(tag: string, iana: Iana.IanaRegistries): Result<LanguageTag1>;
+    public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTag1>;
+    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTag1> {
         return WellFormedTag.create(tagOrParts as string, iana).onSuccess((wellFormed) => {
-            return captureResult(() => new LanguageTag(wellFormed, iana));
+            return captureResult(() => new LanguageTag1(wellFormed, iana));
         });
     }
 
