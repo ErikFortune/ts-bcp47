@@ -51,7 +51,7 @@ export class WellFormedTag {
         }
 
         const validator = new WellFormedTagValidator(iana);
-        return validator.process(parts).onSuccess((parts) => {
+        return validator.processParts(parts).onSuccess((parts) => {
             return succeed(new WellFormedTag(parts));
         });
     }

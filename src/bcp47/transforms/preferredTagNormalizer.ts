@@ -83,7 +83,7 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
                                     `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
                                 );
                             }
-                            return this.process(gfParts);
+                            return this.processParts(gfParts);
                         })
                         .onFailure((message) => {
                             return fail(

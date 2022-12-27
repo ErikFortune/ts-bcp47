@@ -64,16 +64,6 @@ export abstract class TagTransform {
         });
     }
 
-    public processTag(tag: string): Result<LanguageTagParts> {
-        return LanguageTagParser.parse(tag, this.iana).onSuccess((parts) => {
-            return this.process(parts);
-        });
-    }
-
-    public process(tag: string | LanguageTagParts): Result<LanguageTagParser> {
-        return typeof tag === 'string' ? this.processTag(tag) : this.processParts(tag);
-    }
-
     protected _basicPostValidation(parts: LanguageTagParts): Result<LanguageTagParts> {
         if (parts.primaryLanguage === undefined && parts.grandfathered === undefined && parts.privateUse === undefined) {
             return fail(`${languageTagPartsToString(parts)}: missing primary language subtag.`);

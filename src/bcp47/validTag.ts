@@ -47,7 +47,7 @@ export class ValidTag {
             const parts: LanguageTagParts =
                 typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, iana).getValueOrThrow() : tagOrParts;
             const normalizer = new ValidCanonicalNormalizer(iana);
-            const normalized = normalizer.process(parts).getValueOrThrow();
+            const normalized = normalizer.processParts(parts).getValueOrThrow();
             return new ValidTag(normalized);
         });
     }

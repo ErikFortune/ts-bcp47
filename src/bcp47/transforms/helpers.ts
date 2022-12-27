@@ -81,7 +81,7 @@ export function applyTransforms(
     let currentStatus = status;
 
     for (const transform of transforms) {
-        const result = transform.process(currentParts);
+        const result = transform.processParts(currentParts);
         if (result.isFailure()) {
             return fail(result.message);
         }

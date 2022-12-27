@@ -79,7 +79,7 @@ export class StrictTagValidator extends TagValidator {
         if (variants) {
             const { primaryLanguage, extlangs, script, region } = parts;
             const nonCanonical = { primaryLanguage, extlangs, script, region };
-            const canonical = new CanonicalNormalizer(this.iana).process(nonCanonical);
+            const canonical = new CanonicalNormalizer(this.iana).processParts(nonCanonical);
             if (canonical.isFailure()) {
                 return fail(`failed to normalize variant prefix: ${canonical.message}`);
             }
