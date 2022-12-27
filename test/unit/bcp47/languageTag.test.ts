@@ -72,7 +72,16 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         description: 'valid canonical extlang',
         from: 'zh-cmn',
         expected: [
-            ['zh-cmn', [...allCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['zh-cmn', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['cmn', allPreferredKeys],
+        ],
+    },
+    {
+        description: 'valid extlang',
+        from: 'ZH-Cmn',
+        expected: [
+            ['ZH-Cmn', allNonCanonicalTestKeys],
+            ['zh-cmn', allCanonicalTestKeys],
             ['cmn', allPreferredKeys],
         ],
     },
@@ -80,19 +89,16 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         description: 'well-formed, non-canonical language-region',
         from: 'en-us',
         expected: [
-            ['en-us', ['default', 'wellFormed', 'valid', 'strictlyValid']],
-            ['en-US', ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical', 'preferred', 'strictlyValidPreferred']],
+            ['en-us', allNonCanonicalTestKeys],
+            ['en-US', allCanonicalTestKeys],
         ],
     },
     {
         description: 'valid grandfathered tag',
         from: 'art-lojban',
         expected: [
-            [
-                'art-lojban',
-                ['default', 'wellFormed', 'wellFormedCanonical', 'valid', 'validCanonical', 'strictlyValid', 'strictlyValidCanonical'],
-            ],
-            ['jbo', ['preferred', 'strictlyValidPreferred']],
+            ['art-lojban', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['jbo', allPreferredKeys],
         ],
     },
     {

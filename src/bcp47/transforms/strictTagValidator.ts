@@ -50,7 +50,7 @@ export class StrictTagValidator extends TagValidator {
         extlangs: ExtLangSubtag[] | undefined
     ): Result<ExtLangSubtag[] | undefined> {
         if (extlangs) {
-            const prefix = parts.primaryLanguage;
+            const prefix = this.iana.subtags.languages.toCanonical(parts.primaryLanguage).getValueOrDefault();
             if (!prefix) {
                 return fail('missing primary language for extlang prefix validation.');
             }
