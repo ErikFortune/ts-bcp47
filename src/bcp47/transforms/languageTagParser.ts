@@ -71,7 +71,7 @@ export class LanguageTagParser {
     protected static _parseGrandfatheredTag(status: ParserStatus): Result<LanguageTagParts> {
         const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
         if (grandfathered) {
-            status.parts.grandfathered = grandfathered.tag;
+            status.parts.grandfathered = status.tag as Iana.LanguageSubtags.GrandfatheredTag;
             // we consumed the whole thing
             status.subtags.splice(0, status.subtags.length);
             status.next = undefined;

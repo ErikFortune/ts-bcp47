@@ -133,7 +133,31 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
-        description: 'valid grandfathered tag',
+        description: 'valid extensions',
+        from: 'en-us-u-en-US-t-MT',
+        expected: [
+            ['en-us-u-en-US-t-MT', allNonCanonicalTestKeys],
+            ['en-US-u-en-US-t-mt', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'valid private-use subtag',
+        from: 'en-x-Pig-Latin',
+        expected: [
+            ['en-x-Pig-Latin', allNonCanonicalTestKeys],
+            ['en-x-pig-latin', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'valid grandfathered tag with no preferredValue',
+        from: 'i-Mingo',
+        expected: [
+            ['i-Mingo', allNonCanonicalTestKeys],
+            ['i-mingo', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'valid grandfathered tag with preferredValue',
         from: 'art-lojban',
         expected: [
             ['art-lojban', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
