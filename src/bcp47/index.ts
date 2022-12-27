@@ -23,6 +23,6 @@ export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './commo
 export * as Transforms from './transforms';
 
 export { CanonicalTag } from './canonicalTag';
-export { LanguageTag1 } from './languageTag1';
+export { LanguageTag } from './languageTag';
 export { ValidTag } from './validTag';
 export { WellFormedTag } from './wellFormedTag';

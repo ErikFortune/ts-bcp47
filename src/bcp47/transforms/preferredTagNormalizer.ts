@@ -22,12 +22,16 @@
 
 import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../iana/language-subtags';
 import { Result, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
 
 import { LanguageTagParser } from './languageTagParser';
 import { LanguageTagParts } from '../common';
 import { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
 
 export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
+    public readonly validity: TagValidity = 'valid';
+    public readonly normalization: TagNormalization = 'preferred';
+
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             const language = this.iana.subtags.languages.tryGet(parts.primaryLanguage);

@@ -26,7 +26,7 @@ import { Bcp, Iana } from '../../../src';
 import { LanguageTagParts } from '../../../src/bcp47';
 
 describe('ValidTag class', () => {
-    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
+    const iana = Iana.DefaultRegistries.languageRegistries;
 
     describe('create static method', () => {
         test.each([

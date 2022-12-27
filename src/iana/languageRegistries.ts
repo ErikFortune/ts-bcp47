@@ -20,12 +20,25 @@
  * SOFTWARE.
  */
 
-export * from './helpers';
+import { Result, captureResult } from '@fgv/ts-utils';
 
-export { CanonicalNormalizer } from './canonicalNormalizer';
-export { LanguageTagParser } from './languageTagParser';
-export { PreferredTagNormalizer } from './preferredTagNormalizer';
-export { StrictTagValidator } from './strictTagValidator';
-export { TagValidator } from './tagValidator';
-export { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
-export { WellFormedTagValidator } from './wellFormedValidator';
+import { LanguageSubtagRegistry } from './language-subtags';
+import { LanguageTagExtensionRegistry } from './language-tag-extensions';
+import path from 'path';
+
+export class LanguageRegistries {
+    public readonly subtags: LanguageSubtagRegistry;
+    public readonly extensions: LanguageTagExtensionRegistry;
+    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
+        this.subtags = subtags;
+        this.extensions = extensions;
+    }
+
+    public static load(root: string): Result<LanguageRegistries> {
+        return captureResult(() => {
+            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).getValueOrThrow();
+            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).getValueOrThrow();
+            return new LanguageRegistries(subtags, extensions);
+        });
+    }
+}

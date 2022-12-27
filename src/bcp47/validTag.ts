@@ -40,9 +40,9 @@ export class ValidTag {
         return languageTagPartsToString(this.parts);
     }
 
-    public static create(tag: string, iana: Iana.IanaRegistries): Result<ValidTag>;
-    public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<ValidTag>;
-    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<ValidTag> {
+    public static create(tag: string, iana: Iana.LanguageRegistries): Result<ValidTag>;
+    public static create(parts: LanguageTagParts, iana: Iana.LanguageRegistries): Result<ValidTag>;
+    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.LanguageRegistries): Result<ValidTag> {
         return captureResult(() => {
             const parts: LanguageTagParts =
                 typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, iana).getValueOrThrow() : tagOrParts;
@@ -52,7 +52,7 @@ export class ValidTag {
         });
     }
 
-    public static validateExtlangPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
+    public static validateExtlangPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.LanguageRegistries): Result<true> {
         if (parts.extlangs) {
             const prefix = parts.primaryLanguage;
             if (!prefix) {
@@ -76,7 +76,7 @@ export class ValidTag {
         return succeed(true);
     }
 
-    public static validateVariantPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.IanaRegistries): Result<true> {
+    public static validateVariantPrefix(parts: Readonly<LanguageTagParts>, iana: Iana.LanguageRegistries): Result<true> {
         if (parts.variants) {
             const { primaryLanguage, extlangs, script, region } = parts;
             let prefix = languageTagPartsToString({ primaryLanguage, extlangs, script, region });

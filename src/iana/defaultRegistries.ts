@@ -20,26 +20,15 @@
  * SOFTWARE.
  */
 
-import { Result, captureResult } from '@fgv/ts-utils';
+import { LanguageRegistries } from './languageRegistries';
 
-import { LanguageSubtagRegistry } from './language-subtags';
-import { LanguageTagExtensionRegistry } from './language-tag-extensions';
-import path from 'path';
+export class DefaultRegistries {
+    protected static _languageRegistries?: LanguageRegistries = undefined;
 
-export class IanaRegistries {
-    public readonly subtags: LanguageSubtagRegistry;
-    public readonly extensions: LanguageTagExtensionRegistry;
-
-    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
-        this.subtags = subtags;
-        this.extensions = extensions;
-    }
-
-    public static load(root: string): Result<IanaRegistries> {
-        return captureResult(() => {
-            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).getValueOrThrow();
-            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).getValueOrThrow();
-            return new IanaRegistries(subtags, extensions);
-        });
+    public static get languageRegistries(): LanguageRegistries {
+        if (!this._languageRegistries) {
+            this._languageRegistries = LanguageRegistries.load('data/iana').getValueOrThrow();
+        }
+        return this._languageRegistries;
     }
 }

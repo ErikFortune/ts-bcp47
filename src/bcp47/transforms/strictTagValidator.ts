@@ -23,9 +23,13 @@
 import { ExtLangSubtag, ExtendedLanguageRange, VariantSubtag } from '../../iana/language-subtags';
 import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
 import { TagValidator } from './tagValidator';
 
 export class StrictTagValidator extends TagValidator {
+    public readonly validity: TagValidity = 'strictly-valid';
+    public readonly normalization: TagNormalization = 'unknown';
+
     protected _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined> {
         return super._processExtlangs(parts).onSuccess((extlangs) => {
             return this._validateExtlangPrefix(parts, extlangs);
@@ -77,7 +81,7 @@ export class StrictTagValidator extends TagValidator {
 
             return mapResults(
                 variants.map((variant) => {
-                    const def = this.iana.subtags.variants.tryGetCanonical(variant);
+                    const def = this.iana.subtags.variants.tryGet(variant);
                     if (!def) {
                         return fail(`invalid variant subtag "${variant}" (not registered).`);
                     }

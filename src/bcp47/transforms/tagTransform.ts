@@ -34,13 +34,16 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
 import { LanguageTagParser } from './languageTagParser';
 
 export abstract class TagTransform {
-    public readonly iana: Iana.IanaRegistries;
+    public readonly iana: Iana.LanguageRegistries;
+    public abstract readonly validity: TagValidity;
+    public abstract readonly normalization: TagNormalization;
 
-    public constructor(iana: Iana.IanaRegistries) {
-        this.iana = iana;
+    public constructor(iana?: Iana.LanguageRegistries) {
+        this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
     public processParts(parts: LanguageTagParts): Result<LanguageTagParts> {

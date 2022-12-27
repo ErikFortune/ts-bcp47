@@ -35,7 +35,7 @@ export class CanonicalTag {
     public readonly from: ValidTag;
     public readonly parts: LanguageTagParts;
 
-    protected constructor(from: ValidTag, iana: Iana.IanaRegistries) {
+    protected constructor(from: ValidTag, iana: Iana.LanguageRegistries) {
         this.from = from;
 
         const tag = from.tag;
@@ -45,9 +45,9 @@ export class CanonicalTag {
         this.tag = languageTagPartsToString(this.parts);
     }
 
-    public static create(tag: string, iana: Iana.IanaRegistries): Result<CanonicalTag>;
-    public static create(from: ValidTag, iana: Iana.IanaRegistries): Result<CanonicalTag>;
-    public static create(from: string | ValidTag, iana: Iana.IanaRegistries): Result<CanonicalTag> {
+    public static create(tag: string, iana: Iana.LanguageRegistries): Result<CanonicalTag>;
+    public static create(from: ValidTag, iana: Iana.LanguageRegistries): Result<CanonicalTag>;
+    public static create(from: string | ValidTag, iana: Iana.LanguageRegistries): Result<CanonicalTag> {
         let valid: ValidTag | undefined;
 
         if (typeof from === 'string') {
@@ -69,7 +69,7 @@ export class CanonicalTag {
         return this.tag;
     }
 
-    protected _normalize(tag: string, parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
+    protected _normalize(tag: string, parts: LanguageTagParts, iana: Iana.LanguageRegistries): Result<LanguageTagParts> {
         const grandfathered = this._checkGrandfathered(parts, iana);
         if (grandfathered.isFailure() || grandfathered.value !== undefined) {
             return grandfathered as Result<LanguageTagParts>;
@@ -96,7 +96,7 @@ export class CanonicalTag {
         return preferred;
     }
 
-    protected _normalizeLanguage(from: LanguageSubtag | undefined, iana: Iana.IanaRegistries): Result<LanguageSubtag | undefined> {
+    protected _normalizeLanguage(from: LanguageSubtag | undefined, iana: Iana.LanguageRegistries): Result<LanguageSubtag | undefined> {
         if (from) {
             const language = iana.subtags.languages.tryGet(from);
             // istanbul ignore next - internal error difficult to test
@@ -108,7 +108,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _normalizeExtlangs(from: ExtLangSubtag[] | undefined, iana: Iana.IanaRegistries): Result<ExtLangSubtag[] | undefined> {
+    protected _normalizeExtlangs(from: ExtLangSubtag[] | undefined, iana: Iana.LanguageRegistries): Result<ExtLangSubtag[] | undefined> {
         if (from) {
             if (from.length > 1) {
                 return fail('empty extlang subtag array');
@@ -120,7 +120,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _normalizeScript(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<ScriptSubtag | undefined> {
+    protected _normalizeScript(parts: LanguageTagParts, iana: Iana.LanguageRegistries): Result<ScriptSubtag | undefined> {
         if (parts.primaryLanguage && parts.script) {
             const language = iana.subtags.languages.tryGet(parts.primaryLanguage);
             // istanbul ignore next - internal error difficult to test
@@ -140,7 +140,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _normalizeRegion(from: RegionSubtag | undefined, iana: Iana.IanaRegistries): Result<RegionSubtag | undefined> {
+    protected _normalizeRegion(from: RegionSubtag | undefined, iana: Iana.LanguageRegistries): Result<RegionSubtag | undefined> {
         if (from) {
             const region = iana.subtags.regions.tryGet(from);
             // istanbul ignore next - internal error difficult to test
@@ -152,7 +152,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _normalizeVariants(from: VariantSubtag[] | undefined, iana: Iana.IanaRegistries): Result<VariantSubtag[] | undefined> {
+    protected _normalizeVariants(from: VariantSubtag[] | undefined, iana: Iana.LanguageRegistries): Result<VariantSubtag[] | undefined> {
         if (from) {
             const results: Result<unknown>[] = [];
             const present = new Set<VariantSubtag>();
@@ -182,7 +182,7 @@ export class CanonicalTag {
 
     protected _normalizeExtensions(
         from: ExtensionSubtagValue[] | undefined,
-        iana: Iana.IanaRegistries
+        iana: Iana.LanguageRegistries
     ): Result<ExtensionSubtagValue[] | undefined> {
         if (from) {
             const results: Result<unknown>[] = [];
@@ -216,7 +216,7 @@ export class CanonicalTag {
 
     protected _normalizePrivateUseTags(
         from: ExtendedLanguageRange[] | undefined,
-        _iana: Iana.IanaRegistries
+        _iana: Iana.LanguageRegistries
     ): Result<ExtendedLanguageRange[] | undefined> {
         if (from) {
             const results: Result<unknown>[] = [];
@@ -240,7 +240,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _checkGrandfathered(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<LanguageTagParts | undefined> {
+    protected _checkGrandfathered(parts: LanguageTagParts, iana: Iana.LanguageRegistries): Result<LanguageTagParts | undefined> {
         if (parts.grandfathered) {
             const grandfathered = iana.subtags.grandfathered.tryGet(parts.grandfathered);
             // istanbul ignore next - internal error hard to test
@@ -261,7 +261,7 @@ export class CanonicalTag {
         return succeed(undefined);
     }
 
-    protected _checkRedundant(tag: string, iana: Iana.IanaRegistries): Result<LanguageTagParts | undefined> {
+    protected _checkRedundant(tag: string, iana: Iana.LanguageRegistries): Result<LanguageTagParts | undefined> {
         const redundant = iana.subtags.redundant.tryGet(tag);
         if (redundant?.preferredValue !== undefined) {
             const preferred = ValidTag.create(redundant.preferredValue, iana);

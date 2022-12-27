@@ -34,10 +34,14 @@ import {
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
 import { LanguageTagParts } from '../common';
 import { TagTransform } from './tagTransform';
 
 export class CanonicalNormalizer extends TagTransform {
+    public readonly validity: TagValidity = 'well-formed';
+    public readonly normalization: TagNormalization = 'canonical';
+
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             return this.iana.subtags.languages.toCanonical(parts.primaryLanguage);

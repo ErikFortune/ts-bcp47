@@ -35,9 +35,13 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
 import { TagTransform } from './tagTransform';
 
 export class TagValidator extends TagTransform {
+    public validity: TagValidity = 'valid';
+    public normalization: TagNormalization = 'unknown';
+
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             return this.iana.subtags.languages.verifyIsValid(parts.primaryLanguage);

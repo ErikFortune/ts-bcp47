@@ -26,7 +26,7 @@ import { CanonicalTag } from '../../../src/bcp47';
 import { ValidTag } from '../../../src/bcp47/validTag';
 
 describe('CanonicalTag class', () => {
-    const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
+    const iana = Iana.LanguageRegistries.load('data/iana').getValueOrThrow();
 
     describe('static create with string', () => {
         test.each([

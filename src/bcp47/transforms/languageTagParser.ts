@@ -29,7 +29,7 @@ import { LanguageTagParts } from '../common';
 import { Validate } from '../subtags';
 
 interface ParserStatus {
-    readonly iana: Iana.IanaRegistries;
+    readonly iana: Iana.LanguageRegistries;
     readonly tag: string;
     readonly subtags: string[];
     readonly parts: LanguageTagParts;
@@ -41,7 +41,7 @@ export class LanguageTagParser {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
-    public static parse(tag: string, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
+    public static parse(tag: string, iana: Iana.LanguageRegistries): Result<LanguageTagParts> {
         const status: ParserStatus = {
             tag,
             iana,

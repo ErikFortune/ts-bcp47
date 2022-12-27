@@ -38,9 +38,9 @@ export class WellFormedTag {
         return languageTagPartsToString(this.parts);
     }
 
-    public static create(tag: string, iana: Iana.IanaRegistries): Result<WellFormedTag>;
-    public static create(parts: LanguageTagParts, iana: Iana.IanaRegistries): Result<WellFormedTag>;
-    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.IanaRegistries): Result<WellFormedTag> {
+    public static create(tag: string, iana: Iana.LanguageRegistries): Result<WellFormedTag>;
+    public static create(parts: LanguageTagParts, iana: Iana.LanguageRegistries): Result<WellFormedTag>;
+    public static create(tagOrParts: string | LanguageTagParts, iana: Iana.LanguageRegistries): Result<WellFormedTag> {
         let parts = typeof tagOrParts === 'object' ? tagOrParts : undefined;
         if (parts === undefined) {
             const parsed = Parser.LanguageTagParser.parse(tagOrParts as string, iana);

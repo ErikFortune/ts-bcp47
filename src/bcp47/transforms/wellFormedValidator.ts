@@ -34,10 +34,15 @@ import {
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { TagNormalization, TagValidity } from '../status';
+
 import { LanguageTagParts } from '../common';
 import { TagTransform } from './tagTransform';
 
 export class WellFormedTagValidator extends TagTransform {
+    public validity: TagValidity = 'well-formed';
+    public normalization: TagNormalization = 'unknown';
+
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
             return this.iana.subtags.languages.verifyIsWellFormed(parts.primaryLanguage);
