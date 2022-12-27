@@ -19,10 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
-export * as Transforms from './transforms';
 
-export { CanonicalTag } from './canonicalTag';
-export { LanguageTag1 } from './languageTag1';
-export { ValidTag } from './validTag';
-export { WellFormedTag } from './wellFormedTag';
+export { CanonicalNormalizer } from './canonicalNormalizer';
+export { LanguageTagParser } from './languageTagParser';
+export { PreferredTagNormalizer } from './preferredTagNormalizer';
+export { StrictTagValidator } from './strictTagValidator';
+export { TagValidator } from './tagValidator';
+export { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
+export { WellFormedTagValidator } from './wellFormedValidator';

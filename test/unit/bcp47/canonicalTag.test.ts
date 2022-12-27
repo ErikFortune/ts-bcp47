@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import * as Iana from '../../../src/iana';
-import { CanonicalTag } from '../../../src/bcp47/canonicalTag';
+import { CanonicalTag } from '../../../src/bcp47';
 import { ValidTag } from '../../../src/bcp47/validTag';
 
 describe('CanonicalTag class', () => {

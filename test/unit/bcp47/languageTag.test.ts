@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import * as Iana from '../../../src/iana';
-import { LanguageTag } from '../../../src/bcp47';
+import { LanguageTag1 } from '../../../src/bcp47';
 
 describe('LanguageTag class', () => {
     const iana = Iana.IanaRegistries.load('data/iana').getValueOrThrow();
@@ -34,7 +34,7 @@ describe('LanguageTag class', () => {
                 ['en-latn-us', 'en-latn-us', 'en-Latn-US', 'en-US', 'Latn'],
                 ['en-gb-oed', 'en-GB-oed', 'en-GB-oed', 'en-GB-oxendict', 'Latn'],
             ])('%p yields well-formed %p, canonical %p, script %p', (from, wellFormed, valid, canonical, script) => {
-                expect(LanguageTag.create(from, iana)).toSucceedAndSatisfy((tag) => {
+                expect(LanguageTag1.create(from, iana)).toSucceedAndSatisfy((tag) => {
                     expect(tag.wellFormed.tag).toEqual(wellFormed);
                     expect(tag.validated?.tag).toEqual(valid);
                     expect(tag.canonical?.tag).toEqual(canonical);
