@@ -77,7 +77,7 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
-        description: 'valid extlang',
+        description: 'valid non-canonical extlang',
         from: 'ZH-Cmn',
         expected: [
             ['ZH-Cmn', allNonCanonicalTestKeys],
@@ -86,11 +86,50 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
-        description: 'well-formed, non-canonical language-region',
-        from: 'en-us',
+        description: 'valid non-canonical, suppressed script',
+        from: 'en-LATN',
         expected: [
-            ['en-us', allNonCanonicalTestKeys],
-            ['en-US', allCanonicalTestKeys],
+            ['en-LATN', allNonCanonicalTestKeys],
+            ['en-Latn', allNonPreferredCanonicalKeys],
+            ['en', allPreferredKeys],
+        ],
+    },
+    {
+        description: 'valid non-canonical iso3166-2 region',
+        from: 'en-aq',
+        expected: [
+            ['en-aq', allNonCanonicalTestKeys],
+            ['en-AQ', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'valid non-canonical UN M.49 region',
+        from: 'es-419',
+        expected: [['es-419', allTestKeys]],
+    },
+    {
+        description: 'strictly valid non-canonical variant',
+        from: 'ca-Valencia',
+        expected: [
+            ['ca-Valencia', allNonCanonicalTestKeys],
+            ['ca-valencia', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'not strictly-valid non-canonical variant',
+        from: 'fr-Valencia',
+        expected: [
+            ['fr-Valencia', ['default', 'wellFormed', 'valid']],
+            ['fr-valencia', ['wellFormedCanonical', 'validCanonical', 'preferred']],
+            [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
+        ],
+    },
+    {
+        description: 'strictly valid multiple variants',
+        from: 'SL-Rozaj-Lipaw',
+        expected: [
+            ['SL-Rozaj-Lipaw', allNonCanonicalTestKeys],
+            ['sl-rozaj-lipaw', allCanonicalTestKeys],
         ],
     },
     {

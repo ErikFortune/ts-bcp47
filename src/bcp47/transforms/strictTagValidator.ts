@@ -25,6 +25,7 @@ import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagNormalization, TagValidity } from '../status';
 import { TagValidator } from './tagValidator';
+import { CanonicalNormalizer } from './canonicalNormalizer';
 
 export class StrictTagValidator extends TagValidator {
     public readonly validity: TagValidity = 'strictly-valid';
@@ -77,7 +78,12 @@ export class StrictTagValidator extends TagValidator {
     ): Result<VariantSubtag[] | undefined> {
         if (variants) {
             const { primaryLanguage, extlangs, script, region } = parts;
-            let prefix = languageTagPartsToString({ primaryLanguage, extlangs, script, region });
+            const nonCanonical = { primaryLanguage, extlangs, script, region };
+            const canonical = new CanonicalNormalizer(this.iana).process(nonCanonical);
+            if (canonical.isFailure()) {
+                return fail(`failed to normalize variant prefix: ${canonical.message}`);
+            }
+            let prefix = languageTagPartsToString(canonical.value);
 
             return mapResults(
                 variants.map((variant) => {
@@ -90,7 +96,8 @@ export class StrictTagValidator extends TagValidator {
                     if (def.prefix?.includes(prefix as ExtendedLanguageRange) === false) {
                         return fail(`invalid prefix "${prefix}" for variant subtag ${variant} (expected "(${def.prefix.join(', ')})").`);
                     }
-                    prefix = `${prefix}-${variant}`;
+                    const canonicalVariant = this.iana.subtags.variants.toCanonical(variant).getValueOrDefault();
+                    prefix = `${prefix}-${canonicalVariant}`;
                     return succeed(variant);
                 })
             );
