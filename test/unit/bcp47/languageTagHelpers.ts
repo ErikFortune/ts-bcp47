@@ -77,33 +77,55 @@ const optionsByKey: Record<TestKey, LanguageTagInitOptions | undefined> = {
     strictlyValidPreferred: { validity: 'strictly-valid', normalization: 'preferred' },
 };
 
-type CreateFromTagTestCaseData = [string, string, LanguageTagInitOptions | undefined, string | RegExp];
+export interface TagTestCase<TFROM = string, TEXPECTED = string | RegExp> {
+    description: string;
+    from: TFROM;
+    expected?: TEXPECTED;
+    invoke(): void;
+}
 
-export class CreateFromTagTestCase {
-    public static invoke(from: string, options: LanguageTagInitOptions | undefined, expected: string | RegExp) {
-        if (expected === 'string') {
-            expect(LanguageTag.createFromTag(from, options)).toSucceedAndSatisfy((lt) => {
-                expect(lt.tag).toEqual(expected);
+export type TagTestCaseEntry<TTESTCASE extends TagTestCase> = [string, TTESTCASE];
+
+export class CreateFromTagTestCase implements TagTestCase {
+    public readonly description: string;
+    public readonly from: string;
+    public readonly options: LanguageTagInitOptions | undefined;
+    public readonly expected?: string | RegExp;
+
+    public constructor(gtc: GenericLanguageTagTest, which: TestKey) {
+        this.from = gtc.from;
+        this.options = optionsByKey[which];
+        this.expected = gtc.expected[which];
+
+        if (typeof this.expected === 'string') {
+            this.description = `${gtc.description} "${gtc.from}" succeeds with "${this.expected}" for ${which}`;
+        } else if (this.expected instanceof RegExp) {
+            this.description = `${gtc.description} "${gtc.from}" fails with "${this.expected}" for ${which}`;
+        } else {
+            this.description = `${gtc.description} "${gtc.from}" ignored (not expected value)`;
+        }
+    }
+
+    public invoke(): void {
+        if (this.expected === 'string') {
+            expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                expect(lt.tag).toEqual(this.expected);
             });
-        } else if (expected instanceof RegExp) {
-            expect(LanguageTag.createFromTag(from, options)).toFailWith(expected);
+        } else if (this.expected instanceof RegExp) {
+            expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
         }
     }
+}
 
-    public static emitOne(which: TestKey, gtc: GenericLanguageTagTest): CreateFromTagTestCaseData | undefined {
-        const options = optionsByKey[which];
-        const expected = gtc.expected[which];
-        if (typeof expected === 'string') {
-            return [`${gtc.description} "${gtc.from}" succeeds with "${expected}" for ${which}`, gtc.from, options, expected];
-        } else if (expected instanceof RegExp) {
-            return [`${gtc.description} "${gtc.from}" fails with "${expected}" for ${which}`, gtc.from, options, expected];
-        }
-        return undefined;
+export class CreateFromTagTestCaseFactory {
+    public static emitOne(gtc: GenericLanguageTagTest, which: TestKey): TagTestCaseEntry<CreateFromTagTestCase> | undefined {
+        const tc = new CreateFromTagTestCase(gtc, which);
+        return tc.expected ? [tc.description, tc] : undefined;
     }
 
-    public static emit(which: TestKey, all: GenericLanguageTagTest[]): CreateFromTagTestCaseData[] {
+    public static emit(which: TestKey, all: GenericLanguageTagTest[]): TagTestCaseEntry<CreateFromTagTestCase>[] {
         return all
-            .map((gtc) => CreateFromTagTestCase.emitOne(which, gtc))
-            .filter((tc): tc is CreateFromTagTestCaseData => tc !== undefined);
+            .map((gtc) => CreateFromTagTestCaseFactory.emitOne(gtc, which))
+            .filter((tc): tc is TagTestCaseEntry<CreateFromTagTestCase> => tc !== undefined);
     }
 }
