@@ -35,10 +35,11 @@ import {
     allTestKeys,
     allValidatingKeys,
 } from './languageTagHelpers';
-import { LanguageTag } from '../../../src/bcp47';
+import { LanguageTag, LanguageTagParts } from '../../../src/bcp47';
+import { ExtLangSubtag } from '../../../src/iana/language-subtags';
 
-export class CreateFromTagTestCase extends SimpleTagTestCaseBase {
-    public static create(gtc: GenericLanguageTagTest, which: TestKey) {
+export class CreateFromTagTestCase extends SimpleTagTestCaseBase<string> {
+    public static create(gtc: GenericLanguageTagTest<string>, which: TestKey): CreateFromTagTestCase {
         return new CreateFromTagTestCase(gtc, which);
     }
 
@@ -55,7 +56,25 @@ export class CreateFromTagTestCase extends SimpleTagTestCaseBase {
 
 export const createFromTagTestCaseFactory = new GenericTagTestCaseFactory(CreateFromTagTestCase.create);
 
-const testCaseInit: GenericLanguageTagTestInit[] = [
+export class CreateFromPartsTestCase extends SimpleTagTestCaseBase<LanguageTagParts> {
+    public static create(gtc: GenericLanguageTagTest<LanguageTagParts>, which: TestKey): CreateFromPartsTestCase {
+        return new CreateFromPartsTestCase(gtc, which);
+    }
+
+    public invoke(): void {
+        if (typeof this.expected === 'string') {
+            expect(LanguageTag.createFromParts(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                expect(lt.tag).toEqual(this.expected);
+            });
+        } else if (this.expected instanceof RegExp) {
+            expect(LanguageTag.createFromParts(this.from, this.options)).toFailWith(this.expected);
+        }
+    }
+}
+
+export const createFromPartsTestCaseFactory = new GenericTagTestCaseFactory(CreateFromPartsTestCase.create);
+
+const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     {
         description: 'valid canonical primary language',
         from: 'en',
@@ -261,60 +280,77 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
     },
 ];
 
-const genericTests = testCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
+const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
+    {
+        description: 'missing primary language',
+        from: { extlangs: ['cmn' as ExtLangSubtag, 'yue' as ExtLangSubtag] },
+        expected: [[/missing primary language/i, allTestKeys]],
+    },
+];
+
+const tagTestCases = testCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
+const partsTestCases = partsTestCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
 
 describe('LanguageTag class', () => {
-    describe('create method', () => {
+    describe('createFromTag static method', () => {
         describe('default options', () => {
-            test.each(createFromTagTestCaseFactory.emit('default', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('default', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('well-formed', () => {
-            test.each(createFromTagTestCaseFactory.emit('wellFormed', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('wellFormed', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('well-formed canonical', () => {
-            test.each(createFromTagTestCaseFactory.emit('wellFormedCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('wellFormedCanonical', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('valid', () => {
-            test.each(createFromTagTestCaseFactory.emit('valid', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('valid', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('valid canonical', () => {
-            test.each(createFromTagTestCaseFactory.emit('validCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('validCanonical', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('preferred', () => {
-            test.each(createFromTagTestCaseFactory.emit('preferred', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('preferred', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid', () => {
-            test.each(createFromTagTestCaseFactory.emit('strictlyValid', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValid', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid canonical', () => {
-            test.each(createFromTagTestCaseFactory.emit('strictlyValidCanonical', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValidCanonical', tagTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
 
         describe('strictly valid preferred', () => {
-            test.each(createFromTagTestCaseFactory.emit('strictlyValidPreferred', genericTests))('%p', (_desc, tc) => {
+            test.each(createFromTagTestCaseFactory.emit('strictlyValidPreferred', tagTestCases))('%p', (_desc, tc) => {
+                tc.invoke();
+            });
+        });
+    });
+
+    describe('createFromParts static method', () => {
+        describe('default options', () => {
+            test.each(createFromPartsTestCaseFactory.emit('default', partsTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });
