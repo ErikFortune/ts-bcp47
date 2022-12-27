@@ -122,7 +122,12 @@ export abstract class TagTestCaseFactoryBase<TFROM, TTESTCASE extends TagTestCas
         return tc.expected ? [tc.description, tc] : undefined;
     }
 
-    public emit(which: TestKey, all: GenericLanguageTagTest<TFROM>[]): TagTestCaseEntry<TFROM, TTESTCASE>[] {
+    public emit(which: TestKey | TestKey[], all: GenericLanguageTagTest<TFROM>[]): TagTestCaseEntry<TFROM, TTESTCASE>[] {
+        if (Array.isArray(which)) {
+            return all.flatMap((gtc) => {
+                return which.map((w) => this.emitOne(gtc, w)).filter((tc): tc is TagTestCaseEntry<TFROM, TTESTCASE> => tc != undefined);
+            });
+        }
         return all.map((gtc) => this.emitOne(gtc, which)).filter((tc): tc is TagTestCaseEntry<TFROM, TTESTCASE> => tc !== undefined);
     }
 
@@ -149,13 +154,23 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
         this.options = optionsByKey[which];
         this.expected = gtc.expected[which];
 
-        const fromDesc = typeof gtc.from === 'string' ? gtc.from : JSON.stringify(gtc.from, undefined, 2);
-        if (typeof this.expected === 'string') {
-            this.description = `${which} succeeds for "${fromDesc}" with "${this.expected}" (${gtc.description})`;
-        } else if (this.expected instanceof RegExp) {
-            this.description = `${which} fails for "${fromDesc}" with "${this.expected}" (${gtc.description})`;
+        if (typeof gtc.from === 'string') {
+            if (typeof this.expected === 'string') {
+                this.description = `${which} succeeds for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
+            } else if (this.expected instanceof RegExp) {
+                this.description = `${which} fails for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
+            } else {
+                this.description = `${which} "${gtc.from}" ignored due to expected value {${gtc.description}})`;
+            }
         } else {
-            this.description = `${gtc.description} "${fromDesc}" ignored due to expected value {${gtc.description}})`;
+            const fromDesc = JSON.stringify(gtc.from, undefined, 2);
+            if (typeof this.expected === 'string') {
+                this.description = `${which} succeeds for "${gtc.description}" with "${this.expected}" (${fromDesc})`;
+            } else if (this.expected instanceof RegExp) {
+                this.description = `${which} fails for "${gtc.description}" with "${this.expected}" (${fromDesc})`;
+            } else {
+                this.description = `${which} "${gtc.description}" ignored due to expected value {${fromDesc})`;
+            }
         }
     }
 
