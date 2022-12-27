@@ -22,7 +22,7 @@
 
 import { LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../iana/language-subtags';
 import { LanguageTagParts, languageTagPartsToString } from '../common';
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, fail, succeed } from '@fgv/ts-utils';
 import { TagNormalization, TagValidity } from '../status';
 
 import { LanguageTagParser } from './languageTagParser';
@@ -79,7 +79,7 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
                     return LanguageTagParser.parse(grandfathered.preferredValue, this.iana)
                         .onSuccess((gfParts) => {
                             if (gfParts.grandfathered !== undefined) {
-                                return fail(
+                                return fail<LanguageTagParts>(
                                     `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
                                 );
                             }

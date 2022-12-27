@@ -33,6 +33,7 @@ import {
     allNonPreferredCanonicalKeys,
     allPreferredKeys,
     allTestKeys,
+    allValidatingKeys,
 } from './languageTagHelpers';
 import { LanguageTag } from '../../../src/bcp47';
 
@@ -69,6 +70,15 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
+        description: 'invalid primary language',
+        from: 'ENG',
+        expected: [
+            ['ENG', ['default', 'wellFormed']],
+            ['eng', ['wellFormedCanonical']],
+            [/invalid language/i, allValidatingKeys],
+        ],
+    },
+    {
         description: 'valid canonical extlang',
         from: 'zh-cmn',
         expected: [
@@ -86,12 +96,46 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
+        description: 'invalid extlang',
+        from: 'zh-Han',
+        expected: [
+            ['zh-Han', ['default', 'wellFormed']],
+            ['zh-han', ['wellFormedCanonical']],
+            [/invalid extlang/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'multiple extlang',
+        from: 'zh-cmn-yue',
+        expected: [
+            ['zh-cmn-yue', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/too many extlang/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'valid non-canonical, non-suppressed script',
+        from: 'zh-LATN',
+        expected: [
+            ['zh-LATN', allNonCanonicalTestKeys],
+            ['zh-Latn', allCanonicalTestKeys],
+        ],
+    },
+    {
         description: 'valid non-canonical, suppressed script',
         from: 'en-LATN',
         expected: [
             ['en-LATN', allNonCanonicalTestKeys],
             ['en-Latn', allNonPreferredCanonicalKeys],
             ['en', allPreferredKeys],
+        ],
+    },
+    {
+        description: 'invalid script',
+        from: 'en-AaaA',
+        expected: [
+            ['en-AaaA', ['default', 'wellFormed']],
+            ['en-Aaaa', ['wellFormedCanonical']],
+            [/invalid script/i, allValidatingKeys],
         ],
     },
     {
@@ -106,6 +150,14 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         description: 'valid non-canonical UN M.49 region',
         from: 'es-419',
         expected: [['es-419', allTestKeys]],
+    },
+    {
+        description: 'invalid region',
+        from: 'en-AJ',
+        expected: [
+            ['en-AJ', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/invalid region/i, allValidatingKeys],
+        ],
     },
     {
         description: 'strictly valid non-canonical variant',
@@ -133,11 +185,45 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
+        description: 'invalid variant',
+        from: 'ca-ES-xyzzy',
+        expected: [
+            ['ca-ES-xyzzy', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/invalid variant/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'invalid variant',
+        from: 'ca-valencia-valencia',
+        expected: [
+            ['ca-valencia-valencia', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/duplicate variant/i, allValidatingKeys],
+        ],
+    },
+    {
         description: 'valid extensions',
         from: 'en-us-u-en-US-t-MT',
         expected: [
             ['en-us-u-en-US-t-MT', allNonCanonicalTestKeys],
             ['en-US-u-en-US-t-mt', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'invalid extension',
+        from: 'es-us-a-extend',
+        expected: [
+            ['es-us-a-extend', ['default', 'wellFormed']],
+            ['es-US-a-extend', ['wellFormedCanonical']],
+            [/invalid.*extension/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'duplicate extension',
+        from: 'es-us-u-US-u-GB',
+        expected: [
+            ['es-us-u-US-u-GB', ['default', 'wellFormed']],
+            ['es-US-u-us-u-gb', ['wellFormedCanonical']],
+            [/duplicate.*extension/i, allValidatingKeys],
         ],
     },
     {
@@ -165,9 +251,13 @@ const testCaseInit: GenericLanguageTagTestInit[] = [
         ],
     },
     {
-        description: 'malformed tag',
-        from: 'invalid-tag',
-        expected: [[/no primary language subtag/i, allTestKeys]],
+        description: 'valid grandfathered tag with complex preferred value',
+        from: 'en-gb-oed',
+        expected: [
+            ['en-gb-oed', allNonCanonicalTestKeys],
+            ['en-GB-oed', allNonPreferredCanonicalKeys],
+            ['en-GB-oxendict', allPreferredKeys],
+        ],
     },
 ];
 

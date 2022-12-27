@@ -58,7 +58,14 @@ export const allCanonicalTestKeys: TestKey[] = [
 ];
 export const allNonPreferredCanonicalKeys: TestKey[] = ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical'];
 export const allPreferredKeys: TestKey[] = ['preferred', 'strictlyValidPreferred'];
-
+export const allValidatingKeys: TestKey[] = [
+    'valid',
+    'validCanonical',
+    'strictlyValid',
+    'strictlyValidCanonical',
+    'strictlyValidPreferred',
+    'preferred',
+];
 export interface GenericLanguageTagTestInit<TFROM = string, TEXPECTED = string | RegExp> {
     description: string;
     from: TFROM;

@@ -24,8 +24,8 @@ import { ExtLangSubtag, ExtendedLanguageRange, VariantSubtag } from '../../iana/
 import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagNormalization, TagValidity } from '../status';
-import { TagValidator } from './tagValidator';
 import { CanonicalNormalizer } from './canonicalNormalizer';
+import { TagValidator } from './tagValidator';
 
 export class StrictTagValidator extends TagValidator {
     public readonly validity: TagValidity = 'strictly-valid';
