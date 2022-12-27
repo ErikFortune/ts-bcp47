@@ -104,7 +104,9 @@ export class WellFormedTagValidator extends TagTransform {
 
     protected _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined> {
         if (parts.grandfathered) {
-            return this.iana.subtags.grandfathered.verifyIsWellFormed(parts.grandfathered);
+            return this.iana.subtags.grandfathered.verifyIsWellFormed(parts.grandfathered).onSuccess(() => {
+                return succeed(parts.grandfathered);
+            });
         }
         return succeed(undefined);
     }

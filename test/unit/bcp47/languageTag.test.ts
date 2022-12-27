@@ -22,6 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 
+import { ExtLangSubtag, GrandfatheredTag } from '../../../src/iana/language-subtags';
 import {
     GenericLanguageTagTest,
     GenericLanguageTagTestInit,
@@ -36,7 +37,6 @@ import {
     allValidatingKeys,
 } from './languageTagHelpers';
 import { LanguageTag, LanguageTagParts } from '../../../src/bcp47';
-import { ExtLangSubtag } from '../../../src/iana/language-subtags';
 
 const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     {
@@ -160,11 +160,33 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         ],
     },
     {
-        description: 'strictly valid multiple variants',
+        description: 'any prefix for variant with no registered prefix',
+        from: 'en-alalc97',
+        expected: [['en-alalc97', allTestKeys]],
+    },
+    {
+        description: 'strictly valid with two variants',
         from: 'SL-Rozaj-Lipaw',
         expected: [
             ['SL-Rozaj-Lipaw', allNonCanonicalTestKeys],
             ['sl-rozaj-lipaw', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'strictly valid with multiple variants',
+        from: 'SL-Rozaj-biske-1994',
+        expected: [
+            ['SL-Rozaj-biske-1994', allNonCanonicalTestKeys],
+            ['sl-rozaj-biske-1994', allCanonicalTestKeys],
+        ],
+    },
+    {
+        description: 'not strictly valid with multiple variants',
+        from: 'SL-Rozaj-1996',
+        expected: [
+            ['SL-Rozaj-1996', ['default', 'wellFormed', 'valid']],
+            ['sl-rozaj-1996', ['wellFormedCanonical', 'validCanonical', 'preferred']],
+            [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
         ],
     },
     {
@@ -249,6 +271,14 @@ const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
         description: 'missing primary language',
         from: { extlangs: ['cmn' as ExtLangSubtag, 'yue' as ExtLangSubtag] },
         expected: [[/missing primary language/i, allTestKeys]],
+    },
+    {
+        description: 'invalid grandfathered tag',
+        from: { grandfathered: 'i-dothraki' as GrandfatheredTag },
+        expected: [
+            ['i-dothraki', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/invalid grandfathered/i, [...allValidatingKeys]],
+        ],
     },
 ];
 
