@@ -27,7 +27,8 @@ import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, fail, succeed } from '@fgv/ts-utils';
 
 import { ExtendedLanguageRange } from '../iana/language-subtags';
-import { ValidCanonicalNormalizer } from './transforms/validCanonicalNormalizer';
+import { NormalizeTag } from './normalization';
+import { ValidateTag } from './validation';
 
 export class ValidTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -46,8 +47,9 @@ export class ValidTag {
         return captureResult(() => {
             const parts: LanguageTagParts =
                 typeof tagOrParts === 'string' ? Parser.LanguageTagParser.parse(tagOrParts, iana).getValueOrThrow() : tagOrParts;
-            const normalizer = new ValidCanonicalNormalizer(iana);
-            const normalized = normalizer.processParts(parts).getValueOrThrow();
+
+            ValidateTag.checkParts(parts, 'valid').getValueOrThrow();
+            const normalized = NormalizeTag.processParts(parts, 'canonical').getValueOrThrow();
             return new ValidTag(normalized);
         });
     }

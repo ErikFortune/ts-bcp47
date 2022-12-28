@@ -25,7 +25,7 @@ import * as Subtags from '../subtags';
 
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
 
