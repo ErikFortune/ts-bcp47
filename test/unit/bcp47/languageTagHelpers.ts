@@ -154,23 +154,50 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
         this.options = optionsByKey[which];
         this.expected = gtc.expected[which];
 
-        if (typeof gtc.from === 'string') {
-            if (typeof this.expected === 'string') {
-                this.description = `${which} succeeds for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
-            } else if (this.expected instanceof RegExp) {
-                this.description = `${which} fails for "${gtc.from}" with "${this.expected}" (${gtc.description})`;
-            } else {
-                this.description = `${which} "${gtc.from}" ignored due to expected value {${gtc.description}})`;
-            }
+        if (this.isSuccessTest) {
+            this.description = this._getSuccessTestDescription(which, gtc.from, gtc.description);
+        } else if (this.isFailureTest) {
+            this.description = this._getFailureTestDescription(which, gtc.from, gtc.description);
         } else {
-            const fromDesc = JSON.stringify(gtc.from, undefined, 2);
-            if (typeof this.expected === 'string') {
-                this.description = `${which} succeeds for "${gtc.description}" with "${this.expected}" (${fromDesc})`;
-            } else if (this.expected instanceof RegExp) {
-                this.description = `${which} fails for "${gtc.description}" with "${this.expected}" (${fromDesc})`;
-            } else {
-                this.description = `${which} "${gtc.description}" ignored due to expected value {${fromDesc})`;
-            }
+            this.description = this._getIgnoredTestDescription(which, gtc.from, gtc.description);
+        }
+    }
+
+    public get isSuccessTest(): boolean {
+        return !this.isFailureTest && !this.isIgnoredTest;
+    }
+
+    public get isFailureTest(): boolean {
+        return this.expected instanceof RegExp;
+    }
+
+    public get isIgnoredTest(): boolean {
+        return this.expected === undefined;
+    }
+
+    protected _getSuccessTestDescription(which: TestKey, from: TFROM, description: string): string {
+        if (typeof from !== 'string') {
+            const fromDesc = JSON.stringify(from, undefined, 2);
+            return `${which} succeeds for "${description}" with "${this.expected}" (${fromDesc})`;
+        }
+        return `${which} succeeds for "${from}" with "${this.expected}" (${description})`;
+    }
+
+    protected _getFailureTestDescription(which: TestKey, from: TFROM, description: string): string {
+        if (typeof from === 'string') {
+            return `${which} fails for "${from}" with "${this.expected}" (${description})`;
+        } else {
+            const fromDesc = JSON.stringify(from, undefined, 2);
+            return `${which} fails for "${description}" with "${this.expected}" (${fromDesc})`;
+        }
+    }
+
+    protected _getIgnoredTestDescription(which: TestKey, from: TFROM, description: string): string {
+        if (typeof from === 'string') {
+            return `${which} "${from}" ignored due to expected value {${description}})`;
+        } else {
+            const fromDesc = JSON.stringify(from, undefined, 2);
+            return `${which} "${description}" ignored due to expected value {${fromDesc})`;
         }
     }
 

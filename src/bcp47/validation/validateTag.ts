@@ -32,20 +32,20 @@ import { TagValidator } from './baseValidator';
 export class ValidateTag {
     protected static _validators: Record<TagValidity, TagValidator> | undefined = undefined;
 
-    public static isStrictlyValid(parts: LanguageTagParts) {
-        return this.checkParts(parts, 'strictly-valid');
+    public static isStrictlyValid(parts: LanguageTagParts): boolean {
+        return this.checkParts(parts, 'strictly-valid').isSuccess();
     }
 
-    public static isValid(parts: LanguageTagParts) {
-        return this.checkParts(parts, 'valid');
+    public static isValid(parts: LanguageTagParts): boolean {
+        return this.checkParts(parts, 'valid').isSuccess();
     }
 
-    public static isWellFormed(parts: LanguageTagParts) {
-        return this.checkParts(parts, 'well-formed');
+    public static isWellFormed(parts: LanguageTagParts): boolean {
+        return this.checkParts(parts, 'well-formed').isSuccess();
     }
 
     public static chooseValidator(wantValidity: TagValidity, haveValidity?: TagValidity): TagValidator | undefined {
-        if (haveValidity && compareValidity(haveValidity, wantValidity) > 0) {
+        if (haveValidity && compareValidity(haveValidity, wantValidity) >= 0) {
             return undefined;
         }
 
@@ -64,6 +64,7 @@ export class ValidateTag {
 
     public static checkParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean> {
         const validator = this.chooseValidator(wantValidity, haveValidity);
+        // istanbul ignore next - a pain to test
         return validator?.checkParts(parts) ?? succeed(true);
     }
 }

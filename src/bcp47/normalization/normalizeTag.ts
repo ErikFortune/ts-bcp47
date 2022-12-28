@@ -31,11 +31,11 @@ import { TagNormalizer } from './baseNormalizer';
 export class NormalizeTag {
     protected static _normalizers: Record<TagNormalization, TagNormalizer | undefined> | undefined = undefined;
 
-    public static toCanonical(parts: LanguageTagParts) {
+    public static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this.processParts(parts, 'canonical');
     }
 
-    public static toPreferred(parts: LanguageTagParts) {
+    public static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this.processParts(parts, 'preferred');
     }
 
