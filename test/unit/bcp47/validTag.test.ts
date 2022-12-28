@@ -22,12 +22,10 @@
 
 import '@fgv/ts-utils-jest';
 
-import { Bcp, Iana } from '../../../src';
+import { Bcp47 } from '../../../src';
 import { LanguageTagParts } from '../../../src/bcp47';
 
 describe('ValidTag class', () => {
-    const iana = Iana.DefaultRegistries.languageRegistries;
-
     describe('create static method', () => {
         test.each([
             ['valid canonical primary language', 'en', 'en'],
@@ -47,7 +45,7 @@ describe('ValidTag class', () => {
             ['valid i- grandfathered tag', 'i-ami', 'i-ami'],
             ['valid other grandfathered tag', 'en-GB-oed', 'en-GB-oed'],
         ])('succeeds for %p', (_desc, tag, expected) => {
-            expect(Bcp.ValidTag.create(tag, iana)).toSucceedAndSatisfy((valid) => {
+            expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy((valid) => {
                 expect(valid.toString()).toEqual(expected);
             });
         });
@@ -55,7 +53,7 @@ describe('ValidTag class', () => {
         test.each([
             ['invalid primary language', 'ENG', /invalid language/i],
             ['invalid extlang', 'zh-han', /invalid extlang/i],
-            ['multiple extlang', 'zh-cmn-yue', /too many extlang/i],
+            ['multiple extlang', 'zh-cmn-yue', /multiple extlang/i],
             ['invalid script', 'en-Aaaa', /invalid script/i],
             ['invalid region', 'es-AJ', /invalid region/i],
             ['invalid variant', 'en-US-xyzzy', /invalid variant/i],
@@ -63,49 +61,51 @@ describe('ValidTag class', () => {
             ['invalid extension', 'en-US-a-extend', /invalid.*extension/i],
             ['duplicate extension', 'en-US-u-US-u-GB', /duplicate extension/i],
         ])('fails for %p', (_desc, tag, expected) => {
-            expect(Bcp.ValidTag.create(tag, iana)).toFailWith(expected);
+            expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'valid' })).toFailWith(expected);
         });
     });
 
-    describe('validateExtlangPrefix static method', () => {
-        test.each([['valid extlang prefix', { primaryLanguage: 'zh', extlangs: ['cmn'] }]])('succeeds for %p', (_desc, value) => {
+    describe('validateExtlangPrefix method', () => {
+        test.each([
+            ['valid extlang prefix', { primaryLanguage: 'zh', extlangs: ['cmn'] }],
+            ['non-canonical extlang', { primaryLanguage: 'zh', extlangs: ['Yue'] }],
+            ['non-canonical prefix', { primaryLanguage: 'ZH', extlangs: ['yue'] }],
+        ])('succeeds for %p', (_desc, value) => {
             const parts = value as LanguageTagParts;
-            expect(Bcp.ValidTag.validateExtlangPrefix(parts, iana)).toSucceed();
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'strictly-valid' })).toSucceed();
         });
 
         test.each([
             ['missing primary language', { extlangs: ['cmn', 'yue'] }, /missing primary language/i],
             ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['cmn', 'yue'] }, /multiple extlang/i],
-            ['unknown extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang subtag/i],
-            ['non-canonical extlang', { primaryLanguage: 'zh', extlangs: ['Yue'] }, /invalid extlang subtag/i],
-            ['non-canonical prefix', { primaryLanguage: 'ZH', extlangs: ['yue'] }, /invalid prefix/i],
+            ['unknown extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang/i],
             ['invalid prefix', { primaryLanguage: 'en', extlangs: ['cmn'] }, /invalid prefix/i],
         ])('fails for %p', (_desc, value, expected) => {
             const parts = value as LanguageTagParts;
-            expect(Bcp.ValidTag.validateExtlangPrefix(parts, iana)).toFailWith(expected);
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'strictly-valid' })).toFailWith(expected);
         });
     });
 
     describe('validateVariantPrefix static method', () => {
         test.each([
             ['valid variant prefix', { primaryLanguage: 'sl', variants: ['rozaj'] }],
+            ['valid non-canonical variant', { primaryLanguage: 'sl', variants: ['Rozaj'] }],
+            ['valid non-canonical prefix', { primaryLanguage: 'SL', variants: ['rozaj'] }],
             ['valid successive variant prefixes', { primaryLanguage: 'sl', variants: ['rozaj', 'lipaw'] }],
             ['valid variant sequence prefixes', { primaryLanguage: 'sl', variants: ['rozaj', 'biske', '1994'] }],
             ['any prefix for variant with no registered prefix', { primaryLanguage: 'en', variants: ['alalc97'] }],
         ])('succeeds for %p', (_desc, value) => {
             const parts = value as LanguageTagParts;
-            expect(Bcp.ValidTag.validateVariantPrefix(parts, iana)).toSucceed();
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid' })).toSucceed();
         });
 
         test.each([
-            ['unknown variant', { primaryLanguage: 'zh', variants: ['xyzzy'] }, /invalid variant subtag/i],
-            ['non-canonical variant', { primaryLanguage: 'sl', variants: ['Rozaj'] }, /invalid variant subtag/i],
-            ['non-canonical prefix', { primaryLanguage: 'SL', variants: ['rozaj'] }, /invalid prefix/i],
+            ['unknown variant', { primaryLanguage: 'zh', variants: ['xyzzy'] }, /invalid variant/i],
             ['invalid prefix', { primaryLanguage: 'en', variants: ['rozaj'] }, /invalid prefix/i],
             ['invalid prefix sequence', { primaryLanguage: 'sl', variants: ['rozaj', '1996'] }, /invalid prefix/i],
         ])('fails for %p', (_desc, value, expected) => {
             const parts = value as LanguageTagParts;
-            expect(Bcp.ValidTag.validateVariantPrefix(parts, iana)).toFailWith(expected);
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'strictly-valid', normalization: 'canonical' })).toFailWith(expected);
         });
     });
 
@@ -129,22 +129,24 @@ describe('ValidTag class', () => {
             ],
             ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
-            expect(Bcp.ValidTag.create(from as unknown as Bcp.LanguageTagParts, iana)).toSucceedAndSatisfy((valid) => {
-                expect(valid.parts).toEqual(expected);
+            const parts = from as Bcp47.LanguageTagParts;
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical'})).toSucceedAndSatisfy((t) => {
+                expect(t.parts).toEqual(expected);
             });
         });
 
         test.each([
             ['invalid primary language', { primaryLanguage: 'ENG' }, /invalid language/i],
             ['invalid extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang/i],
-            ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['Yue', 'Cmn'] }, /too many extlang/i],
+            ['multiple extlang', { primaryLanguage: 'zh', extlangs: ['Yue', 'Cmn'] }, /multiple extlang/i],
             ['invalid script', { primaryLanguage: 'en', script: 'AAAA' }, /invalid script/i],
             ['invalid region', { primaryLanguage: 'en', region: 'aj' }, /invalid region/i],
             ['invalid variant', { primaryLanguage: 'en', variants: ['xyzzy'] }, /invalid variant/i],
             ['invalid grandfathered tag', { grandfathered: 'i-dothraki' }, /invalid grandfathered/i],
             ['missing primary language', { script: 'Latn' }, /missing primary language/i],
         ])('fails for %p', (_desc, from, expected) => {
-            expect(Bcp.ValidTag.create(from as unknown as Bcp.LanguageTagParts, iana)).toFailWith(expected);
+            const parts = from as Bcp47.LanguageTagParts;
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical'})).toFailWith(expected);
         });
     });
 });

@@ -60,9 +60,7 @@ export class IsWellFormedValidator extends TagValidatorBase {
             return allSucceed(
                 parts.variants.map((v) => this.iana.subtags.variants.verifyIsWellFormed(v)),
                 parts.variants
-            ).onSuccess((v) => {
-                return this._verifyUnique('variant subtag', v, (v) => v);
-            });
+            );
         }
         return succeed(undefined);
     }

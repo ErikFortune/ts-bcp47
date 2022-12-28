@@ -20,9 +20,7 @@
  * SOFTWARE.
  */
 export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
-export * as Transforms from './transforms';
 
-export { CanonicalTag } from './canonicalTag';
 export { LanguageTag } from './languageTag';
-export { ValidTag } from './validTag';
-export { WellFormedTag } from './wellFormedTag';
+export { NormalizeTag, TagNormalization } from './normalization';
+export { TagValidity, ValidateTag } from './validation';

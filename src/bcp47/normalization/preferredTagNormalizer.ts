@@ -159,7 +159,7 @@ export class PreferredNormalizer extends TagNormalizerBase {
     protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
         return super._postValidate(parts).onSuccess((parts) => {
             if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs.join('-')}: too many extlangs`);
+                return fail(`${parts.extlangs.join('-')}: multiple extlang subtags is invalid`);
             }
             return this._postValidateGrandfatheredTag(parts).onSuccess((parts) => {
                 return this._postValidateRedundantTag(parts);

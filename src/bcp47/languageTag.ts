@@ -22,11 +22,14 @@
 
 import * as Iana from '../iana';
 
-import { LanguageTagParser, applyTransforms, chooseTransforms } from './transforms';
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, succeed } from '@fgv/ts-utils';
 import { TagNormalization, compareNormalization } from './normalization/common';
 import { TagValidity, compareValidity } from './validation/common';
+
+import { LanguageTagParser } from './languageTagParser';
+import { NormalizeTag } from './normalization';
+import { ValidateTag } from './validation';
 
 /**
  * @public
@@ -90,17 +93,18 @@ export class LanguageTag {
 
     protected static _createTransformed(
         parts: LanguageTagParts,
-        validity: TagValidity,
-        normalization: TagNormalization,
+        fromValidity: TagValidity,
+        fromNormalization: TagNormalization,
         partialOptions?: LanguageTagInitOptions
     ): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
-        const transforms = chooseTransforms(options.validity, options.normalization);
-        return applyTransforms(parts, validity, normalization, transforms).onSuccess((transformed) => {
-            return captureResult(
-                () => new LanguageTag(transformed.parts, transformed.status.validity, transformed.status.normalization, options.iana)
-            );
-        });
+        return ValidateTag.checkParts(parts, options.validity, fromValidity)
+            .onSuccess(() => {
+                return NormalizeTag.processParts(parts, options.normalization, fromNormalization);
+            })
+            .onSuccess((normalized) => {
+                return captureResult(() => new LanguageTag(normalized, fromValidity, fromNormalization, options.iana));
+            });
     }
 
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions> {
@@ -157,5 +161,9 @@ export class LanguageTag {
             normalization: 'preferred',
         };
         return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);
+    }
+
+    public toString(): string {
+        return this.tag;
     }
 }

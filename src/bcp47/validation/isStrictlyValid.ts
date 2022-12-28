@@ -48,7 +48,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
                 parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
                 parts.variants
             ).onSuccess((v) => {
-                return this._verifyUnique('variant subtag', v, (v) => v);
+                return this._verifyUnique('variant subtags', v, (v) => v).onSuccess((v) => this._validateVariantPrefix(parts, v!));
             });
         }
         return succeed(undefined);

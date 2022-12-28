@@ -97,7 +97,7 @@ export class IsValidValidator extends TagValidatorBase {
     protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this._basicPostValidation(parts).onSuccess((parts) => {
             if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs.join('-')}: too many extlangs`);
+                return fail(`${parts.extlangs.join('-')}: multiple extlang subtags is invalid`);
             }
             return succeed(parts);
         });

@@ -109,7 +109,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         from: 'zh-cmn-yue',
         expected: [
             ['zh-cmn-yue', ['default', 'wellFormed', 'wellFormedCanonical']],
-            [/too many extlang/i, allValidatingKeys],
+            [/multiple extlang/i, allValidatingKeys],
         ],
     },
     {
