@@ -20,9 +20,15 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
-export * as LanguageTagExtensions from './language-tag-extensions';
-export * from './languageRegistries';
-export { DefaultRegistries } from './defaultRegistries';
+import { LanguageRegistries } from './languageRegistries';
+
+export class DefaultRegistries {
+    protected static _languageRegistries?: LanguageRegistries = undefined;
+
+    public static get languageRegistries(): LanguageRegistries {
+        if (!this._languageRegistries) {
+            this._languageRegistries = LanguageRegistries.load('data/iana').getValueOrThrow();
+        }
+        return this._languageRegistries;
+    }
+}

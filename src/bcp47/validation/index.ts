@@ -19,27 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 
-import { Result, captureResult } from '@fgv/ts-utils';
-
-import { LanguageSubtagRegistry } from './language-subtags';
-import { LanguageTagExtensionRegistry } from './language-tag-extensions';
-import path from 'path';
-
-export class IanaRegistries {
-    public readonly subtags: LanguageSubtagRegistry;
-    public readonly extensions: LanguageTagExtensionRegistry;
-
-    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
-        this.subtags = subtags;
-        this.extensions = extensions;
-    }
-
-    public static load(root: string): Result<IanaRegistries> {
-        return captureResult(() => {
-            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).getValueOrThrow();
-            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).getValueOrThrow();
-            return new IanaRegistries(subtags, extensions);
-        });
-    }
-}
+export * from './common';
+export { IsStrictlyValidValidator } from './isStrictlyValid';
+export { IsValidValidator } from './isValid';
+export { IsWellFormedValidator } from './isWellFormed';
+export { ValidateTag } from './validateTag';

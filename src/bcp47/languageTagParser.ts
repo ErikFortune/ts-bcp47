@@ -29,7 +29,7 @@ import { LanguageTagParts } from './common';
 import { Validate } from './subtags';
 
 interface ParserStatus {
-    readonly iana: Iana.IanaRegistries;
+    readonly iana: Iana.LanguageRegistries;
     readonly tag: string;
     readonly subtags: string[];
     readonly parts: LanguageTagParts;
@@ -41,7 +41,7 @@ export class LanguageTagParser {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
 
-    public static parse(tag: string, iana: Iana.IanaRegistries): Result<LanguageTagParts> {
+    public static parse(tag: string, iana: Iana.LanguageRegistries): Result<LanguageTagParts> {
         const status: ParserStatus = {
             tag,
             iana,
@@ -69,16 +69,12 @@ export class LanguageTagParser {
     }
 
     protected static _parseGrandfatheredTag(status: ParserStatus): Result<LanguageTagParts> {
-        if (status.next === 'i' || status.next === 'I') {
-            const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
-            if (grandfathered) {
-                status.parts.grandfathered = grandfathered.tag;
-                // we consumed the whole thing
-                status.subtags.splice(0, status.subtags.length);
-                status.next = undefined;
-            } else {
-                return fail(`${status.tag}: unrecognized grandfathered tag`);
-            }
+        const grandfathered = status.iana.subtags.grandfathered.tryGet(status.tag);
+        if (grandfathered) {
+            status.parts.grandfathered = status.tag as Iana.LanguageSubtags.GrandfatheredTag;
+            // we consumed the whole thing
+            status.subtags.splice(0, status.subtags.length);
+            status.next = undefined;
         }
         return succeed(status.parts);
     }
@@ -199,10 +195,10 @@ export class LanguageTagParser {
             }
 
             const value = values.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange;
-            if (status.parts.private === undefined) {
-                status.parts.private = [value];
+            if (status.parts.privateUse === undefined) {
+                status.parts.privateUse = [value];
             } else {
-                status.parts.private.push(value);
+                status.parts.privateUse.push(value);
             }
         }
         return succeed(status.parts);

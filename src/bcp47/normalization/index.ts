@@ -19,23 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 
-import * as Iana from '../iana';
-import * as Parser from './languageTagParser';
-
-import { Result, succeed } from '@fgv/ts-utils';
-import { LanguageTagParts } from './common';
-
-export class WellFormedTag {
-    public readonly parts: Readonly<LanguageTagParts>;
-
-    protected constructor(init: Readonly<LanguageTagParts>) {
-        this.parts = Object.freeze({ ...init });
-    }
-
-    public static create(tag: string, registry: Iana.IanaRegistries): Result<WellFormedTag> {
-        return Parser.LanguageTagParser.parse(tag, registry).onSuccess((parts) => {
-            return succeed(new WellFormedTag(parts));
-        });
-    }
-}
+export * from './common';
+export { NormalizeTag } from './normalizeTag';
+export { CanonicalNormalizer } from './canonicalNormalizer';
+export { PreferredNormalizer } from './preferredTagNormalizer';

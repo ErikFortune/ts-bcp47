@@ -20,9 +20,26 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
-export * as LanguageTagExtensions from './language-tag-extensions';
-export * from './languageRegistries';
-export { DefaultRegistries } from './defaultRegistries';
+export type TagValidity = 'unknown' | 'well-formed' | 'valid' | 'strictly-valid';
+
+const validityRank: Record<TagValidity, number> = {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    unknown: 0,
+    'well-formed': 500,
+    valid: 900,
+    'strictly-valid': 1000,
+    /* eslint-enable @typescript-eslint/naming-convention */
+};
+
+export function compareValidity(v1: TagValidity, v2: TagValidity): -1 | 0 | 1 {
+    if (validityRank[v1] > validityRank[v2]) {
+        return 1;
+    } else if (validityRank[v1] < validityRank[v2]) {
+        return -1;
+    }
+    return 0;
+}
+
+export function mostValid(v1: TagValidity, v2: TagValidity): TagValidity {
+    return validityRank[v1] >= validityRank[v2] ? v1 : v2;
+}

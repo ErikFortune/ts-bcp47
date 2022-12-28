@@ -70,6 +70,13 @@ export class ValidationHelpers<T extends string, TC = unknown> {
         }
         return fail(`invalid ${this.description} ("${JSON.stringify(from)}")`);
     }
+
+    public verifyIsWellFormed(from: unknown, context?: TC): Result<T> {
+        if (this.isWellFormed(from, context)) {
+            return succeed(from);
+        }
+        return fail(`malformed ${this.description}`);
+    }
 }
 
 /**

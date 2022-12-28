@@ -51,6 +51,10 @@ describe('IANA tag registry scope', () => {
                 expect(languages.tryGet(tag.toUpperCase())).toBeDefined();
             }
         });
+
+        test('returns undefined for undefined', () => {
+            expect(languages.tryGet(undefined)).toBe(undefined);
+        });
     });
 
     describe('tryGetCanonical', () => {
@@ -58,6 +62,32 @@ describe('IANA tag registry scope', () => {
             for (const tag of languages.getAllKeys()) {
                 expect(languages.tryGetCanonical(tag)).toBeDefined();
                 expect(languages.tryGetCanonical(tag.toUpperCase())).not.toBeDefined();
+            }
+        });
+
+        test('returns undefined for undefined', () => {
+            expect(languages.tryGetCanonical(undefined)).toBe(undefined);
+        });
+    });
+
+    describe('get', () => {
+        test('retrieves valid values in canonical or non-canonical form', () => {
+            for (const tag of languages.getAllKeys()) {
+                expect(languages.get(tag)).toSucceed();
+                expect(languages.get(tag.toUpperCase())).toSucceed();
+            }
+        });
+
+        test('returns an error for an unknown value', () => {
+            expect(languages.get('xyzzy')).toFailWith(/invalid language/i);
+        });
+    });
+
+    describe('getCanonical', () => {
+        test('retrieves valid values only in canonical form', () => {
+            for (const tag of languages.getAllKeys()) {
+                expect(languages.getCanonical(tag)).toSucceed();
+                expect(languages.getCanonical(tag.toUpperCase())).toFail();
             }
         });
     });
