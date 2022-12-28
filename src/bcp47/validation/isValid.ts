@@ -25,7 +25,7 @@ import * as Subtags from '../subtags';
 
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
-import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
 
@@ -60,7 +60,9 @@ export class IsValidValidator extends TagValidatorBase {
                 parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
                 parts.variants
             ).onSuccess((v) => {
-                return this._verifyUnique('variant subtag', v, (v) => v);
+                return mapResults(v.map((vc) => this.iana.subtags.variants.toCanonical(vc))).onSuccess((canonical) => {
+                    return this._verifyUnique('variant subtag', canonical, (v) => v);
+                });
             });
         }
         return succeed(undefined);
@@ -76,7 +78,7 @@ export class IsValidValidator extends TagValidatorBase {
 
     protected _checkExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
         return super._checkExtensions(parts).onSuccess((extensions) => {
-            return this._verifyUnique('extensions', extensions, (e) => e.singleton);
+            return this._verifyUnique('extensions', extensions, (e) => e.singleton.toLowerCase());
         });
     }
 

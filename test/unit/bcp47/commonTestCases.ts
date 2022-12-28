@@ -20,7 +20,14 @@
  * SOFTWARE.
  */
 
-import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../../src/iana/language-subtags';
+import {
+    ExtLangSubtag,
+    GrandfatheredTag,
+    LanguageSubtag,
+    RegionSubtag,
+    ScriptSubtag,
+    VariantSubtag,
+} from '../../../src/iana/language-subtags';
 import {
     GenericLanguageTagTest,
     GenericLanguageTagTestInit,
@@ -306,6 +313,8 @@ const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
         expected: [[/missing primary language/i, allTestKeys]],
     },
     {
+        // the grammar allows for up to three extlang tags but the specification reserves
+        // and forbids them, so two tags only fails for validating forms.
         description: 'multiple extlang tags',
         from: { primaryLanguage: 'zh' as LanguageSubtag, extlangs: ['cmn', 'yue'] as ExtLangSubtag[] },
         expected: [
@@ -314,11 +323,26 @@ const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
         ],
     },
     {
+        // the grammar forbids > 3 extlang tags so this fails for all forms
+        description: 'too many extlang tags',
+        from: { primaryLanguage: 'zh' as LanguageSubtag, extlangs: ['cmn', 'yue', 'cdo', 'cjy'] as ExtLangSubtag[] },
+        expected: [[/too many extlang/, allTestKeys]],
+    },
+    {
         description: 'invalid script tag',
         from: { primaryLanguage: 'en' as LanguageSubtag, script: 'Xyzy' as ScriptSubtag },
         expected: [
             ['en-Xyzy', ['default', 'preferred', 'wellFormed', 'wellFormedCanonical']],
             [/invalid script/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'duplicate variant tags',
+        from: { primaryLanguage: 'ca' as LanguageSubtag, variants: ['valencia', 'Valencia'] as VariantSubtag[] },
+        expected: [
+            ['ca-valencia-Valencia', ['default', 'wellFormed']],
+            ['ca-valencia-valencia', ['wellFormedCanonical']],
+            [/duplicate variant/, allValidatingKeys],
         ],
     },
     {

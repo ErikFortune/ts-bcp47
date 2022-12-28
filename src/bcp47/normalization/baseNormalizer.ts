@@ -48,6 +48,7 @@ export abstract class TagNormalizerBase {
     public abstract readonly normalization: TagNormalization;
 
     public constructor(iana?: Iana.LanguageRegistries) {
+        // istanbul ignore next - dependency injection primarily for test
         this._iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
@@ -70,9 +71,12 @@ export abstract class TagNormalizerBase {
     }
 
     protected _basicPostValidation(parts: LanguageTagParts): Result<LanguageTagParts> {
+        // istanbul ignore next - any validation whatsoever catches these so should never happen in practice
         if (parts.primaryLanguage === undefined && parts.grandfathered === undefined && parts.privateUse === undefined) {
             return fail(`${languageTagPartsToString(parts)}: missing primary language subtag.`);
         }
+
+        // istanbul ignore next - any validation whatsoever catches these so should never happen in practice
         if (parts.extlangs && parts.extlangs.length > 3) {
             return fail(`${languageTagPartsToString(parts)}: too many extlang subtags`);
         }

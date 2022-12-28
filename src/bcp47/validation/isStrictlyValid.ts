@@ -24,7 +24,7 @@ import * as Iana from '../../iana';
 
 import { LanguageTagParts, languageTagPartsToString } from '../common';
 import { NormalizeTag, TagNormalization } from '../normalization';
-import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
+import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
 import { IsValidValidator } from './isValid';
 import { TagValidity } from './common';
@@ -35,21 +35,14 @@ export class IsStrictlyValidValidator extends IsValidValidator {
 
     protected _checkExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
-            return super._checkExtlangs(parts).onSuccess(() => {
-                return this._validateExtlangPrefix(parts);
-            });
+            return super._checkExtlangs(parts).onSuccess(() => this._validateExtlangPrefix(parts));
         }
         return succeed(undefined);
     }
 
     protected _checkVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         if (parts.variants) {
-            return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
-                parts.variants
-            ).onSuccess((v) => {
-                return this._verifyUnique('variant subtags', v, (v) => v).onSuccess((v) => this._validateVariantPrefix(parts, v!));
-            });
+            return super._checkVariants(parts).onSuccess((v) => this._validateVariantPrefix(parts, v!));
         }
         return succeed(undefined);
     }
