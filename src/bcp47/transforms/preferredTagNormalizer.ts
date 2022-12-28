@@ -66,7 +66,7 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
     protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
         if (parts.region) {
             return this.iana.subtags.regions.get(parts.region).onSuccess((region) => {
-                return succeed(region?.preferredValue ?? region?.subtag);
+                return succeed(region.preferredValue ?? region.subtag);
             });
         }
         return succeed(undefined);
@@ -78,6 +78,7 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
                 if (grandfathered.preferredValue) {
                     return LanguageTagParser.parse(grandfathered.preferredValue, this.iana)
                         .onSuccess((gfParts) => {
+                            // istanbul ignore next - would require a registry error too hard to test
                             if (gfParts.grandfathered !== undefined) {
                                 return fail<LanguageTagParts>(
                                     `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
@@ -85,11 +86,15 @@ export class PreferredTagNormalizer extends ValidCanonicalNormalizer {
                             }
                             return this.processParts(gfParts);
                         })
-                        .onFailure((message) => {
-                            return fail(
-                                `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
-                            );
-                        });
+                        .onFailure(
+                            // istanbul ignore next - would require a registry error too hard to test
+                            (message) => {
+                                // istanbul ignore next - would require a registry error too hard to test
+                                return fail(
+                                    `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
+                                );
+                            }
+                        );
                 }
                 return succeed(parts);
             });

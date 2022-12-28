@@ -35,7 +35,6 @@ import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 import { TagNormalization, TagValidity } from '../status';
-import { LanguageTagParser } from './languageTagParser';
 
 export abstract class TagTransform {
     public readonly iana: Iana.LanguageRegistries;

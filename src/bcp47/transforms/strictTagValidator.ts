@@ -40,7 +40,7 @@ export class StrictTagValidator extends TagValidator {
     protected _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined> {
         if (parts.variants) {
             return super._processVariants(parts).onSuccess((variants) => {
-                return this._validateVariantPrefix(parts, variants);
+                return this._validateVariantPrefix(parts, variants!);
             });
         }
         return succeed(undefined);
@@ -59,6 +59,7 @@ export class StrictTagValidator extends TagValidator {
             return mapResults(
                 extlangs.map((extlang) => {
                     const def = this.iana.subtags.extlangs.tryGet(extlang);
+                    // istanbul ignore next - should never happen due to guards earlier in conversion
                     if (!def) {
                         return fail(`invalid extlang subtag "${extlang}" (not registered).`);
                     }
@@ -72,36 +73,32 @@ export class StrictTagValidator extends TagValidator {
         return succeed(undefined);
     }
 
-    protected _validateVariantPrefix(
-        parts: Readonly<LanguageTagParts>,
-        variants: VariantSubtag[] | undefined
-    ): Result<VariantSubtag[] | undefined> {
-        if (variants) {
-            const { primaryLanguage, extlangs, script, region } = parts;
-            const nonCanonical = { primaryLanguage, extlangs, script, region };
-            const canonical = new CanonicalNormalizer(this.iana).processParts(nonCanonical);
-            if (canonical.isFailure()) {
-                return fail(`failed to normalize variant prefix: ${canonical.message}`);
-            }
-            let prefix = languageTagPartsToString(canonical.value);
-
-            return mapResults(
-                variants.map((variant) => {
-                    const def = this.iana.subtags.variants.tryGet(variant);
-                    if (!def) {
-                        return fail(`invalid variant subtag "${variant}" (not registered).`);
-                    }
-
-                    // only fail if registration specifies prefixes but none are present
-                    if (def.prefix?.includes(prefix as ExtendedLanguageRange) === false) {
-                        return fail(`invalid prefix "${prefix}" for variant subtag ${variant} (expected "(${def.prefix.join(', ')})").`);
-                    }
-                    const canonicalVariant = this.iana.subtags.variants.toCanonical(variant).getValueOrDefault();
-                    prefix = `${prefix}-${canonicalVariant}`;
-                    return succeed(variant);
-                })
-            );
+    protected _validateVariantPrefix(parts: Readonly<LanguageTagParts>, variants: VariantSubtag[]): Result<VariantSubtag[] | undefined> {
+        const { primaryLanguage, extlangs, script, region } = parts;
+        const nonCanonical = { primaryLanguage, extlangs, script, region };
+        const canonical = new CanonicalNormalizer(this.iana).processParts(nonCanonical);
+        // istanbul ignore next - should be caught in the first pass
+        if (canonical.isFailure()) {
+            return fail(`failed to normalize variant prefix: ${canonical.message}`);
         }
-        return succeed(undefined);
+        let prefix = languageTagPartsToString(canonical.value);
+
+        return mapResults(
+            variants.map((variant) => {
+                const def = this.iana.subtags.variants.tryGet(variant);
+                // istanbul ignore next - should be caught in the first pass
+                if (!def) {
+                    return fail(`invalid variant subtag "${variant}" (not registered).`);
+                }
+
+                // only fail if registration specifies prefixes but none are present
+                if (def.prefix?.includes(prefix as ExtendedLanguageRange) === false) {
+                    return fail(`invalid prefix "${prefix}" for variant subtag ${variant} (expected "(${def.prefix.join(', ')})").`);
+                }
+                const canonicalVariant = this.iana.subtags.variants.toCanonical(variant).getValueOrDefault();
+                prefix = `${prefix}-${canonicalVariant}`;
+                return succeed(variant);
+            })
+        );
     }
 }

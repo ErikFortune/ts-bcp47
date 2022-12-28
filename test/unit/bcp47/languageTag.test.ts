@@ -53,6 +53,14 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         ],
     },
     {
+        description: 'valid but deprecated primary language',
+        from: 'in',
+        expected: [
+            ['in', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['id', allPreferredKeys],
+        ],
+    },
+    {
         description: 'invalid primary language',
         from: 'ENG',
         expected: [
@@ -85,6 +93,15 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['zh-Han', ['default', 'wellFormed']],
             ['zh-han', ['wellFormedCanonical']],
             [/invalid extlang/i, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'valid extlang with invalid prefix',
+        from: 'en-cmn-us',
+        expected: [
+            ['en-cmn-us', ['default', 'wellFormed', 'valid']],
+            ['en-cmn-US', ['wellFormedCanonical', 'validCanonical', 'preferred']],
+            [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
         ],
     },
     {
@@ -157,6 +174,14 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['fr-Valencia', ['default', 'wellFormed', 'valid']],
             ['fr-valencia', ['wellFormedCanonical', 'validCanonical', 'preferred']],
             [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
+        ],
+    },
+    {
+        description: 'valid but deprecated region',
+        from: 'en-BU',
+        expected: [
+            ['en-BU', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['en-MM', allPreferredKeys],
         ],
     },
     {
