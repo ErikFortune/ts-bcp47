@@ -23,7 +23,7 @@
 import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
-import { LanguageTag, LanguageTagParts } from '../../../src/bcp47';
+import { LanguageTag, LanguageTagParts, TagValidity } from '../../../src/bcp47';
 import { partsTestCases, tagTestCases } from './commonTestCases';
 
 describe('LanguageTag class', () => {
@@ -70,6 +70,13 @@ describe('LanguageTag class', () => {
                     });
                 } else if (this.expected instanceof RegExp) {
                     expect(LanguageTag.createFromParts(this.from, this.options)).toFailWith(this.expected);
+
+                    // special-case extra test for error handling in the interior of the preferred normalizer,
+                    // which is otherwise guarded by a preceding call to validate
+                    if (this.options?.normalization === 'preferred') {
+                        const options = { ...this.options, validity: 'well-formed' as TagValidity };
+                        expect(LanguageTag.createFromParts(this.from, options)).toFailWith(this.expected);
+                    }
                 }
             }
         }

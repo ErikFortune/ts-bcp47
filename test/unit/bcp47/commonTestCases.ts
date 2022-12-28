@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { ExtLangSubtag, GrandfatheredTag } from '../../../src/iana/language-subtags';
+import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RegionSubtag, ScriptSubtag } from '../../../src/iana/language-subtags';
 import {
     GenericLanguageTagTest,
     GenericLanguageTagTestInit,
@@ -288,9 +288,38 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
 
 const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
     {
+        description: 'valid non-canonical tag with suppressed script',
+        from: {
+            primaryLanguage: 'en' as LanguageSubtag,
+            script: 'latn' as ScriptSubtag,
+            region: 'us' as RegionSubtag,
+        },
+        expected: [
+            ['en-latn-us', ['default', 'wellFormed', 'valid', 'strictlyValid']],
+            ['en-Latn-US', ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical']],
+            ['en-US', ['preferred', 'strictlyValidPreferred']],
+        ],
+    },
+    {
         description: 'missing primary language',
         from: { extlangs: ['cmn' as ExtLangSubtag, 'yue' as ExtLangSubtag] },
         expected: [[/missing primary language/i, allTestKeys]],
+    },
+    {
+        description: 'multiple extlang tags',
+        from: { primaryLanguage: 'zh' as LanguageSubtag, extlangs: ['cmn', 'yue'] as ExtLangSubtag[] },
+        expected: [
+            ['zh-cmn-yue', ['default', 'wellFormed', 'wellFormedCanonical']],
+            [/multiple extlang/, allValidatingKeys],
+        ],
+    },
+    {
+        description: 'invalid script tag',
+        from: { primaryLanguage: 'en' as LanguageSubtag, script: 'Xyzy' as ScriptSubtag },
+        expected: [
+            ['en-Xyzy', ['default', 'preferred', 'wellFormed', 'wellFormedCanonical']],
+            [/invalid script/i, allValidatingKeys],
+        ],
     },
     {
         description: 'invalid grandfathered tag',
