@@ -105,7 +105,9 @@ describe('ValidTag class', () => {
             ['invalid prefix sequence', { primaryLanguage: 'sl', variants: ['rozaj', '1996'] }, /invalid prefix/i],
         ])('fails for %p', (_desc, value, expected) => {
             const parts = value as LanguageTagParts;
-            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'strictly-valid', normalization: 'canonical' })).toFailWith(expected);
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'strictly-valid', normalization: 'canonical' })).toFailWith(
+                expected
+            );
         });
     });
 
@@ -130,7 +132,7 @@ describe('ValidTag class', () => {
             ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
             const parts = from as Bcp47.LanguageTagParts;
-            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical'})).toSucceedAndSatisfy((t) => {
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy((t) => {
                 expect(t.parts).toEqual(expected);
             });
         });
@@ -146,7 +148,7 @@ describe('ValidTag class', () => {
             ['missing primary language', { script: 'Latn' }, /missing primary language/i],
         ])('fails for %p', (_desc, from, expected) => {
             const parts = from as Bcp47.LanguageTagParts;
-            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical'})).toFailWith(expected);
+            expect(Bcp47.LanguageTag.createFromParts(parts, { validity: 'valid', normalization: 'canonical' })).toFailWith(expected);
         });
     });
 });
