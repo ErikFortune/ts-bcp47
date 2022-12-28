@@ -70,6 +70,19 @@ describe('IANA tag registry scope', () => {
         });
     });
 
+    describe('get', () => {
+        test('retrieves valid values in canonical or non-canonical form', () => {
+            for (const tag of languages.getAllKeys()) {
+                expect(languages.get(tag)).toSucceed();
+                expect(languages.get(tag.toUpperCase())).toSucceed();
+            }
+        });
+
+        test('returns an error for an unknown value', () => {
+            expect(languages.get('xyzzy')).toFailWith(/invalid language/i);
+        });
+    });
+
     describe('getCanonical', () => {
         test('retrieves valid values only in canonical form', () => {
             for (const tag of languages.getAllKeys()) {
