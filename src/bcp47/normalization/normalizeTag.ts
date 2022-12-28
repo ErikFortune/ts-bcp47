@@ -40,7 +40,7 @@ export class NormalizeTag {
     }
 
     public static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined {
-        if (haveNormalization && compareNormalization(haveNormalization, wantNormalization) > 0) {
+        if (haveNormalization && compareNormalization(haveNormalization, wantNormalization) >= 0) {
             return undefined;
         }
 

@@ -24,8 +24,8 @@ import * as Iana from '../iana';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, succeed } from '@fgv/ts-utils';
-import { TagNormalization, compareNormalization } from './normalization/common';
-import { TagValidity, compareValidity } from './validation/common';
+import { TagNormalization, compareNormalization, mostNormalized } from './normalization/common';
+import { TagValidity, compareValidity, mostValid } from './validation/common';
 
 import { LanguageTagParser } from './languageTagParser';
 import { NormalizeTag } from './normalization';
@@ -103,7 +103,9 @@ export class LanguageTag {
                 return NormalizeTag.processParts(parts, options.normalization, fromNormalization);
             })
             .onSuccess((normalized) => {
-                return captureResult(() => new LanguageTag(normalized, fromValidity, fromNormalization, options.iana));
+                const validity = mostValid(fromValidity, options.validity);
+                const normalization = mostNormalized(fromNormalization, options.normalization);
+                return captureResult(() => new LanguageTag(normalized, validity, normalization, options.iana));
             });
     }
 
@@ -157,7 +159,7 @@ export class LanguageTag {
         }
         const options: LanguageTagInitOptions = {
             iana: this._iana,
-            validity: this.validity,
+            validity: 'valid', // preferred requires validity
             normalization: 'preferred',
         };
         return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);

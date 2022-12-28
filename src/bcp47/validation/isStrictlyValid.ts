@@ -75,6 +75,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
                 })
             );
         }
+        // istanbul ignore next - should be caught in the caller
         return succeed(undefined);
     }
 
