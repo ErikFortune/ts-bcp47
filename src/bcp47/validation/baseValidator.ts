@@ -31,7 +31,7 @@ export interface TagValidator {
     readonly validity: TagValidity;
     readonly normalization: TagNormalization;
 
-    check(parts: LanguageTagParts): Result<true>;
+    checkParts(parts: LanguageTagParts): Result<true>;
 }
 
 export abstract class TagValidatorBase implements TagValidator {
@@ -43,7 +43,7 @@ export abstract class TagValidatorBase implements TagValidator {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public check(parts: LanguageTagParts): Result<true> {
+    public checkParts(parts: LanguageTagParts): Result<true> {
         return allSucceed(
             [
                 this._checkLanguage(parts),

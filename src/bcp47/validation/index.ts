@@ -20,24 +20,8 @@
  * SOFTWARE.
  */
 
-import { IsStrictlyValidValidator } from './isStrictlyValid';
-import { IsValidValidator } from './isValid';
-import { IsWellFormedValidator } from './isWellFormed';
-import { TagValidator } from './baseValidator';
-import { TagValidity } from '../status';
-
-let validators: Record<TagValidity, TagValidator> | undefined = undefined;
-
-export function chooseValidation(validity: TagValidity): TagValidator {
-    if (!validators) {
-        validators = {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            unknown: new IsWellFormedValidator(),
-            'well-formed': new IsWellFormedValidator(),
-            valid: new IsValidValidator(),
-            'strictly-valid': new IsStrictlyValidValidator(),
-            /* eslint-enable @typescript-eslint/naming-convention */
-        };
-    }
-    return validators![validity];
-}
+export * from './common';
+export { IsStrictlyValidValidator } from './isStrictlyValid';
+export { IsValidValidator } from './isValid';
+export { IsWellFormedValidator } from './isWellFormed';
+export { ValidateTag as TagValidation } from './validateTag';

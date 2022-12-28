@@ -22,22 +22,20 @@
 
 import * as Iana from '../../iana';
 
-import {
-    ExtLangSubtag,
-    ExtendedLanguageRange,
-    GrandfatheredTag,
-    LanguageSubtag,
-    RegionSubtag,
-    ScriptSubtag,
-    VariantSubtag,
-} from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
-import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 import { TagNormalization } from '../normalization/common';
 import { TagValidity } from '../validation/common';
 
-export abstract class TagTransform {
+export interface TagValidator {
+    readonly validity: TagValidity;
+    readonly normalization: TagNormalization;
+
+    checkParts(parts: LanguageTagParts): Result<true>;
+}
+
+export abstract class TagValidatorBase implements TagValidator {
     public readonly iana: Iana.LanguageRegistries;
     public abstract readonly validity: TagValidity;
     public abstract readonly normalization: TagNormalization;
@@ -46,21 +44,21 @@ export abstract class TagTransform {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public processParts(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return populateObject<LanguageTagParts>(
-            {
-                primaryLanguage: () => this._processLanguage(parts),
-                extlangs: () => this._processExtlangs(parts),
-                script: () => this._processScript(parts),
-                region: () => this._processRegion(parts),
-                variants: () => this._processVariants(parts),
-                extensions: () => this._processExtensions(parts),
-                privateUse: () => this._processPrivateUseTags(parts),
-                grandfathered: () => this._processGrandfatheredTags(parts),
-            },
-            { suppressUndefined: true }
-        ).onSuccess((parts) => {
-            return this._postValidate(parts);
+    public checkParts(parts: LanguageTagParts): Result<true> {
+        return allSucceed(
+            [
+                this._checkLanguage(parts),
+                this._checkExtlangs(parts),
+                this._checkScript(parts),
+                this._checkRegion(parts),
+                this._checkVariants(parts),
+                this._checkExtensions(parts),
+                this._checkPrivateUseTags(parts),
+                this._checkGrandfatheredTags(parts),
+            ],
+            true
+        ).onSuccess(() => {
+            return this._postValidate(parts).onSuccess(() => succeed(true));
         });
     }
 
@@ -78,18 +76,18 @@ export abstract class TagTransform {
         return this._basicPostValidation(parts);
     }
 
-    protected _processExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
+    protected _checkExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
         if (parts.extensions) {
-            return mapResults(
-                parts.extensions.map((ex) => {
-                    return populateObject<ExtensionSubtagValue>({
-                        singleton: () => this._processExtensionSingleton(ex.singleton),
-                        value: () => this._processExtensionSubtagValue(ex.value),
+            return allSucceed(
+                parts.extensions.map((ext) => {
+                    return this._checkExtensionSingleton(ext.singleton).onSuccess(() => {
+                        return this._checkExtensionSubtagValue(ext.value);
                     });
-                })
+                }),
+                parts.extensions
             );
         }
-        return succeed(parts.extensions);
+        return succeed(undefined);
     }
 
     protected _verifyUnique<T, TK extends string>(
@@ -114,13 +112,13 @@ export abstract class TagTransform {
         return succeed(items);
     }
 
-    protected abstract _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined>;
-    protected abstract _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined>;
-    protected abstract _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined>;
-    protected abstract _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined>;
-    protected abstract _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined>;
-    protected abstract _processExtensionSingleton(singleton: ExtensionSingleton): Result<ExtensionSingleton>;
-    protected abstract _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag>;
-    protected abstract _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined>;
-    protected abstract _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined>;
+    protected abstract _checkLanguage(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkExtlangs(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkScript(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkRegion(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkVariants(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkExtensionSingleton(singleton: ExtensionSingleton): Result<unknown>;
+    protected abstract _checkExtensionSubtagValue(value: ExtensionSubtag): Result<unknown>;
+    protected abstract _checkPrivateUseTags(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkGrandfatheredTags(parts: LanguageTagParts): Result<unknown>;
 }

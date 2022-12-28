@@ -34,9 +34,10 @@ import {
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagValidity } from '../status';
 import { LanguageTagParts } from '../common';
+import { TagNormalization } from '../normalization/common';
 import { TagTransform } from './tagTransform';
+import { TagValidity } from '../validation/common';
 
 export class CanonicalNormalizer extends TagTransform {
     public readonly validity: TagValidity = 'well-formed';

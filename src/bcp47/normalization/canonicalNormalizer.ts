@@ -21,7 +21,7 @@
  */
 
 import * as Iana from '../../iana';
-import * as Subtags from './../subtags';
+import * as Subtags from '../subtags';
 
 import {
     ExtLangSubtag,
@@ -33,96 +33,68 @@ import {
     VariantSubtag,
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts } from '../common';
-import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
-import { TagNormalization } from '../normalization/common';
-import { TagTransform } from './tagTransform';
-import { TagValidity } from '../validation/common';
+import { Result, mapResults, succeed } from '@fgv/ts-utils';
+import { LanguageTagParts } from '../common';
+import { TagNormalization } from '../status';
+import { TagNormalizerBase } from './baseNormalizer';
 
-export class TagValidator extends TagTransform {
-    public validity: TagValidity = 'valid';
-    public normalization: TagNormalization = 'unknown';
+export class CanonicalNormalizer extends TagNormalizerBase {
+    public readonly normalization: TagNormalization = 'canonical';
 
     protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
         if (parts.primaryLanguage) {
-            return this.iana.subtags.languages.verifyIsValid(parts.primaryLanguage);
+            return this._iana.subtags.languages.toCanonical(parts.primaryLanguage);
         }
         return succeed(parts.primaryLanguage);
     }
 
     protected _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
-            return allSucceed(
-                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsValid(e)),
-                parts.extlangs
-            );
+            return mapResults(parts.extlangs.map((e) => this._iana.subtags.extlangs.toCanonical(e)));
         }
         return succeed(undefined);
     }
 
     protected _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined> {
         if (parts.script) {
-            return this.iana.subtags.scripts.verifyIsValid(parts.script);
+            return this._iana.subtags.scripts.toCanonical(parts.script);
         }
         return succeed(undefined);
     }
 
     protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
         if (parts.region) {
-            return this.iana.subtags.regions.verifyIsValid(parts.region);
+            return this._iana.subtags.regions.toCanonical(parts.region);
         }
         return succeed(undefined);
     }
 
     protected _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined> {
         if (parts.variants) {
-            return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
-                parts.variants
-            ).onSuccess((v) => {
-                return this._verifyUnique('variant subtag', v, (v) => v);
-            });
+            return mapResults(parts.variants.map((v) => this._iana.subtags.variants.toCanonical(v)));
         }
         return succeed(undefined);
     }
 
     protected _processExtensionSingleton(singleton: ExtensionSingleton): Result<ExtensionSingleton> {
-        return this.iana.extensions.extensions.verifyIsValid(singleton);
+        return this._iana.extensions.extensions.toCanonical(singleton);
     }
 
     protected _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
-    }
-
-    protected _processExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
-        return super._processExtensions(parts).onSuccess((extensions) => {
-            return this._verifyUnique('extensions', extensions, (e) => e.singleton);
-        });
+        return Subtags.Validate.extensionSubtag.toCanonical(value);
     }
 
     protected _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined> {
         if (parts.privateUse) {
-            return allSucceed(
-                parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
-                parts.privateUse
-            );
+            return mapResults(parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
         }
         return succeed(parts.privateUse);
     }
 
     protected _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined> {
         if (parts.grandfathered) {
-            return this.iana.subtags.grandfathered.verifyIsValid(parts.grandfathered);
+            return this._iana.subtags.grandfathered.toCanonical(parts.grandfathered);
         }
         return succeed(undefined);
-    }
-
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this._basicPostValidation(parts).onSuccess((parts) => {
-            if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs.join('-')}: too many extlangs`);
-            }
-            return succeed(parts);
-        });
     }
 }

@@ -35,8 +35,9 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagValidity } from '../status';
+import { TagNormalization } from '../normalization/common';
 import { TagTransform } from './tagTransform';
+import { TagValidity } from '../validation/common';
 
 export class ValidCanonicalNormalizer extends TagTransform {
     public validity: TagValidity = 'valid';

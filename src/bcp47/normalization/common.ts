@@ -19,14 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/* istanbul ignore file */
 
-export * from './helpers';
+export type TagNormalization = 'unknown' | 'none' | 'canonical' | 'preferred';
 
-export { CanonicalNormalizer } from './canonicalNormalizer';
-export { LanguageTagParser } from '../languageTagParser';
-export { PreferredTagNormalizer } from './preferredTagNormalizer';
-export { StrictTagValidator } from './strictTagValidator';
-export { TagValidator } from './tagValidator';
-export { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
-export { WellFormedTagValidator } from './wellFormedValidator';
+const normalizationRank: Record<TagNormalization, number> = {
+    unknown: 0,
+    none: 100,
+    canonical: 900,
+    preferred: 1000,
+};
+
+export function compareNormalization(n1: TagNormalization, n2: TagNormalization): -1 | 0 | 1 {
+    if (normalizationRank[n1] > normalizationRank[n2]) {
+        return 1;
+    } else if (normalizationRank[n1] < normalizationRank[n2]) {
+        return -1;
+    }
+    return 0;
+}
+
+export function mostNormalized(n1: TagNormalization, n2: TagNormalization): TagNormalization {
+    return normalizationRank[n1] >= normalizationRank[n2] ? n1 : n2;
+}

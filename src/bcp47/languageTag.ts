@@ -25,7 +25,8 @@ import * as Iana from '../iana';
 import { LanguageTagParser, applyTransforms, chooseTransforms } from './transforms';
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, captureResult, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagStatus, TagValidity, compareNormalization, compareValidity } from './status';
+import { TagNormalization, compareNormalization } from './normalization/common';
+import { TagValidity, compareValidity } from './validation/common';
 
 /**
  * @public
@@ -42,60 +43,63 @@ export interface LanguageTagInitOptions {
 export class LanguageTag {
     public readonly parts: Readonly<LanguageTagParts>;
     public readonly tag: string;
-    public readonly status: TagStatus;
+    public readonly validity: TagValidity;
+    public readonly normalization: TagNormalization;
 
     protected readonly _iana: Iana.LanguageRegistries;
 
-    protected constructor(parts: LanguageTagParts, status: TagStatus, iana: Iana.LanguageRegistries) {
+    protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
         this.parts = Object.freeze({ ...parts });
-        this.status = Object.freeze({ ...status });
+        this.normalization = normalization;
+        this.validity = validity;
         this.tag = languageTagPartsToString(parts);
         this._iana = iana;
     }
 
     public get isWellFormed(): boolean {
-        return compareValidity(this.status.validity, 'well-formed') >= 0;
+        return compareValidity(this.validity, 'well-formed') >= 0;
     }
 
     public get isValid(): boolean {
-        return compareValidity(this.status.validity, 'valid') >= 0;
+        return compareValidity(this.validity, 'valid') >= 0;
     }
 
     public get isStrictlyValid(): boolean {
-        return compareValidity(this.status.validity, 'strictly-valid') >= 0;
+        return compareValidity(this.validity, 'strictly-valid') >= 0;
     }
 
     public get isCanonical(): boolean {
-        return compareNormalization(this.status.normalization, 'canonical') >= 0;
+        return compareNormalization(this.normalization, 'canonical') >= 0;
     }
 
     public get isPreferred(): boolean {
-        return compareNormalization(this.status.normalization, 'preferred') >= 0;
+        return compareNormalization(this.normalization, 'preferred') >= 0;
     }
 
     public static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
-        const fromStatus: TagStatus = { validity: 'unknown', normalization: 'unknown' };
 
         return LanguageTagParser.parse(tag, options.iana).onSuccess((parts) => {
-            return this._createTransformed(parts, fromStatus, options);
+            return this._createTransformed(parts, 'unknown', 'unknown', options);
         });
     }
 
     public static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
-        const fromStatus: TagStatus = { validity: 'unknown', normalization: 'unknown' };
-        return this._createTransformed(parts, fromStatus, options);
+        return this._createTransformed(parts, 'unknown', 'unknown', options);
     }
 
     protected static _createTransformed(
         parts: LanguageTagParts,
-        fromStatus: TagStatus,
+        validity: TagValidity,
+        normalization: TagNormalization,
         partialOptions?: LanguageTagInitOptions
     ): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
         const transforms = chooseTransforms(options.validity, options.normalization);
-        return applyTransforms(parts, fromStatus, transforms).onSuccess((transformed) => {
-            return captureResult(() => new LanguageTag(transformed.parts, transformed.status, options.iana));
+        return applyTransforms(parts, validity, normalization, transforms).onSuccess((transformed) => {
+            return captureResult(
+                () => new LanguageTag(transformed.parts, transformed.status.validity, transformed.status.normalization, options.iana)
+            );
         });
     }
 
@@ -114,9 +118,9 @@ export class LanguageTag {
         const options: LanguageTagInitOptions = {
             iana: this._iana,
             validity: 'valid',
-            normalization: this.status.normalization,
+            normalization: this.normalization,
         };
-        return LanguageTag._createTransformed(this.parts, this.status, options);
+        return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);
     }
 
     public toStrictlyValid(): Result<LanguageTag> {
@@ -126,9 +130,9 @@ export class LanguageTag {
         const options: LanguageTagInitOptions = {
             iana: this._iana,
             validity: 'strictly-valid',
-            normalization: this.status.normalization,
+            normalization: this.normalization,
         };
-        return LanguageTag._createTransformed(this.parts, this.status, options);
+        return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);
     }
 
     public toCanonical(): Result<LanguageTag> {
@@ -137,10 +141,10 @@ export class LanguageTag {
         }
         const options: LanguageTagInitOptions = {
             iana: this._iana,
-            validity: this.status.validity,
+            validity: this.validity,
             normalization: 'canonical',
         };
-        return LanguageTag._createTransformed(this.parts, this.status, options);
+        return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);
     }
 
     public toPreferred(): Result<LanguageTag> {
@@ -149,9 +153,9 @@ export class LanguageTag {
         }
         const options: LanguageTagInitOptions = {
             iana: this._iana,
-            validity: this.status.validity,
+            validity: this.validity,
             normalization: 'preferred',
         };
-        return LanguageTag._createTransformed(this.parts, this.status, options);
+        return LanguageTag._createTransformed(this.parts, this.validity, this.normalization, options);
     }
 }

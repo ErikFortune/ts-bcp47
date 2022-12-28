@@ -19,14 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/* istanbul ignore file */
 
-export * from './helpers';
-
+export * from './common';
+export { NormalizeTag } from './normalizeTag';
 export { CanonicalNormalizer } from './canonicalNormalizer';
-export { LanguageTagParser } from '../languageTagParser';
-export { PreferredTagNormalizer } from './preferredTagNormalizer';
-export { StrictTagValidator } from './strictTagValidator';
-export { TagValidator } from './tagValidator';
-export { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
-export { WellFormedTagValidator } from './wellFormedValidator';
+export { PreferredNormalizer } from './preferredTagNormalizer';

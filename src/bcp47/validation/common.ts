@@ -19,14 +19,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/* istanbul ignore file */
 
-export * from './helpers';
+export type TagValidity = 'unknown' | 'well-formed' | 'valid' | 'strictly-valid';
 
-export { CanonicalNormalizer } from './canonicalNormalizer';
-export { LanguageTagParser } from '../languageTagParser';
-export { PreferredTagNormalizer } from './preferredTagNormalizer';
-export { StrictTagValidator } from './strictTagValidator';
-export { TagValidator } from './tagValidator';
-export { ValidCanonicalNormalizer } from './validCanonicalNormalizer';
-export { WellFormedTagValidator } from './wellFormedValidator';
+const validityRank: Record<TagValidity, number> = {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    unknown: 0,
+    'well-formed': 500,
+    valid: 900,
+    'strictly-valid': 1000,
+    /* eslint-enable @typescript-eslint/naming-convention */
+};
+
+export function compareValidity(v1: TagValidity, v2: TagValidity): -1 | 0 | 1 {
+    if (validityRank[v1] > validityRank[v2]) {
+        return 1;
+    } else if (validityRank[v1] < validityRank[v2]) {
+        return -1;
+    }
+    return 0;
+}
+
+export function mostValid(v1: TagValidity, v2: TagValidity): TagValidity {
+    return validityRank[v1] >= validityRank[v2] ? v1 : v2;
+}

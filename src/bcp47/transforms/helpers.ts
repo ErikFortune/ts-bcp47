@@ -21,7 +21,8 @@
  */
 
 import { Result, fail, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagStatus, TagValidity, mostNormalized, mostValid } from '../status';
+import { TagNormalization, mostNormalized } from '../normalization/common';
+import { TagValidity, mostValid } from '../validation/common';
 
 import { CanonicalNormalizer } from './canonicalNormalizer';
 import { LanguageTagParts } from '../common';
@@ -74,11 +75,12 @@ export function chooseTransforms(validity: TagValidity, normalization: TagNormal
 
 export function applyTransforms(
     parts: LanguageTagParts,
-    status: TagStatus,
+    validity: TagValidity,
+    normalization: TagNormalization,
     transforms: TagTransform[]
-): Result<{ parts: LanguageTagParts; status: TagStatus }> {
+): Result<{ parts: LanguageTagParts; status: { validity: TagValidity; normalization: TagNormalization } }> {
     let currentParts = parts;
-    let currentStatus = status;
+    let currentStatus = { validity, normalization };
 
     for (const transform of transforms) {
         const result = transform.processParts(currentParts);
@@ -87,8 +89,8 @@ export function applyTransforms(
         }
         currentParts = result.value;
         currentStatus = {
-            validity: mostValid(transform.validity, currentStatus.validity),
-            normalization: mostNormalized(transform.normalization, currentStatus.normalization),
+            validity: mostValid(transform.validity, validity),
+            normalization: mostNormalized(transform.normalization, normalization),
         };
     }
     return succeed({ parts: currentParts, status: currentStatus });
