@@ -23,11 +23,11 @@
 import * as Iana from '../../iana';
 
 import { LanguageTagParts, languageTagPartsToString } from '../common';
+import { NormalizeTag, TagNormalization } from '../normalization';
 import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagValidity } from '../status';
 
-import { CanonicalNormalizer } from '../transforms';
 import { IsValidValidator } from './isValid';
+import { TagValidity } from './common';
 
 export class IsStrictlyValidValidator extends IsValidValidator {
     public validity: TagValidity = 'strictly-valid';
@@ -84,7 +84,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
     ): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         const { primaryLanguage, extlangs, script, region } = parts;
         const nonCanonical = { primaryLanguage, extlangs, script, region };
-        const canonical = new CanonicalNormalizer(this.iana).processParts(nonCanonical);
+        const canonical = NormalizeTag.processParts(nonCanonical, 'canonical');
         // istanbul ignore next - should be caught in the first pass
         if (canonical.isFailure()) {
             return fail(`failed to normalize variant prefix: ${canonical.message}`);

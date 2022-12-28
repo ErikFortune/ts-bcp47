@@ -21,7 +21,7 @@
  */
 
 import { Result, succeed } from '@fgv/ts-utils';
-import { TagValidity, compareValidity } from '../status';
+import { TagValidity, compareValidity } from './common';
 
 import { IsStrictlyValidValidator } from './isStrictlyValid';
 import { IsValidValidator } from './isValid';

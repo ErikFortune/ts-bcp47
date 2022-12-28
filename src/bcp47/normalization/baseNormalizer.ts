@@ -34,7 +34,7 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
-import { TagNormalization } from '../status';
+import { TagNormalization } from './common';
 
 export interface TagNormalizer {
     readonly normalization: TagNormalization;

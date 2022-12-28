@@ -35,7 +35,7 @@ import {
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
 import { LanguageTagParts } from '../common';
-import { TagNormalization } from '../status';
+import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
 
 export class CanonicalNormalizer extends TagNormalizerBase {

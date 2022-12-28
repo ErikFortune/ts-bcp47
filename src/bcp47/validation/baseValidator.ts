@@ -25,11 +25,10 @@ import * as Iana from '../../iana';
 import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
-import { TagNormalization, TagValidity } from '../status';
+import { TagValidity } from './common';
 
 export interface TagValidator {
     readonly validity: TagValidity;
-    readonly normalization: TagNormalization;
 
     checkParts(parts: LanguageTagParts): Result<true>;
 }
@@ -37,7 +36,6 @@ export interface TagValidator {
 export abstract class TagValidatorBase implements TagValidator {
     public readonly iana: Iana.LanguageRegistries;
     public abstract readonly validity: TagValidity;
-    public abstract readonly normalization: TagNormalization;
 
     public constructor(iana?: Iana.LanguageRegistries) {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;

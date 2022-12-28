@@ -21,7 +21,7 @@
  */
 
 import { Result, succeed } from '@fgv/ts-utils';
-import { TagNormalization, compareNormalization } from '../status';
+import { TagNormalization, compareNormalization } from './common';
 
 import { CanonicalNormalizer } from './canonicalNormalizer';
 import { LanguageTagParts } from '../common';

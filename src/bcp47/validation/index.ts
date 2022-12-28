@@ -24,4 +24,4 @@ export * from './common';
 export { IsStrictlyValidValidator } from './isStrictlyValid';
 export { IsValidValidator } from './isValid';
 export { IsWellFormedValidator } from './isWellFormed';
-export { ValidateTag as TagValidation } from './validateTag';
+export { ValidateTag } from './validateTag';

@@ -25,7 +25,7 @@ import * as Parser from './languageTagParser';
 
 import { LanguageTagParts, languageTagPartsToString } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
-import { WellFormedTagValidator } from './transforms/wellFormedValidator';
+import { ValidateTag } from './validation';
 
 export class WellFormedTag {
     public readonly parts: Readonly<LanguageTagParts>;
@@ -50,9 +50,8 @@ export class WellFormedTag {
             parts = parsed.value;
         }
 
-        const validator = new WellFormedTagValidator(iana);
-        return validator.processParts(parts).onSuccess((parts) => {
-            return succeed(new WellFormedTag(parts));
+        return ValidateTag.isWellFormed(parts).onSuccess(() => {
+            return succeed(new WellFormedTag(parts!));
         });
     }
 

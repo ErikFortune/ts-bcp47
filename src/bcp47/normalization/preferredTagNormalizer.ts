@@ -27,7 +27,7 @@ import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
 import { LanguageTagParser } from '../languageTagParser';
-import { TagNormalization } from '../status';
+import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
 
 export class PreferredNormalizer extends TagNormalizerBase {
