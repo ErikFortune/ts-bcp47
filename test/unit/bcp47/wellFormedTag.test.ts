@@ -21,13 +21,10 @@
  */
 
 import '@fgv/ts-utils-jest';
-import * as Bcp from '../../../src/bcp47';
-import * as Iana from '../../../src/iana';
+import { Bcp47 } from '../../../src';
 import { LanguageTagParts } from '../../../src/bcp47';
 
 describe('BCP-47 WellFormedTag class', () => {
-    const iana = Iana.LanguageRegistries.load('data/iana').getValueOrThrow();
-
     describe('create static method', () => {
         describe('with string', () => {
             test.each([
@@ -68,7 +65,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ],
                 ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
             ])('succeeds for %p (%p)', (_desc, tag, expected) => {
-                expect(Bcp.WellFormedTag.create(tag, iana)).toSucceedAndSatisfy((wellFormed) => {
+                expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'well-formed' })).toSucceedAndSatisfy((wellFormed) => {
                     expect(wellFormed.parts).toEqual(expected);
                     expect(wellFormed.toString()).toEqual(tag);
                 });
@@ -87,7 +84,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['empty private use subtag', 'en-US-x-tag--other', /malformed private-use subtag/i],
                 ['extra subtags', 'en-US-US', /unexpected subtag/i],
             ])('fails for %p (%p)', (_desc, tag, expected) => {
-                expect(Bcp.WellFormedTag.create(tag, iana)).toFailWith(expected);
+                expect(Bcp47.LanguageTag.createFromTag(tag)).toFailWith(expected);
             });
         });
 
@@ -100,7 +97,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
                 const parts = from as LanguageTagParts;
-                expect(Bcp.WellFormedTag.create(parts, iana)).toSucceedAndSatisfy((tag) => {
+                expect(Bcp47.LanguageTag.createFromParts(parts)).toSucceedAndSatisfy((tag) => {
                     expect(tag.parts).toEqual(parts);
                 });
             });
@@ -130,7 +127,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ],
             ])('fails for %p', (_desc, from, expected) => {
                 const parts = from as LanguageTagParts;
-                expect(Bcp.WellFormedTag.create(parts, iana)).toFailWith(expected);
+                expect(Bcp47.LanguageTag.createFromParts(parts)).toFailWith(expected);
             });
         });
     });
