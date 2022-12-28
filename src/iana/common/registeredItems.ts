@@ -113,6 +113,12 @@ export abstract class RegisteredItemScope<TTYPE extends string, TKEY extends str
         return this._validate.verifyIsWellFormed(val);
     }
 
+    public verifyIsCanonical(val: unknown): Result<TKEY> {
+        return this._validate.verifyIsWellFormed(val).onSuccess((wf) => {
+            return this._validate.isCanonical(wf) ? succeed(wf) : fail(`${wf}: valid but not canonical ${this._type}`);
+        });
+    }
+
     public verifyIsValid(val: unknown): Result<TKEY> {
         if (this.isValid(val)) {
             return succeed(val);
