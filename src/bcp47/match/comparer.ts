@@ -47,6 +47,7 @@ export class LanguageComparer {
         quality = quality > matchQuality.none ? Math.min(this.compareRegion(t1, t2), quality) : quality;
         quality = quality > matchQuality.none ? Math.min(this.compareVariants(t1, t2), quality) : quality;
         quality = quality > matchQuality.none ? Math.min(this.compareExtensions(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.comparePrivateUseTags(t1, t2), quality) : quality;
 
         return quality;
     }
@@ -148,6 +149,22 @@ export class LanguageComparer {
                     lt1.parts.extensions[i].singleton.toLowerCase() !== lt2.parts.extensions![i].singleton.toLowerCase() ||
                     lt1.parts.extensions[i].value.toLowerCase() !== lt2.parts.extensions![i].value.toLowerCase()
                 ) {
+                    return matchQuality.variant;
+                }
+            }
+        }
+
+        return matchQuality.exact;
+    }
+
+    public comparePrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number {
+        if (lt1.parts.privateUse?.length !== lt2.parts.privateUse?.length) {
+            return matchQuality.variant;
+        }
+
+        if (lt1.parts.privateUse) {
+            for (let i = 0; i < lt1.parts.privateUse.length; i++) {
+                if (lt1.parts.privateUse[i].toLowerCase() !== lt2.parts.privateUse![i].toLowerCase()) {
                     return matchQuality.variant;
                 }
             }
