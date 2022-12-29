@@ -23,6 +23,8 @@
 import { Result, succeed } from '@fgv/ts-utils';
 import { TagValidity, compareValidity } from './common';
 
+import { IsCanonicalValidator } from './isCanonical';
+import { IsInPreferredFromValidator } from './isInPreferredForm';
 import { IsStrictlyValidValidator } from './isStrictlyValid';
 import { IsValidValidator } from './isValid';
 import { IsWellFormedValidator } from './isWellFormed';
@@ -30,7 +32,23 @@ import { LanguageTagParts } from '../common';
 import { TagValidator } from './baseValidator';
 
 export class ValidateTag {
+    protected static _isCanonical?: TagValidator;
+    protected static _isInPreferredForm?: TagValidator;
     protected static _validators: Record<TagValidity, TagValidator> | undefined = undefined;
+
+    public static isCanonical(parts: LanguageTagParts): boolean {
+        if (!this._isCanonical) {
+            this._isCanonical = new IsCanonicalValidator();
+        }
+        return this._isCanonical.checkParts(parts).isSuccess();
+    }
+
+    public static isInPreferredForm(parts: LanguageTagParts): boolean {
+        if (!this._isInPreferredForm) {
+            this._isInPreferredForm = new IsInPreferredFromValidator();
+        }
+        return this._isInPreferredForm.checkParts(parts).isSuccess();
+    }
 
     public static isStrictlyValid(parts: LanguageTagParts): boolean {
         return this.checkParts(parts, 'strictly-valid').isSuccess();

@@ -77,6 +77,16 @@ export class ValidationHelpers<T extends string, TC = unknown> {
         }
         return fail(`malformed ${this.description}`);
     }
+
+    public verifyIsCanonical(from: unknown, context?: TC): Result<T> {
+        if (this.isCanonical(from, context)) {
+            return succeed(from);
+        }
+        if (this.isWellFormed(from, context)) {
+            return fail(`malformed ${this.description}`);
+        }
+        return fail(`non-canonical ${this.description}`);
+    }
 }
 
 /**

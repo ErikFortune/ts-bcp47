@@ -130,6 +130,47 @@ describe('IANA tag registry scope', () => {
         });
     });
 
+    describe('verify methods', () => {
+        test.each([
+            [true, 'feh', 'well-formed, canonical invalid'],
+            [true, 'en', 'well-formed, canonical valid'],
+            [true, 'EN', 'well-formed, non-canonical valid'],
+            [/malformed language/i, '001', 'malformed'],
+        ])('verifyIsWellFormed returns %p for %p (%p)', (expected, tag, _desc) => {
+            if (expected instanceof RegExp) {
+                expect(languages.verifyIsWellFormed(tag)).toFailWith(expected);
+            } else {
+                expect(languages.verifyIsWellFormed(tag)).toSucceedWith(tag as LanguageSubtag);
+            }
+        });
+
+        test.each([
+            [true, 'feh', 'well-formed=, canonical invalid'],
+            [true, 'en', 'well-formed, canonical valid'],
+            [/non-canonical/i, 'EN', 'well-formed, non-canonical valid'],
+            [/malformed/i, '001', 'malformed'],
+        ])('verifyIsCanonical returns %p for %p (%p)', (expected, tag, _desc) => {
+            if (expected instanceof RegExp) {
+                expect(languages.verifyIsCanonical(tag)).toFailWith(expected);
+            } else {
+                expect(languages.verifyIsCanonical(tag)).toSucceedWith(tag as LanguageSubtag);
+            }
+        });
+
+        test.each([
+            [/invalid/i, 'feh', 'well-formed, canonical invalid'],
+            [true, 'en', 'well-formed, canonical valid'],
+            [true, 'EN', 'well-formed, non-canonical valid'],
+            [/malformed/i, '001', 'malformed'],
+        ])('verifyIsValid returns %p for %p (%p)', (expected, tag, _desc) => {
+            if (expected instanceof RegExp) {
+                expect(languages.verifyIsValid(tag)).toFailWith(expected);
+            } else {
+                expect(languages.verifyIsValid(tag)).toSucceedWith(tag as LanguageSubtag);
+            }
+        });
+    });
+
     describe('conversion methods', () => {
         test.each([
             ['en', 'en', 'well-formed, canonical valid'],

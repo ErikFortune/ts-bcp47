@@ -82,7 +82,9 @@ export class LanguageTag {
     public get isValid(): boolean {
         if (this._isValid === undefined) {
             this._isValid = ValidateTag.isValid(this.parts);
-            this._validity = 'valid';
+            if (this._isValid) {
+                this._validity = 'valid';
+            }
         }
         return this._isValid === true;
     }
@@ -90,16 +92,30 @@ export class LanguageTag {
     public get isStrictlyValid(): boolean {
         if (this._isStrictlyValid === undefined) {
             this._isStrictlyValid = ValidateTag.isStrictlyValid(this.parts);
-            this._validity = 'strictly-valid';
+            if (this._isStrictlyValid) {
+                this._validity = 'strictly-valid';
+            }
         }
         return this._isStrictlyValid === true;
     }
 
     public get isCanonical(): boolean {
+        if (this._isCanonical === undefined) {
+            this._isCanonical = ValidateTag.isCanonical(this.parts);
+            if (this._isCanonical) {
+                this._normalization = 'canonical';
+            }
+        }
         return this._isCanonical === true;
     }
 
     public get isPreferred(): boolean {
+        if (this._isPreferred === undefined) {
+            this._isPreferred = ValidateTag.isInPreferredForm(this.parts);
+            if (this._isPreferred) {
+                this._normalization = 'preferred';
+            }
+        }
         return this._isPreferred === true;
     }
 
