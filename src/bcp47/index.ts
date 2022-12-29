@@ -24,3 +24,5 @@ export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './commo
 export { LanguageTag } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';
 export { TagValidity, ValidateTag } from './validation';
+
+export * as Match from './match';

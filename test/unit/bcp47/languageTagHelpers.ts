@@ -152,14 +152,18 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
     public constructor(gtc: GenericLanguageTagTest<TFROM>, which: TestKey) {
         this.from = gtc.from;
         this.options = optionsByKey[which];
-        this.expected = gtc.expected[which];
+
+        const expected = gtc.expected[which];
+        this.expected = this._getExpectedValue(which, gtc, expected);
+
+        const target = this._getTestTarget(which, gtc);
 
         if (this.isSuccessTest) {
-            this.description = this._getSuccessTestDescription(which, gtc.from, gtc.description);
+            this.description = this._getSuccessTestDescription(target, gtc.from, gtc.description);
         } else if (this.isFailureTest) {
-            this.description = this._getFailureTestDescription(which, gtc.from, gtc.description);
+            this.description = this._getFailureTestDescription(target, gtc.from, gtc.description);
         } else {
-            this.description = this._getIgnoredTestDescription(which, gtc.from, gtc.description);
+            this.description = this._getIgnoredTestDescription(target, gtc.from, gtc.description);
         }
     }
 
@@ -175,29 +179,41 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
         return this.expected === undefined;
     }
 
-    protected _getSuccessTestDescription(which: TestKey, from: TFROM, description: string): string {
+    protected _getExpectedValue(
+        _which: TestKey,
+        _gtc: GenericLanguageTagTest<TFROM>,
+        expected: string | RegExp | undefined
+    ): string | RegExp | undefined {
+        return expected;
+    }
+
+    protected _getTestTarget(which: TestKey, _gtc: GenericLanguageTagTest<TFROM>): string {
+        return which;
+    }
+
+    protected _getSuccessTestDescription(testTarget: string, from: TFROM, description: string): string {
         if (typeof from !== 'string') {
             const fromDesc = JSON.stringify(from, undefined, 2);
-            return `${which} succeeds for "${description}" with "${this.expected}" (${fromDesc})`;
+            return `${testTarget} succeeds for "${description}" with "${this.expected}" (${fromDesc})`;
         }
-        return `${which} succeeds for "${from}" with "${this.expected}" (${description})`;
+        return `${testTarget} succeeds for "${from}" with "${this.expected}" (${description})`;
     }
 
-    protected _getFailureTestDescription(which: TestKey, from: TFROM, description: string): string {
+    protected _getFailureTestDescription(testTarget: string, from: TFROM, description: string): string {
         if (typeof from === 'string') {
-            return `${which} fails for "${from}" with "${this.expected}" (${description})`;
+            return `${testTarget} fails for "${from}" with "${this.expected}" (${description})`;
         } else {
             const fromDesc = JSON.stringify(from, undefined, 2);
-            return `${which} fails for "${description}" with "${this.expected}" (${fromDesc})`;
+            return `${testTarget} fails for "${description}" with "${this.expected}" (${fromDesc})`;
         }
     }
 
-    protected _getIgnoredTestDescription(which: TestKey, from: TFROM, description: string): string {
+    protected _getIgnoredTestDescription(testTarget: string, from: TFROM, description: string): string {
         if (typeof from === 'string') {
-            return `${which} "${from}" ignored due to expected value {${description}})`;
+            return `${testTarget} "${from}" ignored due to expected value {${description}})`;
         } else {
             const fromDesc = JSON.stringify(from, undefined, 2);
-            return `${which} "${description}" ignored due to expected value {${fromDesc})`;
+            return `${testTarget} "${description}" ignored due to expected value {${fromDesc})`;
         }
     }
 

@@ -117,7 +117,20 @@ export abstract class RegisteredItemScope<TTYPE extends string, TKEY extends str
         if (this.isValid(val)) {
             return succeed(val);
         }
+        if (!this.isWellFormed(val)) {
+            return fail(`${val}: malformed ${this._type}.`);
+        }
         return fail(`${val}: invalid ${this._type}.`);
+    }
+
+    public verifyIsCanonical(val: unknown): Result<TKEY> {
+        if (this.isCanonical(val)) {
+            return succeed(val);
+        }
+        if (!this.isWellFormed(val)) {
+            return fail(`${val}: malformed ${this._type}`);
+        }
+        return fail(`${val}: non-canonical ${this._type}`);
     }
 
     protected _validateKey(key: TKEY): Result<true> {

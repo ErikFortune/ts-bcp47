@@ -84,4 +84,106 @@ describe('LanguageTag class', () => {
             tc.invoke();
         });
     });
+
+    describe('to* methods', () => {
+        class ToMethodTestCase<TFROM extends string | LanguageTagParts> extends SimpleTagTestCaseBase<TFROM> {
+            public static create<TFROM extends string | LanguageTagParts>(
+                gtc: GenericLanguageTagTest<TFROM>,
+                which: TestKey
+            ): ToMethodTestCase<TFROM> {
+                return new ToMethodTestCase(gtc, which);
+            }
+
+            public static getFactory<TFROM extends string | LanguageTagParts>(): GenericTagTestCaseFactory<TFROM, ToMethodTestCase<TFROM>> {
+                return new GenericTagTestCaseFactory(ToMethodTestCase.create);
+            }
+
+            public invoke(): void {
+                if (this.isSuccessTest) {
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
+                        if (this.options?.normalization === 'preferred') {
+                            expect(lt.toPreferred()).toSucceedAndSatisfy((plt) => {
+                                expect(plt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.validity == 'strictly-valid') {
+                            expect(lt.toStrictlyValid()).toSucceedAndSatisfy((slt) => {
+                                expect(slt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.validity == 'valid') {
+                            expect(lt.toValid()).toSucceedAndSatisfy((vlt) => {
+                                expect(vlt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.normalization === 'canonical') {
+                            expect(lt.toCanonical()).toSucceedAndSatisfy((clt) => {
+                                expect(clt.tag).toEqual(this.expected);
+                            });
+                        } else {
+                            expect('options').toMatch('test');
+                        }
+                    });
+                } else if (this.isFailureTest) {
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
+                        if (this.options?.normalization === 'preferred') {
+                            expect(lt.toPreferred()).toFailWith(this.expected);
+                        } else if (this.options?.validity == 'strictly-valid') {
+                            expect(lt.toStrictlyValid()).toFailWith(this.expected);
+                        } else if (this.options?.validity == 'valid') {
+                            expect(lt.toValid()).toFailWith(this.expected);
+                        } else if (this.options?.normalization === 'canonical') {
+                            expect(lt.toCanonical()).toFailWith(this.expected);
+                        } else {
+                            expect('options').toMatch('test');
+                        }
+                    });
+                }
+            }
+
+            protected _getTestTarget(which: TestKey, _gtc: GenericLanguageTagTest<TFROM, string | RegExp>): string {
+                switch (which) {
+                    case 'valid':
+                        return 'toValid';
+                    case 'strictlyValid':
+                        return 'toStrictlyValid';
+                    case 'wellFormedCanonical':
+                        return 'toCanonical';
+                    case 'preferred':
+                        return 'toPreferred';
+                }
+                return which;
+            }
+
+            protected _getExpectedValue(
+                which: TestKey,
+                gtc: GenericLanguageTagTest<TFROM, string | RegExp>,
+                expected: string | RegExp | undefined
+            ): string | RegExp | undefined {
+                switch (which) {
+                    case 'default':
+                    case 'strictlyValidCanonical':
+                    case 'strictlyValidPreferred':
+                    case 'validCanonical':
+                    case 'wellFormed':
+                        return undefined;
+                }
+                // we can't do anything with a test case that expects to fail
+                // even basic validation
+                if (gtc.expected.default instanceof RegExp) {
+                    return undefined;
+                }
+                return expected;
+            }
+        }
+
+        describe('tag-based test cases', () => {
+            test.each(ToMethodTestCase.getFactory<string>().emit(allTestKeys, tagTestCases))('%p', (_desc, tc) => {
+                tc.invoke();
+            });
+        });
+
+        describe('parts-based test cases', () => {
+            test.each(ToMethodTestCase.getFactory<LanguageTagParts>().emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+                tc.invoke();
+            });
+        });
+    });
 });

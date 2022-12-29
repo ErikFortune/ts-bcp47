@@ -19,11 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-// istanbul ignore file
 
-export * from './common';
-export { IsCanonicalValidator } from './isCanonical';
-export { IsStrictlyValidValidator } from './isStrictlyValid';
-export { IsValidValidator } from './isValid';
-export { IsWellFormedValidator } from './isWellFormed';
-export { ValidateTag } from './validateTag';
+import * as Iana from '../../iana';
+
+import { LanguageTagParts, languageTagPartsToString } from '../common';
+import { Result, fail, succeed } from '@fgv/ts-utils';
+import { NormalizeTag } from '../normalization';
+import { TagValidator } from './baseValidator';
+import { TagValidity } from './common';
+
+export class IsInPreferredFromValidator implements TagValidator {
+    public readonly iana: Iana.LanguageRegistries;
+    public readonly validity: TagValidity = 'valid';
+
+    public constructor(iana?: Iana.LanguageRegistries) {
+        // istanbul ignore next
+        this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
+    }
+
+    public checkParts(parts: LanguageTagParts): Result<true> {
+        return NormalizeTag.toPreferred(parts).onSuccess((preferred) => {
+            const want = languageTagPartsToString(preferred);
+            const have = languageTagPartsToString(parts);
+            if (want !== have) {
+                return fail(`${have}: does not match preferred form ${want}`);
+            }
+            return succeed(true);
+        });
+    }
+}

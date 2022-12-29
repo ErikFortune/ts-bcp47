@@ -22,6 +22,7 @@
 
 import {
     ExtLangSubtag,
+    ExtendedLanguageRange,
     GrandfatheredTag,
     LanguageSubtag,
     RegionSubtag,
@@ -300,11 +301,12 @@ const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
             primaryLanguage: 'en' as LanguageSubtag,
             script: 'latn' as ScriptSubtag,
             region: 'us' as RegionSubtag,
+            privateUse: ['Non-Canon' as ExtendedLanguageRange],
         },
         expected: [
-            ['en-latn-us', ['default', 'wellFormed', 'valid', 'strictlyValid']],
-            ['en-Latn-US', ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical']],
-            ['en-US', ['preferred', 'strictlyValidPreferred']],
+            ['en-latn-us-x-Non-Canon', ['default', 'wellFormed', 'valid', 'strictlyValid']],
+            ['en-Latn-US-x-non-canon', ['wellFormedCanonical', 'validCanonical', 'strictlyValidCanonical']],
+            ['en-US-x-non-canon', ['preferred', 'strictlyValidPreferred']],
         ],
     },
     {

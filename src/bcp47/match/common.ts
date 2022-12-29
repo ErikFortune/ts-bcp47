@@ -19,11 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-// istanbul ignore file
 
-export * from './common';
-export { IsCanonicalValidator } from './isCanonical';
-export { IsStrictlyValidValidator } from './isStrictlyValid';
-export { IsValidValidator } from './isValid';
-export { IsWellFormedValidator } from './isWellFormed';
-export { ValidateTag } from './validateTag';
+export const matchQuality = {
+    exact: 1000,
+    variant: 900,
+    region: 800,
+    macroRegion: 700,
+    neutral: 600,
+    affinity: 500,
+    preferredRegion: 400,
+    sibling: 300,
+    undetermined: 200,
+    none: 0,
+};
+
+export type MatchQuality = keyof typeof matchQuality;
