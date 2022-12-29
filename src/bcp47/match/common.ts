@@ -19,10 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
 
-export { LanguageTag } from './languageTag';
-export { NormalizeTag, TagNormalization } from './normalization';
-export { TagValidity, ValidateTag } from './validation';
+export const matchQuality = {
+    exact: 1000,
+    variant: 900,
+    region: 800,
+    macroRegion: 700,
+    neutral: 600,
+    affinity: 500,
+    preferredRegion: 400,
+    sibling: 300,
+    undetermined: 200,
+    none: 0,
+};
 
-export * as Match from './match';
+export type MatchQuality = keyof typeof matchQuality;

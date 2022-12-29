@@ -20,15 +20,4 @@
  * SOFTWARE.
  */
 
-export const matchQuality = {
-    exact: 1000,
-    variant: 900,
-    region: 800,
-    macroRegion: 700,
-    neutral: 600,
-    affinity: 500,
-    preferredRegion: 400,
-    sibling: 300,
-    undetermined: 200,
-    none: 0,
-};
+export * from './common';
