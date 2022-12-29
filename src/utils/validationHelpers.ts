@@ -82,7 +82,8 @@ export class ValidationHelpers<T extends string, TC = unknown> {
         if (this.isCanonical(from, context)) {
             return succeed(from);
         }
-        if (this.isWellFormed(from, context)) {
+        // istanbul ignore next - should never occur and very hard to test
+        if (!this.isWellFormed(from, context)) {
             return fail(`malformed ${this.description}`);
         }
         return fail(`non-canonical ${this.description}`);

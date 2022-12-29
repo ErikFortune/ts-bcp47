@@ -131,6 +131,14 @@ export class LanguageTag {
         return this._createTransformed(parts, 'unknown', 'unknown', options);
     }
 
+    public static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
+        if (typeof from === 'string') {
+            return this.createFromTag(from, options);
+        } else {
+            return this.createFromParts(from, options);
+        }
+    }
+
     protected static _createTransformed(
         parts: LanguageTagParts,
         fromValidity: TagValidity,

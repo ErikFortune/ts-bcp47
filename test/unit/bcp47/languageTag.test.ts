@@ -86,18 +86,21 @@ describe('LanguageTag class', () => {
     });
 
     describe('to* methods', () => {
-        class ToMethodTestCase extends SimpleTagTestCaseBase<string> {
-            public static get factory(): GenericTagTestCaseFactory<string, ToMethodTestCase> {
-                return new GenericTagTestCaseFactory(ToMethodTestCase.create);
+        class ToMethodTestCase<TFROM extends string | LanguageTagParts> extends SimpleTagTestCaseBase<TFROM> {
+            public static create<TFROM extends string | LanguageTagParts>(
+                gtc: GenericLanguageTagTest<TFROM>,
+                which: TestKey
+            ): ToMethodTestCase<TFROM> {
+                return new ToMethodTestCase(gtc, which);
             }
 
-            public static create(gtc: GenericLanguageTagTest<string>, which: TestKey): ToMethodTestCase {
-                return new ToMethodTestCase(gtc, which);
+            public static getFactory<TFROM extends string | LanguageTagParts>(): GenericTagTestCaseFactory<TFROM, ToMethodTestCase<TFROM>> {
+                return new GenericTagTestCaseFactory(ToMethodTestCase.create);
             }
 
             public invoke(): void {
                 if (this.isSuccessTest) {
-                    expect(LanguageTag.createFromTag(this.from)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
                         if (this.options?.normalization === 'preferred') {
                             expect(lt.toPreferred()).toSucceedAndSatisfy((plt) => {
                                 expect(plt.tag).toEqual(this.expected);
@@ -114,17 +117,28 @@ describe('LanguageTag class', () => {
                             expect(lt.toCanonical()).toSucceedAndSatisfy((clt) => {
                                 expect(clt.tag).toEqual(this.expected);
                             });
+                        } else {
+                            expect('options').toMatch('test');
                         }
                     });
-                    expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
-                        expect(lt.tag).toEqual(this.expected);
-                    });
                 } else if (this.isFailureTest) {
-                    expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
+                        if (this.options?.normalization === 'preferred') {
+                            expect(lt.toPreferred()).toFailWith(this.expected);
+                        } else if (this.options?.validity == 'strictly-valid') {
+                            expect(lt.toStrictlyValid()).toFailWith(this.expected);
+                        } else if (this.options?.validity == 'valid') {
+                            expect(lt.toValid()).toFailWith(this.expected);
+                        } else if (this.options?.normalization === 'canonical') {
+                            expect(lt.toCanonical()).toFailWith(this.expected);
+                        } else {
+                            expect('options').toMatch('test');
+                        }
+                    });
                 }
             }
 
-            protected _getTestTarget(which: TestKey, _gtc: GenericLanguageTagTest<string, string | RegExp>): string {
+            protected _getTestTarget(which: TestKey, _gtc: GenericLanguageTagTest<TFROM, string | RegExp>): string {
                 switch (which) {
                     case 'valid':
                         return 'toValid';
@@ -140,7 +154,7 @@ describe('LanguageTag class', () => {
 
             protected _getExpectedValue(
                 which: TestKey,
-                _gtc: GenericLanguageTagTest<string, string | RegExp>,
+                gtc: GenericLanguageTagTest<TFROM, string | RegExp>,
                 expected: string | RegExp | undefined
             ): string | RegExp | undefined {
                 switch (which) {
@@ -151,12 +165,25 @@ describe('LanguageTag class', () => {
                     case 'wellFormed':
                         return undefined;
                 }
+                // we can't do anything with a test case that expects to fail
+                // even basic validation
+                if (gtc.expected.default instanceof RegExp) {
+                    return undefined;
+                }
                 return expected;
             }
         }
 
-        test.each(ToMethodTestCase.factory.emit(allTestKeys, tagTestCases))('%p', (_desc, tc) => {
-            tc.invoke();
+        describe('tag-based test cases', () => {
+            test.each(ToMethodTestCase.getFactory<string>().emit(allTestKeys, tagTestCases))('%p', (_desc, tc) => {
+                tc.invoke();
+            });
+        });
+
+        describe('parts-based test cases', () => {
+            test.each(ToMethodTestCase.getFactory<LanguageTagParts>().emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+                tc.invoke();
+            });
         });
     });
 });

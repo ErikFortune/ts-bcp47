@@ -39,5 +39,6 @@ export function compareNormalization(n1: TagNormalization, n2: TagNormalization)
 }
 
 export function mostNormalized(n1: TagNormalization, n2: TagNormalization): TagNormalization {
-    return normalizationRank[n1] >= normalizationRank[n2] ? n1 : n2;
+    // istanbul ignore next - hard to hit due to guards
+    return normalizationRank[n1] > normalizationRank[n2] ? n1 : n2;
 }
