@@ -21,6 +21,7 @@
  */
 
 import * as Iana from '../../iana';
+import { GlobalRegion } from '../common';
 
 import { LanguageTag } from '../languageTag';
 import { matchQuality } from './common';
@@ -43,6 +44,7 @@ export class LanguageComparer {
         let quality = this.comparePrimaryLanguage(t1, t2);
         quality = quality > matchQuality.none ? Math.min(this.compareExtlang(t1, t2), quality) : quality;
         quality = quality > matchQuality.none ? Math.min(this.compareScript(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.compareRegion(t1, t2), quality) : quality;
 
         return quality;
     }
@@ -90,6 +92,28 @@ export class LanguageComparer {
 
         if (lt1.isUndetermined || lt2.isUndetermined) {
             return matchQuality.undetermined;
+        }
+
+        return matchQuality.none;
+    }
+
+    public compareRegion(lt1: LanguageTag, lt2: LanguageTag): number {
+        const r1 = lt1.parts.region?.toLowerCase();
+        const r2 = lt2.parts.region?.toLowerCase();
+
+        if (r1 === r2) {
+            return matchQuality.exact;
+        }
+
+        // region 001 is equivalent to neutral (no region)
+        if (r1 === GlobalRegion || r2 === GlobalRegion) {
+            // if one tag is 001 and the other in neutral, exact match
+            // otherwise, one tag is 001 so neutral region match
+            return !r1 || !r2 ? matchQuality.exact : matchQuality.neutralRegion;
+        }
+
+        if (!r1 || !r2) {
+            return matchQuality.neutralRegion;
         }
 
         return matchQuality.none;

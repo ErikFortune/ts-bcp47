@@ -65,3 +65,6 @@ export function languageTagPartsToString(parts: LanguageTagParts): string {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const UndeterminedLanguage = 'und' as Iana.LanguageSubtags.LanguageSubtag;
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const GlobalRegion = '001' as Iana.LanguageSubtags.RegionSubtag;
