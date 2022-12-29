@@ -25,7 +25,7 @@ export const matchQuality = {
     variant: 900,
     region: 800,
     macroRegion: 700,
-    neutral: 600,
+    neutralRegion: 600,
     affinity: 500,
     preferredRegion: 400,
     sibling: 300,
