@@ -62,3 +62,6 @@ export function languageTagPartsToString(parts: LanguageTagParts): string {
         .filter((s): s is string => s !== undefined)
         .join('-');
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const UndeterminedLanguage = 'und' as Iana.LanguageSubtags.LanguageSubtag;

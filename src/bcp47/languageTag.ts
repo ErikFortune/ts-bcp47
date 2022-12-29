@@ -22,13 +22,14 @@
 
 import * as Iana from '../iana';
 
-import { LanguageTagParts, languageTagPartsToString } from './common';
+import { LanguageTagParts, UndeterminedLanguage, languageTagPartsToString } from './common';
 import { Result, captureResult, succeed } from '@fgv/ts-utils';
 import { TagNormalization, mostNormalized } from './normalization/common';
 import { TagValidity, mostValid } from './validation/common';
 
 import { LanguageTagParser } from './languageTagParser';
 import { NormalizeTag } from './normalization';
+import { ScriptSubtag } from '../iana/language-subtags';
 import { ValidateTag } from './validation';
 
 /**
@@ -56,6 +57,7 @@ export class LanguageTag {
     protected _isStrictlyValid: undefined | boolean;
     protected _isCanonical: undefined | boolean;
     protected _isPreferred: undefined | boolean;
+    protected _suppressedScript: undefined | ScriptSubtag | false;
 
     protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
         this.parts = Object.freeze({ ...parts });
@@ -77,6 +79,15 @@ export class LanguageTag {
         } else if (normalization === 'canonical') {
             this._isCanonical = true;
         }
+    }
+
+    public get effectiveScript(): ScriptSubtag | undefined {
+        return this.parts.script ?? this.getSuppressedScript();
+    }
+
+    public get isUndetermined(): boolean {
+        // istanbul ignore next
+        return this.parts.primaryLanguage?.toLowerCase() === UndeterminedLanguage;
     }
 
     public get isValid(): boolean {
@@ -163,6 +174,19 @@ export class LanguageTag {
             validity: options?.validity ?? 'well-formed',
             normalization: options?.normalization ?? 'none',
         };
+    }
+
+    public getSuppressedScript(): ScriptSubtag | undefined {
+        if (this._suppressedScript === undefined) {
+            this._suppressedScript = false;
+            if (this.parts.primaryLanguage) {
+                const language = this._iana.subtags.languages.tryGet(this.parts.primaryLanguage);
+                if (language?.suppressScript !== undefined) {
+                    this._suppressedScript = language.suppressScript;
+                }
+            }
+        }
+        return this._suppressedScript ? this._suppressedScript : undefined;
     }
 
     public toValid(): Result<LanguageTag> {

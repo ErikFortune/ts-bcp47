@@ -22,9 +22,8 @@
 
 import * as Iana from '../../iana';
 
-import { matchQuality, undeterminedLanguage } from './common';
-
 import { LanguageTag } from '../languageTag';
+import { matchQuality } from './common';
 
 export class LanguageComparer {
     public iana: Iana.LanguageRegistries;
@@ -41,21 +40,58 @@ export class LanguageComparer {
             return t1.toString().toLowerCase() === t2.toString().toLowerCase() ? matchQuality.exact : matchQuality.none;
         }
 
-        const quality = this.comparePrimaryLanguage(t1.parts.primaryLanguage, t2.parts.primaryLanguage);
+        let quality = this.comparePrimaryLanguage(t1, t2);
+        quality = quality > matchQuality.none ? Math.min(this.compareExtlang(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.compareScript(t1, t2), quality) : quality;
 
         return quality;
     }
 
-    public comparePrimaryLanguage(language1: Iana.LanguageSubtags.LanguageSubtag, language2: Iana.LanguageSubtags.LanguageSubtag): number {
-        const l1 = language1.toLowerCase();
-        const l2 = language2.toLowerCase();
+    public comparePrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
+        // istanbul ignore next
+        const l1 = lt1.parts.primaryLanguage?.toLowerCase();
+        // istanbul ignore next
+        const l2 = lt2.parts.primaryLanguage?.toLowerCase();
 
         if (l1 == l2) {
             return matchQuality.exact;
         }
-        if (l1 === undeterminedLanguage || l2 === undeterminedLanguage) {
+
+        if (lt1.isUndetermined || lt2.isUndetermined) {
             return matchQuality.undetermined;
         }
+
+        return matchQuality.none;
+    }
+
+    public compareExtlang(lt1: LanguageTag, lt2: LanguageTag): number {
+        if (lt1.parts.extlangs?.length !== lt2.parts.extlangs?.length) {
+            return matchQuality.none;
+        }
+
+        if (lt1.parts.extlangs) {
+            for (let i = 0; i < lt1.parts.extlangs.length; i++) {
+                if (lt1.parts.extlangs[i].toLowerCase() !== lt2.parts.extlangs![i].toLowerCase()) {
+                    return matchQuality.none;
+                }
+            }
+        }
+
+        return matchQuality.exact;
+    }
+
+    public compareScript(lt1: LanguageTag, lt2: LanguageTag): number {
+        const s1 = lt1.effectiveScript?.toLowerCase();
+        const s2 = lt2.effectiveScript?.toLowerCase();
+
+        if (s1 === s2) {
+            return matchQuality.exact;
+        }
+
+        if (lt1.isUndetermined || lt2.isUndetermined) {
+            return matchQuality.undetermined;
+        }
+
         return matchQuality.none;
     }
 }

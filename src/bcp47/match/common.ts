@@ -20,8 +20,6 @@
  * SOFTWARE.
  */
 
-import { LanguageSubtag } from '../../iana/language-subtags';
-
 export const matchQuality = {
     exact: 1000,
     variant: 900,
@@ -36,5 +34,3 @@ export const matchQuality = {
 };
 
 export type MatchQuality = keyof typeof matchQuality;
-
-export const undeterminedLanguage = 'und' as LanguageSubtag;
