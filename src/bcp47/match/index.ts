@@ -21,3 +21,4 @@
  */
 
 export * from './common';
+export { LanguageComparer } from './comparer';
