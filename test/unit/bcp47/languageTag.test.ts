@@ -84,4 +84,79 @@ describe('LanguageTag class', () => {
             tc.invoke();
         });
     });
+
+    describe('to* methods', () => {
+        class ToMethodTestCase extends SimpleTagTestCaseBase<string> {
+            public static get factory(): GenericTagTestCaseFactory<string, ToMethodTestCase> {
+                return new GenericTagTestCaseFactory(ToMethodTestCase.create);
+            }
+
+            public static create(gtc: GenericLanguageTagTest<string>, which: TestKey): ToMethodTestCase {
+                return new ToMethodTestCase(gtc, which);
+            }
+
+            public invoke(): void {
+                if (this.isSuccessTest) {
+                    expect(LanguageTag.createFromTag(this.from)).toSucceedAndSatisfy((lt) => {
+                        if (this.options?.normalization === 'preferred') {
+                            expect(lt.toPreferred()).toSucceedAndSatisfy((plt) => {
+                                expect(plt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.validity == 'strictly-valid') {
+                            expect(lt.toStrictlyValid()).toSucceedAndSatisfy((slt) => {
+                                expect(slt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.validity == 'valid') {
+                            expect(lt.toValid()).toSucceedAndSatisfy((vlt) => {
+                                expect(vlt.tag).toEqual(this.expected);
+                            });
+                        } else if (this.options?.normalization === 'canonical') {
+                            expect(lt.toCanonical()).toSucceedAndSatisfy((clt) => {
+                                expect(clt.tag).toEqual(this.expected);
+                            });
+                        }
+                    });
+                    expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                        expect(lt.tag).toEqual(this.expected);
+                    });
+                } else if (this.isFailureTest) {
+                    expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
+                }
+            }
+
+            protected _getTestTarget(which: TestKey, _gtc: GenericLanguageTagTest<string, string | RegExp>): string {
+                switch (which) {
+                    case 'valid':
+                        return 'toValid';
+                    case 'strictlyValid':
+                        return 'toStrictlyValid';
+                    case 'wellFormedCanonical':
+                        return 'toCanonical';
+                    case 'preferred':
+                        return 'toPreferred';
+                }
+                return which;
+            }
+
+            protected _getExpectedValue(
+                which: TestKey,
+                _gtc: GenericLanguageTagTest<string, string | RegExp>,
+                expected: string | RegExp | undefined
+            ): string | RegExp | undefined {
+                switch (which) {
+                    case 'default':
+                    case 'strictlyValidCanonical':
+                    case 'strictlyValidPreferred':
+                    case 'validCanonical':
+                    case 'wellFormed':
+                        return undefined;
+                }
+                return expected;
+            }
+        }
+
+        test.each(ToMethodTestCase.factory.emit(allTestKeys, tagTestCases))('%p', (_desc, tc) => {
+            tc.invoke();
+        });
+    });
 });
