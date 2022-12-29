@@ -45,6 +45,7 @@ export class LanguageComparer {
         quality = quality > matchQuality.none ? Math.min(this.compareExtlang(t1, t2), quality) : quality;
         quality = quality > matchQuality.none ? Math.min(this.compareScript(t1, t2), quality) : quality;
         quality = quality > matchQuality.none ? Math.min(this.compareRegion(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.compareVariants(t1, t2), quality) : quality;
 
         return quality;
     }
@@ -117,5 +118,21 @@ export class LanguageComparer {
         }
 
         return matchQuality.sibling;
+    }
+
+    public compareVariants(lt1: LanguageTag, lt2: LanguageTag): number {
+        if (lt1.parts.variants?.length !== lt2.parts.variants?.length) {
+            return matchQuality.region;
+        }
+
+        if (lt1.parts.variants) {
+            for (let i = 0; i < lt1.parts.variants.length; i++) {
+                if (lt1.parts.variants[i].toLowerCase() !== lt2.parts.variants![i].toLowerCase()) {
+                    return matchQuality.region;
+                }
+            }
+        }
+
+        return matchQuality.exact;
     }
 }
