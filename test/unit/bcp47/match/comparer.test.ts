@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import { LanguageComparer, matchQuality } from '../../../../src/bcp47/match';
-import { LanguageTag } from '../../../../src/bcp47/languageTag';
+import { LanguageTag, LanguageTagInitOptions } from '../../../../src/bcp47/languageTag';
 
 describe('LanguageComparer class', () => {
     describe('compare method', () => {
@@ -80,10 +80,51 @@ describe('LanguageComparer class', () => {
             { description: 'non-matching primary language', l1: 'en', l2: 'fr', expected: matchQuality.none },
             { description: 'non-matching private tags', l1: 'x-some-tag', l2: 'x-some-other-tag', expected: matchQuality.none },
             { description: 'private and non-private do not match', l1: 'x-en-US', l2: 'en-US', expected: matchQuality.none },
-        ])('yields $expected for $l1/$l2 ($description)', (tc) => {
-            const t1 = LanguageTag.create(tc.l1).getValueOrThrow();
-            const t2 = LanguageTag.create(tc.l2).getValueOrThrow();
-            expect(comparer.compare(t1, t2)).toEqual(tc.expected);
+            {
+                description: 'does not match preferred form of language if preferred normalization is not specified',
+                l1: 'id',
+                l2: 'in',
+                expected: matchQuality.none,
+            },
+            {
+                description: 'matches preferred form of language if preferred normalization specified',
+                l1: 'id',
+                l2: 'in',
+                expected: matchQuality.exact,
+                options: { normalization: 'preferred' } as LanguageTagInitOptions,
+            },
+            {
+                description: 'does not match preferred form of region if preferred normalization is not specified',
+                l1: 'en-BU',
+                l2: 'en-MM',
+                expected: matchQuality.sibling,
+            },
+            {
+                description: 'matches preferred form of region if preferred normalization specified',
+                l1: 'en-BU',
+                l2: 'en-MM',
+                expected: matchQuality.exact,
+                options: { normalization: 'preferred' } as LanguageTagInitOptions,
+            },
+            {
+                description: 'does not match preferred form of grandfathered tag if preferred normalization is not specified',
+                l1: 'i-klingon',
+                l2: 'tlh',
+                expected: matchQuality.none,
+            },
+            {
+                description: 'matches preferred form of grandfathered tag if preferred normalization specified',
+                l1: 'i-klingon',
+                l2: 'tlh',
+                expected: matchQuality.exact,
+                options: { normalization: 'preferred' } as LanguageTagInitOptions,
+            },
+        ])('"$l1"/"$l2" yields $expected ($description)', (tc) => {
+            const lt1 = LanguageTag.create(tc.l1, tc.options).getValueOrThrow();
+            const lt2 = LanguageTag.create(tc.l2, tc.options).getValueOrThrow();
+
+            expect(comparer.compare(lt1, lt2)).toSucceedWith(tc.expected);
+            expect(comparer.compare(tc.l1, tc.l2, tc.options)).toSucceedWith(tc.expected);
         });
     });
 });

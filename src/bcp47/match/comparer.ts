@@ -21,9 +21,11 @@
  */
 
 import * as Iana from '../../iana';
-import { GlobalRegion } from '../common';
 
-import { LanguageTag } from '../languageTag';
+import { GlobalRegion, LanguageTagParts } from '../common';
+import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
+
+import { Result, succeed } from '@fgv/ts-utils';
 import { matchQuality } from './common';
 
 export class LanguageComparer {
@@ -34,7 +36,7 @@ export class LanguageComparer {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public compare(t1: LanguageTag, t2: LanguageTag): number {
+    public compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
         // no primary tag is either all private or grandfathered, which must match
         // exactly.
         if (!t1.parts.primaryLanguage || !t2.parts.primaryLanguage) {
@@ -50,6 +52,21 @@ export class LanguageComparer {
         quality = quality > matchQuality.none ? Math.min(this.comparePrivateUseTags(t1, t2), quality) : quality;
 
         return quality;
+    }
+
+    public compare(
+        t1: LanguageTagParts | LanguageTag | string,
+        t2: LanguageTagParts | LanguageTag | string,
+        options?: LanguageTagInitOptions
+    ): Result<number> {
+        const tag1 = t1 instanceof LanguageTag ? succeed(t1) : LanguageTag.create(t1, options);
+        const tag2 = t2 instanceof LanguageTag ? succeed(t2) : LanguageTag.create(t2, options);
+
+        return tag1.onSuccess((lt1) => {
+            return tag2.onSuccess((lt2) => {
+                return succeed(this.compareLanguageTags(lt1, lt2));
+            });
+        });
     }
 
     public comparePrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
