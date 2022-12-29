@@ -57,7 +57,7 @@ describe('LanguageComparer class', () => {
             { description: 'region is partial match with neutral', l1: 'en-US', l2: 'en', expected: matchQuality.neutralRegion },
             { description: 'region is partial match with global', l1: 'en-US', l2: 'en-001', expected: matchQuality.neutralRegion },
             { description: 'global is exact match with region neutral', l1: 'en', l2: 'en-001', expected: matchQuality.exact },
-            { description: 'region mismatch', l1: 'en-US', l2: 'en-GB', expected: matchQuality.none },
+            { description: 'region mismatch is partial', l1: 'en-US', l2: 'en-GB', expected: matchQuality.sibling },
             { description: 'exact private tag match', l1: 'x-some-tag', l2: 'x-Some-Tag', expected: matchQuality.exact },
             { description: 'exact valid grandfathered tag match', l1: 'i-klingon', l2: 'i-Klingon', expected: matchQuality.exact },
             { description: 'non-matching primary language', l1: 'en', l2: 'fr', expected: matchQuality.none },

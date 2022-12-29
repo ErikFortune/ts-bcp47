@@ -116,6 +116,6 @@ export class LanguageComparer {
             return matchQuality.neutralRegion;
         }
 
-        return matchQuality.none;
+        return matchQuality.sibling;
     }
 }
