@@ -20,43 +20,42 @@
  * SOFTWARE.
  */
 
-import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../../iana/model';
-import { RegionTier } from '../model';
+import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../iana/model';
 
-export interface M49CsvRow {
-    globalCode: UnM49RegionCode;
-    globalName: string;
-    regionCode?: UnM49RegionCode;
-    regionName?: string;
-    subRegionCode?: UnM49RegionCode;
-    subRegionName?: string;
-    intermediateRegionCode?: UnM49RegionCode;
-    intermediateRegionName?: string;
-    countryOrArea: string;
-    m49Code: UnM49RegionCode;
-    isoAlpha2RegionCode?: IsoAlpha2RegionCode;
-    isoAlpha3RegionCode?: IsoAlpha3RegionCode;
-    leastDevelopedCountry: boolean;
-    landLockedDevelopingCountry: boolean;
-    smallIslandDevelopingState: boolean;
+export type IntermediateRegionTier = 'region' | 'subRegion' | 'intermediateRegion';
+export type RegionTier = 'global' | IntermediateRegionTier;
+
+export interface GlobalRegion {
+    name: string;
+    code: UnM49RegionCode;
+    tier: 'global';
+    /* eslint-disable no-use-before-define */
+    regions: IntermediateRegion[];
+    areas: CountryOrArea[];
+    /* eslint-enable no-use-before-define */
 }
 
-export interface CountryOrAreaRecord {
+export interface IntermediateRegion {
     name: string;
-    m49Code: UnM49RegionCode;
-    isoAlpha2RegionCode?: IsoAlpha2RegionCode;
-    isoAlpha3RegionCode?: IsoAlpha3RegionCode;
-    region: UnM49RegionCode;
-    leastDevelopedCountry: boolean;
-    landLockedDevelopingCountry: boolean;
-    smallIslandDevelopingState: boolean;
-}
-
-export interface RegionRecord {
-    name: string;
-    m49Code: UnM49RegionCode;
+    code: UnM49RegionCode;
     tier: RegionTier;
-    parent?: UnM49RegionCode;
-    regions: UnM49RegionCode[];
-    areas: UnM49RegionCode[];
+    /* eslint-disable no-use-before-define */
+    parent: Region;
+    regions: IntermediateRegion[];
+    areas: CountryOrArea[];
+    /* eslint-enable no-use-before-define */
+}
+
+export type Region = GlobalRegion | IntermediateRegion;
+
+export interface CountryOrArea {
+    name: string;
+    code: UnM49RegionCode;
+    tier: 'area';
+    parent: Region;
+    isoAlpha2?: IsoAlpha2RegionCode;
+    isoAlpha3?: IsoAlpha3RegionCode;
+    leastDevelopedCountry: boolean;
+    landlockedDevelopingCountry: boolean;
+    smallIslandDevelopingState: boolean;
 }

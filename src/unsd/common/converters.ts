@@ -23,10 +23,12 @@
 import * as Model from './model';
 import { Converters, Result, succeed } from '@fgv/ts-utils';
 import { Converters as IanaConverters } from '../../iana';
+import { RegionTier } from '../model';
 import { readCsvFileSync } from '@fgv/ts-utils/csvHelpers';
 
-export const regionTier = Converters.enumeratedValue<Model.RegionTier>(['global', 'intermediateRegion', 'region', 'subRegion']);
+export const regionTier = Converters.enumeratedValue<RegionTier>(['global', 'intermediateRegion', 'region', 'subRegion']);
 
+const optionalString = Converters.string.optional('ignoreErrors');
 const optionalUnM49RegionCode = IanaConverters.unM49RegionCode.optional('ignoreErrors');
 const optionalIsoAlpha2RegionCode = IanaConverters.isoAlpha2RegionCode.optional('ignoreErrors');
 const optionalIsoAlpha3RegionCode = IanaConverters.isoAlpha3RegionCode.optional('ignoreErrors');
@@ -35,11 +37,11 @@ export const m49CsvRow = Converters.transform<Model.M49CsvRow>({
     globalCode: Converters.element(0, IanaConverters.unM49RegionCode),
     globalName: Converters.element(1, Converters.string),
     regionCode: Converters.element(2, optionalUnM49RegionCode),
-    regionName: Converters.element(3, Converters.string),
+    regionName: Converters.element(3, optionalString),
     subRegionCode: Converters.element(4, optionalUnM49RegionCode),
-    subRegionName: Converters.element(5, Converters.string),
+    subRegionName: Converters.element(5, optionalString),
     intermediateRegionCode: Converters.element(6, optionalUnM49RegionCode),
-    intermediateRegionName: Converters.element(7, Converters.string),
+    intermediateRegionName: Converters.element(7, optionalString),
     countryOrArea: Converters.element(8, Converters.string),
     m49Code: Converters.element(9, IanaConverters.unM49RegionCode),
     isoAlpha2RegionCode: Converters.element(10, optionalIsoAlpha2RegionCode),
@@ -51,17 +53,18 @@ export const m49CsvRow = Converters.transform<Model.M49CsvRow>({
 
 export const m49CsvFile = Converters.arrayOf(m49CsvRow);
 
-export const countryOrArea = Converters.strictObject<Model.CountryOrArea>({
+export const countryOrAreaRecord = Converters.strictObject<Model.CountryOrAreaRecord>({
     name: Converters.string,
     m49Code: IanaConverters.unM49RegionCode,
     isoAlpha2RegionCode: IanaConverters.isoAlpha2RegionCode,
     isoAlpha3RegionCode: IanaConverters.isoAlpha3RegionCode,
+    region: IanaConverters.unM49RegionCode,
     leastDevelopedCountry: Converters.boolean,
     landLockedDevelopingCountry: Converters.boolean,
     smallIslandDevelopingState: Converters.boolean,
 });
 
-export const region = Converters.strictObject<Model.Region>(
+export const regionRecord = Converters.strictObject<Model.RegionRecord>(
     {
         name: Converters.string,
         m49Code: IanaConverters.unM49RegionCode,
