@@ -21,19 +21,24 @@
  */
 
 import * as Iana from '../../iana';
+import * as Unsd from '../../unsd';
 
 import { GlobalRegion, LanguageTagParts } from '../common';
 import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
 
 import { Result, succeed } from '@fgv/ts-utils';
+import { RegionSubtag } from '../../iana/language-subtags';
+import { IsoAlpha2RegionCode, UnM49RegionCode } from '../../iana/model';
 import { matchQuality } from './common';
 
 export class LanguageComparer {
     public iana: Iana.LanguageRegistries;
+    public unsd: Unsd.RegionCodes;
 
     public constructor(iana?: Iana.LanguageRegistries) {
         // istanbul ignore next
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
+        this.unsd = Unsd.DefaultRegistries.regionCodes;
     }
 
     public compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
@@ -118,8 +123,8 @@ export class LanguageComparer {
     }
 
     public compareRegion(lt1: LanguageTag, lt2: LanguageTag): number {
-        const r1 = lt1.parts.region?.toLowerCase();
-        const r2 = lt2.parts.region?.toLowerCase();
+        const r1 = lt1.parts.region?.toLowerCase() as RegionSubtag;
+        const r2 = lt2.parts.region?.toLowerCase() as RegionSubtag;
 
         if (r1 === r2) {
             return matchQuality.exact;
@@ -136,6 +141,38 @@ export class LanguageComparer {
             return matchQuality.neutralRegion;
         }
 
+        // macro-region match
+        const r1IsMacroRegion = Iana.Validate.unM49RegionCode.isWellFormed(r1);
+        const r2IsMacroRegion = Iana.Validate.unM49RegionCode.isWellFormed(r2);
+        if (r1IsMacroRegion || r2IsMacroRegion) {
+            let contained: Unsd.CountryOrArea | Unsd.Region | undefined;
+            let container: Unsd.Region | undefined;
+            if (r1IsMacroRegion) {
+                container = this.unsd.regions.tryGetRegion(r1 as unknown as UnM49RegionCode);
+                contained =
+                    this.unsd.areas.tryGetAlpha2Area(r2 as unknown as IsoAlpha2RegionCode) ??
+                    this.unsd.tryGetRegionOrArea(r2 as unknown as UnM49RegionCode);
+            } else {
+                container = this.unsd.regions.tryGetRegion(r2 as unknown as UnM49RegionCode);
+                contained =
+                    this.unsd.areas.tryGetAlpha2Area(r1 as unknown as IsoAlpha2RegionCode) ??
+                    this.unsd.tryGetRegionOrArea(r1 as unknown as UnM49RegionCode);
+            }
+            if (container && contained) {
+                if (this.unsd.getIsContained(container, contained)) {
+                    return matchQuality.macroRegion;
+                }
+
+                // if they're both regions, also check to see if the second region contains the
+                // first
+                if (contained.tier !== 'area' && this.unsd.getIsContained(contained, container)) {
+                    return matchQuality.macroRegion;
+                }
+            }
+        }
+
+        // orthographic affinity
+        // preferred region
         return matchQuality.sibling;
     }
 

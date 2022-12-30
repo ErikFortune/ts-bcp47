@@ -20,6 +20,15 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export { DefaultRegistries } from './defaultRegistries';
-export { RegionCodes } from './regionCodes';
+import { RegionCodes } from './regionCodes';
+
+export class DefaultRegistries {
+    protected static _regionCodes?: RegionCodes = undefined;
+
+    public static get regionCodes(): RegionCodes {
+        if (!this._regionCodes) {
+            this._regionCodes = RegionCodes.createFromCsvFile('data/unsd/m49.csv').getValueOrThrow();
+        }
+        return this._regionCodes;
+    }
+}
