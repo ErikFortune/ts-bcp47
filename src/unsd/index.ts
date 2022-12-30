@@ -20,5 +20,5 @@
  * SOFTWARE.
  */
 
-export * from './model';
+export * from './common';
 export { RegionCodes } from './regionCodes';

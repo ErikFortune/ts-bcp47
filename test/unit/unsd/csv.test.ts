@@ -21,9 +21,9 @@
  */
 
 import '@fgv/ts-utils-jest';
-import * as Unsd from '../../../src/unsd/common';
+import * as Unsd from '../../../src/unsd/csv';
 
-describe('UNSD converters', () => {
+describe('UNSD csv converters', () => {
     describe('loadM49cnvFileSync function', () => {
         test('reads downloaded data', () => {
             expect(Unsd.Converters.loadM49cnvFileSync('data/unsd/m49.csv')).toSucceedAndSatisfy((rows) => {

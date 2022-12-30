@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { IntermediateRegionTier, Region } from './model';
+import { IntermediateRegionTier, Region } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 import { UnM49RegionCode } from '../iana/model';
 
@@ -62,7 +62,7 @@ export class Regions {
         const existing = this._regions.get(code);
         if (existing) {
             if (existing.name !== name) {
-                return fail(`${code}: cannot add ${name} - already exists as ${name}`);
+                return fail(`${code}: cannot add ${name} - already exists as ${existing.name}`);
             }
             if (existing.tier !== tier) {
                 return fail(`${code}: cannot add ${name} as tier ${tier} - already exists as tier ${existing.tier}`);

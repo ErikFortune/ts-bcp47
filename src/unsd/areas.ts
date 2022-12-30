@@ -22,7 +22,7 @@
 
 import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../iana/model';
 import { Result, fail, succeed } from '@fgv/ts-utils';
-import { CountryOrArea } from './model';
+import { CountryOrArea } from './common';
 
 export class Areas {
     protected _m49: Map<UnM49RegionCode, CountryOrArea> = new Map();
@@ -36,11 +36,11 @@ export class Areas {
             alpha3: area.isoAlpha3 ? this._isoAlpha3.get(area.isoAlpha3) : undefined,
         };
         if (existing.m49) {
-            return fail(`${area.name}: Region ${existing.m49.name} already defined with M.49 code ${area.code}`);
+            return fail(`${area.name}: Region ${existing.m49.name} already exists with M.49 code ${area.code}`);
         } else if (existing.alpha2) {
-            return fail(`${area.name}: Region ${existing.alpha2.name} already defined with ISO Alpha-2 code ${area.isoAlpha2}`);
+            return fail(`${area.name}: Region ${existing.alpha2.name} already exists with ISO Alpha-2 code ${area.isoAlpha2}`);
         } else if (existing.alpha3) {
-            return fail(`${area.name}: Region ${existing.alpha3.name} already defined with ISO Alpha-3 code ${area.isoAlpha3}`);
+            return fail(`${area.name}: Region ${existing.alpha3.name} already exists with ISO Alpha-3 code ${area.isoAlpha3}`);
         }
         const added = { ...area };
         this._m49.set(area.code, added);
@@ -59,11 +59,11 @@ export class Areas {
     }
 
     public tryGetAlpha2Area(from: IsoAlpha2RegionCode): CountryOrArea | undefined {
-        return this._isoAlpha2.get(from);
+        return this._isoAlpha2.get(from.toUpperCase() as IsoAlpha2RegionCode);
     }
 
     public tryGetAlpha3Area(from: IsoAlpha3RegionCode): CountryOrArea | undefined {
-        return this._isoAlpha3.get(from);
+        return this._isoAlpha3.get(from.toUpperCase() as IsoAlpha3RegionCode);
     }
 
     public getArea(from: UnM49RegionCode): Result<CountryOrArea> {
@@ -72,12 +72,12 @@ export class Areas {
     }
 
     public getAlpha2Area(from: IsoAlpha2RegionCode): Result<CountryOrArea> {
-        const got = this._isoAlpha2.get(from);
+        const got = this._isoAlpha2.get(from.toUpperCase() as IsoAlpha2RegionCode);
         return got ? succeed(got) : fail(`${from}: alpha-2 area not found`);
     }
 
     public getAlpha3Area(from: IsoAlpha3RegionCode): Result<CountryOrArea> {
-        const got = this._isoAlpha3.get(from);
+        const got = this._isoAlpha3.get(from.toUpperCase() as IsoAlpha3RegionCode);
         return got ? succeed(got) : fail(`${from}: alpha-3 area not found`);
     }
 

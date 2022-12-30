@@ -23,7 +23,7 @@
 import * as Model from './model';
 import { Converters, Result, succeed } from '@fgv/ts-utils';
 import { Converters as IanaConverters } from '../../iana';
-import { RegionTier } from '../model';
+import { RegionTier } from '../common';
 import { readCsvFileSync } from '@fgv/ts-utils/csvHelpers';
 
 export const regionTier = Converters.enumeratedValue<RegionTier>(['global', 'intermediateRegion', 'region', 'subRegion']);
@@ -52,29 +52,6 @@ export const m49CsvRow = Converters.transform<Model.M49CsvRow>({
 });
 
 export const m49CsvFile = Converters.arrayOf(m49CsvRow);
-
-export const countryOrAreaRecord = Converters.strictObject<Model.CountryOrAreaRecord>({
-    name: Converters.string,
-    m49Code: IanaConverters.unM49RegionCode,
-    isoAlpha2RegionCode: IanaConverters.isoAlpha2RegionCode,
-    isoAlpha3RegionCode: IanaConverters.isoAlpha3RegionCode,
-    region: IanaConverters.unM49RegionCode,
-    leastDevelopedCountry: Converters.boolean,
-    landLockedDevelopingCountry: Converters.boolean,
-    smallIslandDevelopingState: Converters.boolean,
-});
-
-export const regionRecord = Converters.strictObject<Model.RegionRecord>(
-    {
-        name: Converters.string,
-        m49Code: IanaConverters.unM49RegionCode,
-        tier: regionTier,
-        parent: IanaConverters.unM49RegionCode,
-        regions: Converters.arrayOf(IanaConverters.unM49RegionCode),
-        areas: Converters.arrayOf(IanaConverters.unM49RegionCode),
-    },
-    { optionalFields: ['parent'] }
-);
 
 export function loadM49cnvFileSync(csvPath: string): Result<Model.M49CsvRow[]> {
     return readCsvFileSync(csvPath, { delimiter: ';' }).onSuccess((csv) => {

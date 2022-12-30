@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 
-import * as Model from './common/model';
+import * as Model from './csv/model';
 
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
 
 import { Areas } from './areas';
 import { Regions } from './regions';
-import { loadM49cnvFileSync } from './common/converters';
+import { loadM49cnvFileSync } from './csv/converters';
 
 export class RegionCodes {
     public readonly regions: Regions;
@@ -37,12 +37,16 @@ export class RegionCodes {
         this.areas = new Areas();
     }
 
-    public static createFromCsv(path: string): Result<RegionCodes> {
+    public static createFromCsvFile(path: string): Result<RegionCodes> {
         return loadM49cnvFileSync(path).onSuccess((rows) => {
-            const codes = new RegionCodes();
-            return codes._importRows(rows).onSuccess(() => {
-                return succeed(codes);
-            });
+            return this.createFromCsv(rows);
+        });
+    }
+
+    public static createFromCsv(rows: Model.M49CsvRow[]): Result<RegionCodes> {
+        const codes = new RegionCodes();
+        return codes._importRows(rows).onSuccess(() => {
+            return succeed(codes);
         });
     }
 

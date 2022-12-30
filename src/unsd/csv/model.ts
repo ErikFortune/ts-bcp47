@@ -21,7 +21,6 @@
  */
 
 import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../../iana/model';
-import { RegionTier } from '../model';
 
 export interface M49CsvRow {
     globalCode: UnM49RegionCode;
@@ -39,24 +38,4 @@ export interface M49CsvRow {
     leastDevelopedCountry: boolean;
     landLockedDevelopingCountry: boolean;
     smallIslandDevelopingState: boolean;
-}
-
-export interface CountryOrAreaRecord {
-    name: string;
-    m49Code: UnM49RegionCode;
-    isoAlpha2RegionCode?: IsoAlpha2RegionCode;
-    isoAlpha3RegionCode?: IsoAlpha3RegionCode;
-    region: UnM49RegionCode;
-    leastDevelopedCountry: boolean;
-    landLockedDevelopingCountry: boolean;
-    smallIslandDevelopingState: boolean;
-}
-
-export interface RegionRecord {
-    name: string;
-    m49Code: UnM49RegionCode;
-    tier: RegionTier;
-    parent?: UnM49RegionCode;
-    regions: UnM49RegionCode[];
-    areas: UnM49RegionCode[];
 }
