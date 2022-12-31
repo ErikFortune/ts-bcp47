@@ -24,6 +24,9 @@ import * as Model from './model';
 import { RegExpValidationHelpers } from '../../utils';
 import { succeed } from '@fgv/ts-utils';
 
+/**
+ * @public
+ */
 export const extensionSingleton = new RegExpValidationHelpers<Model.ExtensionSingleton>({
     description: 'language tag extension singleton',
     wellFormed: /^[0-9a-wyzA-WYZ]$/,

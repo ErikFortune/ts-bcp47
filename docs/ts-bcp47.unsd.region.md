@@ -4,6 +4,7 @@
 
 ## Unsd.Region type
 
+
 <b>Signature:</b>
 
 ```typescript

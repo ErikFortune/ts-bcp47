@@ -96,14 +96,14 @@ interface DatedRegistry<T> {
 // @public
 function datedRegistry<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC>;
 
-// @public
+// @internal
 function datedRegistryFromJarRecords<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC>;
 
 // @public (undocumented)
 class DefaultRegistries {
     // (undocumented)
     static get languageRegistries(): LanguageRegistries;
-    // (undocumented)
+    // @internal (undocumented)
     protected static _languageRegistries?: LanguageRegistries;
 }
 
@@ -111,11 +111,11 @@ class DefaultRegistries {
 class DefaultRegistries_2 {
     // (undocumented)
     static get regionCodes(): RegionCodes;
-    // (undocumented)
+    // @internal (undocumented)
     protected static _regionCodes?: RegionCodes;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 function endOfTagRangeOrUndefined<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | undefined>;
 
 // @public
@@ -129,7 +129,7 @@ const extendedLanguageRange_2: Converter<ExtendedLanguageRange, unknown>;
 
 // Warning: (ae-forgotten-export) The symbol "TagValidationHelpers" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
+// @public (undocumented)
 const extendedLanguageRange_3: TagValidationHelpers<ExtendedLanguageRange, unknown>;
 
 // @public (undocumented)
@@ -153,7 +153,7 @@ interface ExtensionSubtagValue {
     readonly value: Model.ExtensionSubtag;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const extlangPrefix: Converter<LanguageSubtag, unknown>;
 
 // @public
@@ -162,15 +162,18 @@ type ExtLangSubtag = Brand<string, 'ExtLangSubtag'>;
 // @public (undocumented)
 const extlangSubtag: Converter<ExtLangSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const extlangSubtag_2: RegExpValidationHelpers<ExtLangSubtag, unknown>;
 
-// @public
+// @internal
 interface FileDateEntry extends RecordJar.JarRecord {
     // (undocumented)
     'File-Date': YearMonthDaySpec_2;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "fileDateEntry" is marked as @public, but its signature references "FileDateEntry" which is marked as @internal
+// Warning: (ae-incompatible-release-tags) The symbol "fileDateEntry" is marked as @public, but its signature references "FileDateEntry" which is marked as @internal
+//
 // @public
 const fileDateEntry: Converters_2.ObjectConverter<FileDateEntry, unknown>;
 
@@ -194,7 +197,7 @@ type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
 // @public (undocumented)
 const grandfatheredTag: Converter<GrandfatheredTag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const grandfatheredTag_2: TagValidationHelpers<GrandfatheredTag, unknown>;
 
 declare namespace Iana {
@@ -237,7 +240,7 @@ const isoAlpha2RegionCode: Converter<IsoAlpha2RegionCode, unknown>;
 
 // Warning: (ae-forgotten-export) The symbol "Model_5" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
+// @public (undocumented)
 const isoAlpha2RegionCode_2: RegExpValidationHelpers<Model_5.IsoAlpha2RegionCode, unknown>;
 
 // @public
@@ -246,7 +249,7 @@ type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;
 // @public
 const isoAlpha3RegionCode: Converter<IsoAlpha3RegionCode, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const isoAlpha3RegionCode_2: RegExpValidationHelpers<Model_5.IsoAlpha3RegionCode, unknown>;
 
 declare namespace Items {
@@ -315,7 +318,6 @@ class LanguageComparer {
 
 // @public (undocumented)
 class LanguageRegistries {
-    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry);
     // (undocumented)
     readonly extensions: LanguageTagExtensionRegistry;
     // (undocumented)
@@ -330,13 +332,14 @@ type LanguageSubtag = Brand<string, 'LanguageSubtag'>;
 // @public (undocumented)
 const languageSubtag: Converter<LanguageSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const languageSubtag_2: RegExpValidationHelpers<LanguageSubtag, unknown>;
 
 // @public (undocumented)
 class LanguageSubtagRegistry {
+    // @internal
     protected constructor(registry: RegistryFile_2);
-    // (undocumented)
+    // @internal (undocumented)
     protected readonly _all: RegisteredItem[];
     // (undocumented)
     readonly collections: Scope.LanguageSubtagScope;
@@ -457,7 +460,7 @@ class LanguageTag {
     protected _validity: TagValidity;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 interface LanguageTagExtension {
     // (undocumented)
     added: Iana.Model.YearMonthDaySpec;
@@ -479,13 +482,14 @@ interface LanguageTagExtension {
     url: string;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const languageTagExtension: Converters_2.ObjectConverter<Iana.LanguageTagExtensions.Model.LanguageTagExtension, unknown>;
 
 // @public (undocumented)
 class LanguageTagExtensionRegistry {
+    // @internal
     protected constructor(registry: Model_3.LanguageTagExtensions);
-    // (undocumented)
+    // @internal (undocumented)
     protected readonly _all: Model_3.LanguageTagExtension[];
     // (undocumented)
     static create(registry: Model_3.LanguageTagExtensions): Result<LanguageTagExtensionRegistry>;
@@ -503,7 +507,7 @@ class LanguageTagExtensionRegistry {
     static loadTxtRegistryFile(path: string): Result<LanguageTagExtensionRegistry>;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 interface LanguageTagExtensionRegistryEntry {
     // (undocumented)
     Added: Iana.Model.YearMonthDaySpec;
@@ -525,10 +529,10 @@ interface LanguageTagExtensionRegistryEntry {
     URL: string;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 type LanguageTagExtensions = DatedRegistry<LanguageTagExtension>;
 
-// @public (undocumented)
+// @internal (undocumented)
 const languageTagExtensions: Converter<Iana.Model.DatedRegistry<Iana.LanguageTagExtensions.Model.LanguageTagExtension>, unknown>;
 
 declare namespace LanguageTagExtensions_2 {
@@ -563,7 +567,7 @@ interface LanguageTagParts {
 // @public (undocumented)
 function loadLanguageSubtagsJsonFileSync(path: string): Result<Items.RegistryFile>;
 
-// @public (undocumented)
+// @internal (undocumented)
 function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.LanguageTagExtensions>;
 
 declare namespace Match {
@@ -625,7 +629,7 @@ class NormalizeTag {
     static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]>;
 
 // @public
@@ -634,7 +638,7 @@ type RedundantTag = Brand<string, 'RedundantTag'>;
 // @public (undocumented)
 const redundantTag: Converter<RedundantTag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const redundantTag_2: TagValidationHelpers<RedundantTag, unknown>;
 
 // @public (undocumented)
@@ -642,6 +646,7 @@ type Region = GlobalRegion | IntermediateRegion;
 
 // @public (undocumented)
 class RegionCodes {
+    // @internal
     protected constructor();
     // Warning: (ae-forgotten-export) The symbol "Areas" needs to be exported by the entry point index.d.ts
     //
@@ -655,9 +660,9 @@ class RegionCodes {
     static createFromCsvFile(path: string): Result<RegionCodes>;
     // (undocumented)
     getIsContained(container: Region, contained: CountryOrArea | Region): boolean;
-    // (undocumented)
+    // @internal
     protected _importRow(row: Model_6.M49CsvRow): Result<true>;
-    // (undocumented)
+    // @internal
     protected _importRows(rows: Model_6.M49CsvRow[]): Result<true>;
     // Warning: (ae-forgotten-export) The symbol "Regions" needs to be exported by the entry point index.d.ts
     //
@@ -673,7 +678,7 @@ type RegionSubtag = Brand<string, 'RegionSubtag'>;
 // @public (undocumented)
 const regionSubtag: Converter<RegionSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const regionSubtag_2: RegExpValidationHelpers<RegionSubtag, unknown>;
 
 // @public (undocumented)
@@ -705,7 +710,7 @@ interface RegisteredExtLang extends RegisteredSubtag<'extlang', ExtLangSubtag> {
     readonly type: 'extlang';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredExtLang: Converters_2.ObjectConverter<Items.RegisteredExtLang, unknown>;
 
 // @public (undocumented)
@@ -726,13 +731,13 @@ interface RegisteredGrandfatheredTag extends RegisteredTag<'grandfathered', Gran
     readonly type: 'grandfathered';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredGrandfatheredTag: Converters_2.ObjectConverter<Items.RegisteredGrandfatheredTag, unknown>;
 
 // @public (undocumented)
 type RegisteredItem = RegisteredSubtagItem | RegisteredTagItem;
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredItem: Converter<Items.RegisteredItem, unknown>;
 
 // @public (undocumented)
@@ -761,7 +766,7 @@ interface RegisteredLanguage extends RegisteredSubtagWithRange<'language', Langu
     readonly type: 'language';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredLanguage: Converters_2.ObjectConverter<Items.RegisteredLanguage, unknown>;
 
 // @public (undocumented)
@@ -782,7 +787,7 @@ interface RegisteredRedundantTag extends RegisteredTag<'redundant', RedundantTag
     readonly type: 'redundant';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredRedundantTag: Converters_2.ObjectConverter<Items.RegisteredRedundantTag, unknown>;
 
 // @public (undocumented)
@@ -805,7 +810,7 @@ interface RegisteredRegion extends RegisteredSubtagWithRange<'region', RegionSub
     readonly type: 'region';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredRegion: Converters_2.ObjectConverter<Items.RegisteredRegion, unknown>;
 
 // @public (undocumented)
@@ -828,7 +833,7 @@ interface RegisteredScript extends RegisteredSubtagWithRange<'script', ScriptSub
     readonly type: 'script';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredScript: Converters_2.ObjectConverter<Items.RegisteredScript, unknown>;
 
 // Warning: (ae-forgotten-export) The symbol "Model_2" needs to be exported by the entry point index.d.ts
@@ -894,16 +899,16 @@ interface RegisteredVariant extends RegisteredSubtag<'variant', VariantSubtag> {
     readonly type: 'variant';
 }
 
-// @public (undocumented)
+// @internal (undocumented)
 const registeredVariant: Converters_2.ObjectConverter<Items.RegisteredVariant, unknown>;
 
-// @public (undocumented)
+// @internal (undocumented)
 type RegistryEntryScope = 'collection' | 'macrolanguage' | 'private-use' | 'special';
 
-// @public (undocumented)
+// @internal (undocumented)
 type RegistryEntryType = 'extlang' | 'grandfathered' | 'language' | 'redundant' | 'region' | 'script' | 'variant';
 
-// @public (undocumented)
+// @internal (undocumented)
 const registryFile: Converter<DatedRegistry<Items.RegisteredItem>, unknown>;
 
 // @public (undocumented)
@@ -915,7 +920,7 @@ type ScriptSubtag = Brand<string, 'ScriptSubtag'>;
 // @public (undocumented)
 const scriptSubtag: Converter<ScriptSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
 
 declare namespace TagConverters {
@@ -939,10 +944,10 @@ declare namespace TagConverters {
 // @public
 type TagNormalization = 'unknown' | 'none' | 'canonical' | 'preferred';
 
-// @public (undocumented)
+// @internal (undocumented)
 function tagOrRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | TTAG[]>;
 
-// @public (undocumented)
+// @internal (undocumented)
 function tagOrStartOfTagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG>;
 
 // @public
@@ -954,7 +959,7 @@ type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;
 // @public
 const unM49RegionCode: Converter<UnM49RegionCode, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const unM49RegionCode_2: RegExpValidationHelpers<Model_5.UnM49RegionCode, unknown>;
 
 declare namespace Unsd {
@@ -1025,10 +1030,10 @@ type VariantSubtag = Brand<string, 'VariantSubtag'>;
 // @public (undocumented)
 const variantSubtag: Converter<VariantSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const variantSubtag_2: RegExpValidationHelpers<VariantSubtag, unknown>;
 
-// @internal (undocumented)
+// @public (undocumented)
 const yearMonthDateSpec: RegExpValidationHelpers<Model_5.YearMonthDaySpec, unknown>;
 
 // @public

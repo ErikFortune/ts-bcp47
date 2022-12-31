@@ -29,12 +29,23 @@ import { Result, captureResult } from '@fgv/ts-utils';
 import { TagExtensionsScope } from './extensionsScope';
 import { YearMonthDaySpec } from '../model';
 
+/**
+ * @public
+ */
 export class LanguageTagExtensionRegistry {
     public readonly fileDate: YearMonthDaySpec;
     public readonly extensions: TagExtensionsScope = new TagExtensionsScope();
 
+    /**
+     * @internal
+     */
     protected readonly _all: Model.LanguageTagExtension[];
 
+    /**
+     * Constructs an {@link Iana.LanguageTagExtensions.LanguageTagExtensionRegistry}.
+     * @param registry - Registry file from which the registry is to be constructed.
+     * @internal
+     */
     protected constructor(registry: Model.LanguageTagExtensions) {
         this.fileDate = registry.fileDate;
         this._all = registry.entries;

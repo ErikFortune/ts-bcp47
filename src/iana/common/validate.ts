@@ -25,7 +25,7 @@ import { RegExpValidationHelpers } from '../../utils';
 import { succeed } from '@fgv/ts-utils';
 
 /**
- * @internal
+ * @public
  */
 export const yearMonthDateSpec = new RegExpValidationHelpers<Model.YearMonthDaySpec>({
     description: 'Year-Month-Date value',
@@ -34,7 +34,7 @@ export const yearMonthDateSpec = new RegExpValidationHelpers<Model.YearMonthDayS
 });
 
 /**
- * @internal
+ * @public
  */
 export const isoAlpha2RegionCode = new RegExpValidationHelpers<Model.IsoAlpha2RegionCode>({
     description: 'ISO 3166-2 Alpha-2 region code',
@@ -44,7 +44,7 @@ export const isoAlpha2RegionCode = new RegExpValidationHelpers<Model.IsoAlpha2Re
 });
 
 /**
- * @internal
+ * @public
  */
 export const isoAlpha3RegionCode = new RegExpValidationHelpers<Model.IsoAlpha3RegionCode>({
     description: 'ISO 3166-2 Alpha-3 region code',
@@ -54,7 +54,7 @@ export const isoAlpha3RegionCode = new RegExpValidationHelpers<Model.IsoAlpha3Re
 });
 
 /**
- * @internal
+ * @public
  */
 export const unM49RegionCode = new RegExpValidationHelpers<Model.UnM49RegionCode>({
     description: 'UN M.49 3-digit region code',

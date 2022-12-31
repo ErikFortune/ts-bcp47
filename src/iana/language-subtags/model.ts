@@ -35,12 +35,18 @@ import {
 
 import { DatedRegistry } from '../common/model';
 
+/**
+ * @public
+ */
 export interface RegisteredSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> {
     readonly type: TTYPE;
     readonly subtag: TTAG;
     readonly description: string[];
 }
 
+/**
+ * @public
+ */
 export interface RegisteredSubtagWithRange<TTYPE extends Model.RegistryEntryType, TTAG extends string>
     extends RegisteredSubtag<TTYPE, TTAG> {
     readonly type: TTYPE;
@@ -50,17 +56,26 @@ export interface RegisteredSubtagWithRange<TTYPE extends Model.RegistryEntryType
     readonly subtagRangeEnd?: TTAG;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredTag<TTYPE extends Model.RegistryEntryType, TTAG extends string> {
     readonly type: TTYPE;
     readonly tag: TTAG;
     readonly description: string[];
 }
 
+/**
+ * @public
+ */
 export type RegisteredTagOrSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> =
     | RegisteredSubtag<TTYPE, TTAG>
     | RegisteredSubtagWithRange<TTYPE, TTAG>
     | RegisteredTag<TTYPE, TTAG>;
 
+/**
+ * @public
+ */
 export interface RegisteredLanguage extends RegisteredSubtagWithRange<'language', LanguageSubtag> {
     readonly type: 'language';
     readonly subtag: LanguageSubtag;
@@ -78,6 +93,9 @@ export interface RegisteredLanguage extends RegisteredSubtagWithRange<'language'
     readonly subtagRangeEnd?: LanguageSubtag;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredExtLang extends RegisteredSubtag<'extlang', ExtLangSubtag> {
     readonly type: 'extlang';
     readonly subtag: ExtLangSubtag;
@@ -94,6 +112,9 @@ export interface RegisteredExtLang extends RegisteredSubtag<'extlang', ExtLangSu
     readonly suppressScript?: ScriptSubtag;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredScript extends RegisteredSubtagWithRange<'script', ScriptSubtag> {
     readonly type: 'script';
     readonly subtag: ScriptSubtag;
@@ -107,6 +128,9 @@ export interface RegisteredScript extends RegisteredSubtagWithRange<'script', Sc
     readonly subtagRangeEnd?: ScriptSubtag;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredRegion extends RegisteredSubtagWithRange<'region', RegionSubtag> {
     readonly type: 'region';
     readonly subtag: RegionSubtag;
@@ -120,6 +144,9 @@ export interface RegisteredRegion extends RegisteredSubtagWithRange<'region', Re
     readonly subtagRangeEnd?: RegionSubtag;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredVariant extends RegisteredSubtag<'variant', VariantSubtag> {
     readonly type: 'variant';
     readonly subtag: VariantSubtag;
@@ -132,6 +159,9 @@ export interface RegisteredVariant extends RegisteredSubtag<'variant', VariantSu
     readonly prefix?: ExtendedLanguageRange[];
 }
 
+/**
+ * @public
+ */
 export interface RegisteredGrandfatheredTag extends RegisteredTag<'grandfathered', GrandfatheredTag> {
     readonly type: 'grandfathered';
     readonly tag: GrandfatheredTag;
@@ -143,6 +173,9 @@ export interface RegisteredGrandfatheredTag extends RegisteredTag<'grandfathered
     readonly preferredValue?: ExtendedLanguageRange;
 }
 
+/**
+ * @public
+ */
 export interface RegisteredRedundantTag extends RegisteredTag<'redundant', RedundantTag> {
     readonly type: 'redundant';
     readonly tag: RedundantTag;
@@ -154,8 +187,22 @@ export interface RegisteredRedundantTag extends RegisteredTag<'redundant', Redun
     readonly preferredValue?: ExtendedLanguageRange;
 }
 
+/**
+ * @public
+ */
 export type RegisteredSubtagItem = RegisteredLanguage | RegisteredExtLang | RegisteredScript | RegisteredRegion | RegisteredVariant;
+
+/**
+ * @public
+ */
 export type RegisteredTagItem = RegisteredGrandfatheredTag | RegisteredRedundantTag;
+
+/**
+ * @public
+ */
 export type RegisteredItem = RegisteredSubtagItem | RegisteredTagItem;
 
+/**
+ * @public
+ */
 export type RegistryFile = DatedRegistry<RegisteredItem>;

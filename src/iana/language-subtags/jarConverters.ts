@@ -31,6 +31,9 @@ import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { datedRegistryFromJarRecords } from '../jar/jarConverters';
 import { registryScopeType } from '../jar/language-subtags/registry/converters';
 
+/**
+ * @internal
+ */
 export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'language'>(['language']) },
@@ -51,6 +54,9 @@ export const registeredLanguage = Converters.transformObject<Model.LanguageSubta
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagRegistryEntry, Items.RegisteredExtLang>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
@@ -71,6 +77,9 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredScript = Converters.transformObject<Model.ScriptSubtagRegistryEntry, Items.RegisteredScript>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'script'>(['script']) },
@@ -88,6 +97,9 @@ export const registeredScript = Converters.transformObject<Model.ScriptSubtagReg
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredRegion = Converters.transformObject<Model.RegionSubtagRegistryEntry, Items.RegisteredRegion>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'region'>(['region']) },
@@ -105,6 +117,9 @@ export const registeredRegion = Converters.transformObject<Model.RegionSubtagReg
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredVariant = Converters.transformObject<Model.VariantSubtagRegistryEntry, Items.RegisteredVariant>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'variant'>(['variant']) },
@@ -122,6 +137,9 @@ export const registeredVariant = Converters.transformObject<Model.VariantSubtagR
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredGrandfatheredTag = Converters.transformObject<Model.GrandfatheredTagRegistryEntry, Items.RegisteredGrandfatheredTag>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'grandfathered'>(['grandfathered']) },
@@ -138,6 +156,9 @@ export const registeredGrandfatheredTag = Converters.transformObject<Model.Grand
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredRedundantTag = Converters.transformObject<Model.RedundantTagRegistryEntry, Items.RegisteredRedundantTag>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'redundant'>(['redundant']) },
@@ -154,6 +175,9 @@ export const registeredRedundantTag = Converters.transformObject<Model.Redundant
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredItem = Converters.discriminatedObject<Items.RegisteredItem>('Type', {
     language: registeredLanguage,
     extlang: registeredExtLang,
@@ -164,12 +188,29 @@ export const registeredItem = Converters.discriminatedObject<Items.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
+/**
+ * @internal
+ */
 export const registryFile = datedRegistry(registeredItem);
 
+/**
+ * Loads a JSON-format language subtag registry file.
+ * @param path - The string path from which the registry is to be loaded.
+ * @returns `Success` with the resulting {@link Iana.LanguageSubtags.Model.RegistryFile | registry file}
+ * or `Failure` with details if an error occurs.
+ * @internal
+ */
 export function loadJsonSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
 }
 
+/**
+ * Loads a text (JAR) format language subtag registry file.
+ * @param path - The string path from which the registry is to be loaded.
+ * @returns `Success` with the resulting {@link Iana.LanguageSubtags.Model.RegistryFile | registry file}
+ * or `Failure` with details if an error occurs.
+ * @internal
+ */
 export function loadTxtSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
     return RecordJar.readRecordJarFileSync(path, {
         arrayFields: ['Comments', 'Description', 'Prefix'],

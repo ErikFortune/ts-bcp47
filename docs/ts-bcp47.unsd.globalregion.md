@@ -4,6 +4,7 @@
 
 ## Unsd.GlobalRegion interface
 
+
 <b>Signature:</b>
 
 ```typescript

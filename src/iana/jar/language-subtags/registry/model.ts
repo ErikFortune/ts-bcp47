@@ -25,7 +25,14 @@ import { ExtLangSubtag, GrandfatheredTag, LanguageSubtag, RedundantTag, RegionSu
 import { Brand } from '@fgv/ts-utils';
 import { DatedRegistry } from '../../../common/model';
 
+/**
+ * @internal
+ */
 export type RegistryEntryType = 'extlang' | 'grandfathered' | 'language' | 'redundant' | 'region' | 'script' | 'variant';
+
+/**
+ * @internal
+ */
 export const allRegistryEntryTypes: RegistryEntryType[] = [
     'extlang',
     'grandfathered',
@@ -36,11 +43,24 @@ export const allRegistryEntryTypes: RegistryEntryType[] = [
     'variant',
 ];
 
+/**
+ * @internal
+ */
 export type RegistryEntryScope = 'collection' | 'macrolanguage' | 'private-use' | 'special';
+
+/**
+ * @internal
+ */
 export const allRegistryEntryScopes: RegistryEntryScope[] = ['collection', 'macrolanguage', 'private-use', 'special'];
 
+/**
+ * @public
+ */
 export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;
 
+/**
+ * @internal
+ */
 interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType> {
     /* eslint-disable @typescript-eslint/naming-convention */
     Type: TTYPE;
@@ -56,26 +76,62 @@ interface RegistryEntryBase<TTYPE extends RegistryEntryType = RegistryEntryType>
     /* eslint-enable @typescript-eslint/naming-convention */
 }
 
+/**
+ * @internal
+ */
 export interface RegistrySubtagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TSUBTAG extends string = string>
     extends RegistryEntryBase<TTYPE> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Subtag: TSUBTAG | TSUBTAG[];
 }
 
+/**
+ * @internal
+ */
 export interface RegistryTagEntry<TTYPE extends RegistryEntryType = RegistryEntryType, TTAG extends string = string>
     extends RegistryEntryBase<TTYPE> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Tag: TTAG | TTAG[];
 }
 
+/**
+ * @internal
+ */
 export type LanguageSubtagRegistryEntry = RegistrySubtagEntry<'language', LanguageSubtag>;
+
+/**
+ * @internal
+ */
 export type ExtLangSubtagRegistryEntry = RegistrySubtagEntry<'extlang', ExtLangSubtag>;
+
+/**
+ * @internal
+ */
 export type ScriptSubtagRegistryEntry = RegistrySubtagEntry<'script', ScriptSubtag>;
+
+/**
+ * @internal
+ */
 export type RegionSubtagRegistryEntry = RegistrySubtagEntry<'region', RegionSubtag>;
+
+/**
+ * @internal
+ */
 export type VariantSubtagRegistryEntry = RegistrySubtagEntry<'variant', VariantSubtag>;
+
+/**
+ * @internal
+ */
 export type GrandfatheredTagRegistryEntry = RegistryTagEntry<'grandfathered', GrandfatheredTag>;
+
+/**
+ * @internal
+ */
 export type RedundantTagRegistryEntry = RegistryTagEntry<'redundant', RedundantTag>;
 
+/**
+ * @internal
+ */
 export type RegistryEntry =
     | LanguageSubtagRegistryEntry
     | ExtLangSubtagRegistryEntry
@@ -85,4 +141,7 @@ export type RegistryEntry =
     | GrandfatheredTagRegistryEntry
     | RedundantTagRegistryEntry;
 
+/**
+ * @internal
+ */
 export type RegistryFile = DatedRegistry<RegistryEntry>;

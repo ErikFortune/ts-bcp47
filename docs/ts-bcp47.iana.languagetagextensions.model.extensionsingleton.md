@@ -4,6 +4,7 @@
 
 ## Iana.LanguageTagExtensions.Model.ExtensionSingleton type
 
+
 <b>Signature:</b>
 
 ```typescript

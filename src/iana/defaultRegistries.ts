@@ -22,7 +22,13 @@
 
 import { LanguageRegistries } from './languageRegistries';
 
+/**
+ * @public
+ */
 export class DefaultRegistries {
+    /**
+     * @internal
+     */
     protected static _languageRegistries?: LanguageRegistries = undefined;
 
     public static get languageRegistries(): LanguageRegistries {

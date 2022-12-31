@@ -38,6 +38,9 @@ import { Result, succeed } from '@fgv/ts-utils';
 import { RegisteredItemScope } from '../common/registeredItems';
 import { ValidationHelpers } from '../../utils';
 
+/**
+ * @internal
+ */
 class SubtagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
@@ -59,6 +62,9 @@ class SubtagScope<
     }
 }
 
+/**
+ * @internal
+ */
 class SubtagScopeWithRange<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
@@ -76,6 +82,9 @@ class SubtagScopeWithRange<
     }
 }
 
+/**
+ * @internal
+ */
 class TagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
@@ -97,42 +106,63 @@ class TagScope<
     }
 }
 
+/**
+ * @public
+ */
 export class LanguageSubtagScope extends SubtagScopeWithRange<'language', LanguageSubtag, Items.RegisteredLanguage> {
     public constructor() {
         super('language', Validate.languageSubtag);
     }
 }
 
+/**
+ * @public
+ */
 export class ExtLangSubtagScope extends SubtagScope<'extlang', ExtLangSubtag, Items.RegisteredExtLang> {
     public constructor() {
         super('extlang', Validate.extlangSubtag);
     }
 }
 
+/**
+ * @public
+ */
 export class ScriptSubtagScope extends SubtagScopeWithRange<'script', ScriptSubtag, Items.RegisteredScript> {
     public constructor() {
         super('script', Validate.scriptSubtag);
     }
 }
 
+/**
+ * @public
+ */
 export class RegionSubtagScope extends SubtagScopeWithRange<'region', RegionSubtag, Items.RegisteredRegion> {
     public constructor() {
         super('region', Validate.regionSubtag);
     }
 }
 
+/**
+ * @public
+ */
 export class VariantSubtagScope extends SubtagScope<'variant', VariantSubtag, Items.RegisteredVariant> {
     public constructor() {
         super('variant', Validate.variantSubtag);
     }
 }
 
+/**
+ * @public
+ */
 export class GrandfatheredTagScope extends TagScope<'grandfathered', GrandfatheredTag, Items.RegisteredGrandfatheredTag> {
     public constructor() {
         super('grandfathered', Validate.grandfatheredTag);
     }
 }
 
+/**
+ * @public
+ */
 export class RedundantTagScope extends TagScope<'redundant', RedundantTag, Items.RegisteredRedundantTag> {
     public constructor() {
         super('redundant', Validate.redundantTag);

@@ -29,8 +29,14 @@ import { Converters, Result } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 import { datedRegistry } from '../common/converters';
 
+/**
+ * @public
+ */
 export const extensionSingleton = Validate.extensionSingleton.converter;
 
+/**
+ * @internal
+ */
 export const languageTagExtension = Converters.strictObject<Model.LanguageTagExtension>(
     {
         identifier: extensionSingleton,
@@ -48,8 +54,17 @@ export const languageTagExtension = Converters.strictObject<Model.LanguageTagExt
     }
 );
 
+/**
+ * @internal
+ */
 export const languageTagExtensions = datedRegistry(languageTagExtension);
 
+/**
+ * @internal
+ * @param path - path from which the extensions registry is to be loaded.
+ * @returns `Success` with the loaded language tag extensions data, o
+ * or `Failure` with details if an error occurs.
+ */
 export function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model.LanguageTagExtensions> {
     return convertJsonFileSync(path, languageTagExtensions);
 }

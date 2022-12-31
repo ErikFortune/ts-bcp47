@@ -22,7 +22,13 @@
 
 import { RegionCodes } from './regionCodes';
 
+/**
+ * @public
+ */
 export class DefaultRegistries {
+    /**
+     * @internal
+     */
     protected static _regionCodes?: RegionCodes = undefined;
 
     public static get regionCodes(): RegionCodes {

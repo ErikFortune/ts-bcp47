@@ -4,3 +4,16 @@
 
 ## Iana.LanguageSubtags.Validate namespace
 
+## Variables
+
+|  Variable | Description |
+|  --- | --- |
+|  [extendedLanguageRange](./ts-bcp47.iana.languagesubtags.validate.extendedlanguagerange.md) |  |
+|  [extlangSubtag](./ts-bcp47.iana.languagesubtags.validate.extlangsubtag.md) |  |
+|  [grandfatheredTag](./ts-bcp47.iana.languagesubtags.validate.grandfatheredtag.md) |  |
+|  [languageSubtag](./ts-bcp47.iana.languagesubtags.validate.languagesubtag.md) |  |
+|  [redundantTag](./ts-bcp47.iana.languagesubtags.validate.redundanttag.md) |  |
+|  [regionSubtag](./ts-bcp47.iana.languagesubtags.validate.regionsubtag.md) |  |
+|  [scriptSubtag](./ts-bcp47.iana.languagesubtags.validate.scriptsubtag.md) |  |
+|  [variantSubtag](./ts-bcp47.iana.languagesubtags.validate.variantsubtag.md) |  |
+

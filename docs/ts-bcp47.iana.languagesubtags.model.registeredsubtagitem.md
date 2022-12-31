@@ -4,6 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredSubtagItem type
 
+
 <b>Signature:</b>
 
 ```typescript

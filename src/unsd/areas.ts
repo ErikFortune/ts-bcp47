@@ -24,9 +24,23 @@ import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../ia
 import { Result, fail, succeed } from '@fgv/ts-utils';
 import { CountryOrArea } from './common';
 
+/**
+ * @public
+ */
 export class Areas {
+    /**
+     * @internal
+     */
     protected _m49: Map<UnM49RegionCode, CountryOrArea> = new Map();
+
+    /**
+     * @internal
+     */
     protected _isoAlpha2: Map<IsoAlpha2RegionCode, CountryOrArea> = new Map();
+
+    /**
+     * @internal
+     */
     protected _isoAlpha3: Map<IsoAlpha3RegionCode, CountryOrArea> = new Map();
 
     public addArea(area: CountryOrArea): Result<CountryOrArea> {

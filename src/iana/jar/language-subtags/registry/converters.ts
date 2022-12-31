@@ -24,5 +24,12 @@ import * as Model from './model';
 
 import { Converters } from '@fgv/ts-utils';
 
+/**
+ * @internal
+ */
 export const registryEntryType = Converters.enumeratedValue<Model.RegistryEntryType>(Model.allRegistryEntryTypes);
+
+/**
+ * @internal
+ */
 export const registryScopeType = Converters.enumeratedValue<Model.RegistryEntryScope>(Model.allRegistryEntryScopes);

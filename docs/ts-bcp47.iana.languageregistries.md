@@ -4,17 +4,12 @@
 
 ## Iana.LanguageRegistries class
 
+
 <b>Signature:</b>
 
 ```typescript
 export declare class LanguageRegistries 
 ```
-
-## Constructors
-
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(subtags, extensions)](./ts-bcp47.iana.languageregistries._constructor_.md) | <code>protected</code> | Constructs a new instance of the <code>LanguageRegistries</code> class |
 
 ## Properties
 

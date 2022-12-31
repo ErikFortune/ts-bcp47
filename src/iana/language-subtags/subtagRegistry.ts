@@ -29,6 +29,9 @@ import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from '../jar/language-subtags/registry/model';
 
+/**
+ * @public
+ */
 export class LanguageSubtagRegistry {
     public readonly fileDate: YearMonthDaySpec;
     public readonly languages: Scope.LanguageSubtagScope = new Scope.LanguageSubtagScope();
@@ -45,8 +48,16 @@ export class LanguageSubtagRegistry {
     public readonly grandfathered: Scope.GrandfatheredTagScope = new Scope.GrandfatheredTagScope();
     public readonly redundant: Scope.RedundantTagScope = new Scope.RedundantTagScope();
 
+    /**
+     * @internal
+     */
     protected readonly _all: RegisteredItem[];
 
+    /**
+     * @param registry - The contents of the registry file
+     * from which the data is loaded.
+     * @internal
+     */
     protected constructor(registry: RegistryFile) {
         this.fileDate = registry.fileDate;
         this._all = registry.entries;

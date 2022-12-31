@@ -27,6 +27,9 @@ import { Result, succeed } from '@fgv/ts-utils';
 
 import { RegisteredItemScope } from '../common/registeredItems';
 
+/**
+ * @public
+ */
 export class TagExtensionsScope extends RegisteredItemScope<
     'language-tag-extension',
     Model.ExtensionSingleton,
@@ -43,6 +46,14 @@ export class TagExtensionsScope extends RegisteredItemScope<
         });
     }
 
+    /**
+     * Validates a single entry from a language tag extensions data file.
+     * @param entry - The language tag extensions registry entry to be
+     * validated.
+     * @returns `Success` with `true` if the entry is valid, `Failure` with
+     * details if an error occurs.
+     * @internal
+     */
     protected _validateEntry(entry: Model.LanguageTagExtension): Result<true> {
         return this._validateKey(entry.identifier);
     }

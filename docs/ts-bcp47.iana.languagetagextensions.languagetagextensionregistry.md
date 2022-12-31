@@ -10,17 +10,14 @@
 export declare class LanguageTagExtensionRegistry 
 ```
 
-## Constructors
+## Remarks
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(registry)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry._constructor_.md) | <code>protected</code> | Constructs a new instance of the <code>LanguageTagExtensionRegistry</code> class |
+The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `LanguageTagExtensionRegistry` class.
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_all](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry._all.md) | <p><code>protected</code></p><p><code>readonly</code></p> | Model.LanguageTagExtension\[\] |  |
 |  [extensions](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.extensions.md) | <code>readonly</code> | TagExtensionsScope |  |
 |  [fileDate](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.filedate.md) | <code>readonly</code> | YearMonthDaySpec |  |
 

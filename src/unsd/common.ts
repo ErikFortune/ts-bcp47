@@ -22,9 +22,18 @@
 
 import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../iana/model';
 
+/**
+ * @public
+ */
 export type IntermediateRegionTier = 'region' | 'subRegion' | 'intermediateRegion';
+/**
+ * @public
+ */
 export type RegionTier = 'global' | IntermediateRegionTier;
 
+/**
+ * @public
+ */
 export interface GlobalRegion {
     name: string;
     code: UnM49RegionCode;
@@ -35,6 +44,9 @@ export interface GlobalRegion {
     /* eslint-enable no-use-before-define */
 }
 
+/**
+ * @public
+ */
 export interface IntermediateRegion {
     name: string;
     code: UnM49RegionCode;
@@ -46,8 +58,14 @@ export interface IntermediateRegion {
     /* eslint-enable no-use-before-define */
 }
 
+/**
+ * @public
+ */
 export type Region = GlobalRegion | IntermediateRegion;
 
+/**
+ * @public
+ */
 export interface CountryOrArea {
     name: string;
     code: UnM49RegionCode;

@@ -4,6 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredLanguage interface
 
+
 <b>Signature:</b>
 
 ```typescript
@@ -21,7 +22,7 @@ export interface RegisteredLanguage extends RegisteredSubtagWithRange<'language'
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.description.md) | <code>readonly</code> | string\[\] |  |
 |  [macrolanguage?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.macrolanguage.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | <i>(Optional)</i> |
 |  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.preferredvalue.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | <i>(Optional)</i> |
-|  [scope?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.scope.md) | <code>readonly</code> | [Model.RegistryEntryScope](./ts-bcp47.iana.languagesubtags.registryentryscope.md) | <i>(Optional)</i> |
+|  [scope?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.scope.md) | <code>readonly</code> | Model.RegistryEntryScope | <i>(Optional)</i> |
 |  [subtag](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.subtag.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) |  |
 |  [subtagRangeEnd?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.subtagrangeend.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | <i>(Optional)</i> |
 |  [suppressScript?](./ts-bcp47.iana.languagesubtags.model.registeredlanguage.suppressscript.md) | <code>readonly</code> | [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | <i>(Optional)</i> |

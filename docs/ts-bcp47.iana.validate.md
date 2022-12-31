@@ -4,3 +4,12 @@
 
 ## Iana.Validate namespace
 
+## Variables
+
+|  Variable | Description |
+|  --- | --- |
+|  [isoAlpha2RegionCode](./ts-bcp47.iana.validate.isoalpha2regioncode.md) |  |
+|  [isoAlpha3RegionCode](./ts-bcp47.iana.validate.isoalpha3regioncode.md) |  |
+|  [unM49RegionCode](./ts-bcp47.iana.validate.unm49regioncode.md) |  |
+|  [yearMonthDateSpec](./ts-bcp47.iana.validate.yearmonthdatespec.md) |  |
+

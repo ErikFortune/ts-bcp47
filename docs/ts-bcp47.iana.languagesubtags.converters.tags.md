@@ -4,21 +4,11 @@
 
 ## Iana.LanguageSubtags.Converters.Tags namespace
 
-## Functions
-
-|  Function | Description |
-|  --- | --- |
-|  [endOfTagRangeOrUndefined(tagConverter)](./ts-bcp47.iana.languagesubtags.converters.tags.endoftagrangeorundefined.md) |  |
-|  [rangeOfTags(tagConverter)](./ts-bcp47.iana.languagesubtags.converters.tags.rangeoftags.md) |  |
-|  [tagOrRange(tagConverter)](./ts-bcp47.iana.languagesubtags.converters.tags.tagorrange.md) |  |
-|  [tagOrStartOfTagRange(tagConverter)](./ts-bcp47.iana.languagesubtags.converters.tags.tagorstartoftagrange.md) |  |
-
 ## Variables
 
 |  Variable | Description |
 |  --- | --- |
 |  [extendedLanguageRange](./ts-bcp47.iana.languagesubtags.converters.tags.extendedlanguagerange.md) |  |
-|  [extlangPrefix](./ts-bcp47.iana.languagesubtags.converters.tags.extlangprefix.md) |  |
 |  [extlangSubtag](./ts-bcp47.iana.languagesubtags.converters.tags.extlangsubtag.md) |  |
 |  [grandfatheredTag](./ts-bcp47.iana.languagesubtags.converters.tags.grandfatheredtag.md) |  |
 |  [languageSubtag](./ts-bcp47.iana.languagesubtags.converters.tags.languagesubtag.md) |  |
