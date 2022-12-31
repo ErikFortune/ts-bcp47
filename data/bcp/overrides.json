@@ -2,7 +2,6 @@
     {
         "language": "en",
         "defaultAffinity": "gb",
-        "preferredRegion": "GB",
         "affinity": {
             "us": ["GU", "PH", "PR", "UM", "US", "VI"]
         }
@@ -13,6 +12,10 @@
         "affinity": {
             "es": ["ES", "GQ", "IC"]
         }
+    },
+    {
+        "language": "fr",
+        "preferredRegion": "FR"
     }
 ]
 

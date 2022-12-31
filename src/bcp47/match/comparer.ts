@@ -189,6 +189,10 @@ export class LanguageComparer {
         }
 
         // preferred region
+        if (o1?.preferredRegion === r1 || o2?.preferredRegion === r2) {
+            return matchQuality.preferredRegion;
+        }
+
         return matchQuality.sibling;
     }
 

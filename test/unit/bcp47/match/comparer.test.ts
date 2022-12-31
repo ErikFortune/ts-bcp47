@@ -93,6 +93,18 @@ describe('LanguageComparer class', () => {
                 l2: 'en-GB',
                 expected: matchQuality.sibling,
             },
+            {
+                description: 'preferredRegion match if one tag is preferred region',
+                l1: 'fr-BE',
+                l2: 'fr-FR',
+                expected: matchQuality.preferredRegion,
+            },
+            {
+                description: 'sibling match if neither region is preferred region',
+                l1: 'fr-BE',
+                l2: 'fr-CA',
+                expected: matchQuality.sibling,
+            },
             { description: 'extension exact match is exact', l1: 'en-US-u-GB', l2: 'en-US-u-GB', expected: matchQuality.exact },
             { description: 'extension singleton mismatch is partial', l1: 'en-US-u-GB', l2: 'en-US-t-GB', expected: matchQuality.variant },
             { description: 'extension value mismatch is partial', l1: 'en-US-u-GB', l2: 'en-US-u-CA', expected: matchQuality.variant },
