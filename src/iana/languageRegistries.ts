@@ -26,10 +26,13 @@ import { LanguageSubtagRegistry } from './language-subtags';
 import { LanguageTagExtensionRegistry } from './language-tag-extensions';
 import path from 'path';
 
+/**
+ * @public
+ */
 export class LanguageRegistries {
     public readonly subtags: LanguageSubtagRegistry;
     public readonly extensions: LanguageTagExtensionRegistry;
-    protected constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
+    private constructor(subtags: LanguageSubtagRegistry, extensions: LanguageTagExtensionRegistry) {
         this.subtags = subtags;
         this.extensions = extensions;
     }

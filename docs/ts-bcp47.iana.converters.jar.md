@@ -4,12 +4,6 @@
 
 ## Iana.Converters.Jar namespace
 
-## Functions
-
-|  Function | Description |
-|  --- | --- |
-|  [datedRegistryFromJarRecords(entryConverter)](./ts-bcp47.iana.converters.jar.datedregistryfromjarrecords.md) | Helper function which creates a converter that returns a validated [DatedRegistry](./ts-bcp47.iana.model.datedregistry.md) containing entries of supplied template type <code>T</code>. |
-
 ## Variables
 
 |  Variable | Description |

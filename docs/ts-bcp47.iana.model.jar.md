@@ -4,9 +4,3 @@
 
 ## Iana.Model.Jar namespace
 
-## Interfaces
-
-|  Interface | Description |
-|  --- | --- |
-|  [FileDateEntry](./ts-bcp47.iana.model.jar.filedateentry.md) | File date record entry typically placed at the head of a registry file. |
-

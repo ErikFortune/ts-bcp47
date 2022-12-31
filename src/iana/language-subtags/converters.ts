@@ -31,8 +31,14 @@ import { registryScopeType } from '../jar/language-subtags/registry/converters';
 
 export { TagConverters as Tags };
 
+/**
+ * @public
+ */
 export const extendedLanguageRange = TagConverters.extendedLanguageRange;
 
+/**
+ * @internal
+ */
 export const registeredLanguage = Converters.strictObject<Model.RegisteredLanguage>(
     {
         type: Converters.enumeratedValue<'language'>(['language']),
@@ -53,6 +59,9 @@ export const registeredLanguage = Converters.strictObject<Model.RegisteredLangua
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredExtLang = Converters.strictObject<Model.RegisteredExtLang>(
     {
         type: Converters.enumeratedValue<'extlang'>(['extlang']),
@@ -73,6 +82,9 @@ export const registeredExtLang = Converters.strictObject<Model.RegisteredExtLang
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredScript = Converters.strictObject<Model.RegisteredScript>(
     {
         type: Converters.enumeratedValue<'script'>(['script']),
@@ -90,6 +102,9 @@ export const registeredScript = Converters.strictObject<Model.RegisteredScript>(
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredRegion = Converters.strictObject<Model.RegisteredRegion>(
     {
         type: Converters.enumeratedValue<'region'>(['region']),
@@ -107,6 +122,9 @@ export const registeredRegion = Converters.strictObject<Model.RegisteredRegion>(
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredVariant = Converters.strictObject<Model.RegisteredVariant>(
     {
         type: Converters.enumeratedValue<'variant'>(['variant']),
@@ -124,6 +142,9 @@ export const registeredVariant = Converters.strictObject<Model.RegisteredVariant
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredGrandfatheredTag = Converters.strictObject<Model.RegisteredGrandfatheredTag>(
     {
         type: Converters.enumeratedValue<'grandfathered'>(['grandfathered']),
@@ -140,6 +161,9 @@ export const registeredGrandfatheredTag = Converters.strictObject<Model.Register
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredRedundantTag = Converters.strictObject<Model.RegisteredRedundantTag>(
     {
         type: Converters.enumeratedValue<'redundant'>(['redundant']),
@@ -156,6 +180,9 @@ export const registeredRedundantTag = Converters.strictObject<Model.RegisteredRe
     }
 );
 
+/**
+ * @internal
+ */
 export const registeredItem = Converters.discriminatedObject<Model.RegisteredItem>('type', {
     language: registeredLanguage,
     extlang: registeredExtLang,
@@ -166,8 +193,17 @@ export const registeredItem = Converters.discriminatedObject<Model.RegisteredIte
     redundant: registeredRedundantTag,
 });
 
+/**
+ * @internal
+ */
 export const registryFile = datedRegistry(registeredItem);
 
+/**
+ * @public
+ * @param path - String path from which file is to be loaded.
+ * @returns `Success` with the resulting {@link Iana.LanguageSubtags.Model.RegistryFile | registry file}
+ * or `Failure` with details if an error occurs.
+ */
 export function loadLanguageSubtagsJsonFileSync(path: string): Result<Model.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
 }

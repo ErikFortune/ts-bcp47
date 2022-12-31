@@ -10,17 +10,14 @@
 export declare class LanguageSubtagRegistry 
 ```
 
-## Constructors
+## Remarks
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(registry)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry._constructor_.md) | <code>protected</code> | Constructs a new instance of the <code>LanguageSubtagRegistry</code> class |
+The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `LanguageSubtagRegistry` class.
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_all](./ts-bcp47.iana.languagesubtags.languagesubtagregistry._all.md) | <p><code>protected</code></p><p><code>readonly</code></p> | RegisteredItem\[\] |  |
 |  [collections](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.collections.md) | <code>readonly</code> | Scope.LanguageSubtagScope |  |
 |  [extlangs](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.extlangs.md) | <code>readonly</code> | Scope.ExtLangSubtagScope |  |
 |  [fileDate](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.filedate.md) | <code>readonly</code> | YearMonthDaySpec |  |

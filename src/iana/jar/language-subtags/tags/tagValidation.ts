@@ -23,6 +23,9 @@
 import { Result, succeed } from '@fgv/ts-utils';
 import { ValidationHelpers } from '../../../../utils';
 
+/**
+ * @internal
+ */
 export class TagValidationHelpers<T extends string, TC = unknown> extends ValidationHelpers<T, TC> {
     public readonly wellFormed: RegExp = /^([A-Za-z][A-Za-z0-9-]{0,7})(-[A-Za-z][A-Za-z0-9-]{0,7})*$/;
 

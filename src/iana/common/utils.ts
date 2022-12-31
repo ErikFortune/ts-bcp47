@@ -25,6 +25,7 @@ import { YearMonthDaySpec } from './model';
 
 /**
  * Gets the current date as an {@link Iana.YearMonthDaySpec}.
+ * @public
  */
 export function nowAsYearMonthDay(): YearMonthDaySpec {
     return DateTime.now().toFormat('yyyy-LL-dd') as YearMonthDaySpec;

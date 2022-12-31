@@ -4,17 +4,9 @@
 
 ## Iana.LanguageTagExtensions.Model namespace
 
-## Interfaces
-
-|  Interface | Description |
-|  --- | --- |
-|  [LanguageTagExtension](./ts-bcp47.iana.languagetagextensions.model.languagetagextension.md) |  |
-|  [LanguageTagExtensionRegistryEntry](./ts-bcp47.iana.languagetagextensions.model.languagetagextensionregistryentry.md) |  |
-
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
 |  [ExtensionSingleton](./ts-bcp47.iana.languagetagextensions.model.extensionsingleton.md) |  |
-|  [LanguageTagExtensions](./ts-bcp47.iana.languagetagextensions.model.languagetagextensions.md) |  |
 

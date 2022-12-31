@@ -48,20 +48,24 @@ export type RegionSubtag = Brand<string, 'RegionSubtag'>;
 
 /**
  * Variant subtag in the IANA language subtag registry.
+ * @public
  */
 export type VariantSubtag = Brand<string, 'VariantSubtag'>;
 
 /**
  * Legacy language tag registered as grandfathered in the IANA language subtag registry.
+ * @public
  */
 export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;
 
 /**
  * Legacy language tag registered as redundant in the IANA language subtag registry.
+ * @public
  */
 export type RedundantTag = Brand<string, 'RedundantTag'>;
 
 /**
  * An extended language subtag as used in the IANA language registry.
+ * @public
  */
 export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;

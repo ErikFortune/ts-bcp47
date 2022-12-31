@@ -36,7 +36,7 @@ import { TagValidationHelpers } from './tagValidation';
 import { succeed } from '@fgv/ts-utils';
 
 /**
- * @internal
+ * @public
  */
 export const languageSubtag = new RegExpValidationHelpers<LanguageSubtag>({
     description: 'language subtag',
@@ -46,7 +46,7 @@ export const languageSubtag = new RegExpValidationHelpers<LanguageSubtag>({
 });
 
 /**
- * @internal
+ * @public
  */
 export const extlangSubtag = new RegExpValidationHelpers<ExtLangSubtag>({
     description: 'extlang subtag',
@@ -56,7 +56,7 @@ export const extlangSubtag = new RegExpValidationHelpers<ExtLangSubtag>({
 });
 
 /**
- * @internal
+ * @public
  */
 export const scriptSubtag = new RegExpValidationHelpers<ScriptSubtag>({
     description: 'script subtag',
@@ -68,7 +68,7 @@ export const scriptSubtag = new RegExpValidationHelpers<ScriptSubtag>({
 });
 
 /**
- * @internal
+ * @public
  */
 export const regionSubtag = new RegExpValidationHelpers<RegionSubtag>({
     description: 'region subtag',
@@ -78,7 +78,7 @@ export const regionSubtag = new RegExpValidationHelpers<RegionSubtag>({
 });
 
 /**
- * @internal
+ * @public
  */
 export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
     description: 'variant subtag',
@@ -88,16 +88,16 @@ export const variantSubtag = new RegExpValidationHelpers<VariantSubtag>({
 });
 
 /**
- * @internal
+ * @public
  */
 export const grandfatheredTag = new TagValidationHelpers<GrandfatheredTag>('grandfathered tag');
 
 /**
- * @internal
+ * @public
  */
 export const redundantTag = new TagValidationHelpers<RedundantTag>('redundant tag');
 
 /**
- * @internal
+ * @public
  */
 export const extendedLanguageRange = new TagValidationHelpers<ExtendedLanguageRange>('extended language range');

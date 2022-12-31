@@ -26,7 +26,7 @@ import { YearMonthDaySpec } from '../common/model';
 /**
  * File date record entry typically placed at the head of a registry
  * file.
- * @public
+ * @internal
  */
 export interface FileDateEntry extends RecordJar.JarRecord {
     // eslint-disable-next-line @typescript-eslint/naming-convention

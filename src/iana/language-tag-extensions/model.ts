@@ -25,8 +25,14 @@ import * as Iana from '../../iana';
 import { Brand } from '@fgv/ts-utils';
 import { DatedRegistry } from '../model';
 
+/**
+ * @public
+ */
 export type ExtensionSingleton = Brand<string, 'ExtensionSingleton'>;
 
+/**
+ * @internal
+ */
 export interface LanguageTagExtensionRegistryEntry {
     /* eslint-disable @typescript-eslint/naming-convention */
     Identifier: ExtensionSingleton;
@@ -41,6 +47,9 @@ export interface LanguageTagExtensionRegistryEntry {
     /* eslint-enable @typescript-eslint/naming-convention */
 }
 
+/**
+ * @internal
+ */
 export interface LanguageTagExtension {
     identifier: ExtensionSingleton;
     description: string[];
@@ -53,4 +62,7 @@ export interface LanguageTagExtension {
     url: string;
 }
 
+/**
+ * @internal
+ */
 export type LanguageTagExtensions = DatedRegistry<LanguageTagExtension>;

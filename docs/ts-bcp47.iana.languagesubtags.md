@@ -28,8 +28,6 @@
 |  [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | Primary language subtag in the IANA language subtag registry. |
 |  [RedundantTag](./ts-bcp47.iana.languagesubtags.redundanttag.md) | Legacy language tag registered as redundant in the IANA language subtag registry. |
 |  [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | Region subtag in the IANA language subtag registry. |
-|  [RegistryEntryScope](./ts-bcp47.iana.languagesubtags.registryentryscope.md) |  |
-|  [RegistryEntryType](./ts-bcp47.iana.languagesubtags.registryentrytype.md) |  |
 |  [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | Script subtag in the IANA language subtag registry. |
 |  [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md) | Variant subtag in the IANA language subtag registry. |
 

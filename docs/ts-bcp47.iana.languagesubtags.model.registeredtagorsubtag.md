@@ -4,10 +4,9 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredTagOrSubtag type
 
+
 <b>Signature:</b>
 
 ```typescript
 export type RegisteredTagOrSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> = RegisteredSubtag<TTYPE, TTAG> | RegisteredSubtagWithRange<TTYPE, TTAG> | RegisteredTag<TTYPE, TTAG>;
 ```
-<b>References:</b> [Model.RegistryEntryType](./ts-bcp47.iana.languagesubtags.registryentrytype.md)
-

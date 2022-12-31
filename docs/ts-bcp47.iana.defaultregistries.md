@@ -4,6 +4,7 @@
 
 ## Iana.DefaultRegistries class
 
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,6 +15,5 @@ export declare class DefaultRegistries
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_languageRegistries?](./ts-bcp47.iana.defaultregistries._languageregistries.md) | <p><code>protected</code></p><p><code>static</code></p> | [LanguageRegistries](./ts-bcp47.iana.languageregistries.md) | <i>(Optional)</i> |
 |  [languageRegistries](./ts-bcp47.iana.defaultregistries.languageregistries.md) | <p><code>readonly</code></p><p><code>static</code></p> | [LanguageRegistries](./ts-bcp47.iana.languageregistries.md) |  |
 

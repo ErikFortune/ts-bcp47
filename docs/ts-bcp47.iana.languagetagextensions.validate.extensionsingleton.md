@@ -4,6 +4,7 @@
 
 ## Iana.LanguageTagExtensions.Validate.extensionSingleton variable
 
+
 <b>Signature:</b>
 
 ```typescript

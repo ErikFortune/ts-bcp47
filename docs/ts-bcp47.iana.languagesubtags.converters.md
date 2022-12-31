@@ -21,13 +21,4 @@
 |  Variable | Description |
 |  --- | --- |
 |  [extendedLanguageRange](./ts-bcp47.iana.languagesubtags.converters.extendedlanguagerange.md) |  |
-|  [registeredExtLang](./ts-bcp47.iana.languagesubtags.converters.registeredextlang.md) |  |
-|  [registeredGrandfatheredTag](./ts-bcp47.iana.languagesubtags.converters.registeredgrandfatheredtag.md) |  |
-|  [registeredItem](./ts-bcp47.iana.languagesubtags.converters.registereditem.md) |  |
-|  [registeredLanguage](./ts-bcp47.iana.languagesubtags.converters.registeredlanguage.md) |  |
-|  [registeredRedundantTag](./ts-bcp47.iana.languagesubtags.converters.registeredredundanttag.md) |  |
-|  [registeredRegion](./ts-bcp47.iana.languagesubtags.converters.registeredregion.md) |  |
-|  [registeredScript](./ts-bcp47.iana.languagesubtags.converters.registeredscript.md) |  |
-|  [registeredVariant](./ts-bcp47.iana.languagesubtags.converters.registeredvariant.md) |  |
-|  [registryFile](./ts-bcp47.iana.languagesubtags.converters.registryfile.md) |  |
 

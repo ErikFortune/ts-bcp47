@@ -4,6 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredVariant interface
 
+
 <b>Signature:</b>
 
 ```typescript

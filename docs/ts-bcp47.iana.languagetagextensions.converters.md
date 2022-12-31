@@ -4,17 +4,9 @@
 
 ## Iana.LanguageTagExtensions.Converters namespace
 
-## Functions
-
-|  Function | Description |
-|  --- | --- |
-|  [loadLanguageTagExtensionsJsonFileSync(path)](./ts-bcp47.iana.languagetagextensions.converters.loadlanguagetagextensionsjsonfilesync.md) |  |
-
 ## Variables
 
 |  Variable | Description |
 |  --- | --- |
 |  [extensionSingleton](./ts-bcp47.iana.languagetagextensions.converters.extensionsingleton.md) |  |
-|  [languageTagExtension](./ts-bcp47.iana.languagetagextensions.converters.languagetagextension.md) |  |
-|  [languageTagExtensions](./ts-bcp47.iana.languagetagextensions.converters.languagetagextensions.md) |  |
 

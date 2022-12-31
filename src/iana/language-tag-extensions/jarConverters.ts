@@ -30,6 +30,9 @@ import { datedRegistry } from '../common/converters';
 import { datedRegistryFromJarRecords } from '../jar/jarConverters';
 import { extensionSingleton } from './validate';
 
+/**
+ * @internal
+ */
 export const languageTagExtension = Converters.transformObject<Model.LanguageTagExtensionRegistryEntry, Model.LanguageTagExtension>(
     {
         identifier: { from: 'Identifier', converter: extensionSingleton.converter },
@@ -48,12 +51,29 @@ export const languageTagExtension = Converters.transformObject<Model.LanguageTag
     }
 );
 
+/**
+ * @internal
+ */
 export const languageTagExtensions = datedRegistry(languageTagExtension);
 
+/**
+ * Loads language tag extensions registry data from a JSON-formatted file.
+ * @param path - String path from which registry data is to be read.
+ * @returns `Success` with the loaded language tag extension data
+ * or `Failure` with details if an error occurs.
+ * @internal
+ */
 export function loadJsonLanguageTagExtensionsRegistryFileSync(path: string): Result<Model.LanguageTagExtensions> {
     return convertJsonFileSync(path, languageTagExtensions);
 }
 
+/**
+ * Loads language tag extensions registry data from a text (JAR-formatted) file.
+ * @param path - String path from which registry data is to be read.
+ * @returns `Success` with the loaded language tag extension data
+ * or `Failure` with details if an error occurs.
+ * @internal
+ */
 export function loadTxtLanguageTagExtensionsRegistryFileSync(path: string): Result<Model.LanguageTagExtensions> {
     return RecordJar.readRecordJarFileSync(path, {
         arrayFields: ['Comments', 'Description'],

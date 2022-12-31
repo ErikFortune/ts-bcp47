@@ -14,9 +14,11 @@ export declare function loadLanguageSubtagsJsonFileSync(path: string): Result<Mo
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  path | string |  |
+|  path | string | String path from which file is to be loaded. |
 
 <b>Returns:</b>
 
 Result&lt;Model.RegistryFile&gt;
+
+`Success` with the resulting [registry file](./ts-bcp47.iana.languagesubtags.model.registryfile.md) or `Failure` with details if an error occurs.
 

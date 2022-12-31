@@ -26,17 +26,49 @@ import { BaseConverter, Converter, Converters, Result, fail, mapResults, succeed
 
 import { LanguageSubtag } from './model';
 
+/**
+ * @public
+ */
 export const languageSubtag = Validate.languageSubtag.converter;
+
+/**
+ * @public
+ */
 export const extlangSubtag = Validate.extlangSubtag.converter;
+
+/**
+ * @public
+ */
 export const scriptSubtag = Validate.scriptSubtag.converter;
+
+/**
+ * @public
+ */
 export const regionSubtag = Validate.regionSubtag.converter;
+
+/**
+ * @public
+ */
 export const variantSubtag = Validate.variantSubtag.converter;
 
+/**
+ * @public
+ */
 export const grandfatheredTag = Validate.grandfatheredTag.converter;
+
+/**
+ * @public
+ */
 export const redundantTag = Validate.redundantTag.converter;
 
+/**
+ * @public
+ */
 export const extendedLanguageRange = Validate.extendedLanguageRange.converter;
 
+/**
+ * @internal
+ */
 export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]> {
     return new BaseConverter<TTAG[]>((from: unknown): Result<TTAG[]> => {
         if (typeof from !== 'string') {
@@ -52,18 +84,30 @@ export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>):
     });
 }
 
+/**
+ * @internal
+ */
 export function tagOrRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | TTAG[]> {
     return Converters.oneOf<TTAG | TTAG[]>([tagConverter, rangeOfTags(tagConverter)]);
 }
 
+/**
+ * @internal
+ */
 export function tagOrStartOfTagRange<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG> {
     return tagOrRange(tagConverter).map((t) => (Array.isArray(t) ? succeed(t[0]) : succeed(t)));
 }
 
+/**
+ * @internal
+ */
 export function endOfTagRangeOrUndefined<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG | undefined> {
     return tagOrRange(tagConverter).map((t) => (Array.isArray(t) ? succeed(t[1]) : succeed(undefined)));
 }
 
+/**
+ * @internal
+ */
 export const extlangPrefix = Converters.arrayOf(languageSubtag).map((tags) => {
     if (tags.length !== 1) {
         return fail<LanguageSubtag>(`[${tags.join(', ')}]: malformed extlang prefix`);
