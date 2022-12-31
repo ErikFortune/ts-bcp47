@@ -111,7 +111,7 @@ class DefaultRegistries {
 class DefaultRegistries_2 {
     // (undocumented)
     static get regionCodes(): RegionCodes;
-    // (undocumented)
+    // @internal (undocumented)
     protected static _regionCodes?: RegionCodes;
 }
 
@@ -646,6 +646,7 @@ type Region = GlobalRegion | IntermediateRegion;
 
 // @public (undocumented)
 class RegionCodes {
+    // @internal
     protected constructor();
     // Warning: (ae-forgotten-export) The symbol "Areas" needs to be exported by the entry point index.d.ts
     //
@@ -659,9 +660,9 @@ class RegionCodes {
     static createFromCsvFile(path: string): Result<RegionCodes>;
     // (undocumented)
     getIsContained(container: Region, contained: CountryOrArea | Region): boolean;
-    // (undocumented)
+    // @internal
     protected _importRow(row: Model_6.M49CsvRow): Result<true>;
-    // (undocumented)
+    // @internal
     protected _importRows(rows: Model_6.M49CsvRow[]): Result<true>;
     // Warning: (ae-forgotten-export) The symbol "Regions" needs to be exported by the entry point index.d.ts
     //

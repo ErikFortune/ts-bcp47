@@ -10,11 +10,9 @@
 export declare class RegionCodes 
 ```
 
-## Constructors
+## Remarks
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)()](./ts-bcp47.unsd.regioncodes._constructor_.md) | <code>protected</code> | Constructs a new instance of the <code>RegionCodes</code> class |
+The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `RegionCodes` class.
 
 ## Properties
 
@@ -27,8 +25,6 @@ export declare class RegionCodes
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [\_importRow(row)](./ts-bcp47.unsd.regioncodes._importrow.md) | <code>protected</code> |  |
-|  [\_importRows(rows)](./ts-bcp47.unsd.regioncodes._importrows.md) | <code>protected</code> |  |
 |  [createFromCsv(rows)](./ts-bcp47.unsd.regioncodes.createfromcsv.md) | <code>static</code> |  |
 |  [createFromCsvFile(path)](./ts-bcp47.unsd.regioncodes.createfromcsvfile.md) | <code>static</code> |  |
 |  [getIsContained(container, contained)](./ts-bcp47.unsd.regioncodes.getiscontained.md) |  |  |

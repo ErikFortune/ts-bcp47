@@ -4,6 +4,7 @@
 
 ## Unsd.IntermediateRegionTier type
 
+
 <b>Signature:</b>
 
 ```typescript

@@ -29,8 +29,14 @@ export const GlobalRegionName = 'World';
 export const GlobalRegionCode = '001' as UnM49RegionCode;
 /* eslint-enable @typescript-eslint/naming-convention */
 
+/**
+ * @public
+ */
 export class Regions {
     public readonly global: GlobalRegion;
+    /**
+     * @internal
+     */
     protected readonly _regions: Map<UnM49RegionCode, Region>;
 
     public constructor() {

@@ -30,10 +30,16 @@ import { Regions } from './regions';
 import { UnM49RegionCode } from '../iana/model';
 import { loadM49cnvFileSync } from './csv/converters';
 
+/**
+ * @public
+ */
 export class RegionCodes {
     public readonly regions: Regions;
     public readonly areas: Areas;
 
+    /**
+     * @internal
+     */
     protected constructor() {
         this.regions = new Regions();
         this.areas = new Areas();
@@ -68,6 +74,13 @@ export class RegionCodes {
         return false;
     }
 
+    /**
+     * Imports a single parsed row of UN M.49 region code data
+     * @param row - The parsed row to be imported.
+     * @returns `Success` with `true` if the row was successfully
+     * imported, or `Failure` with details if an error occurs.
+     * @internal
+     */
     protected _importRow(row: Model.M49CsvRow): Result<true> {
         return this.regions
             .getOrAddRegionChildRegion('region', this.regions.global, row.regionCode, row.regionName)
@@ -100,6 +113,13 @@ export class RegionCodes {
             });
     }
 
+    /**
+     * Imports multiple parsed rows from UN M.49 region code data
+     * @param rows - The parsed rows to be imported.
+     * @returns `Success` with `true` if the rows were successfully
+     * imported, or `Failure` with details if an error occurs.
+     * @internal
+     */
     protected _importRows(rows: Model.M49CsvRow[]): Result<true> {
         return allSucceed(
             rows.map((row) => this._importRow(row)),

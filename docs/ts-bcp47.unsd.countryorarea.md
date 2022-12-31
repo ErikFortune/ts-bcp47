@@ -4,6 +4,7 @@
 
 ## Unsd.CountryOrArea interface
 
+
 <b>Signature:</b>
 
 ```typescript

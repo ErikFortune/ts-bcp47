@@ -22,6 +22,9 @@
 
 import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../../iana/model';
 
+/**
+ * @internal
+ */
 export interface M49CsvRow {
     globalCode: UnM49RegionCode;
     globalName: string;

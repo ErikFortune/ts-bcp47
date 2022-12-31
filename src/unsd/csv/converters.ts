@@ -33,6 +33,9 @@ const optionalUnM49RegionCode = IanaConverters.unM49RegionCode.optional('ignoreE
 const optionalIsoAlpha2RegionCode = IanaConverters.isoAlpha2RegionCode.optional('ignoreErrors');
 const optionalIsoAlpha3RegionCode = IanaConverters.isoAlpha3RegionCode.optional('ignoreErrors');
 
+/**
+ * @internal
+ */
 export const m49CsvRow = Converters.transform<Model.M49CsvRow>({
     globalCode: Converters.element(0, IanaConverters.unM49RegionCode),
     globalName: Converters.element(1, Converters.string),
@@ -51,8 +54,18 @@ export const m49CsvRow = Converters.transform<Model.M49CsvRow>({
     smallIslandDevelopingState: Converters.element(14, Converters.string).map((s) => succeed(s === 'x')),
 });
 
+/**
+ * @internal
+ */
 export const m49CsvFile = Converters.arrayOf(m49CsvRow);
 
+/**
+ * Loads a UNSD M.49 registry text (csv) file.
+ * @param csvPath - The path from which the file is to be loaded.
+ * @returns `Success` with the parsed file contents or `Failure` with
+ * details if an error occurs.
+ * @internal
+ */
 export function loadM49cnvFileSync(csvPath: string): Result<Model.M49CsvRow[]> {
     return readCsvFileSync(csvPath, { delimiter: ';' }).onSuccess((csv) => {
         return m49CsvFile.convert(csv);
