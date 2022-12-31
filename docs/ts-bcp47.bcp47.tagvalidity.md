@@ -4,6 +4,8 @@
 
 ## Bcp47.TagValidity type
 
+Describes the validation level of a particular tag.
+
 <b>Signature:</b>
 
 ```typescript

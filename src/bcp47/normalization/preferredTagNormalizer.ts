@@ -30,6 +30,9 @@ import { LanguageTagParser } from '../languageTagParser';
 import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
 
+/**
+ * @public
+ */
 export class PreferredNormalizer extends TagNormalizerBase {
     public readonly normalization: TagNormalization = 'preferred';
 

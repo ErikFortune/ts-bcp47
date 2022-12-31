@@ -32,6 +32,11 @@ import { Result, succeed } from '@fgv/ts-utils';
 
 import { matchQuality } from './common';
 
+/**
+ * Helper to compare two language tags to determine how closely related they are,
+ * applying normalization and language semantics as appropriate.
+ * @public
+ */
 export class LanguageComparer {
     public iana: Iana.LanguageRegistries;
     public unsd: Unsd.RegionCodes;

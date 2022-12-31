@@ -29,6 +29,9 @@ import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
 
+/**
+ * @internal
+ */
 export class IsValidValidator extends TagValidatorBase {
     public validity: TagValidity = 'valid';
 

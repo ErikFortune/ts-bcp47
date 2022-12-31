@@ -20,17 +20,26 @@
  * SOFTWARE.
  */
 
+/**
+ * Common levels of match quality for a single language match.
+ * @public
+ */
 export const matchQuality = {
-    exact: 1000,
-    variant: 900,
-    region: 800,
-    macroRegion: 700,
-    neutralRegion: 600,
-    affinity: 500,
-    preferredRegion: 400,
-    sibling: 300,
-    undetermined: 200,
+    exact: 1.0,
+    variant: 0.9,
+    region: 0.8,
+    macroRegion: 0.7,
+    neutralRegion: 0.6,
+    affinity: 0.5,
+    preferredRegion: 0.4,
+    sibling: 0.3,
+    undetermined: 0.2,
     none: 0,
 };
 
+/**
+ * Numeric representation of the quality of a language match.
+ * Range is 0 (no match) to 1 (exact match).
+ * @public
+ */
 export type MatchQuality = keyof typeof matchQuality;

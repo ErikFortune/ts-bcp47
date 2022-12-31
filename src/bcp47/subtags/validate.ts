@@ -28,8 +28,14 @@ import { TagValidationHelpers } from '../../iana/jar/language-subtags/tags/tagVa
 
 import { succeed } from '@fgv/ts-utils';
 
+/**
+ * @public
+ */
 export const extensionSingleton = ExtensionRegistry.Validate.extensionSingleton;
 
+/**
+ * @public
+ */
 export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubtag>({
     description: 'language tag extension subtag',
     wellFormed: /^([a-zA-Z0-9]{2,8})(-[a-zA-Z0-9]{2,8})*$/,
@@ -37,6 +43,9 @@ export const extensionSubtag = new RegExpValidationHelpers<Subtags.ExtensionSubt
     toCanonical: (from: Subtags.ExtensionSubtag) => TagValidationHelpers.toCanonicalTag(from),
 });
 
+/**
+ * @public
+ */
 export const privateUsePrefix = new RegExpValidationHelpers<Subtags.PrivateUsePrefix>({
     description: 'language tag private-use prefix',
     wellFormed: /^[xX]$/,

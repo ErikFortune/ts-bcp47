@@ -4,19 +4,12 @@
 
 ## Bcp47.ValidateTag class
 
+
 <b>Signature:</b>
 
 ```typescript
 export declare class ValidateTag 
 ```
-
-## Properties
-
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [\_isCanonical?](./ts-bcp47.bcp47.validatetag._iscanonical.md) | <p><code>protected</code></p><p><code>static</code></p> | TagValidator | <i>(Optional)</i> |
-|  [\_isInPreferredForm?](./ts-bcp47.bcp47.validatetag._isinpreferredform.md) | <p><code>protected</code></p><p><code>static</code></p> | TagValidator | <i>(Optional)</i> |
-|  [\_validators](./ts-bcp47.bcp47.validatetag._validators.md) | <p><code>protected</code></p><p><code>static</code></p> | Record&lt;[TagValidity](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->, TagValidator&gt; \| undefined |  |
 
 ## Methods
 

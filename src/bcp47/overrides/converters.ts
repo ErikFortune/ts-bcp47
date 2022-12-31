@@ -26,6 +26,9 @@ import * as Model from './model';
 import { Converters, Result } from '@fgv/ts-utils';
 import { convertJsonFileSync } from '@fgv/ts-json/file';
 
+/**
+ * @internal
+ */
 export const languageOverrideRecord = Converters.strictObject<Model.LanguageOverrideRecord>(
     {
         language: Iana.LanguageSubtags.Converters.Tags.languageSubtag,
@@ -36,8 +39,18 @@ export const languageOverrideRecord = Converters.strictObject<Model.LanguageOver
     { optionalFields: ['affinity', 'defaultAffinity', 'preferredRegion'] }
 );
 
+/**
+ * @internal
+ */
 export const languageOverridesFile = Converters.arrayOf(languageOverrideRecord);
 
+/**
+ * Loads a language overrides JSON file.
+ * @internal
+ * @param path - Path from which overrides should be loaded.
+ * @returns `Success` with the loaded overrides or `Failure` with details if an
+ * error occurs.
+ */
 export function loadLanguageOverridesFileSync(path: string): Result<Model.LanguageOverrideRecord[]> {
     return convertJsonFileSync(path, languageOverridesFile);
 }

@@ -28,6 +28,9 @@ import { NormalizeTag } from '../normalization';
 import { TagValidator } from './baseValidator';
 import { TagValidity } from './common';
 
+/**
+ * @internal
+ */
 export class IsInPreferredFromValidator implements TagValidator {
     public readonly iana: Iana.LanguageRegistries;
     public readonly validity: TagValidity = 'valid';

@@ -8,17 +8,17 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [LanguageComparer](./ts-bcp47.bcp47.match.languagecomparer.md) |  |
+|  [LanguageComparer](./ts-bcp47.bcp47.match.languagecomparer.md) | Helper to compare two language tags to determine how closely related they are, applying normalization and language semantics as appropriate. |
 
 ## Variables
 
 |  Variable | Description |
 |  --- | --- |
-|  [matchQuality](./ts-bcp47.bcp47.match.matchquality.md) |  |
+|  [matchQuality](./ts-bcp47.bcp47.match.matchquality.md) | Common levels of match quality for a single language match. |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [MatchQuality](./ts-bcp47.bcp47.match.matchquality.md) |  |
+|  [MatchQuality](./ts-bcp47.bcp47.match.matchquality.md) | Numeric representation of the quality of a language match. Range is 0 (no match) to 1 (exact match). |
 

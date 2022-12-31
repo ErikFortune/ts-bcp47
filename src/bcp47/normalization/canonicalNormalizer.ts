@@ -38,6 +38,9 @@ import { LanguageTagParts } from '../common';
 import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
 
+/**
+ * @internal
+ */
 export class CanonicalNormalizer extends TagNormalizerBase {
     public readonly normalization: TagNormalization = 'canonical';
 

@@ -28,8 +28,14 @@ import { LanguageTagParts } from '../common';
 import { PreferredNormalizer } from './preferredTagNormalizer';
 import { TagNormalizer } from './baseNormalizer';
 
+/**
+ * @public
+ */
 export class NormalizeTag {
-    protected static _normalizers: Record<TagNormalization, TagNormalizer | undefined> | undefined = undefined;
+    /**
+     * @internal
+     */
+    private static _normalizers: Record<TagNormalization, TagNormalizer | undefined> | undefined = undefined;
 
     public static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this.processParts(parts, 'canonical');

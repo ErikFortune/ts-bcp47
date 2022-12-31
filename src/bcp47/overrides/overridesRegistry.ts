@@ -26,6 +26,9 @@ import * as Model from './model';
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
 
+/**
+ * @public
+ */
 export interface LanguageOverride {
     language: LanguageSubtag;
     preferredRegion?: RegionSubtag;
@@ -33,6 +36,9 @@ export interface LanguageOverride {
     affinity?: Map<RegionSubtag, string>;
 }
 
+/**
+ * @public
+ */
 export class OverridesRegistry {
     public readonly overrides: Map<LanguageSubtag, LanguageOverride>;
 
@@ -56,6 +62,15 @@ export class OverridesRegistry {
             });
     }
 
+    /**
+     * Converts a file {@link Bcp47.Overrides.Model.LanguageOverrideRecord | LanguageOverrideRecord }
+     * to a runtime {@link Bcp47.Overrides.LanguageOverride | LanguageOverride}.
+     * @param record - The {@link Bcp47.Overrides.Model.LanguageOverrideRecord | LanguageOverrideRecord } to
+     * be converted.
+     * @returns `Success` with the resulting {@link Bcp47.Overrides.LanguageOverride | LanguageOverride}
+     * or `Error` with details if an error occurs.
+     * @internal
+     */
     protected static _overrideFromRecord(record: Model.LanguageOverrideRecord): Result<LanguageOverride> {
         const override: LanguageOverride = { language: record.language };
         if (record.preferredRegion) {

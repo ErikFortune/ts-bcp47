@@ -4,6 +4,8 @@
 
 ## Bcp47.Match.matchQuality variable
 
+Common levels of match quality for a single language match.
+
 <b>Signature:</b>
 
 ```typescript

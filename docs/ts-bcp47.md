@@ -10,4 +10,5 @@
 |  --- | --- |
 |  [Bcp47](./ts-bcp47.bcp47.md) |  |
 |  [Iana](./ts-bcp47.iana.md) |  |
+|  [Unsd](./ts-bcp47.unsd.md) |  |
 

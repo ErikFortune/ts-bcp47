@@ -4,6 +4,8 @@
 
 ## Bcp47.TagNormalization type
 
+Describes the degree of normalization that has been applied to a language tag.
+
 <b>Signature:</b>
 
 ```typescript
