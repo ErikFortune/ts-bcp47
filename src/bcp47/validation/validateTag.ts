@@ -31,10 +31,13 @@ import { IsWellFormedValidator } from './isWellFormed';
 import { LanguageTagParts } from '../common';
 import { TagValidator } from './baseValidator';
 
+/**
+ * @public
+ */
 export class ValidateTag {
-    protected static _isCanonical?: TagValidator;
-    protected static _isInPreferredForm?: TagValidator;
-    protected static _validators: Record<TagValidity, TagValidator> | undefined = undefined;
+    private static _isCanonical?: TagValidator;
+    private static _isInPreferredForm?: TagValidator;
+    private static _validators: Record<TagValidity, TagValidator> | undefined = undefined;
 
     public static isCanonical(parts: LanguageTagParts): boolean {
         if (!this._isCanonical) {

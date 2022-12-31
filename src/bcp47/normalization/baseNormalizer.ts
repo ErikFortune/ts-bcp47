@@ -36,12 +36,18 @@ import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 import { TagNormalization } from './common';
 
+/**
+ * @public
+ */
 export interface TagNormalizer {
     readonly normalization: TagNormalization;
 
     processParts(parts: LanguageTagParts): Result<LanguageTagParts>;
 }
 
+/**
+ * @public
+ */
 export abstract class TagNormalizerBase {
     protected readonly _iana: Iana.LanguageRegistries;
 

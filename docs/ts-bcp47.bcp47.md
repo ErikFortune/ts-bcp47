@@ -17,7 +17,6 @@
 |  Interface | Description |
 |  --- | --- |
 |  [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md) |  |
-|  [LanguageTagInfo](./ts-bcp47.bcp47.languagetaginfo.md) |  |
 |  [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
 
 ## Namespaces
@@ -30,6 +29,6 @@
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) |  |
-|  [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) |  |
+|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization that has been applied to a language tag. |
+|  [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | Describes the validation level of a particular tag. |
 

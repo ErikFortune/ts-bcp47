@@ -29,6 +29,9 @@ import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { IsValidValidator } from './isValid';
 import { TagValidity } from './common';
 
+/**
+ * @internal
+ */
 export class IsStrictlyValidValidator extends IsValidValidator {
     public validity: TagValidity = 'strictly-valid';
     public normalization: TagNormalization = 'unknown';

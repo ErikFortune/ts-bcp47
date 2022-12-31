@@ -24,11 +24,17 @@ import * as Iana from '../iana';
 
 import { Model } from './subtags';
 
+/**
+ * @public
+ */
 export interface ExtensionSubtagValue {
     readonly singleton: Model.ExtensionSingleton;
     readonly value: Model.ExtensionSubtag;
 }
 
+/**
+ * @public
+ */
 export interface LanguageTagParts {
     primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
     extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
@@ -41,11 +47,12 @@ export interface LanguageTagParts {
     grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
 }
 
-export interface LanguageTagInfo {
-    readonly tag: string;
-    readonly parts: Readonly<LanguageTagParts>;
-}
-
+/**
+ * Converts a {@link Bcp47.LanguageTagParts | LanguageTagParts} to a string.
+ * @param parts - The {@link Bcp47.LanguageTagParts | LanguageTagParts} to be converted.
+ * @returns A string representing the supplied {@link Bcp47.LanguageTagParts | LanguageTagParts}.
+ * @public
+ */
 export function languageTagPartsToString(parts: LanguageTagParts): string {
     if (parts.grandfathered) {
         return parts.grandfathered;
@@ -63,8 +70,14 @@ export function languageTagPartsToString(parts: LanguageTagParts): string {
         .join('-');
 }
 
+/**
+ * @public
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const UndeterminedLanguage = 'und' as Iana.LanguageSubtags.LanguageSubtag;
 
+/**
+ * @public
+ */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const GlobalRegion = '001' as Iana.LanguageSubtags.RegionSubtag;

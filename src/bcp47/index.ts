@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-export { ExtensionSubtagValue, LanguageTagInfo, LanguageTagParts } from './common';
+export { ExtensionSubtagValue, LanguageTagParts } from './common';
 
 export { LanguageTag } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';

@@ -4,17 +4,12 @@
 
 ## Bcp47.NormalizeTag class
 
+
 <b>Signature:</b>
 
 ```typescript
 export declare class NormalizeTag 
 ```
-
-## Properties
-
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [\_normalizers](./ts-bcp47.bcp47.normalizetag._normalizers.md) | <p><code>protected</code></p><p><code>static</code></p> | Record&lt;[TagNormalization](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->, TagNormalizer \| undefined&gt; \| undefined |  |
 
 ## Methods
 

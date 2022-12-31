@@ -22,5 +22,6 @@
 
 import * as Bcp47 from './bcp47';
 import * as Iana from './iana';
+import * as Unsd from './unsd';
 
-export { Bcp47, Iana };
+export { Bcp47, Iana, Unsd };

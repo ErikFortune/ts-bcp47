@@ -4,31 +4,20 @@
 
 ## Bcp47.LanguageTag class
 
-
 <b>Signature:</b>
 
 ```typescript
 export declare class LanguageTag 
 ```
 
-## Constructors
+## Remarks
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(parts, validity, normalization, iana)](./ts-bcp47.bcp47.languagetag._constructor_.md) | <code>protected</code> | Constructs a new instance of the <code>LanguageTag</code> class |
+The constructor for this class is marked as internal. Third-party code should not call the constructor directly or create subclasses that extend the `LanguageTag` class.
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [\_iana](./ts-bcp47.bcp47.languagetag._iana.md) | <p><code>protected</code></p><p><code>readonly</code></p> | [Iana.LanguageRegistries](./ts-bcp47.iana.languageregistries.md) |  |
-|  [\_isCanonical](./ts-bcp47.bcp47.languagetag._iscanonical.md) | <code>protected</code> | undefined \| boolean |  |
-|  [\_isPreferred](./ts-bcp47.bcp47.languagetag._ispreferred.md) | <code>protected</code> | undefined \| boolean |  |
-|  [\_isStrictlyValid](./ts-bcp47.bcp47.languagetag._isstrictlyvalid.md) | <code>protected</code> | undefined \| boolean |  |
-|  [\_isValid](./ts-bcp47.bcp47.languagetag._isvalid.md) | <code>protected</code> | undefined \| boolean |  |
-|  [\_normalization](./ts-bcp47.bcp47.languagetag._normalization.md) | <code>protected</code> | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) |  |
-|  [\_suppressedScript](./ts-bcp47.bcp47.languagetag._suppressedscript.md) | <code>protected</code> | undefined \| [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) \| false |  |
-|  [\_validity](./ts-bcp47.bcp47.languagetag._validity.md) | <code>protected</code> | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) |  |
 |  [effectiveScript](./ts-bcp47.bcp47.languagetag.effectivescript.md) | <code>readonly</code> | [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) \| undefined |  |
 |  [isCanonical](./ts-bcp47.bcp47.languagetag.iscanonical.md) | <code>readonly</code> | boolean |  |
 |  [isPreferred](./ts-bcp47.bcp47.languagetag.ispreferred.md) | <code>readonly</code> | boolean |  |
@@ -42,8 +31,6 @@ export declare class LanguageTag
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [\_createTransformed(parts, fromValidity, fromNormalization, partialOptions)](./ts-bcp47.bcp47.languagetag._createtransformed.md) | <p><code>protected</code></p><p><code>static</code></p> |  |
-|  [\_getOptions(options)](./ts-bcp47.bcp47.languagetag._getoptions.md) | <p><code>protected</code></p><p><code>static</code></p> |  |
 |  [create(from, options)](./ts-bcp47.bcp47.languagetag.create.md) | <code>static</code> |  |
 |  [createFromParts(parts, options)](./ts-bcp47.bcp47.languagetag.createfromparts.md) | <code>static</code> |  |
 |  [createFromTag(tag, partialOptions)](./ts-bcp47.bcp47.languagetag.createfromtag.md) | <code>static</code> |  |

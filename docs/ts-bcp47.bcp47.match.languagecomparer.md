@@ -4,6 +4,8 @@
 
 ## Bcp47.Match.LanguageComparer class
 
+Helper to compare two language tags to determine how closely related they are, applying normalization and language semantics as appropriate.
+
 <b>Signature:</b>
 
 ```typescript
@@ -22,7 +24,7 @@ export declare class LanguageComparer
 |  --- | --- | --- | --- |
 |  [iana](./ts-bcp47.bcp47.match.languagecomparer.iana.md) |  | [Iana.LanguageRegistries](./ts-bcp47.iana.languageregistries.md) |  |
 |  [overrides](./ts-bcp47.bcp47.match.languagecomparer.overrides.md) |  | OverridesRegistry |  |
-|  [unsd](./ts-bcp47.bcp47.match.languagecomparer.unsd.md) |  | Unsd.RegionCodes |  |
+|  [unsd](./ts-bcp47.bcp47.match.languagecomparer.unsd.md) |  | [Unsd.RegionCodes](./ts-bcp47.unsd.regioncodes.md) |  |
 
 ## Methods
 

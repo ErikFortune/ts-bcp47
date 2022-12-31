@@ -48,17 +48,58 @@ export class LanguageTag {
     public readonly parts: Readonly<LanguageTagParts>;
     public readonly tag: string;
 
+    /**
+     * @internal
+     */
     protected readonly _iana: Iana.LanguageRegistries;
 
+    /**
+     * @internal
+     */
     protected _validity: TagValidity;
+
+    /**
+     * @internal
+     */
     protected _normalization: TagNormalization;
 
+    /**
+     * @internal
+     */
     protected _isValid: undefined | boolean;
+
+    /**
+     * @internal
+     */
     protected _isStrictlyValid: undefined | boolean;
+
+    /**
+     * @internal
+     */
     protected _isCanonical: undefined | boolean;
+
+    /**
+     * @internal
+     */
     protected _isPreferred: undefined | boolean;
+
+    /**
+     * @internal
+     */
     protected _suppressedScript: undefined | ScriptSubtag | false;
 
+    /**
+     * Constructs a {@link Bcp47.LanguageTag | LanguageTag }.
+     * @param parts - A {@link Bcp47.LanguageTagParts | LanguageTagParts } from
+     * which the tag is constructed.
+     * @param validity - Known {@link Bcp47.TagValidity | validation level} of the
+     * supplied parts.
+     * @param normalization - Known {@link Bcp47.TagNormalization | normalization level}
+     * of the supplied parts.
+     * @param iana - The {@link Iana.LanguageRegistries} used to validate and normalize
+     * this tag.
+     * @internal
+     */
     protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
         this.parts = Object.freeze({ ...parts });
         this._normalization = normalization;
@@ -150,6 +191,18 @@ export class LanguageTag {
         }
     }
 
+    /**
+     * Constructs a new {@link Bcp47.LanguageTag | language tag} by applying appropriate transformations
+     * to as supplied {@link Bcp47.LanguageTagParts | LanguageTagParts}.
+     * @param parts - The {@link Bcp47.LanguageTagParts | LanguageTagParts} which represent the tag.
+     * @param fromValidity - The {@link Bcp47.TagValidity | validation level} of the supplied `parts`.
+     * @param fromNormalization - The {@link Bcp47.TagNormalization | normalization level} fo the
+     * supplied `parts`.
+     * @param partialOptions - Any {@link Bcp47.LanguageTagInitOptions | initialization options}.
+     * @returns `Success` with the corresponding {@link Bcp47.LanguageTag | language tag} or `Failure`
+     * with details if an error occurs.
+     * @internal
+     */
     protected static _createTransformed(
         parts: LanguageTagParts,
         fromValidity: TagValidity,
@@ -168,6 +221,14 @@ export class LanguageTag {
             });
     }
 
+    /**
+     * Gets a fully-specified {@link Bcp47.LanguageTagInitOptions} from partial or undefined
+     * options, substituting defaults as appropriate.
+     * @param options - The {@link Bcp47.LanguageTagInitOptions} to be expanded, or `undefined`
+     * for default options.
+     * @returns Fully-specified {@link Bcp47.LanguageTagInitOptions | init options}.
+     * @internal
+     */
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions> {
         return {
             iana: options?.iana ?? Iana.DefaultRegistries.languageRegistries,

@@ -27,12 +27,18 @@ import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 import { TagValidity } from './common';
 
+/**
+ * @public
+ */
 export interface TagValidator {
     readonly validity: TagValidity;
 
     checkParts(parts: LanguageTagParts): Result<true>;
 }
 
+/**
+ * @internal
+ */
 export abstract class TagValidatorBase implements TagValidator {
     public readonly iana: Iana.LanguageRegistries;
     public abstract readonly validity: TagValidity;

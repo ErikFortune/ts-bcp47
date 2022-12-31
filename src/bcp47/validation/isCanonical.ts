@@ -30,6 +30,9 @@ import { LanguageTagParts } from '../common';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
 
+/**
+ * @internal
+ */
 export class IsCanonicalValidator extends TagValidatorBase {
     public validity: TagValidity = 'well-formed';
 

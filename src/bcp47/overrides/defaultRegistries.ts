@@ -22,8 +22,14 @@
 
 import { OverridesRegistry } from './overridesRegistry';
 
+/**
+ * @public
+ */
 export class DefaultRegistries {
-    protected static _overridesRegistry?: OverridesRegistry = undefined;
+    /**
+     * @internal
+     */
+    private static _overridesRegistry?: OverridesRegistry = undefined;
 
     public static get overridesRegistry(): OverridesRegistry {
         if (!this._overridesRegistry) {

@@ -22,6 +22,9 @@
 
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 
+/**
+ * @internal
+ */
 export interface LanguageOverrideRecord {
     language: LanguageSubtag;
     preferredRegion?: RegionSubtag;
