@@ -22,7 +22,7 @@
 
 import * as Model from './csv/model';
 
-import { ContainingRegions, CountryOrArea, Region } from './common';
+import { CountryOrArea, Region } from './common';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
 
 import { Areas } from './areas';
@@ -53,26 +53,8 @@ export class RegionCodes {
     }
 
     public tryGetRegionOrArea(code: UnM49RegionCode): Region | CountryOrArea | undefined {
+        // istanbul ignore next - numeric area not allowed in bcp-47 so right side of ?? shouldn't be hit.
         return this.regions.tryGetRegion(code) ?? this.areas.tryGetArea(code);
-    }
-
-    public getContainers(regionOrArea: Region | CountryOrArea): ContainingRegions {
-        const rtrn: ContainingRegions = { global: this.regions.global };
-        let next = regionOrArea;
-        while (next && next.tier !== 'global') {
-            switch (next.tier) {
-                case 'region':
-                case 'subRegion':
-                case 'intermediateRegion':
-                    rtrn[next.tier] = next;
-                    break;
-                case 'area':
-                    rtrn.area = next;
-                    break;
-            }
-            next = next.parent;
-        }
-        return rtrn;
     }
 
     public getIsContained(container: Region, contained: CountryOrArea | Region): boolean {

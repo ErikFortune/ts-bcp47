@@ -59,11 +59,3 @@ export interface CountryOrArea {
     landlockedDevelopingCountry: boolean;
     smallIslandDevelopingState: boolean;
 }
-
-export interface ContainingRegions {
-    global: GlobalRegion;
-    region?: IntermediateRegion;
-    subRegion?: IntermediateRegion;
-    intermediateRegion?: IntermediateRegion;
-    area?: CountryOrArea;
-}

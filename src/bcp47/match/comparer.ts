@@ -154,9 +154,7 @@ export class LanguageComparer {
                     this.unsd.tryGetRegionOrArea(r2 as unknown as UnM49RegionCode);
             } else {
                 container = this.unsd.regions.tryGetRegion(r2 as unknown as UnM49RegionCode);
-                contained =
-                    this.unsd.areas.tryGetAlpha2Area(r1 as unknown as IsoAlpha2RegionCode) ??
-                    this.unsd.tryGetRegionOrArea(r1 as unknown as UnM49RegionCode);
+                contained = this.unsd.areas.tryGetAlpha2Area(r1 as unknown as IsoAlpha2RegionCode);
             }
             if (container && contained) {
                 if (this.unsd.getIsContained(container, contained)) {
