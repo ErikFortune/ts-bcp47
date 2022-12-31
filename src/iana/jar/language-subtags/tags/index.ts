@@ -21,5 +21,7 @@
  */
 
 export * from './model';
-export * as Converters from './converters';
-export * as Validate from './validate';
+
+import * as Converters from './converters';
+import * as Validate from './validate';
+export { Converters, Validate };

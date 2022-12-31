@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
-export * as Tags from './tags/model';
-export * as Registry from './registry/model';
+import * as Registry from './registry/model';
+import * as Tags from './tags/model';
+
+export { Registry, Tags };

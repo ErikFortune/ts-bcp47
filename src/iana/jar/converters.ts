@@ -21,4 +21,6 @@
  */
 
 export * from './jarConverters';
-export * as LanguageSubtags from './language-subtags/tags/converters';
+
+import * as LanguageSubtags from './language-subtags/tags/converters';
+export { LanguageSubtags };

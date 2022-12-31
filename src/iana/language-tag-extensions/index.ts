@@ -20,7 +20,10 @@
  * SOFTWARE.
  */
 
-export * as Model from './model';
-export * as Converters from './converters';
-export * as Validate from './validate';
 export { LanguageTagExtensionRegistry } from './extensionsRegistry';
+
+import * as Converters from './converters';
+import * as Model from './model';
+import * as Validate from './validate';
+
+export { Converters, Model, Validate };

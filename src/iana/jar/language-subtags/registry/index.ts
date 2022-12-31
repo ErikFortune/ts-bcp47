@@ -21,4 +21,6 @@
  */
 // istanbul ignore file
 export * from './model';
-export * as Converters from './converters';
+
+import * as Converters from './converters';
+export { Converters };

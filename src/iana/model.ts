@@ -21,4 +21,6 @@
  */
 
 export * from './common/model';
-export * as Jar from './jar/jarModel';
+
+import * as Jar from './jar/jarModel';
+export { Jar };

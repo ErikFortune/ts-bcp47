@@ -20,10 +20,13 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
-export * as Model from './model';
-export * as LanguageSubtags from './language-subtags';
-export * as LanguageTagExtensions from './language-tag-extensions';
-export * as Validate from './validate';
+import * as Converters from './converters';
+import * as LanguageSubtags from './language-subtags';
+import * as LanguageTagExtensions from './language-tag-extensions';
+import * as Model from './model';
+import * as Validate from './validate';
+
 export * from './languageRegistries';
 export { DefaultRegistries } from './defaultRegistries';
+
+export { Converters, Model, LanguageSubtags, LanguageTagExtensions, Validate };

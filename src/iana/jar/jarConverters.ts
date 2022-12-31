@@ -36,10 +36,10 @@ export const fileDateEntry = Converters.strictObject<FileDateEntry>({
 });
 
 /**
- * Helper function which creates a converter that returns a validated {@Link Iana.DatedRegistry | DatedRegistry}
+ * Helper function which creates a converter that returns a validated {@Link Iana.Model.DatedRegistry | DatedRegistry}
  * containing entries of supplied template type `T`.
  * @param entryConverter - A `Converter<T>` to validate each entry
- * @returns A new validating `Converter` which yields {@Link Iana.DatedRegistry | DatedRegistry<T>}
+ * @returns A new validating `Converter` which yields {@Link Iana.Model.DatedRegistry | DatedRegistry<T>}
  * @public
  */
 export function datedRegistryFromJarRecords<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC> {
