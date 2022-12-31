@@ -20,6 +20,24 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export { DefaultRegistries } from './defaultRegistries';
-export { RegionCodes } from './regionCodes';
+import * as Iana from '../../iana';
+import * as Model from './model';
+
+import { Converters, Result } from '@fgv/ts-utils';
+import { convertJsonFileSync } from '@fgv/ts-json/file';
+
+export const languageOverrideRecord = Converters.strictObject<Model.LanguageOverrideRecord>(
+    {
+        language: Iana.LanguageSubtags.Converters.Tags.languageSubtag,
+        preferredRegion: Iana.LanguageSubtags.Converters.Tags.regionSubtag,
+        defaultAffinity: Converters.string,
+        affinity: Converters.recordOf(Converters.arrayOf(Iana.LanguageSubtags.Converters.Tags.regionSubtag)),
+    },
+    { optionalFields: ['affinity', 'defaultAffinity', 'preferredRegion'] }
+);
+
+export const languageOverridesFile = Converters.arrayOf(languageOverrideRecord);
+
+export function loadLanguageOverridesFileSync(path: string): Result<Model.LanguageOverrideRecord[]> {
+    return convertJsonFileSync(path, languageOverridesFile);
+}

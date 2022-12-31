@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 
-export * from './common';
+export { OverridesRegistry } from './overridesRegistry';
 export { DefaultRegistries } from './defaultRegistries';
-export { RegionCodes } from './regionCodes';

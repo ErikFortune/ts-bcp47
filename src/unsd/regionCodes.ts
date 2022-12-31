@@ -22,10 +22,12 @@
 
 import * as Model from './csv/model';
 
+import { CountryOrArea, Region } from './common';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
 
 import { Areas } from './areas';
 import { Regions } from './regions';
+import { UnM49RegionCode } from '../iana/model';
 import { loadM49cnvFileSync } from './csv/converters';
 
 export class RegionCodes {
@@ -48,6 +50,22 @@ export class RegionCodes {
         return codes._importRows(rows).onSuccess(() => {
             return succeed(codes);
         });
+    }
+
+    public tryGetRegionOrArea(code: UnM49RegionCode): Region | CountryOrArea | undefined {
+        // istanbul ignore next - numeric area not allowed in bcp-47 so right side of ?? shouldn't be hit.
+        return this.regions.tryGetRegion(code) ?? this.areas.tryGetArea(code);
+    }
+
+    public getIsContained(container: Region, contained: CountryOrArea | Region): boolean {
+        let next: Region | CountryOrArea | undefined = contained;
+        while (next) {
+            if (next === container) {
+                return true;
+            }
+            next = next.tier !== 'global' ? next.parent : undefined;
+        }
+        return false;
     }
 
     protected _importRow(row: Model.M49CsvRow): Result<true> {

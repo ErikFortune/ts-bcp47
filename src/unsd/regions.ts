@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { IntermediateRegionTier, Region } from './common';
+import { GlobalRegion, IntermediateRegionTier, Region } from './common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 import { UnM49RegionCode } from '../iana/model';
 
@@ -30,7 +30,7 @@ export const GlobalRegionCode = '001' as UnM49RegionCode;
 /* eslint-enable @typescript-eslint/naming-convention */
 
 export class Regions {
-    public readonly global: Region;
+    public readonly global: GlobalRegion;
     protected readonly _regions: Map<UnM49RegionCode, Region>;
 
     public constructor() {

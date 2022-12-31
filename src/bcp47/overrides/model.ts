@@ -20,6 +20,11 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export { DefaultRegistries } from './defaultRegistries';
-export { RegionCodes } from './regionCodes';
+import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
+
+export interface LanguageOverrideRecord {
+    language: LanguageSubtag;
+    preferredRegion?: RegionSubtag;
+    defaultAffinity?: string;
+    affinity?: Record<string, RegionSubtag[]>;
+}

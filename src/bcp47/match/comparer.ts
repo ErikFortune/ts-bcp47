@@ -21,19 +21,27 @@
  */
 
 import * as Iana from '../../iana';
+import * as Unsd from '../../unsd';
 
+import { DefaultRegistries, OverridesRegistry } from '../overrides';
 import { GlobalRegion, LanguageTagParts } from '../common';
+import { IsoAlpha2RegionCode, UnM49RegionCode } from '../../iana/model';
+import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
-
 import { Result, succeed } from '@fgv/ts-utils';
+
 import { matchQuality } from './common';
 
 export class LanguageComparer {
     public iana: Iana.LanguageRegistries;
+    public unsd: Unsd.RegionCodes;
+    public overrides: OverridesRegistry;
 
     public constructor(iana?: Iana.LanguageRegistries) {
         // istanbul ignore next
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
+        this.unsd = Unsd.DefaultRegistries.regionCodes;
+        this.overrides = DefaultRegistries.overridesRegistry;
     }
 
     public compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
@@ -118,8 +126,8 @@ export class LanguageComparer {
     }
 
     public compareRegion(lt1: LanguageTag, lt2: LanguageTag): number {
-        const r1 = lt1.parts.region?.toLowerCase();
-        const r2 = lt2.parts.region?.toLowerCase();
+        const r1 = lt1.parts.region?.toUpperCase() as RegionSubtag;
+        const r2 = lt2.parts.region?.toUpperCase() as RegionSubtag;
 
         if (r1 === r2) {
             return matchQuality.exact;
@@ -134,6 +142,55 @@ export class LanguageComparer {
 
         if (!r1 || !r2) {
             return matchQuality.neutralRegion;
+        }
+
+        // macro-region match
+        const r1IsMacroRegion = Iana.Validate.unM49RegionCode.isWellFormed(r1);
+        const r2IsMacroRegion = Iana.Validate.unM49RegionCode.isWellFormed(r2);
+        if (r1IsMacroRegion || r2IsMacroRegion) {
+            let contained: Unsd.CountryOrArea | Unsd.Region | undefined;
+            let container: Unsd.Region | undefined;
+            if (r1IsMacroRegion) {
+                container = this.unsd.regions.tryGetRegion(r1 as unknown as UnM49RegionCode);
+                contained =
+                    this.unsd.areas.tryGetAlpha2Area(r2 as unknown as IsoAlpha2RegionCode) ??
+                    this.unsd.tryGetRegionOrArea(r2 as unknown as UnM49RegionCode);
+            } else {
+                container = this.unsd.regions.tryGetRegion(r2 as unknown as UnM49RegionCode);
+                contained = this.unsd.areas.tryGetAlpha2Area(r1 as unknown as IsoAlpha2RegionCode);
+            }
+            if (container && contained) {
+                if (this.unsd.getIsContained(container, contained)) {
+                    return matchQuality.macroRegion;
+                }
+
+                // if they're both regions, also check to see if the second region contains the
+                // first
+                if (contained.tier !== 'area' && this.unsd.getIsContained(contained, container)) {
+                    return matchQuality.macroRegion;
+                }
+            }
+        }
+
+        // istanbul ignore next
+        const o1 = this.overrides.overrides.get(lt1.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+        // istanbul ignore next
+        const o2 = this.overrides.overrides.get(lt2.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+
+        // orthographic affinity
+        if (o1 && o2) {
+            // istanbul ignore next
+            const a1 = o1.affinity?.get(r1) ?? o1.defaultAffinity;
+            // istanbul ignore next
+            const a2 = o2.affinity?.get(r2) ?? o2.defaultAffinity;
+            if (a1 && a2 && a1 === a2) {
+                return matchQuality.affinity;
+            }
+        }
+
+        // preferred region
+        if (o1?.preferredRegion === r1 || o2?.preferredRegion === r2) {
+            return matchQuality.preferredRegion;
         }
 
         return matchQuality.sibling;

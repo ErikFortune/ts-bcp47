@@ -20,6 +20,15 @@
  * SOFTWARE.
  */
 
-export * from './common';
-export { DefaultRegistries } from './defaultRegistries';
-export { RegionCodes } from './regionCodes';
+import { OverridesRegistry } from './overridesRegistry';
+
+export class DefaultRegistries {
+    protected static _overridesRegistry?: OverridesRegistry = undefined;
+
+    public static get overridesRegistry(): OverridesRegistry {
+        if (!this._overridesRegistry) {
+            this._overridesRegistry = OverridesRegistry.loadJson('data/bcp/overrides.json').getValueOrThrow();
+        }
+        return this._overridesRegistry;
+    }
+}
