@@ -24,12 +24,12 @@ import * as Converters from './converters';
 import * as Model from './model';
 
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
-import { Result, allSucceed, mapResults, succeed } from '@fgv/ts-utils';
+import { Result, mapResults, succeed } from '@fgv/ts-utils';
 
 export interface LanguageOverride {
     language: LanguageSubtag;
     preferredRegion?: RegionSubtag;
-    preferredAffinityGroup?: string;
+    defaultAffinity?: string;
     affinity?: Map<RegionSubtag, string>;
 }
 
@@ -60,6 +60,9 @@ export class OverridesRegistry {
         const override: LanguageOverride = { language: record.language };
         if (record.preferredRegion) {
             override.preferredRegion = record.preferredRegion;
+        }
+        if (record.defaultAffinity) {
+            override.defaultAffinity = record.defaultAffinity;
         }
         if (record.affinity) {
             const affinity = new Map<RegionSubtag, string>();

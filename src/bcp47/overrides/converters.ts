@@ -30,9 +30,10 @@ export const languageOverrideRecord = Converters.strictObject<Model.LanguageOver
     {
         language: Iana.LanguageSubtags.Converters.Tags.languageSubtag,
         preferredRegion: Iana.LanguageSubtags.Converters.Tags.regionSubtag,
+        defaultAffinity: Converters.string,
         affinity: Converters.recordOf(Converters.arrayOf(Iana.LanguageSubtags.Converters.Tags.regionSubtag)),
     },
-    { optionalFields: ['preferredRegion', 'affinity'] }
+    { optionalFields: ['affinity', 'defaultAffinity', 'preferredRegion'] }
 );
 
 export const languageOverridesFile = Converters.arrayOf(languageOverrideRecord);

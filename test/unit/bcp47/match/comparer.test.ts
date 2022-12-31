@@ -121,14 +121,14 @@ describe('LanguageComparer class', () => {
             },
             {
                 description: 'does not match preferred form of region if preferred normalization is not specified',
-                l1: 'en-BU',
-                l2: 'en-MM',
+                l1: 'my-BU',
+                l2: 'my-MM',
                 expected: matchQuality.sibling,
             },
             {
                 description: 'matches preferred form of region if preferred normalization specified',
-                l1: 'en-BU',
-                l2: 'en-MM',
+                l1: 'my-BU',
+                l2: 'my-MM',
                 expected: matchQuality.exact,
                 options: { normalization: 'preferred' } as LanguageTagInitOptions,
             },

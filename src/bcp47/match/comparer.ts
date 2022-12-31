@@ -180,9 +180,9 @@ export class LanguageComparer {
         // orthographic affinity
         if (o1 && o2) {
             // istanbul ignore next
-            const a1 = o1.affinity?.get(r1);
+            const a1 = o1.affinity?.get(r1) ?? o1.defaultAffinity;
             // istanbul ignore next
-            const a2 = o2.affinity?.get(r2);
+            const a2 = o2.affinity?.get(r2) ?? o2.defaultAffinity;
             if (a1 && a2 && a1 === a2) {
                 return matchQuality.affinity;
             }
