@@ -26,34 +26,34 @@ import { Converter, Converters } from '@fgv/ts-utils';
 import { DatedRegistry } from './model';
 
 /**
- * Validating converter from string {@link Iana.YearMonthDaySpec}.
+ * Validating converter from string {@link Iana.Model.YearMonthDaySpec}.
  * @public
  */
 export const yearMonthDaySpec = Validate.yearMonthDateSpec.converter;
 
 /**
- * Validating converter from string {@link Iana.IsoAlpha2RegionCode}.
+ * Validating converter from string {@link Iana.Model.IsoAlpha2RegionCode}.
  * @public
  */
 export const isoAlpha2RegionCode = Validate.isoAlpha2RegionCode.converter;
 
 /**
- * Validating converter from string {@link Iana.IsoAlpha3RegionCode}.
+ * Validating converter from string {@link Iana.Model.IsoAlpha3RegionCode}.
  * @public
  */
 export const isoAlpha3RegionCode = Validate.isoAlpha3RegionCode.converter;
 
 /**
- * Validating converter from string {@link Iana.UnM49RegionCode}.
+ * Validating converter from string {@link Iana.Model.UnM49RegionCode}.
  * @public
  */
 export const unM49RegionCode = Validate.unM49RegionCode.converter;
 
 /**
- * Helper function which creates a converter that returns a validated {@Link Iana.DatedRegistry | DatedRegistry}
+ * Helper function which creates a converter that returns a validated {@Link Iana.Model.DatedRegistry | DatedRegistry}
  * containing entries of supplied template type `T`.
  * @param entryConverter - A `Converter<T>` to validate each entry
- * @returns A new validating `Converter` which yields {@Link Iana.DatedRegistry | DatedRegistry<T>}
+ * @returns A new validating `Converter` which yields {@Link Iana.Model.DatedRegistry | DatedRegistry<T>}
  * @public
  */
 export function datedRegistry<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC> {

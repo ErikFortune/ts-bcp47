@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
-export * as Converters from './converters';
 export * from './model';
+import * as Converters from './converters';
+
+export { Converters };

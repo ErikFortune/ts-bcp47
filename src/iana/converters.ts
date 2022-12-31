@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
+import * as Jar from './jar/jarConverters';
+
 export * from './common/converters';
-export * as Jar from './jar/jarConverters';
+export { Jar };

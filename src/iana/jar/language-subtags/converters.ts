@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
-export * as Tags from './tags/converters';
-export * as Registry from './registry/converters';
+import * as Registry from './registry/converters';
+import * as Tags from './tags/converters';
+
+export { Registry, Tags };

@@ -21,4 +21,6 @@
  */
 
 export * from './jarModel';
-export * as LanguageSubtags from './language-subtags/model';
+
+import * as LanguageSubtags from './language-subtags/model';
+export { LanguageSubtags };

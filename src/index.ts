@@ -20,5 +20,7 @@
  * SOFTWARE.
  */
 
-export * as Bcp47 from './bcp47';
-export * as Iana from './iana';
+import * as Bcp47 from './bcp47';
+import * as Iana from './iana';
+
+export { Bcp47, Iana };
