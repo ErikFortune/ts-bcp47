@@ -81,6 +81,18 @@ describe('LanguageComparer class', () => {
                 l2: 'ca-ES',
                 expected: matchQuality.neutralRegion,
             },
+            {
+                description: 'language affinity applies for related languages',
+                l1: 'en-US',
+                l2: 'en-PH',
+                expected: matchQuality.affinity,
+            },
+            {
+                description: 'language affinity does not apply for unrelated languages',
+                l1: 'en-US',
+                l2: 'en-GB',
+                expected: matchQuality.sibling,
+            },
             { description: 'extension exact match is exact', l1: 'en-US-u-GB', l2: 'en-US-u-GB', expected: matchQuality.exact },
             { description: 'extension singleton mismatch is partial', l1: 'en-US-u-GB', l2: 'en-US-t-GB', expected: matchQuality.variant },
             { description: 'extension value mismatch is partial', l1: 'en-US-u-GB', l2: 'en-US-u-CA', expected: matchQuality.variant },

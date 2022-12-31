@@ -1,0 +1,16 @@
+[
+    {
+        "language": "en",
+        "preferredRegion": "GB",
+        "affinity": {
+            "us": ["GU", "PH", "PR", "UM", "US", "VI"]
+        }
+    },
+    {
+        "language": "es",
+        "affinity": {
+            "es": ["ES", "GQ", "IC"]
+        }
+    }
+]
+

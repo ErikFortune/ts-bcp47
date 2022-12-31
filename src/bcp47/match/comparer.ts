@@ -23,22 +23,25 @@
 import * as Iana from '../../iana';
 import * as Unsd from '../../unsd';
 
+import { DefaultRegistries, OverridesRegistry } from '../overrides';
 import { GlobalRegion, LanguageTagParts } from '../common';
-import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
-
-import { Result, succeed } from '@fgv/ts-utils';
-import { RegionSubtag } from '../../iana/language-subtags';
 import { IsoAlpha2RegionCode, UnM49RegionCode } from '../../iana/model';
+import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
+import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
+import { Result, succeed } from '@fgv/ts-utils';
+
 import { matchQuality } from './common';
 
 export class LanguageComparer {
     public iana: Iana.LanguageRegistries;
     public unsd: Unsd.RegionCodes;
+    public overrides: OverridesRegistry;
 
     public constructor(iana?: Iana.LanguageRegistries) {
         // istanbul ignore next
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
         this.unsd = Unsd.DefaultRegistries.regionCodes;
+        this.overrides = DefaultRegistries.overridesRegistry;
     }
 
     public compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
@@ -123,8 +126,8 @@ export class LanguageComparer {
     }
 
     public compareRegion(lt1: LanguageTag, lt2: LanguageTag): number {
-        const r1 = lt1.parts.region?.toLowerCase() as RegionSubtag;
-        const r2 = lt2.parts.region?.toLowerCase() as RegionSubtag;
+        const r1 = lt1.parts.region?.toUpperCase() as RegionSubtag;
+        const r2 = lt2.parts.region?.toUpperCase() as RegionSubtag;
 
         if (r1 === r2) {
             return matchQuality.exact;
@@ -169,7 +172,22 @@ export class LanguageComparer {
             }
         }
 
+        // istanbul ignore next
+        const o1 = this.overrides.overrides.get(lt1.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+        // istanbul ignore next
+        const o2 = this.overrides.overrides.get(lt2.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+
         // orthographic affinity
+        if (o1 && o2) {
+            // istanbul ignore next
+            const a1 = o1.affinity?.get(r1);
+            // istanbul ignore next
+            const a2 = o2.affinity?.get(r2);
+            if (a1 && a2 && a1 === a2) {
+                return matchQuality.affinity;
+            }
+        }
+
         // preferred region
         return matchQuality.sibling;
     }
