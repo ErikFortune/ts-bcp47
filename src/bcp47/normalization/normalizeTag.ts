@@ -48,26 +48,33 @@ export class NormalizeTag {
      * or `Failure` with details if an error occurs.
      */
     public static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this.processParts(parts, 'canonical');
+        return this.normalizeParts(parts, 'canonical');
     }
 
     /**
      * Converts a BCP-47 language tag to preferred form.  Preferred form uses the recommended capitalization rules
      * specified in {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1 | RFC 5646} and also
-     * applies additional specified in the 
+     * applies additional specified in the
      * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | language subtag registry}:
-     * - extraneous (suppressed) script tags are removed.
-     * - deprecated language, extlang, script or region tags are replaced with up-to-date preferred values.
-     * - grandfathered or redundant tags with a defined preferred-value are replaced in their entirety with
-     * the new preferred value.
+     * extraneous (suppressed) script tags are removed, deprecated language, extlang, script or region tags are replaced
+     * with up-to-date preferred values, and grandfathered or redundant tags with a defined preferred-value are replaced
+     * in their entirety with the new preferred value.
      * @param parts - The individual {@Link Bcp47.LanguageTagParts | language tag parts} to be normalized.
      * @returns `Success` with the normalized equivalent {@link Bcp47.LanguageTagParts | language tag parts},
      * or `Failure` with details if an error occurs.
      */
     public static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this.processParts(parts, 'preferred');
+        return this.normalizeParts(parts, 'preferred');
     }
 
+    /**
+     * Chooses an appropriate default tag normalizer given desired and optional current
+     * {@link Bcp47.TagNormalization | normalization level}.
+     * @param wantNormalization - The desired {@link Bcp47.TagNormalization | normalization level}.
+     * @param haveNormalization - (optional) The current {@link Bcp47.TagNormalization | normalization level}.
+     * @returns An appropriate {@link Bcp47.TagNormalizer | tag normalizer} or `undefined` if no normalization
+     * is necessary.
+     */
     public static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined {
         if (haveNormalization && compareNormalization(haveNormalization, wantNormalization) >= 0) {
             return undefined;
@@ -84,7 +91,17 @@ export class NormalizeTag {
         return this._normalizers![wantNormalization];
     }
 
-    public static processParts(
+    /**
+     * Normalizes supplied {@link Bcp47.LanguageTagParts | language tag parts} to a requested
+     * {@link Bcp47.TagNormalization | normalization level}, if necessary.  If
+     * no normalization is necessary, returns the supplied parts.
+     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to be normalized.
+     * @param wantNormalization - The desired {@link Bcp47.TagNormalization | normalization level}.
+     * @param haveNormalization - (optional) The current {@link Bcp47.TagNormalization | normalization level}.
+     * @returns `Success` with the normalized {@link Bcp47.LanguageTagParts | language tag parts}, or
+     * `Failure` with details if an error occurs.
+     */
+    public static normalizeParts(
         parts: LanguageTagParts,
         wantNormalization: TagNormalization,
         haveNormalization?: TagNormalization

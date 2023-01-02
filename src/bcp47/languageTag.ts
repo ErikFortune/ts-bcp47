@@ -212,7 +212,7 @@ export class LanguageTag {
         const options = this._getOptions(partialOptions);
         return ValidateTag.checkParts(parts, options.validity, fromValidity)
             .onSuccess(() => {
-                return NormalizeTag.processParts(parts, options.normalization, fromNormalization);
+                return NormalizeTag.normalizeParts(parts, options.normalization, fromNormalization);
             })
             .onSuccess((normalized) => {
                 const validity = mostValid(fromValidity, options.validity);

@@ -6,7 +6,7 @@
 
 Parses a supplied string to produce a collection of individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.
 
-The string must be well-formed according to RFC 5646 but no additional validation or normalization is applied.
+The string must be [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) but no additional validation or normalization is applied.
 
 <b>Signature:</b>
 

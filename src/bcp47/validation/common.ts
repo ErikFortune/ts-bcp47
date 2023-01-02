@@ -38,19 +38,20 @@ const validityRank: Record<TagValidity, number> = {
      */
     unknown: 0,
     /**
-     * Tag is well-formed according to RFC 5646 (meets ABNF grammar).
+     * Tag is well-formed {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | according to RFC 5646}.
      */
     'well-formed': 0.5,
     /**
-     * Tag is valid according to RFC 5646 - well-formed, and is a
-     * registered grandfathered tag or all subtags are registered,
+     * Tag is valid {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | according to RFC 5646} -
+     * well-formed, and is a registered grandfathered tag or all subtags are registered,
      * with no duplicate extensions or variant subtags.
      */
     valid: 0.9,
     /**
-     * Tag is valid according to RFC 5646 and meets other constraints
-     * specified in the registry by RFC 5646 - if present, any extlang
-     * or variant subtags have a valid prefix as specified by the registry.
+     * Tag is valid {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | according to RFC 5646} and meets
+     * other constraints described by the RFC - e.g. if present, any extlang or variant subtags have a
+     * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8 | valid prefix} as specified by
+     * the registry.
      */
     'strictly-valid': 1.0,
     /* eslint-enable @typescript-eslint/naming-convention */

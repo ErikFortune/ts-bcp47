@@ -43,7 +43,7 @@ describe('NormalizeTag helpers', () => {
             public invoke(): void {
                 const normalization = this.options?.normalization ?? 'unknown';
                 if (this.isSuccessTest) {
-                    expect(NormalizeTag.processParts(this.from, normalization)).toSucceedAndSatisfy((lt) => {
+                    expect(NormalizeTag.normalizeParts(this.from, normalization)).toSucceedAndSatisfy((lt) => {
                         expect(languageTagPartsToString(lt)).toEqual(this.expected);
                     });
 
@@ -59,7 +59,7 @@ describe('NormalizeTag helpers', () => {
                 } else if (this.isFailureTest) {
                     const validate = ValidateTag.checkParts(this.from, this.options?.validity ?? 'unknown');
                     if (validate.isSuccess()) {
-                        expect(NormalizeTag.processParts(this.from, normalization)).toFailWith(this.expected);
+                        expect(NormalizeTag.normalizeParts(this.from, normalization)).toFailWith(this.expected);
 
                         if (normalization === 'preferred') {
                             expect(NormalizeTag.toPreferred(this.from)).toFailWith(this.expected);

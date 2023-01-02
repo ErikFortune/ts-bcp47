@@ -6,7 +6,7 @@
 
 Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from either a specified `string` description or from (typically parsed) individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.
 
-The supplied initializer must be at least well-formed according to RFC 5646. Higher degrees of validation along with any normalizations may be optionally specified.
+The supplied initializer must be at least [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->. Higher degrees of validation along with any normalizations may be optionally specified.
 
 <b>Signature:</b>
 

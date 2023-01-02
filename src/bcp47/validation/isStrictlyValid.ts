@@ -81,7 +81,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
     ): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         const { primaryLanguage, extlangs, script, region } = parts;
         const nonCanonical = { primaryLanguage, extlangs, script, region };
-        const canonical = NormalizeTag.processParts(nonCanonical, 'canonical');
+        const canonical = NormalizeTag.normalizeParts(nonCanonical, 'canonical');
         // istanbul ignore next - should be caught in the first pass
         if (canonical.isFailure()) {
             return fail(`failed to normalize variant prefix: ${canonical.message}`);

@@ -4,6 +4,8 @@
 
 ## Bcp47.NormalizeTag.chooseNormalizer() method
 
+Chooses an appropriate default tag normalizer given desired and optional current [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,10 +16,12 @@ static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?:
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  wantNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) |  |
-|  haveNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | <i>(Optional)</i> |
+|  wantNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | The desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->. |
+|  haveNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | <i>(Optional)</i> (optional) The current [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->. |
 
 <b>Returns:</b>
 
 TagNormalizer \| undefined
+
+An appropriate  or `undefined` if no normalization is necessary.
 

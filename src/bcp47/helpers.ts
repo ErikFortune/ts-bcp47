@@ -30,8 +30,9 @@ import { Result } from '@fgv/ts-utils';
  * Creates a new {@link Bcp47.LanguageTag | language tag} from either a specified `string` description
  * or from (typically parsed) individual {@link Bcp47.LanguageTagParts | language tag parts}.
  *
- * The supplied initializer must be at least well-formed according to RFC 5646.  Higher degrees of
- * validation along with any normalizations may be optionally specified.
+ * The supplied initializer must be at least
+ * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}.
+ * Higher degrees of validation along with any normalizations may be optionally specified.
  *
  * @param from - The `string` or {@link Bcp47.LanguageTagParts | language tag parts} from which
  * the processed tag is to be constructed.
@@ -49,8 +50,8 @@ export function tag(from: string | LanguageTagParts, options?: LanguageTagInitOp
 /**
  * Parses a supplied string to produce a collection of individual {@link Bcp47.LanguageTagParts | language tag parts}.
  *
- * The string must be well-formed according to RFC 5646 but no additional validation or normalization is
- * applied.
+ * The string must be {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}
+ * but no additional validation or normalization is applied.
  *
  * @param from - The 'string' to be parsed. Must be a well-formed language tag.
  * @returns The parsed individual {@link Bcp47.LanguageTagParts | language tag parts} which correspond

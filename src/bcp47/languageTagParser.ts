@@ -48,8 +48,8 @@ export class LanguageTagParser {
     private constructor() {}
 
     /**
-     * Parses a string representation of a BCP-47 (RFC 5646) language tag,
-     * to produce a {@link Bcp47.LanguageTagParts | LanguageTagParts} which
+     * Parses a string representation of a BCP-47 ({@link https://www.rfc-editor.org/rfc/rfc5646.html | RFC 5646})
+     * language tag, to produce a {@link Bcp47.LanguageTagParts | LanguageTagParts} which
      * breaks out each of the subtags.
      * @param tag - The `string` language tag to be parsed.
      * @param iana - Optional {@link Iana.LanguageRegistries | IANA language registries}

@@ -633,11 +633,8 @@ declare namespace Model_4 {
 // @public
 class NormalizeTag {
     // Warning: (ae-forgotten-export) The symbol "TagNormalizer" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined;
-    // (undocumented)
-    static processParts(parts: LanguageTagParts, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<LanguageTagParts>;
+    static normalizeParts(parts: LanguageTagParts, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<LanguageTagParts>;
     static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts>;
     static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
 }
