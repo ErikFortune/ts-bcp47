@@ -29,6 +29,7 @@ import { PreferredNormalizer } from './preferredTagNormalizer';
 import { TagNormalizer } from './baseNormalizer';
 
 /**
+ * Normalization helpers for BCP-47 language tags.
  * @public
  */
 export class NormalizeTag {
@@ -37,10 +38,32 @@ export class NormalizeTag {
      */
     private static _normalizers: Record<TagNormalization, TagNormalizer | undefined> | undefined = undefined;
 
+    /**
+     * Converts a BCP-47 language tag to canonical form.  Canonical form uses the recommended capitalization rules
+     * specified in {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1 | RFC 5646} but are not
+     * otherwise modified.
+     *
+     * @param parts - The individual {@Link Bcp47.LanguageTagParts | language tag parts} to be normalized.
+     * @returns `Success` with the normalized equivalent {@link Bcp47.LanguageTagParts | language tag parts},
+     * or `Failure` with details if an error occurs.
+     */
     public static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this.processParts(parts, 'canonical');
     }
 
+    /**
+     * Converts a BCP-47 language tag to preferred form.  Preferred form uses the recommended capitalization rules
+     * specified in {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1 | RFC 5646} and also
+     * applies additional specified in the 
+     * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | language subtag registry}:
+     * - extraneous (suppressed) script tags are removed.
+     * - deprecated language, extlang, script or region tags are replaced with up-to-date preferred values.
+     * - grandfathered or redundant tags with a defined preferred-value are replaced in their entirety with
+     * the new preferred value.
+     * @param parts - The individual {@Link Bcp47.LanguageTagParts | language tag parts} to be normalized.
+     * @returns `Success` with the normalized equivalent {@link Bcp47.LanguageTagParts | language tag parts},
+     * or `Failure` with details if an error occurs.
+     */
     public static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts> {
         return this.processParts(parts, 'preferred');
     }

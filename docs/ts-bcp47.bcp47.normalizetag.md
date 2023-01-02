@@ -4,6 +4,7 @@
 
 ## Bcp47.NormalizeTag class
 
+Normalization helpers for BCP-47 language tags.
 
 <b>Signature:</b>
 
@@ -17,6 +18,6 @@ export declare class NormalizeTag
 |  --- | --- | --- |
 |  [chooseNormalizer(wantNormalization, haveNormalization)](./ts-bcp47.bcp47.normalizetag.choosenormalizer.md) | <code>static</code> |  |
 |  [processParts(parts, wantNormalization, haveNormalization)](./ts-bcp47.bcp47.normalizetag.processparts.md) | <code>static</code> |  |
-|  [toCanonical(parts)](./ts-bcp47.bcp47.normalizetag.tocanonical.md) | <code>static</code> |  |
-|  [toPreferred(parts)](./ts-bcp47.bcp47.normalizetag.topreferred.md) | <code>static</code> |  |
+|  [toCanonical(parts)](./ts-bcp47.bcp47.normalizetag.tocanonical.md) | <code>static</code> | Converts a BCP-47 language tag to canonical form. Canonical form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) but are not otherwise modified. |
+|  [toPreferred(parts)](./ts-bcp47.bcp47.normalizetag.topreferred.md) | <code>static</code> | Converts a BCP-47 language tag to preferred form. Preferred form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) and also applies additional specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->: - extraneous (suppressed) script tags are removed. - deprecated language, extlang, script or region tags are replaced with up-to-date preferred values. - grandfathered or redundant tags with a defined preferred-value are replaced in their entirety with the new preferred value. |
 
