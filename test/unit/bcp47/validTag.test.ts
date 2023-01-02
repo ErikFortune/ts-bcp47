@@ -111,7 +111,7 @@ describe('ValidTag class', () => {
         });
     });
 
-    describe('validateParts static method', () => {
+    describe('validateSubtags static method', () => {
         test.each([
             ['valid canonical primary language', { primaryLanguage: 'en' }, { primaryLanguage: 'en' }],
             ['valid primary language', { primaryLanguage: 'EN' }, { primaryLanguage: 'en' }],
