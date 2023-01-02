@@ -61,7 +61,7 @@ export class LanguageTag {
      * The individual {@link Bcp47.Subtags | subtags} for
      * this language tag.
      */
-    public readonly parts: Readonly<Subtags>;
+    public readonly subtags: Readonly<Subtags>;
 
     /**
      * A string representation of this language tag.
@@ -121,7 +121,7 @@ export class LanguageTag {
      * @internal
      */
     protected constructor(subtags: Subtags, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
-        this.parts = Object.freeze({ ...subtags });
+        this.subtags = Object.freeze({ ...subtags });
         this._normalization = normalization;
         this._validity = validity;
         this.tag = subtagsToString(subtags);
@@ -151,7 +151,7 @@ export class LanguageTag {
      * if neither the tag nor the IANA registry define a script.
      */
     public get effectiveScript(): ScriptSubtag | undefined {
-        return this.parts.script ?? this.getSuppressedScript();
+        return this.subtags.script ?? this.getSuppressedScript();
     }
 
     /**
@@ -159,7 +159,7 @@ export class LanguageTag {
      */
     public get isUndetermined(): boolean {
         // istanbul ignore next
-        return this.parts.primaryLanguage?.toLowerCase() === UndeterminedLanguage;
+        return this.subtags.primaryLanguage?.toLowerCase() === UndeterminedLanguage;
     }
 
     /**
@@ -167,7 +167,7 @@ export class LanguageTag {
      */
     public get isValid(): boolean {
         if (this._isValid === undefined) {
-            this._isValid = ValidateTag.isValid(this.parts);
+            this._isValid = ValidateTag.isValid(this.subtags);
             if (this._isValid) {
                 this._validity = 'valid';
             }
@@ -180,7 +180,7 @@ export class LanguageTag {
      */
     public get isStrictlyValid(): boolean {
         if (this._isStrictlyValid === undefined) {
-            this._isStrictlyValid = ValidateTag.isStrictlyValid(this.parts);
+            this._isStrictlyValid = ValidateTag.isStrictlyValid(this.subtags);
             if (this._isStrictlyValid) {
                 this._validity = 'strictly-valid';
             }
@@ -193,7 +193,7 @@ export class LanguageTag {
      */
     public get isCanonical(): boolean {
         if (this._isCanonical === undefined) {
-            this._isCanonical = ValidateTag.isCanonical(this.parts);
+            this._isCanonical = ValidateTag.isCanonical(this.subtags);
             if (this._isCanonical) {
                 this._normalization = 'canonical';
             }
@@ -206,7 +206,7 @@ export class LanguageTag {
      */
     public get isPreferred(): boolean {
         if (this._isPreferred === undefined) {
-            this._isPreferred = ValidateTag.isInPreferredForm(this.parts);
+            this._isPreferred = ValidateTag.isInPreferredForm(this.subtags);
             if (this._isPreferred) {
                 this._normalization = 'preferred';
             }
@@ -321,8 +321,8 @@ export class LanguageTag {
     public getSuppressedScript(): ScriptSubtag | undefined {
         if (this._suppressedScript === undefined) {
             this._suppressedScript = false;
-            if (this.parts.primaryLanguage) {
-                const language = this._iana.subtags.languages.tryGet(this.parts.primaryLanguage);
+            if (this.subtags.primaryLanguage) {
+                const language = this._iana.subtags.languages.tryGet(this.subtags.primaryLanguage);
                 if (language?.suppressScript !== undefined) {
                     this._suppressedScript = language.suppressScript;
                 }
@@ -345,7 +345,7 @@ export class LanguageTag {
             validity: 'valid',
             normalization: this._normalization,
         };
-        return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
+        return LanguageTag._createTransformed(this.subtags, this._validity, this._normalization, options);
     }
 
     /**
@@ -362,7 +362,7 @@ export class LanguageTag {
             validity: 'strictly-valid',
             normalization: this._normalization,
         };
-        return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
+        return LanguageTag._createTransformed(this.subtags, this._validity, this._normalization, options);
     }
 
     /**
@@ -379,7 +379,7 @@ export class LanguageTag {
             validity: this._validity,
             normalization: 'canonical',
         };
-        return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
+        return LanguageTag._createTransformed(this.subtags, this._validity, this._normalization, options);
     }
 
     /**
@@ -396,7 +396,7 @@ export class LanguageTag {
             validity: 'valid', // preferred requires validity
             normalization: 'preferred',
         };
-        return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
+        return LanguageTag._createTransformed(this.subtags, this._validity, this._normalization, options);
     }
 
     /**

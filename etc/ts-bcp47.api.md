@@ -402,7 +402,7 @@ class LanguageTag {
     protected _isValid: undefined | boolean;
     // @internal (undocumented)
     protected _normalization: TagNormalization;
-    readonly parts: Readonly<Subtags>;
+    readonly subtags: Readonly<Subtags>;
     // @internal (undocumented)
     protected _suppressedScript: undefined | ScriptSubtag | false;
     readonly tag: string;

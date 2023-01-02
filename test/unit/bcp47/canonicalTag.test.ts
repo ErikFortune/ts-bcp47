@@ -37,7 +37,7 @@ describe('CanonicalTag class', () => {
             ['completely private tag', 'x-en-GB', { privateUse: ['en-GB'] }],
         ])('succeeds for %p', (_desc, tag, expected) => {
             expect(Bcp47.LanguageTag.createFromTag(tag, { normalization: 'preferred' })).toSucceedAndSatisfy((preferred) => {
-                expect(preferred.parts).toEqual(expected);
+                expect(preferred.subtags).toEqual(expected);
             });
         });
 

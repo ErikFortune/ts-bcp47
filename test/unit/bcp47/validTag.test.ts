@@ -71,8 +71,8 @@ describe('ValidTag class', () => {
             ['non-canonical extlang', { primaryLanguage: 'zh', extlangs: ['Yue'] }],
             ['non-canonical prefix', { primaryLanguage: 'ZH', extlangs: ['yue'] }],
         ])('succeeds for %p', (_desc, value) => {
-            const parts = value as Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'strictly-valid' })).toSucceed();
+            const subtags = value as Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'strictly-valid' })).toSucceed();
         });
 
         test.each([
@@ -81,8 +81,8 @@ describe('ValidTag class', () => {
             ['unknown extlang', { primaryLanguage: 'zh', extlangs: ['han'] }, /invalid extlang/i],
             ['invalid prefix', { primaryLanguage: 'en', extlangs: ['cmn'] }, /invalid prefix/i],
         ])('fails for %p', (_desc, value, expected) => {
-            const parts = value as Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'strictly-valid' })).toFailWith(expected);
+            const subtags = value as Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'strictly-valid' })).toFailWith(expected);
         });
     });
 
@@ -95,8 +95,8 @@ describe('ValidTag class', () => {
             ['valid variant sequence prefixes', { primaryLanguage: 'sl', variants: ['rozaj', 'biske', '1994'] }],
             ['any prefix for variant with no registered prefix', { primaryLanguage: 'en', variants: ['alalc97'] }],
         ])('succeeds for %p', (_desc, value) => {
-            const parts = value as Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'valid' })).toSucceed();
+            const subtags = value as Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'valid' })).toSucceed();
         });
 
         test.each([
@@ -104,8 +104,8 @@ describe('ValidTag class', () => {
             ['invalid prefix', { primaryLanguage: 'en', variants: ['rozaj'] }, /invalid prefix/i],
             ['invalid prefix sequence', { primaryLanguage: 'sl', variants: ['rozaj', '1996'] }, /invalid prefix/i],
         ])('fails for %p', (_desc, value, expected) => {
-            const parts = value as Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'strictly-valid', normalization: 'canonical' })).toFailWith(
+            const subtags = value as Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'strictly-valid', normalization: 'canonical' })).toFailWith(
                 expected
             );
         });
@@ -131,10 +131,12 @@ describe('ValidTag class', () => {
             ],
             ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
-            const parts = from as Bcp47.Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy((t) => {
-                expect(t.parts).toEqual(expected);
-            });
+            const subtags = from as Bcp47.Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy(
+                (t) => {
+                    expect(t.subtags).toEqual(expected);
+                }
+            );
         });
 
         test.each([
@@ -147,8 +149,8 @@ describe('ValidTag class', () => {
             ['invalid grandfathered tag', { grandfathered: 'i-dothraki' }, /invalid grandfathered/i],
             ['missing primary language', { script: 'Latn' }, /missing primary language/i],
         ])('fails for %p', (_desc, from, expected) => {
-            const parts = from as Bcp47.Subtags;
-            expect(Bcp47.LanguageTag.createFromSubtags(parts, { validity: 'valid', normalization: 'canonical' })).toFailWith(expected);
+            const subtags = from as Bcp47.Subtags;
+            expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'valid', normalization: 'canonical' })).toFailWith(expected);
         });
     });
 });

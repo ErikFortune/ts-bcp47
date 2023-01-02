@@ -52,7 +52,7 @@ export class LanguageMatcher {
     public matchLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
         // no primary tag is either all private or grandfathered, which must match
         // exactly.
-        if (!t1.parts.primaryLanguage || !t2.parts.primaryLanguage) {
+        if (!t1.subtags.primaryLanguage || !t2.subtags.primaryLanguage) {
             return t1.toString().toLowerCase() === t2.toString().toLowerCase() ? matchQuality.exact : matchQuality.none;
         }
 
@@ -84,9 +84,9 @@ export class LanguageMatcher {
 
     public matchPrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
         // istanbul ignore next
-        const l1 = lt1.parts.primaryLanguage?.toLowerCase();
+        const l1 = lt1.subtags.primaryLanguage?.toLowerCase();
         // istanbul ignore next
-        const l2 = lt2.parts.primaryLanguage?.toLowerCase();
+        const l2 = lt2.subtags.primaryLanguage?.toLowerCase();
 
         if (l1 == l2) {
             return matchQuality.exact;
@@ -100,13 +100,13 @@ export class LanguageMatcher {
     }
 
     public matchExtlang(lt1: LanguageTag, lt2: LanguageTag): number {
-        if (lt1.parts.extlangs?.length !== lt2.parts.extlangs?.length) {
+        if (lt1.subtags.extlangs?.length !== lt2.subtags.extlangs?.length) {
             return matchQuality.none;
         }
 
-        if (lt1.parts.extlangs) {
-            for (let i = 0; i < lt1.parts.extlangs.length; i++) {
-                if (lt1.parts.extlangs[i].toLowerCase() !== lt2.parts.extlangs![i].toLowerCase()) {
+        if (lt1.subtags.extlangs) {
+            for (let i = 0; i < lt1.subtags.extlangs.length; i++) {
+                if (lt1.subtags.extlangs[i].toLowerCase() !== lt2.subtags.extlangs![i].toLowerCase()) {
                     return matchQuality.none;
                 }
             }
@@ -131,8 +131,8 @@ export class LanguageMatcher {
     }
 
     public matchRegion(lt1: LanguageTag, lt2: LanguageTag): number {
-        const r1 = lt1.parts.region?.toUpperCase() as RegionSubtag;
-        const r2 = lt2.parts.region?.toUpperCase() as RegionSubtag;
+        const r1 = lt1.subtags.region?.toUpperCase() as RegionSubtag;
+        const r2 = lt2.subtags.region?.toUpperCase() as RegionSubtag;
 
         if (r1 === r2) {
             return matchQuality.exact;
@@ -178,9 +178,9 @@ export class LanguageMatcher {
         }
 
         // istanbul ignore next
-        const o1 = this.overrides.overrides.get(lt1.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+        const o1 = this.overrides.overrides.get(lt1.subtags.primaryLanguage?.toLowerCase() as LanguageSubtag);
         // istanbul ignore next
-        const o2 = this.overrides.overrides.get(lt2.parts.primaryLanguage?.toLowerCase() as LanguageSubtag);
+        const o2 = this.overrides.overrides.get(lt2.subtags.primaryLanguage?.toLowerCase() as LanguageSubtag);
 
         // orthographic affinity
         if (o1 && o2) {
@@ -202,13 +202,13 @@ export class LanguageMatcher {
     }
 
     public matchVariants(lt1: LanguageTag, lt2: LanguageTag): number {
-        if (lt1.parts.variants?.length !== lt2.parts.variants?.length) {
+        if (lt1.subtags.variants?.length !== lt2.subtags.variants?.length) {
             return matchQuality.region;
         }
 
-        if (lt1.parts.variants) {
-            for (let i = 0; i < lt1.parts.variants.length; i++) {
-                if (lt1.parts.variants[i].toLowerCase() !== lt2.parts.variants![i].toLowerCase()) {
+        if (lt1.subtags.variants) {
+            for (let i = 0; i < lt1.subtags.variants.length; i++) {
+                if (lt1.subtags.variants[i].toLowerCase() !== lt2.subtags.variants![i].toLowerCase()) {
                     return matchQuality.region;
                 }
             }
@@ -218,15 +218,15 @@ export class LanguageMatcher {
     }
 
     public matchExtensions(lt1: LanguageTag, lt2: LanguageTag): number {
-        if (lt1.parts.extensions?.length !== lt2.parts.extensions?.length) {
+        if (lt1.subtags.extensions?.length !== lt2.subtags.extensions?.length) {
             return matchQuality.variant;
         }
 
-        if (lt1.parts.extensions) {
-            for (let i = 0; i < lt1.parts.extensions.length; i++) {
+        if (lt1.subtags.extensions) {
+            for (let i = 0; i < lt1.subtags.extensions.length; i++) {
                 if (
-                    lt1.parts.extensions[i].singleton.toLowerCase() !== lt2.parts.extensions![i].singleton.toLowerCase() ||
-                    lt1.parts.extensions[i].value.toLowerCase() !== lt2.parts.extensions![i].value.toLowerCase()
+                    lt1.subtags.extensions[i].singleton.toLowerCase() !== lt2.subtags.extensions![i].singleton.toLowerCase() ||
+                    lt1.subtags.extensions[i].value.toLowerCase() !== lt2.subtags.extensions![i].value.toLowerCase()
                 ) {
                     return matchQuality.variant;
                 }
@@ -237,13 +237,13 @@ export class LanguageMatcher {
     }
 
     public matchPrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number {
-        if (lt1.parts.privateUse?.length !== lt2.parts.privateUse?.length) {
+        if (lt1.subtags.privateUse?.length !== lt2.subtags.privateUse?.length) {
             return matchQuality.variant;
         }
 
-        if (lt1.parts.privateUse) {
-            for (let i = 0; i < lt1.parts.privateUse.length; i++) {
-                if (lt1.parts.privateUse[i].toLowerCase() !== lt2.parts.privateUse![i].toLowerCase()) {
+        if (lt1.subtags.privateUse) {
+            for (let i = 0; i < lt1.subtags.privateUse.length; i++) {
+                if (lt1.subtags.privateUse[i].toLowerCase() !== lt2.subtags.privateUse![i].toLowerCase()) {
                     return matchQuality.variant;
                 }
             }
