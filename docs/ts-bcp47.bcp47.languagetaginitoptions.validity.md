@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTagInitOptions.validity property
 
+Desired [validity level](./ts-bcp47.bcp47.tagvalidity.md) (optional).
+
 <b>Signature:</b>
 
 ```typescript

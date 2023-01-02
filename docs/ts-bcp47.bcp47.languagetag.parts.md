@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.parts property
 
+The individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) for this language tag.
+
 <b>Signature:</b>
 
 ```typescript

@@ -33,19 +33,38 @@ import { ScriptSubtag } from '../iana/language-subtags';
 import { ValidateTag } from './validation';
 
 /**
+ * Initialization options for parsing or creation of {@link Bcp47.LanguageTag | language tag} objects.
  * @public
  */
 export interface LanguageTagInitOptions {
+    /**
+     * Desired {@link Bcp47.TagValidity | validity level} (optional).
+     */
     validity?: TagValidity;
+    /**
+     * Desired {@link Bcp47.TagNormalization | normalization level} (optional).
+     */
     normalization?: TagNormalization;
+    /**
+     * The {@link Iana.LanguageRegistries | IANA language subtag and extension registries} to
+     * be used for the request (optional).
+     */
     iana?: Iana.LanguageRegistries;
 }
 
 /**
+ * Represents a single BCP-47 language tag.
  * @public
  */
 export class LanguageTag {
+    /**
+     * The individual {@link Bcp47.LanguageTagParts | language tag parts} for
+     * this language tag.
+     */
     public readonly parts: Readonly<LanguageTagParts>;
+    /**
+     * A string representation of this language tag.
+     */
     public readonly tag: string;
 
     /**
@@ -122,15 +141,29 @@ export class LanguageTag {
         }
     }
 
+    /**
+     * The effective script of this language tag, if known.
+     * The effective script is the script subtag in the tag itself,
+     * if present, or the `Suppress-Script` defined in the
+     * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | IANA subtag registry}
+     * for the primary language of this tag.  Can be `undefined`
+     * if neither the tag nor the IANA registry define a script.
+     */
     public get effectiveScript(): ScriptSubtag | undefined {
         return this.parts.script ?? this.getSuppressedScript();
     }
 
+    /**
+     * Determines if this tag represents the special `undetermined` language.
+     */
     public get isUndetermined(): boolean {
         // istanbul ignore next
         return this.parts.primaryLanguage?.toLowerCase() === UndeterminedLanguage;
     }
 
+    /**
+     * Whether this language tag is valid.
+     */
     public get isValid(): boolean {
         if (this._isValid === undefined) {
             this._isValid = ValidateTag.isValid(this.parts);
@@ -141,6 +174,9 @@ export class LanguageTag {
         return this._isValid === true;
     }
 
+    /**
+     * Whether if this language tag is strictly valid.
+     */
     public get isStrictlyValid(): boolean {
         if (this._isStrictlyValid === undefined) {
             this._isStrictlyValid = ValidateTag.isStrictlyValid(this.parts);
@@ -151,6 +187,9 @@ export class LanguageTag {
         return this._isStrictlyValid === true;
     }
 
+    /**
+     * Whether this language tag is in canonical form.
+     */
     public get isCanonical(): boolean {
         if (this._isCanonical === undefined) {
             this._isCanonical = ValidateTag.isCanonical(this.parts);
@@ -161,6 +200,9 @@ export class LanguageTag {
         return this._isCanonical === true;
     }
 
+    /**
+     * Whether this language tag is in preferred form.
+     */
     public get isPreferred(): boolean {
         if (this._isPreferred === undefined) {
             this._isPreferred = ValidateTag.isInPreferredForm(this.parts);
@@ -171,18 +213,50 @@ export class LanguageTag {
         return this._isPreferred === true;
     }
 
-    public static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Result<LanguageTag> {
-        const options = this._getOptions(partialOptions);
+    /**
+     * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied `string` tag
+     * using optional configuration, if supplied.
+     * @param tag - The `string` tag from which the {@link Bcp47.LanguageTag | language tag}
+     * is te be constructed.
+     * @param options - (optional) set of {@link Bcp47.LanguageTagInitOptions | init options}
+     * to guide the validation and normalization of this tag.
+     * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
+     * with details if an error occurs.
+     */
+    public static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag> {
+        options = this._getOptions(options);
 
         return LanguageTagParser.parse(tag, options.iana).onSuccess((parts) => {
             return this._createTransformed(parts, 'unknown', 'unknown', options);
         });
     }
 
+    /**
+     * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied
+     * {@link Bcp47.LanguageTagParts | language tag parts} using optional configuration,
+     * if supplied.
+     * @param tag - The {@link Bcp47.LanguageTagParts | language tag parts} from which the
+     * {@link Bcp47.LanguageTag | language tag} is te be constructed.
+     * @param options - (optional) set of {@link Bcp47.LanguageTagInitOptions | init options}
+     * to guide the validation and normalization of this tag.
+     * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
+     * with details if an error occurs.
+     */
     public static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
         return this._createTransformed(parts, 'unknown', 'unknown', options);
     }
 
+    /**
+     * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied `string`
+     * tag or {@link Bcp47.LanguageTagParts | language tag parts} using optional configuration,
+     * if supplied.
+     * @param from - The `string` tag or {@link Bcp47.LanguageTagParts | language tag parts} from
+     * which the {@link Bcp47.LanguageTag | language tag} is te be constructed.
+     * @param options - (optional) set of {@link Bcp47.LanguageTagInitOptions | init options}
+     * to guide the validation and normalization of this tag.
+     * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
+     * with details if an error occurs.
+     */
     public static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
         if (typeof from === 'string') {
             return this.createFromTag(from, options);
@@ -237,6 +311,12 @@ export class LanguageTag {
         };
     }
 
+    /**
+     * Returns the `Suppress-Script` value defined for the primary language of this tag,
+     * regardless of whether a different script is defined in this subtag.
+     * @returns The suppress-script defined for the primary language, or undefined if
+     * the primary language is invalid or has no defined suppressed script.
+     */
     public getSuppressedScript(): ScriptSubtag | undefined {
         if (this._suppressedScript === undefined) {
             this._suppressedScript = false;
@@ -250,6 +330,11 @@ export class LanguageTag {
         return this._suppressedScript ? this._suppressedScript : undefined;
     }
 
+    /**
+     * Gets a confirmed valid representation of this language tag.
+     * @returns `Success` with a valid representation of this {@link Bcp47.LanguageTag | language tag},
+     * or `Failure` with details if the tag cannot be validated.
+     */
     public toValid(): Result<LanguageTag> {
         if (this.isValid) {
             return succeed(this);
@@ -262,6 +347,11 @@ export class LanguageTag {
         return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
     }
 
+    /**
+     * Gets a confirmed strictly valid representation of this language tag.
+     * @returns `Success` with a strictly valid representation of this {@link Bcp47.LanguageTag | language tag},
+     * or `Failure` with details if the tag cannot be strictly validated.
+     */
     public toStrictlyValid(): Result<LanguageTag> {
         if (this.isStrictlyValid) {
             return succeed(this);
@@ -274,6 +364,11 @@ export class LanguageTag {
         return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
     }
 
+    /**
+     * Gets a confirmed canonical representation of this language tag.
+     * @returns `Success` with a canonical representation of this {@link Bcp47.LanguageTag | language tag},
+     * or `Failure` with details if the tag cannot be normalized to canonical form.
+     */
     public toCanonical(): Result<LanguageTag> {
         if (this.isCanonical) {
             return succeed(this);
@@ -286,6 +381,11 @@ export class LanguageTag {
         return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
     }
 
+    /**
+     * Gets a confirmed preferred representation of this language tag.
+     * @returns `Success` with a preferred representation of this {@link Bcp47.LanguageTag | language tag},
+     * or `Failure` with details if the tag cannot be normalized to preferred form.
+     */
     public toPreferred(): Result<LanguageTag> {
         if (this.isPreferred) {
             return succeed(this);
@@ -298,6 +398,10 @@ export class LanguageTag {
         return LanguageTag._createTransformed(this.parts, this._validity, this._normalization, options);
     }
 
+    /**
+     * Gets a string representation of this language tag.
+     * @returns A string representation of this language tag.
+     */
     public toString(): string {
         return this.tag;
     }

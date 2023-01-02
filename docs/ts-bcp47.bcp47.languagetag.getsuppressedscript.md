@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.getSuppressedScript() method
 
+Returns the `Suppress-Script` value defined for the primary language of this tag, regardless of whether a different script is defined in this subtag.
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ getSuppressedScript(): ScriptSubtag | undefined;
 <b>Returns:</b>
 
 [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) \| undefined
+
+The suppress-script defined for the primary language, or undefined if the primary language is invalid or has no defined suppressed script.
 

@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTagInitOptions.normalization property
 
+Desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md) (optional).
+
 <b>Signature:</b>
 
 ```typescript

@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.isStrictlyValid property
 
+Whether if this language tag is strictly valid.
+
 <b>Signature:</b>
 
 ```typescript

@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.isCanonical property
 
+Whether this language tag is in canonical form.
+
 <b>Signature:</b>
 
 ```typescript

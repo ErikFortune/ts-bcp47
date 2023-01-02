@@ -402,61 +402,44 @@ declare namespace LanguageSubtags {
     }
 }
 
-// @public (undocumented)
+// @public
 class LanguageTag {
     // @internal
     protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
-    // (undocumented)
     static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    // (undocumented)
     static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    // (undocumented)
-    static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
+    static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
     protected static _createTransformed(parts: LanguageTagParts, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
-    // (undocumented)
     get effectiveScript(): ScriptSubtag | undefined;
     // @internal
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions>;
-    // (undocumented)
     getSuppressedScript(): ScriptSubtag | undefined;
     // @internal (undocumented)
     protected readonly _iana: Iana.LanguageRegistries;
-    // (undocumented)
     get isCanonical(): boolean;
     // @internal (undocumented)
     protected _isCanonical: undefined | boolean;
-    // (undocumented)
     get isPreferred(): boolean;
     // @internal (undocumented)
     protected _isPreferred: undefined | boolean;
-    // (undocumented)
     get isStrictlyValid(): boolean;
     // @internal (undocumented)
     protected _isStrictlyValid: undefined | boolean;
-    // (undocumented)
     get isUndetermined(): boolean;
-    // (undocumented)
     get isValid(): boolean;
     // @internal (undocumented)
     protected _isValid: undefined | boolean;
     // @internal (undocumented)
     protected _normalization: TagNormalization;
-    // (undocumented)
     readonly parts: Readonly<LanguageTagParts>;
     // @internal (undocumented)
     protected _suppressedScript: undefined | ScriptSubtag | false;
-    // (undocumented)
     readonly tag: string;
-    // (undocumented)
     toCanonical(): Result<LanguageTag>;
-    // (undocumented)
     toPreferred(): Result<LanguageTag>;
-    // (undocumented)
     toStrictlyValid(): Result<LanguageTag>;
-    // (undocumented)
     toString(): string;
-    // (undocumented)
     toValid(): Result<LanguageTag>;
     // @internal (undocumented)
     protected _validity: TagValidity;
@@ -546,13 +529,10 @@ declare namespace LanguageTagExtensions_2 {
     }
 }
 
-// @public (undocumented)
+// @public
 interface LanguageTagInitOptions {
-    // (undocumented)
     iana?: Iana.LanguageRegistries;
-    // (undocumented)
     normalization?: TagNormalization;
-    // (undocumented)
     validity?: TagValidity;
 }
 

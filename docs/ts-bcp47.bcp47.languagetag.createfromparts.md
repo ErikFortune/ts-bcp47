@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.createFromParts() method
 
+Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) using optional configuration, if supplied.
+
 <b>Signature:</b>
 
 ```typescript
@@ -15,9 +17,11 @@ static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) set of [init options](./ts-bcp47.bcp47.languagetaginitoptions.md) to guide the validation and normalization of this tag. |
 
 <b>Returns:</b>
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
+
+`Success` with the new [language tag](./ts-bcp47.bcp47.languagetag.md) or `Failure` with details if an error occurs.
 

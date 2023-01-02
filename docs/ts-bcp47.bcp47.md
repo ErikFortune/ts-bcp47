@@ -8,7 +8,7 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [LanguageTag](./ts-bcp47.bcp47.languagetag.md) |  |
+|  [LanguageTag](./ts-bcp47.bcp47.languagetag.md) | Represents a single BCP-47 language tag. |
 |  [NormalizeTag](./ts-bcp47.bcp47.normalizetag.md) | Normalization helpers for BCP-47 language tags. |
 |  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) | Validation helpers for BCP-47 language tags. |
 
@@ -25,7 +25,7 @@
 |  Interface | Description |
 |  --- | --- |
 |  [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md) |  |
-|  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) |  |
+|  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | Initialization options for parsing or creation of [language tag](./ts-bcp47.bcp47.languagetag.md) objects. |
 |  [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
 
 ## Namespaces

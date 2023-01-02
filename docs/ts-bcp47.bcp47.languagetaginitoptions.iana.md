@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTagInitOptions.iana property
 
+The [IANA language subtag and extension registries](./ts-bcp47.iana.languageregistries.md) to be used for the request (optional).
+
 <b>Signature:</b>
 
 ```typescript

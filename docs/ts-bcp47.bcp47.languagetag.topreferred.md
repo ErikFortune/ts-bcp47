@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.toPreferred() method
 
+Gets a confirmed preferred representation of this language tag.
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ toPreferred(): Result<LanguageTag>;
 <b>Returns:</b>
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
+
+`Success` with a preferred representation of this [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->, or `Failure` with details if the tag cannot be normalized to preferred form.
 

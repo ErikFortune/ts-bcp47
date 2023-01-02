@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.toString() method
 
+Gets a string representation of this language tag.
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ toString(): string;
 <b>Returns:</b>
 
 string
+
+A string representation of this language tag.
 

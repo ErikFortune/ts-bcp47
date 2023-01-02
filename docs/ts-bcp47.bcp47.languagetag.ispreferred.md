@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.isPreferred property
 
+Whether this language tag is in preferred form.
+
 <b>Signature:</b>
 
 ```typescript
