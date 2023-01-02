@@ -210,7 +210,7 @@ export class LanguageTag {
         partialOptions?: LanguageTagInitOptions
     ): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
-        return ValidateTag.checkParts(parts, options.validity, fromValidity)
+        return ValidateTag.validateParts(parts, options.validity, fromValidity)
             .onSuccess(() => {
                 return NormalizeTag.normalizeParts(parts, options.normalization, fromNormalization);
             })

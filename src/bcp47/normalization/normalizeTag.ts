@@ -72,8 +72,9 @@ export class NormalizeTag {
      * {@link Bcp47.TagNormalization | normalization level}.
      * @param wantNormalization - The desired {@link Bcp47.TagNormalization | normalization level}.
      * @param haveNormalization - (optional) The current {@link Bcp47.TagNormalization | normalization level}.
-     * @returns An appropriate {@link Bcp47.TagNormalizer | tag normalizer} or `undefined` if no normalization
-     * is necessary.
+     * @returns An appropriate {@link Bcp47.TagNormalizer | tag normalizer} or `undefined` if no additional
+     * normalization is necessary.
+     * @internal
      */
     public static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined {
         if (haveNormalization && compareNormalization(haveNormalization, wantNormalization) >= 0) {

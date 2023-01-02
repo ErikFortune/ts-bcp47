@@ -65,10 +65,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     },
     {
         description: 'invalid primary language',
-        from: 'ENG',
+        from: 'ENG-US',
         expected: [
-            ['ENG', ['default', 'wellFormed']],
-            ['eng', ['wellFormedCanonical']],
+            ['ENG-US', ['default', 'wellFormed']],
+            ['eng-US', ['wellFormedCanonical']],
             [/invalid language/i, allValidatingKeys],
         ],
     },

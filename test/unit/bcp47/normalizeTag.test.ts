@@ -57,7 +57,9 @@ describe('NormalizeTag helpers', () => {
                         });
                     }
                 } else if (this.isFailureTest) {
-                    const validate = ValidateTag.checkParts(this.from, this.options?.validity ?? 'unknown');
+                    // check validation first as we aren't sure if the test expects validation or
+                    // normalization to fail.
+                    const validate = ValidateTag.validateParts(this.from, this.options?.validity ?? 'unknown');
                     if (validate.isSuccess()) {
                         expect(NormalizeTag.normalizeParts(this.from, normalization)).toFailWith(this.expected);
 

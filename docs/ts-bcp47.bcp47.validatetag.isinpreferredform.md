@@ -4,6 +4,8 @@
 
 ## Bcp47.ValidateTag.isInPreferredForm() method
 
+Determines if supplied [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) are in preferred form. Preferred form is valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and also meets additional preferences specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) - extraneous (suppressed) script tags, deprecated language, extlang, script or region tags or deprecated grandfathered or redundant tags (with a defined preferred-value) are not allowed.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,19 @@ static isInPreferredForm(parts: LanguageTagParts): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) | The [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) to test. |
 
 <b>Returns:</b>
 
 boolean
+
+`true` if the [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) represent a valid language tag in preferred form, false otherwise.
+
+## Example 1
+
+`en-US` is in preferred form, `en-Latn-US` is not.
+
+## Example 2
+
+`cmn` is in preferred form, `zh-cmn-Hans` is not.
 

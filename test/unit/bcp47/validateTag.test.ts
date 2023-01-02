@@ -42,7 +42,7 @@ describe('ValidateTag helpers', () => {
             public invoke(): void {
                 const validity = this.options?.validity ?? 'unknown';
                 if (typeof this.expected === 'string') {
-                    expect(ValidateTag.checkParts(this.from, validity)).toSucceed();
+                    expect(ValidateTag.validateParts(this.from, validity)).toSucceed();
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(true);
@@ -52,7 +52,7 @@ describe('ValidateTag helpers', () => {
                         expect(ValidateTag.isWellFormed(this.from)).toBe(true);
                     }
                 } else if (this.expected instanceof RegExp) {
-                    expect(ValidateTag.checkParts(this.from, validity)).toFailWith(this.expected);
+                    expect(ValidateTag.validateParts(this.from, validity)).toFailWith(this.expected);
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(false);

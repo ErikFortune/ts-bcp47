@@ -10,7 +10,7 @@
 |  --- | --- |
 |  [LanguageTag](./ts-bcp47.bcp47.languagetag.md) |  |
 |  [NormalizeTag](./ts-bcp47.bcp47.normalizetag.md) | Normalization helpers for BCP-47 language tags. |
-|  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) |  |
+|  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) | Validation helpers for BCP-47 language tags. |
 
 ## Functions
 

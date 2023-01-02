@@ -4,6 +4,8 @@
 
 ## Bcp47.ValidateTag.isCanonical() method
 
+Determines if supplied [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) are in canonical form, meaning that they are at least well-formed as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, and all subtags are also [capitalized as recommended](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1)<!-- -->.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,19 @@ static isCanonical(parts: LanguageTagParts): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) | The [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) to test. |
 
 <b>Returns:</b>
 
 boolean
+
+`true` if the [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) represent a language tag in canonical, false otherwise.
+
+## Example 1
+
+`en-US` is in canonical form, `en-us` is not.
+
+## Example 2
+
+`eng-US` is in canonical form, `eng-us` is not.
 

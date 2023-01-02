@@ -633,6 +633,8 @@ declare namespace Model_4 {
 // @public
 class NormalizeTag {
     // Warning: (ae-forgotten-export) The symbol "TagNormalizer" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
     static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined;
     static normalizeParts(parts: LanguageTagParts, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<LanguageTagParts>;
     static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts>;
@@ -1020,24 +1022,18 @@ declare namespace Validate_3 {
     }
 }
 
-// @public (undocumented)
+// @public
 class ValidateTag {
-    // (undocumented)
-    static checkParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
     // Warning: (ae-forgotten-export) The symbol "TagValidator" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal
     static chooseValidator(wantValidity: TagValidity, haveValidity?: TagValidity): TagValidator | undefined;
-    // (undocumented)
     static isCanonical(parts: LanguageTagParts): boolean;
-    // (undocumented)
     static isInPreferredForm(parts: LanguageTagParts): boolean;
-    // (undocumented)
     static isStrictlyValid(parts: LanguageTagParts): boolean;
-    // (undocumented)
     static isValid(parts: LanguageTagParts): boolean;
-    // (undocumented)
     static isWellFormed(parts: LanguageTagParts): boolean;
+    static validateParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
 }
 
 // @public
