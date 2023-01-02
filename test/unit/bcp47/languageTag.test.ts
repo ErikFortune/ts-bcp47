@@ -24,7 +24,7 @@ import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
 import { LanguageTag, Subtags, TagValidity } from '../../../src/bcp47';
-import { partsTestCases, tagTestCases } from './commonTestCases';
+import { subtagsTestCases, tagTestCases } from './commonTestCases';
 
 describe('LanguageTag class', () => {
     describe('createFromTag static method', () => {
@@ -54,13 +54,13 @@ describe('LanguageTag class', () => {
     });
 
     describe('createFromSubtags static method', () => {
-        class createFromSubtagsTestCase extends SimpleTagTestCaseBase<Subtags> {
-            public static get factory(): GenericTagTestCaseFactory<Subtags, createFromSubtagsTestCase> {
-                return new GenericTagTestCaseFactory(createFromSubtagsTestCase.create);
+        class CreateFromSubtagsTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, CreateFromSubtagsTestCase> {
+                return new GenericTagTestCaseFactory(CreateFromSubtagsTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): createFromSubtagsTestCase {
-                return new createFromSubtagsTestCase(gtc, which);
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): CreateFromSubtagsTestCase {
+                return new CreateFromSubtagsTestCase(gtc, which);
             }
 
             public invoke(): void {
@@ -80,7 +80,7 @@ describe('LanguageTag class', () => {
                 }
             }
         }
-        test.each(createFromSubtagsTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        test.each(CreateFromSubtagsTestCase.factory.emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
             tc.invoke();
         });
     });
@@ -180,8 +180,8 @@ describe('LanguageTag class', () => {
             });
         });
 
-        describe('parts-based test cases', () => {
-            test.each(ToMethodTestCase.getFactory<Subtags>().emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        describe('subtags-based test cases', () => {
+            test.each(ToMethodTestCase.getFactory<Subtags>().emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });

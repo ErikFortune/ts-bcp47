@@ -9,14 +9,14 @@ Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are in canonical f
 <b>Signature:</b>
 
 ```typescript
-static isCanonical(parts: Subtags): boolean;
+static isCanonical(subtags: Subtags): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
 <b>Returns:</b>
 

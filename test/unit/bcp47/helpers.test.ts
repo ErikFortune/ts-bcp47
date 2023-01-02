@@ -23,7 +23,7 @@
 import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
-import { partsTestCases, tagTestCases } from './commonTestCases';
+import { subtagsTestCases, tagTestCases } from './commonTestCases';
 import { Bcp47 } from '../../../src';
 
 describe('bcp47 helpers', () => {
@@ -53,14 +53,14 @@ describe('bcp47 helpers', () => {
             });
         });
 
-        describe('from parts', () => {
-            class TagHelperPartsTestCase extends SimpleTagTestCaseBase<Bcp47.Subtags> {
-                public static get factory(): GenericTagTestCaseFactory<Bcp47.Subtags, TagHelperPartsTestCase> {
-                    return new GenericTagTestCaseFactory(TagHelperPartsTestCase.create);
+        describe('from subtags', () => {
+            class TagHelperSubtagsTestCase extends SimpleTagTestCaseBase<Bcp47.Subtags> {
+                public static get factory(): GenericTagTestCaseFactory<Bcp47.Subtags, TagHelperSubtagsTestCase> {
+                    return new GenericTagTestCaseFactory(TagHelperSubtagsTestCase.create);
                 }
 
-                public static create(gtc: GenericLanguageTagTest<Bcp47.Subtags>, which: TestKey): TagHelperPartsTestCase {
-                    return new TagHelperPartsTestCase(gtc, which);
+                public static create(gtc: GenericLanguageTagTest<Bcp47.Subtags>, which: TestKey): TagHelperSubtagsTestCase {
+                    return new TagHelperSubtagsTestCase(gtc, which);
                 }
 
                 public invoke(): void {
@@ -80,7 +80,7 @@ describe('bcp47 helpers', () => {
                     }
                 }
             }
-            test.each(TagHelperPartsTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+            test.each(TagHelperSubtagsTestCase.factory.emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });

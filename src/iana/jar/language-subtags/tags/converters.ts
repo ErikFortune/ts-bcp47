@@ -75,12 +75,12 @@ export function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>):
             return fail('tagRange converter: not a string');
         }
 
-        const parts = from.split('..');
-        if (parts.length !== 2 || parts[0] === '' || parts[1] === '') {
+        const elements = from.split('..');
+        if (elements.length !== 2 || elements[0] === '' || elements[1] === '') {
             return fail(`"${from}: malformed tag range`);
         }
 
-        return mapResults(parts.map((tag) => tagConverter.convert(tag)));
+        return mapResults(elements.map((tag) => tagConverter.convert(tag)));
     });
 }
 

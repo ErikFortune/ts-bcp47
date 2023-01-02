@@ -294,7 +294,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     },
 ];
 
-const partsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
+const subtagsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
     {
         description: 'valid non-canonical tag with suppressed script',
         from: {
@@ -358,4 +358,4 @@ const partsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
 ];
 
 export const tagTestCases = testCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
-export const partsTestCases = partsTestCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
+export const subtagsTestCases = subtagsTestCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);

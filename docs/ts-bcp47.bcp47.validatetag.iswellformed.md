@@ -9,14 +9,14 @@ Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are well-formed as
 <b>Signature:</b>
 
 ```typescript
-static isWellFormed(parts: Subtags): boolean;
+static isWellFormed(subtags: Subtags): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
 <b>Returns:</b>
 

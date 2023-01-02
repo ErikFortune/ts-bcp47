@@ -88,7 +88,7 @@ describe('BCP-47 WellFormedTag class', () => {
             });
         });
 
-        describe('with parts', () => {
+        describe('with subtags', () => {
             test.each([
                 ['language only', { primaryLanguage: 'en' }],
                 ['language and extlang', { primaryLanguage: 'ZH', extlangs: ['CMN'] }],
@@ -96,9 +96,9 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['grandfathered', { grandfathered: 'i-klingon' }],
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
-                const parts = from as Subtags;
-                expect(Bcp47.LanguageTag.createFromSubtags(parts)).toSucceedAndSatisfy((tag) => {
-                    expect(tag.subtags).toEqual(parts);
+                const subtags = from as Subtags;
+                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toSucceedAndSatisfy((tag) => {
+                    expect(tag.subtags).toEqual(subtags);
                 });
             });
 
@@ -126,8 +126,8 @@ describe('BCP-47 WellFormedTag class', () => {
                     /malformed extended language range/i,
                 ],
             ])('fails for %p', (_desc, from, expected) => {
-                const parts = from as Subtags;
-                expect(Bcp47.LanguageTag.createFromSubtags(parts)).toFailWith(expected);
+                const subtags = from as Subtags;
+                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toFailWith(expected);
             });
         });
     });

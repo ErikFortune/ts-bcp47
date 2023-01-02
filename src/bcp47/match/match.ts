@@ -67,11 +67,7 @@ export class LanguageMatcher {
         return quality;
     }
 
-    public match(
-        t1: Subtags | LanguageTag | string,
-        t2: Subtags | LanguageTag | string,
-        options?: LanguageTagInitOptions
-    ): Result<number> {
+    public match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number> {
         const tag1 = t1 instanceof LanguageTag ? succeed(t1) : LanguageTag.create(t1, options);
         const tag2 = t2 instanceof LanguageTag ? succeed(t2) : LanguageTag.create(t2, options);
 

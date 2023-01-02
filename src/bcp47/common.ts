@@ -49,22 +49,22 @@ export interface Subtags {
 
 /**
  * Converts {@link Bcp47.Subtags | subtags} to a string.
- * @param parts - The {@link Bcp47.Subtags | subtags} to be converted.
+ * @param subtags - The {@link Bcp47.Subtags | subtags} to be converted.
  * @returns A string representing the supplied {@link Bcp47.Subtags | subtags}.
  * @public
  */
-export function subtagsToString(parts: Subtags): string {
-    if (parts.grandfathered) {
-        return parts.grandfathered;
+export function subtagsToString(subtags: Subtags): string {
+    if (subtags.grandfathered) {
+        return subtags.grandfathered;
     }
     return [
-        parts.primaryLanguage,
-        ...(parts.extlangs ?? []),
-        parts.script,
-        parts.region,
-        ...(parts.variants ?? []),
-        ...(parts.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
-        ...(parts.privateUse ?? []).map((p) => `x-${p}`),
+        subtags.primaryLanguage,
+        ...(subtags.extlangs ?? []),
+        subtags.script,
+        subtags.region,
+        ...(subtags.variants ?? []),
+        ...(subtags.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
+        ...(subtags.privateUse ?? []).map((p) => `x-${p}`),
     ]
         .filter((s): s is string => s !== undefined)
         .join('-');

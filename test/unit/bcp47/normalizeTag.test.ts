@@ -26,11 +26,11 @@ import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBas
 
 import { Subtags, ValidateTag } from '../../../src/bcp47';
 import { NormalizeTag } from '../../../src/bcp47';
-import { partsTestCases } from './commonTestCases';
+import { subtagsTestCases } from './commonTestCases';
 import { subtagsToString } from '../../../src/bcp47/common';
 
 describe('NormalizeTag helpers', () => {
-    describe('normalization with parts', () => {
+    describe('normalization with subtags', () => {
         class NormalizeTagTestCase extends SimpleTagTestCaseBase<Subtags> {
             public static get factory(): GenericTagTestCaseFactory<Subtags, NormalizeTagTestCase> {
                 return new GenericTagTestCaseFactory(NormalizeTagTestCase.create);
@@ -59,7 +59,7 @@ describe('NormalizeTag helpers', () => {
                 } else if (this.isFailureTest) {
                     // check validation first as we aren't sure if the test expects validation or
                     // normalization to fail.
-                    const validate = ValidateTag.validateParts(this.from, this.options?.validity ?? 'unknown');
+                    const validate = ValidateTag.validateSubtags(this.from, this.options?.validity ?? 'unknown');
                     if (validate.isSuccess()) {
                         expect(NormalizeTag.normalizeSubtags(this.from, normalization)).toFailWith(this.expected);
 
@@ -74,7 +74,7 @@ describe('NormalizeTag helpers', () => {
                 }
             }
         }
-        test.each(NormalizeTagTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        test.each(NormalizeTagTestCase.factory.emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
             tc.invoke();
         });
     });

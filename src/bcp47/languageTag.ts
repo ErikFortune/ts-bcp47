@@ -113,9 +113,9 @@ export class LanguageTag {
      * @param subtags - The {@link Bcp47.Subtags | subtags } from
      * which the tag is constructed.
      * @param validity - Known {@link Bcp47.TagValidity | validation level} of the
-     * supplied parts.
+     * supplied subtags.
      * @param normalization - Known {@link Bcp47.TagNormalization | normalization level}
-     * of the supplied parts.
+     * of the supplied subtags.
      * @param iana - The {@link Iana.LanguageRegistries} used to validate and normalize
      * this tag.
      * @internal
@@ -227,8 +227,8 @@ export class LanguageTag {
     public static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag> {
         options = this._getOptions(options);
 
-        return LanguageTagParser.parse(tag, options.iana).onSuccess((parts) => {
-            return this._createTransformed(parts, 'unknown', 'unknown', options);
+        return LanguageTagParser.parse(tag, options.iana).onSuccess((subtags) => {
+            return this._createTransformed(subtags, 'unknown', 'unknown', options);
         });
     }
 
@@ -270,9 +270,9 @@ export class LanguageTag {
      * Constructs a new {@link Bcp47.LanguageTag | language tag} by applying appropriate transformations
      * to as supplied {@link Bcp47.Subtags | Bcp47.Subtags}.
      * @param subtags - The {@link Bcp47.Subtags | subtags} which represent the tag.
-     * @param fromValidity - The {@link Bcp47.TagValidity | validation level} of the supplied `parts`.
+     * @param fromValidity - The {@link Bcp47.TagValidity | validation level} of the supplied subtags.
      * @param fromNormalization - The {@link Bcp47.TagNormalization | normalization level} fo the
-     * supplied `parts`.
+     * supplied subtags.
      * @param partialOptions - Any {@link Bcp47.LanguageTagInitOptions | initialization options}.
      * @returns `Success` with the corresponding {@link Bcp47.LanguageTag | language tag} or `Failure`
      * with details if an error occurs.
@@ -285,7 +285,7 @@ export class LanguageTag {
         partialOptions?: LanguageTagInitOptions
     ): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
-        return ValidateTag.validateParts(subtags, options.validity, fromValidity)
+        return ValidateTag.validateSubtags(subtags, options.validity, fromValidity)
             .onSuccess(() => {
                 return NormalizeTag.normalizeSubtags(subtags, options.normalization, fromNormalization);
             })

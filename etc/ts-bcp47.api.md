@@ -970,12 +970,12 @@ class ValidateTag {
     //
     // @internal
     static chooseValidator(wantValidity: TagValidity, haveValidity?: TagValidity): TagValidator | undefined;
-    static isCanonical(parts: Subtags): boolean;
-    static isInPreferredForm(parts: Subtags): boolean;
-    static isStrictlyValid(parts: Subtags): boolean;
-    static isValid(parts: Subtags): boolean;
-    static isWellFormed(parts: Subtags): boolean;
-    static validateParts(parts: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
+    static isCanonical(subtags: Subtags): boolean;
+    static isInPreferredForm(subtags: Subtags): boolean;
+    static isStrictlyValid(subtags: Subtags): boolean;
+    static isValid(subtags: Subtags): boolean;
+    static isWellFormed(subtags: Subtags): boolean;
+    static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
 }
 
 // @public

@@ -49,10 +49,10 @@ export class TagValidationHelpers<T extends string, TC = unknown> extends Valida
     }
 
     public static toCanonicalTag<T extends string>(val: T): Result<T> {
-        const parts = val.split('-');
+        const subtags = val.split('-');
         const canonical: string[] = [];
         let isInitial = true;
-        for (const part of parts) {
+        for (const part of subtags) {
             if (isInitial || (part.length !== 2 && part.length !== 4)) {
                 canonical.push(part.toLowerCase());
             } else if (part.length === 2) {

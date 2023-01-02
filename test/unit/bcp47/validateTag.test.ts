@@ -26,10 +26,10 @@ import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBas
 
 import { Subtags } from '../../../src/bcp47';
 import { ValidateTag } from '../../../src/bcp47';
-import { partsTestCases } from './commonTestCases';
+import { subtagsTestCases } from './commonTestCases';
 
 describe('ValidateTag helpers', () => {
-    describe('validation with parts', () => {
+    describe('validation with subtags', () => {
         class ValidateTagTestCase extends SimpleTagTestCaseBase<Subtags> {
             public static get factory(): GenericTagTestCaseFactory<Subtags, ValidateTagTestCase> {
                 return new GenericTagTestCaseFactory(ValidateTagTestCase.create);
@@ -42,7 +42,7 @@ describe('ValidateTag helpers', () => {
             public invoke(): void {
                 const validity = this.options?.validity ?? 'unknown';
                 if (typeof this.expected === 'string') {
-                    expect(ValidateTag.validateParts(this.from, validity)).toSucceed();
+                    expect(ValidateTag.validateSubtags(this.from, validity)).toSucceed();
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(true);
@@ -52,7 +52,7 @@ describe('ValidateTag helpers', () => {
                         expect(ValidateTag.isWellFormed(this.from)).toBe(true);
                     }
                 } else if (this.expected instanceof RegExp) {
-                    expect(ValidateTag.validateParts(this.from, validity)).toFailWith(this.expected);
+                    expect(ValidateTag.validateSubtags(this.from, validity)).toFailWith(this.expected);
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(false);
@@ -69,7 +69,7 @@ describe('ValidateTag helpers', () => {
                 return `${which} succeeds for "${description}" (${fromDesc})`;
             }
         }
-        test.each(ValidateTagTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        test.each(ValidateTagTestCase.factory.emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
             tc.invoke();
         });
     });

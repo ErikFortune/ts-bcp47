@@ -46,17 +46,17 @@ export class ValidateTag {
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646}, and
      * all subtags are also
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1 | capitalized as recommended}.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to test.
      * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a language tag in canonical, false otherwise.
      * @example `en-US` is in canonical form, `en-us` is not.
      * @example `eng-US` is in canonical form, `eng-us` is not.
      */
-    public static isCanonical(parts: Subtags): boolean {
+    public static isCanonical(subtags: Subtags): boolean {
         if (!this._isCanonical) {
             this._isCanonical = new IsCanonicalValidator();
         }
-        return this._isCanonical.checkParts(parts).isSuccess();
+        return this._isCanonical.validateSubtags(subtags).isSuccess();
     }
 
     /**
@@ -67,17 +67,17 @@ export class ValidateTag {
      * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | language subtag registry} -
      * extraneous (suppressed) script tags, deprecated language, extlang, script or region tags or
      * deprecated grandfathered or redundant tags (with a defined preferred-value) are not allowed.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to test.
      * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a valid language tag in preferred form, false otherwise.
      * @example `en-US` is in preferred form, `en-Latn-US` is not.
      * @example `cmn` is in preferred form, `zh-cmn-Hans` is not.
      */
-    public static isInPreferredForm(parts: Subtags): boolean {
+    public static isInPreferredForm(subtags: Subtags): boolean {
         if (!this._isInPreferredForm) {
             this._isInPreferredForm = new IsInPreferredFromValidator();
         }
-        return this._isInPreferredForm.checkParts(parts).isSuccess();
+        return this._isInPreferredForm.validateSubtags(subtags).isSuccess();
     }
 
     /**
@@ -86,13 +86,13 @@ export class ValidateTag {
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | valid as defined in the RFC}
      * and meets any other requirements such as
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8 | prefix validity}.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to test.
      * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a strictly valid language tag, false otherwise.
      * @example `ca-valencia` is strictly valid, `es-valencia` is not.
      */
-    public static isStrictlyValid(parts: Subtags): boolean {
-        return this.validateParts(parts, 'strictly-valid').isSuccess();
+    public static isStrictlyValid(subtags: Subtags): boolean {
+        return this.validateSubtags(subtags, 'strictly-valid').isSuccess();
     }
 
     /**
@@ -100,27 +100,27 @@ export class ValidateTag {
      * valid as specified by {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646},
      * meaning that all subtags, or the tag itself for grandfathered tags, are defined in the
      * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | IANA language subtag registry}.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to test.
      * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a valid language tag, false otherwise.
      * @example `en-US` is valid, `eng-US` is not.
      */
-    public static isValid(parts: Subtags): boolean {
-        return this.validateParts(parts, 'valid').isSuccess();
+    public static isValid(subtags: Subtags): boolean {
+        return this.validateSubtags(subtags, 'valid').isSuccess();
     }
 
     /**
      * Determines if supplied {@link Bcp47.Subtags | subtags } are
      * well-formed as specified by {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646},
      * meaning that all subtags meet the grammar defined in the specification.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to test.
      * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a well-formed language tag, false otherwise.
      * @example `en-US` is valid, `english-US` is not.
      * @public
      */
-    public static isWellFormed(parts: Subtags): boolean {
-        return this.validateParts(parts, 'well-formed').isSuccess();
+    public static isWellFormed(subtags: Subtags): boolean {
+        return this.validateSubtags(subtags, 'well-formed').isSuccess();
     }
 
     /**
@@ -153,16 +153,16 @@ export class ValidateTag {
     /**
      * Validates supplied {@link Bcp47.Subtags | subtags } to a requested
      * {@link Bcp47.TagValidity | validity level}, if necessary.
-     * @param parts - The {@link Bcp47.Subtags | subtags } to be validated.
+     * @param subtags - The {@link Bcp47.Subtags | subtags } to be validated.
      * @param wantValidity - The desired {@link Bcp47.TagValidity | validity level}.
      * @param haveValidity - (optional) The current {@link Bcp47.TagValidity | validity level}.
      * @returns `Success` with the validated {@link Bcp47.Subtags | subtags }, or
      * `Failure` with details if an error occurs.
      * @public
      */
-    public static validateParts(parts: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean> {
+    public static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean> {
         const validator = this.chooseValidator(wantValidity, haveValidity);
         // istanbul ignore next - a pain to test
-        return validator?.checkParts(parts) ?? succeed(true);
+        return validator?.validateSubtags(subtags) ?? succeed(true);
     }
 }

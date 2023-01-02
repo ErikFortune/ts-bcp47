@@ -46,7 +46,7 @@ describe('subtagsToString helper function', () => {
         ['private use tag', { privateUse: ['tag-one'] }, 'x-tag-one'],
         ['private use tags', { primaryLanguage: 'en', privateUse: ['tag-one', 'tag-two'] }, 'en-x-tag-one-x-tag-two'],
     ])('formats %p correctly', (_desc, value, expected) => {
-        const parts = value as Subtags;
-        expect(subtagsToString(parts)).toBe(expected);
+        const subtags = value as Subtags;
+        expect(subtagsToString(subtags)).toBe(expected);
     });
 });
