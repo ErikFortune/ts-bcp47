@@ -4,19 +4,19 @@
 
 ## Bcp47.ValidateTag.validateParts() method
 
-Validates supplied [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) to a requested [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->, if necessary.
+Validates supplied [subtags](./ts-bcp47.bcp47.subtags.md) to a requested [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->, if necessary.
 
 <b>Signature:</b>
 
 ```typescript
-static validateParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
+static validateParts(parts: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) | The [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) to be validated. |
+|  parts | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to be validated. |
 |  wantValidity | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | The desired [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->. |
 |  haveValidity | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | <i>(Optional)</i> (optional) The current [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->. |
 
@@ -24,5 +24,5 @@ static validateParts(parts: LanguageTagParts, wantValidity: TagValidity, haveVal
 
 Result&lt;boolean&gt;
 
-`Success` with the validated [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->, or `Failure` with details if an error occurs.
+`Success` with the validated [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or `Failure` with details if an error occurs.
 

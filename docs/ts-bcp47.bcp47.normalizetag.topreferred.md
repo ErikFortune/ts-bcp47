@@ -9,18 +9,18 @@ Converts a BCP-47 language tag to preferred form. Preferred form uses the recomm
 <b>Signature:</b>
 
 ```typescript
-static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
+static toPreferred(subtags: Subtags): Result<Subtags>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) | The individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) to be normalized. |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The individual [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 
 <b>Returns:</b>
 
-Result&lt;[LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->&gt;
+Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
 
-`Success` with the normalized equivalent [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->, or `Failure` with details if an error occurs.
+`Success` with the normalized equivalent [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or `Failure` with details if an error occurs.
 

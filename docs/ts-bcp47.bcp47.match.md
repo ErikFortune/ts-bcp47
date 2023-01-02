@@ -9,15 +9,15 @@ Determine how well two language tags match each other.
 <b>Signature:</b>
 
 ```typescript
-export declare function match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
+export declare function match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  t1 | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string | First tag to match, supplied as one of <code>string</code>, individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
-|  t2 | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string | Second tag to match, supplied as one of <code>string</code>, individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
+|  t1 | [Subtags](./ts-bcp47.bcp47.subtags.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string | First tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
+|  t2 | [Subtags](./ts-bcp47.bcp47.subtags.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string | Second tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
 |  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) A set of [language tag options](./ts-bcp47.bcp47.languagetaginitoptions.md) which control any necessary conversion or parsing. |
 
 <b>Returns:</b>

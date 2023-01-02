@@ -15,7 +15,7 @@ import { Validation } from '@fgv/ts-utils';
 declare namespace Bcp47 {
     export {
         ExtensionSubtagValue,
-        LanguageTagParts,
+        Subtags,
         LanguageTag,
         LanguageTagInitOptions,
         NormalizeTag,
@@ -375,12 +375,12 @@ declare namespace LanguageSubtags {
 // @public
 class LanguageTag {
     // @internal
-    protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
-    static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
+    protected constructor(subtags: Subtags, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
+    static create(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
+    static createFromParts(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
     static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
-    protected static _createTransformed(parts: LanguageTagParts, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
+    protected static _createTransformed(subtags: Subtags, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
     get effectiveScript(): ScriptSubtag | undefined;
     // @internal
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions>;
@@ -402,7 +402,7 @@ class LanguageTag {
     protected _isValid: undefined | boolean;
     // @internal (undocumented)
     protected _normalization: TagNormalization;
-    readonly parts: Readonly<LanguageTagParts>;
+    readonly parts: Readonly<Subtags>;
     // @internal (undocumented)
     protected _suppressedScript: undefined | ScriptSubtag | false;
     readonly tag: string;
@@ -507,33 +507,13 @@ interface LanguageTagInitOptions {
 }
 
 // @public (undocumented)
-interface LanguageTagParts {
-    // (undocumented)
-    extensions?: ExtensionSubtagValue[];
-    // (undocumented)
-    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
-    // (undocumented)
-    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
-    // (undocumented)
-    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
-    // (undocumented)
-    privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
-    // (undocumented)
-    region?: Iana.LanguageSubtags.RegionSubtag;
-    // (undocumented)
-    script?: Iana.LanguageSubtags.ScriptSubtag;
-    // (undocumented)
-    variants?: Iana.LanguageSubtags.VariantSubtag[];
-}
-
-// @public (undocumented)
 function loadLanguageSubtagsJsonFileSync(path: string): Result<Items.RegistryFile>;
 
 // @internal (undocumented)
 function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.LanguageTagExtensions>;
 
 // @public
-function match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
+function match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
 
 // @public
 type MatchQuality = keyof typeof matchQuality;
@@ -578,13 +558,13 @@ class NormalizeTag {
     //
     // @internal
     static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined;
-    static normalizeParts(parts: LanguageTagParts, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<LanguageTagParts>;
-    static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts>;
-    static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
+    static normalizeSubtags(subtags: Subtags, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<Subtags>;
+    static toCanonical(subtags: Subtags): Result<Subtags>;
+    static toPreferred(subtags: Subtags): Result<Subtags>;
 }
 
 // @public
-function parse(from: string): Result<LanguageTagParts>;
+function parse(from: string): Result<Subtags>;
 
 // @internal (undocumented)
 function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]>;
@@ -880,8 +860,28 @@ const scriptSubtag: Converter<ScriptSubtag, unknown>;
 // @public (undocumented)
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
 
+// @public (undocumented)
+interface Subtags {
+    // (undocumented)
+    extensions?: ExtensionSubtagValue[];
+    // (undocumented)
+    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
+    // (undocumented)
+    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
+    // (undocumented)
+    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
+    // (undocumented)
+    privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
+    // (undocumented)
+    region?: Iana.LanguageSubtags.RegionSubtag;
+    // (undocumented)
+    script?: Iana.LanguageSubtags.ScriptSubtag;
+    // (undocumented)
+    variants?: Iana.LanguageSubtags.VariantSubtag[];
+}
+
 // @public
-function tag(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
+function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
 
 declare namespace TagConverters {
     export {
@@ -970,12 +970,12 @@ class ValidateTag {
     //
     // @internal
     static chooseValidator(wantValidity: TagValidity, haveValidity?: TagValidity): TagValidator | undefined;
-    static isCanonical(parts: LanguageTagParts): boolean;
-    static isInPreferredForm(parts: LanguageTagParts): boolean;
-    static isStrictlyValid(parts: LanguageTagParts): boolean;
-    static isValid(parts: LanguageTagParts): boolean;
-    static isWellFormed(parts: LanguageTagParts): boolean;
-    static validateParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
+    static isCanonical(parts: Subtags): boolean;
+    static isInPreferredForm(parts: Subtags): boolean;
+    static isStrictlyValid(parts: Subtags): boolean;
+    static isValid(parts: Subtags): boolean;
+    static isWellFormed(parts: Subtags): boolean;
+    static validateParts(parts: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
 }
 
 // @public

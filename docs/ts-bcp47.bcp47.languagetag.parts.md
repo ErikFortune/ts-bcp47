@@ -4,10 +4,10 @@
 
 ## Bcp47.LanguageTag.parts property
 
-The individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) for this language tag.
+The individual [subtags](./ts-bcp47.bcp47.subtags.md) for this language tag.
 
 <b>Signature:</b>
 
 ```typescript
-readonly parts: Readonly<LanguageTagParts>;
+readonly parts: Readonly<Subtags>;
 ```

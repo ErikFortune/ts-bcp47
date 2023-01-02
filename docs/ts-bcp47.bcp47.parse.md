@@ -4,14 +4,14 @@
 
 ## Bcp47.parse() function
 
-Parses a supplied string to produce a collection of individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.
+Parses a supplied string to produce a collection of individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->.
 
 The string must be [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) but no additional validation or normalization is applied.
 
 <b>Signature:</b>
 
 ```typescript
-export declare function parse(from: string): Result<LanguageTagParts>;
+export declare function parse(from: string): Result<Subtags>;
 ```
 
 ## Parameters
@@ -22,7 +22,7 @@ export declare function parse(from: string): Result<LanguageTagParts>;
 
 <b>Returns:</b>
 
-Result&lt;[LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->&gt;
+Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
 
-The parsed individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) which correspond to the string.
+The parsed individual [subtags](./ts-bcp47.bcp47.subtags.md) which correspond to the string.
 

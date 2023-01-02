@@ -26,15 +26,15 @@ The constructor for this class is marked as internal. Third-party code should no
 |  [isStrictlyValid](./ts-bcp47.bcp47.languagetag.isstrictlyvalid.md) | <code>readonly</code> | boolean | Whether if this language tag is strictly valid. |
 |  [isUndetermined](./ts-bcp47.bcp47.languagetag.isundetermined.md) | <code>readonly</code> | boolean | Determines if this tag represents the special <code>undetermined</code> language. |
 |  [isValid](./ts-bcp47.bcp47.languagetag.isvalid.md) | <code>readonly</code> | boolean | Whether this language tag is valid. |
-|  [parts](./ts-bcp47.bcp47.languagetag.parts.md) | <code>readonly</code> | Readonly&lt;[LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->&gt; | The individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) for this language tag. |
+|  [parts](./ts-bcp47.bcp47.languagetag.parts.md) | <code>readonly</code> | Readonly&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt; | The individual [subtags](./ts-bcp47.bcp47.subtags.md) for this language tag. |
 |  [tag](./ts-bcp47.bcp47.languagetag.tag.md) | <code>readonly</code> | string | A string representation of this language tag. |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [create(from, options)](./ts-bcp47.bcp47.languagetag.create.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied <code>string</code> tag or [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) using optional configuration, if supplied. |
-|  [createFromParts(parts, options)](./ts-bcp47.bcp47.languagetag.createfromparts.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) using optional configuration, if supplied. |
+|  [create(from, options)](./ts-bcp47.bcp47.languagetag.create.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied <code>string</code> tag or [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied. |
+|  [createFromParts(subtags, options)](./ts-bcp47.bcp47.languagetag.createfromparts.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied. |
 |  [createFromTag(tag, options)](./ts-bcp47.bcp47.languagetag.createfromtag.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied <code>string</code> tag using optional configuration, if supplied. |
 |  [getSuppressedScript()](./ts-bcp47.bcp47.languagetag.getsuppressedscript.md) |  | Returns the <code>Suppress-Script</code> value defined for the primary language of this tag, regardless of whether a different script is defined in this subtag. |
 |  [toCanonical()](./ts-bcp47.bcp47.languagetag.tocanonical.md) |  | Gets a confirmed canonical representation of this language tag. |

@@ -41,13 +41,13 @@ export class ValidateTag {
     private static _validators: Record<TagValidity, TagValidator> | undefined = undefined;
 
     /**
-     * Determines if supplied {@link Bcp47.LanguageTagParts | language tag parts} are in canonical form,
+     * Determines if supplied {@link Bcp47.Subtags | subtags } are in canonical form,
      * meaning that they are at least well-formed as specified by
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646}, and
      * all subtags are also
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1 | capitalized as recommended}.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to test.
-     * @returns `true` if the {@link Bcp47.LanguageTagParts | language tag parts} represent
+     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a language tag in canonical, false otherwise.
      * @example `en-US` is in canonical form, `en-us` is not.
      * @example `eng-US` is in canonical form, `eng-us` is not.
@@ -60,15 +60,15 @@ export class ValidateTag {
     }
 
     /**
-     * Determines if supplied {@link Bcp47.LanguageTagParts | language tag parts} are
+     * Determines if supplied {@link Bcp47.Subtags | subtags } are
      * in preferred form. Preferred form is valid as specified by
      * {@link  https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646} and
      * also meets additional preferences specified in the
      * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | language subtag registry} -
      * extraneous (suppressed) script tags, deprecated language, extlang, script or region tags or
      * deprecated grandfathered or redundant tags (with a defined preferred-value) are not allowed.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to test.
-     * @returns `true` if the {@link Bcp47.LanguageTagParts | language tag parts} represent
+     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a valid language tag in preferred form, false otherwise.
      * @example `en-US` is in preferred form, `en-Latn-US` is not.
      * @example `cmn` is in preferred form, `zh-cmn-Hans` is not.
@@ -81,13 +81,13 @@ export class ValidateTag {
     }
 
     /**
-     * Determines if supplied {@link Bcp47.LanguageTagParts | language tag parts} are
+     * Determines if supplied {@link Bcp47.Subtags | subtags } are
      * strictly valid.  A strictly valid tag is both
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | valid as defined in the RFC}
      * and meets any other requirements such as
      * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8 | prefix validity}.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to test.
-     * @returns `true` if the {@link Bcp47.LanguageTagParts | language tag parts} represent
+     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a strictly valid language tag, false otherwise.
      * @example `ca-valencia` is strictly valid, `es-valencia` is not.
      */
@@ -96,12 +96,12 @@ export class ValidateTag {
     }
 
     /**
-     * Determines if supplied {@link Bcp47.LanguageTagParts | language tag parts} are
+     * Determines if supplied {@link Bcp47.Subtags | subtags } are
      * valid as specified by {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646},
      * meaning that all subtags, or the tag itself for grandfathered tags, are defined in the
      * {@link https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry | IANA language subtag registry}.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to test.
-     * @returns `true` if the {@link Bcp47.LanguageTagParts | language tag parts} represent
+     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a valid language tag, false otherwise.
      * @example `en-US` is valid, `eng-US` is not.
      */
@@ -110,11 +110,11 @@ export class ValidateTag {
     }
 
     /**
-     * Determines if supplied {@link Bcp47.LanguageTagParts | language tag parts} are
+     * Determines if supplied {@link Bcp47.Subtags | subtags } are
      * well-formed as specified by {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | RFC 5646},
      * meaning that all subtags meet the grammar defined in the specification.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to test.
-     * @returns `true` if the {@link Bcp47.LanguageTagParts | language tag parts} represent
+     * @param parts - The {@link Bcp47.Subtags | subtags } to test.
+     * @returns `true` if the {@link Bcp47.Subtags | subtags } represent
      * a well-formed language tag, false otherwise.
      * @example `en-US` is valid, `english-US` is not.
      * @public
@@ -151,12 +151,12 @@ export class ValidateTag {
     }
 
     /**
-     * Validates supplied {@link Bcp47.LanguageTagParts | language tag parts} to a requested
+     * Validates supplied {@link Bcp47.Subtags | subtags } to a requested
      * {@link Bcp47.TagValidity | validity level}, if necessary.
-     * @param parts - The {@link Bcp47.LanguageTagParts | language tag parts} to be validated.
+     * @param parts - The {@link Bcp47.Subtags | subtags } to be validated.
      * @param wantValidity - The desired {@link Bcp47.TagValidity | validity level}.
      * @param haveValidity - (optional) The current {@link Bcp47.TagValidity | validity level}.
-     * @returns `Success` with the validated {@link Bcp47.LanguageTagParts | language tag parts}, or
+     * @returns `Success` with the validated {@link Bcp47.Subtags | subtags }, or
      * `Failure` with details if an error occurs.
      * @public
      */

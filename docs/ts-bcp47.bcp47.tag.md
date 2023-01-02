@@ -4,21 +4,21 @@
 
 ## Bcp47.tag() function
 
-Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from either a specified `string` description or from (typically parsed) individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.
+Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from either a specified `string` description or from (typically parsed) individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->.
 
 The supplied initializer must be at least [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->. Higher degrees of validation along with any normalizations may be optionally specified.
 
 <b>Signature:</b>
 
 ```typescript
-export declare function tag(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
+export declare function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  from | string \| [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) | The <code>string</code> or [language tag parts](./ts-bcp47.bcp47.languagetagparts.md) from which the processed tag is to be constructed. |
+|  from | string \| [Subtags](./ts-bcp47.bcp47.subtags.md) | The <code>string</code> or [subtags](./ts-bcp47.bcp47.subtags.md) from which the processed tag is to be constructed. |
 |  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) The [options](./ts-bcp47.bcp47.languagetaginitoptions.md) used to construct and validate the tag. |
 
 <b>Returns:</b>
