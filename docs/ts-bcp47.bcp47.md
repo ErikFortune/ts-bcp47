@@ -38,6 +38,6 @@
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization that has been applied to a language tag. |
+|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization of a language tag. |
 |  [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | Describes the validation level of a particular tag. |
 
