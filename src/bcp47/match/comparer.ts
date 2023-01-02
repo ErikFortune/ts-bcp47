@@ -37,7 +37,7 @@ import { matchQuality } from './common';
  * applying normalization and language semantics as appropriate.
  * @public
  */
-export class LanguageComparer {
+export class LanguageMatcher {
     public iana: Iana.LanguageRegistries;
     public unsd: Unsd.RegionCodes;
     public overrides: OverridesRegistry;
@@ -49,25 +49,25 @@ export class LanguageComparer {
         this.overrides = DefaultRegistries.overridesRegistry;
     }
 
-    public compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
+    public matchLanguageTags(t1: LanguageTag, t2: LanguageTag): number {
         // no primary tag is either all private or grandfathered, which must match
         // exactly.
         if (!t1.parts.primaryLanguage || !t2.parts.primaryLanguage) {
             return t1.toString().toLowerCase() === t2.toString().toLowerCase() ? matchQuality.exact : matchQuality.none;
         }
 
-        let quality = this.comparePrimaryLanguage(t1, t2);
-        quality = quality > matchQuality.none ? Math.min(this.compareExtlang(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.compareScript(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.compareRegion(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.compareVariants(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.compareExtensions(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.comparePrivateUseTags(t1, t2), quality) : quality;
+        let quality = this.matchPrimaryLanguage(t1, t2);
+        quality = quality > matchQuality.none ? Math.min(this.matchExtlang(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.matchScript(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.matchRegion(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.matchVariants(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.matchExtensions(t1, t2), quality) : quality;
+        quality = quality > matchQuality.none ? Math.min(this.matchPrivateUseTags(t1, t2), quality) : quality;
 
         return quality;
     }
 
-    public compare(
+    public match(
         t1: LanguageTagParts | LanguageTag | string,
         t2: LanguageTagParts | LanguageTag | string,
         options?: LanguageTagInitOptions
@@ -77,12 +77,12 @@ export class LanguageComparer {
 
         return tag1.onSuccess((lt1) => {
             return tag2.onSuccess((lt2) => {
-                return succeed(this.compareLanguageTags(lt1, lt2));
+                return succeed(this.matchLanguageTags(lt1, lt2));
             });
         });
     }
 
-    public comparePrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchPrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
         // istanbul ignore next
         const l1 = lt1.parts.primaryLanguage?.toLowerCase();
         // istanbul ignore next
@@ -99,7 +99,7 @@ export class LanguageComparer {
         return matchQuality.none;
     }
 
-    public compareExtlang(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchExtlang(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.parts.extlangs?.length !== lt2.parts.extlangs?.length) {
             return matchQuality.none;
         }
@@ -115,7 +115,7 @@ export class LanguageComparer {
         return matchQuality.exact;
     }
 
-    public compareScript(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchScript(lt1: LanguageTag, lt2: LanguageTag): number {
         const s1 = lt1.effectiveScript?.toLowerCase();
         const s2 = lt2.effectiveScript?.toLowerCase();
 
@@ -130,7 +130,7 @@ export class LanguageComparer {
         return matchQuality.none;
     }
 
-    public compareRegion(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchRegion(lt1: LanguageTag, lt2: LanguageTag): number {
         const r1 = lt1.parts.region?.toUpperCase() as RegionSubtag;
         const r2 = lt2.parts.region?.toUpperCase() as RegionSubtag;
 
@@ -201,7 +201,7 @@ export class LanguageComparer {
         return matchQuality.sibling;
     }
 
-    public compareVariants(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchVariants(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.parts.variants?.length !== lt2.parts.variants?.length) {
             return matchQuality.region;
         }
@@ -217,7 +217,7 @@ export class LanguageComparer {
         return matchQuality.exact;
     }
 
-    public compareExtensions(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchExtensions(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.parts.extensions?.length !== lt2.parts.extensions?.length) {
             return matchQuality.variant;
         }
@@ -236,7 +236,7 @@ export class LanguageComparer {
         return matchQuality.exact;
     }
 
-    public comparePrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number {
+    public matchPrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.parts.privateUse?.length !== lt2.parts.privateUse?.length) {
             return matchQuality.variant;
         }

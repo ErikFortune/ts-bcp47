@@ -21,7 +21,7 @@
  */
 
 import { LanguageTag, LanguageTagInitOptions } from './languageTag';
-import { LanguageComparer } from './match';
+import { LanguageMatcher } from './match';
 import { LanguageTagParser } from './languageTagParser';
 import { LanguageTagParts } from './common';
 import { Result } from '@fgv/ts-utils';
@@ -83,5 +83,5 @@ export function match(
     t2: LanguageTagParts | LanguageTag | string,
     options?: LanguageTagInitOptions
 ): Result<number> {
-    return new LanguageComparer().compare(t1, t2, options);
+    return new LanguageMatcher().match(t1, t2, options);
 }
