@@ -22,7 +22,7 @@
 
 import * as Iana from '../iana';
 
-import { Model } from './subtags';
+import { Model } from './bcp47Subtags';
 
 /**
  * @public
@@ -35,7 +35,7 @@ export interface ExtensionSubtagValue {
 /**
  * @public
  */
-export interface LanguageTagParts {
+export interface Subtags {
     primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
     extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
     script?: Iana.LanguageSubtags.ScriptSubtag;
@@ -48,23 +48,23 @@ export interface LanguageTagParts {
 }
 
 /**
- * Converts a {@link Bcp47.LanguageTagParts | LanguageTagParts} to a string.
- * @param parts - The {@link Bcp47.LanguageTagParts | LanguageTagParts} to be converted.
- * @returns A string representing the supplied {@link Bcp47.LanguageTagParts | LanguageTagParts}.
+ * Converts {@link Bcp47.Subtags | subtags} to a string.
+ * @param subtags - The {@link Bcp47.Subtags | subtags} to be converted.
+ * @returns A string representing the supplied {@link Bcp47.Subtags | subtags}.
  * @public
  */
-export function languageTagPartsToString(parts: LanguageTagParts): string {
-    if (parts.grandfathered) {
-        return parts.grandfathered;
+export function subtagsToString(subtags: Subtags): string {
+    if (subtags.grandfathered) {
+        return subtags.grandfathered;
     }
     return [
-        parts.primaryLanguage,
-        ...(parts.extlangs ?? []),
-        parts.script,
-        parts.region,
-        ...(parts.variants ?? []),
-        ...(parts.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
-        ...(parts.privateUse ?? []).map((p) => `x-${p}`),
+        subtags.primaryLanguage,
+        ...(subtags.extlangs ?? []),
+        subtags.script,
+        subtags.region,
+        ...(subtags.variants ?? []),
+        ...(subtags.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
+        ...(subtags.privateUse ?? []).map((p) => `x-${p}`),
     ]
         .filter((s): s is string => s !== undefined)
         .join('-');

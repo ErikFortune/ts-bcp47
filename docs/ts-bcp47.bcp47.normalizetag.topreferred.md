@@ -4,19 +4,23 @@
 
 ## Bcp47.NormalizeTag.toPreferred() method
 
+Converts a BCP-47 language tag to preferred form. Preferred form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) and also applies additional preferred values specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->: extraneous (suppressed) script tags are removed, deprecated language, extlang, script or region tags are replaced with up-to-date preferred values, and grandfathered or redundant tags with a defined preferred-value are replaced in their entirety with the new preferred value.
+
 <b>Signature:</b>
 
 ```typescript
-static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
+static toPreferred(subtags: Subtags): Result<Subtags>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The individual [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 
 <b>Returns:</b>
 
-Result&lt;[LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->&gt;
+Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
+
+`Success` with the normalized equivalent [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or `Failure` with details if an error occurs.
 

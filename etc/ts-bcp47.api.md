@@ -15,13 +15,18 @@ import { Validation } from '@fgv/ts-utils';
 declare namespace Bcp47 {
     export {
         ExtensionSubtagValue,
-        LanguageTagParts,
+        Subtags,
         LanguageTag,
+        LanguageTagInitOptions,
         NormalizeTag,
         TagNormalization,
         TagValidity,
         ValidateTag,
-        Match
+        MatchQuality,
+        matchQuality,
+        tag,
+        parse,
+        match
     }
 }
 export { Bcp47 }
@@ -285,37 +290,6 @@ declare namespace Jar_2 {
     }
 }
 
-// @public
-class LanguageComparer {
-    constructor(iana?: Iana.LanguageRegistries);
-    // (undocumented)
-    compare(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
-    // (undocumented)
-    compareExtensions(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareExtlang(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number;
-    // (undocumented)
-    comparePrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    comparePrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareRegion(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareScript(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareVariants(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    iana: Iana.LanguageRegistries;
-    // Warning: (ae-forgotten-export) The symbol "OverridesRegistry" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    overrides: OverridesRegistry;
-    // (undocumented)
-    unsd: Unsd.RegionCodes;
-}
-
 // @public (undocumented)
 class LanguageRegistries {
     // (undocumented)
@@ -398,63 +372,44 @@ declare namespace LanguageSubtags {
     }
 }
 
-// @public (undocumented)
+// @public
 class LanguageTag {
     // @internal
-    protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
-    // (undocumented)
-    static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    // (undocumented)
-    static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    // Warning: (ae-forgotten-export) The symbol "LanguageTagInitOptions" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
+    protected constructor(subtags: Subtags, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
+    static create(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
+    static createFromSubtags(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
+    static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
-    protected static _createTransformed(parts: LanguageTagParts, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
-    // (undocumented)
+    protected static _createTransformed(subtags: Subtags, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
     get effectiveScript(): ScriptSubtag | undefined;
     // @internal
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions>;
-    // (undocumented)
     getSuppressedScript(): ScriptSubtag | undefined;
     // @internal (undocumented)
     protected readonly _iana: Iana.LanguageRegistries;
-    // (undocumented)
     get isCanonical(): boolean;
     // @internal (undocumented)
     protected _isCanonical: undefined | boolean;
-    // (undocumented)
     get isPreferred(): boolean;
     // @internal (undocumented)
     protected _isPreferred: undefined | boolean;
-    // (undocumented)
     get isStrictlyValid(): boolean;
     // @internal (undocumented)
     protected _isStrictlyValid: undefined | boolean;
-    // (undocumented)
     get isUndetermined(): boolean;
-    // (undocumented)
     get isValid(): boolean;
     // @internal (undocumented)
     protected _isValid: undefined | boolean;
     // @internal (undocumented)
     protected _normalization: TagNormalization;
-    // (undocumented)
-    readonly parts: Readonly<LanguageTagParts>;
+    readonly subtags: Readonly<Subtags>;
     // @internal (undocumented)
     protected _suppressedScript: undefined | ScriptSubtag | false;
-    // (undocumented)
     readonly tag: string;
-    // (undocumented)
     toCanonical(): Result<LanguageTag>;
-    // (undocumented)
     toPreferred(): Result<LanguageTag>;
-    // (undocumented)
     toStrictlyValid(): Result<LanguageTag>;
-    // (undocumented)
     toString(): string;
-    // (undocumented)
     toValid(): Result<LanguageTag>;
     // @internal (undocumented)
     protected _validity: TagValidity;
@@ -544,24 +499,11 @@ declare namespace LanguageTagExtensions_2 {
     }
 }
 
-// @public (undocumented)
-interface LanguageTagParts {
-    // (undocumented)
-    extensions?: ExtensionSubtagValue[];
-    // (undocumented)
-    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
-    // (undocumented)
-    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
-    // (undocumented)
-    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
-    // (undocumented)
-    privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
-    // (undocumented)
-    region?: Iana.LanguageSubtags.RegionSubtag;
-    // (undocumented)
-    script?: Iana.LanguageSubtags.ScriptSubtag;
-    // (undocumented)
-    variants?: Iana.LanguageSubtags.VariantSubtag[];
+// @public
+interface LanguageTagInitOptions {
+    iana?: Iana.LanguageRegistries;
+    normalization?: TagNormalization;
+    validity?: TagValidity;
 }
 
 // @public (undocumented)
@@ -570,13 +512,8 @@ function loadLanguageSubtagsJsonFileSync(path: string): Result<Items.RegistryFil
 // @internal (undocumented)
 function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.LanguageTagExtensions>;
 
-declare namespace Match {
-    export {
-        LanguageComparer,
-        matchQuality,
-        MatchQuality
-    }
-}
+// @public
+function match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
 
 // @public
 type MatchQuality = keyof typeof matchQuality;
@@ -615,19 +552,19 @@ declare namespace Model_4 {
     }
 }
 
-// @public (undocumented)
+// @public
 class NormalizeTag {
     // Warning: (ae-forgotten-export) The symbol "TagNormalizer" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal
     static chooseNormalizer(wantNormalization: TagNormalization, haveNormalization?: TagNormalization): TagNormalizer | undefined;
-    // (undocumented)
-    static processParts(parts: LanguageTagParts, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<LanguageTagParts>;
-    // (undocumented)
-    static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts>;
-    // (undocumented)
-    static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
+    static normalizeSubtags(subtags: Subtags, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<Subtags>;
+    static toCanonical(subtags: Subtags): Result<Subtags>;
+    static toPreferred(subtags: Subtags): Result<Subtags>;
 }
+
+// @public
+function parse(from: string): Result<Subtags>;
 
 // @internal (undocumented)
 function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]>;
@@ -923,6 +860,29 @@ const scriptSubtag: Converter<ScriptSubtag, unknown>;
 // @public (undocumented)
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
 
+// @public (undocumented)
+interface Subtags {
+    // (undocumented)
+    extensions?: ExtensionSubtagValue[];
+    // (undocumented)
+    extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
+    // (undocumented)
+    grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;
+    // (undocumented)
+    primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
+    // (undocumented)
+    privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
+    // (undocumented)
+    region?: Iana.LanguageSubtags.RegionSubtag;
+    // (undocumented)
+    script?: Iana.LanguageSubtags.ScriptSubtag;
+    // (undocumented)
+    variants?: Iana.LanguageSubtags.VariantSubtag[];
+}
+
+// @public
+function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
+
 declare namespace TagConverters {
     export {
         rangeOfTags,
@@ -1004,24 +964,18 @@ declare namespace Validate_3 {
     }
 }
 
-// @public (undocumented)
+// @public
 class ValidateTag {
-    // (undocumented)
-    static checkParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
     // Warning: (ae-forgotten-export) The symbol "TagValidator" needs to be exported by the entry point index.d.ts
     //
-    // (undocumented)
+    // @internal
     static chooseValidator(wantValidity: TagValidity, haveValidity?: TagValidity): TagValidator | undefined;
-    // (undocumented)
-    static isCanonical(parts: LanguageTagParts): boolean;
-    // (undocumented)
-    static isInPreferredForm(parts: LanguageTagParts): boolean;
-    // (undocumented)
-    static isStrictlyValid(parts: LanguageTagParts): boolean;
-    // (undocumented)
-    static isValid(parts: LanguageTagParts): boolean;
-    // (undocumented)
-    static isWellFormed(parts: LanguageTagParts): boolean;
+    static isCanonical(subtags: Subtags): boolean;
+    static isInPreferredForm(subtags: Subtags): boolean;
+    static isStrictlyValid(subtags: Subtags): boolean;
+    static isValid(subtags: Subtags): boolean;
+    static isWellFormed(subtags: Subtags): boolean;
+    static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
 }
 
 // @public

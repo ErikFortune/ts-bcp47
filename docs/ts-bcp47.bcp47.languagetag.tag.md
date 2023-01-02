@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.tag property
 
+A string representation of this language tag.
+
 <b>Signature:</b>
 
 ```typescript

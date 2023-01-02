@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
+import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
 
-import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
+import { ExtensionSubtagValue, Subtags, subtagsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
 import { LanguageTagParser } from '../languageTagParser';
@@ -36,35 +36,35 @@ import { TagNormalizerBase } from './baseNormalizer';
 export class PreferredNormalizer extends TagNormalizerBase {
     public readonly normalization: TagNormalization = 'preferred';
 
-    protected _processLanguage(parts: LanguageTagParts): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
-        if (parts.primaryLanguage) {
-            const language = this._iana.subtags.languages.tryGet(parts.primaryLanguage);
+    protected _processLanguage(subtags: Subtags): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
+        if (subtags.primaryLanguage) {
+            const language = this._iana.subtags.languages.tryGet(subtags.primaryLanguage);
             if (!language) {
-                return fail(`invalid language subtag "${parts.primaryLanguage}"`);
+                return fail(`invalid language subtag "${subtags.primaryLanguage}"`);
             }
             return succeed(language.preferredValue ?? language.subtag);
         }
         return succeed(undefined);
     }
 
-    protected _processExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
-        if (parts.extlangs) {
-            return mapResults(parts.extlangs.map((e) => this._iana.subtags.extlangs.toValidCanonical(e)));
+    protected _processExtlangs(subtags: Subtags): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+        if (subtags.extlangs) {
+            return mapResults(subtags.extlangs.map((e) => this._iana.subtags.extlangs.toValidCanonical(e)));
         }
         return succeed(undefined);
     }
 
-    protected _processScript(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
-        if (parts.primaryLanguage && parts.script) {
-            const language = this._iana.subtags.languages.tryGet(parts.primaryLanguage);
+    protected _processScript(subtags: Subtags): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
+        if (subtags.primaryLanguage && subtags.script) {
+            const language = this._iana.subtags.languages.tryGet(subtags.primaryLanguage);
             // istanbul ignore next - internal error difficult to test
             if (!language) {
-                return fail(`invalid primary language subtag "${parts.primaryLanguage}.`);
+                return fail(`invalid primary language subtag "${subtags.primaryLanguage}.`);
             }
 
-            const script = this._iana.subtags.scripts.toValidCanonical(parts.script).getValueOrDefault();
+            const script = this._iana.subtags.scripts.toValidCanonical(subtags.script).getValueOrDefault();
             if (!script) {
-                return fail(`invalid script subtag "${parts.script}`);
+                return fail(`invalid script subtag "${subtags.script}`);
             }
 
             if (language.suppressScript !== script) {
@@ -74,98 +74,98 @@ export class PreferredNormalizer extends TagNormalizerBase {
         return succeed(undefined);
     }
 
-    protected _processRegion(parts: LanguageTagParts): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
-        if (parts.region) {
-            return this._iana.subtags.regions.get(parts.region).onSuccess((region) => {
+    protected _processRegion(subtags: Subtags): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
+        if (subtags.region) {
+            return this._iana.subtags.regions.get(subtags.region).onSuccess((region) => {
                 return succeed(region.preferredValue ?? region.subtag);
             });
         }
         return succeed(undefined);
     }
 
-    protected _processVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
-        if (parts.variants) {
-            return mapResults(parts.variants.map((v) => this._iana.subtags.variants.toValidCanonical(v))).onSuccess((v) =>
+    protected _processVariants(subtags: Subtags): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
+        if (subtags.variants) {
+            return mapResults(subtags.variants.map((v) => this._iana.subtags.variants.toValidCanonical(v))).onSuccess((v) =>
                 this._verifyUnique('variant', v, (v) => v)
             );
         }
         return succeed(undefined);
     }
 
-    protected _processExtensionSingleton(singleton: Subtags.Model.ExtensionSingleton): Result<Subtags.Model.ExtensionSingleton> {
+    protected _processExtensionSingleton(singleton: Bcp47Subtags.Model.ExtensionSingleton): Result<Bcp47Subtags.Model.ExtensionSingleton> {
         return this._iana.extensions.extensions.toValidCanonical(singleton);
     }
 
-    protected _processExtensionSubtagValue(value: Subtags.Model.ExtensionSubtag): Result<Subtags.Model.ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.toCanonical(value);
+    protected _processExtensionSubtagValue(value: Bcp47Subtags.Model.ExtensionSubtag): Result<Bcp47Subtags.Model.ExtensionSubtag> {
+        return Bcp47Subtags.Validate.extensionSubtag.toCanonical(value);
     }
 
-    protected _processExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
-        return super._processExtensions(parts).onSuccess((extensions) => {
+    protected _processExtensions(subtags: Subtags): Result<ExtensionSubtagValue[] | undefined> {
+        return super._processExtensions(subtags).onSuccess((extensions) => {
             return this._verifyUnique('extensions', extensions, (e) => e.singleton);
         });
     }
 
-    protected _processPrivateUseTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
-        if (parts.privateUse) {
-            return mapResults(parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
+    protected _processPrivateUseTags(subtags: Subtags): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
+        if (subtags.privateUse) {
+            return mapResults(subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
         }
-        return succeed(parts.privateUse);
+        return succeed(subtags.privateUse);
     }
 
-    protected _processGrandfatheredTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
-        if (parts.grandfathered) {
-            return this._iana.subtags.grandfathered.toValidCanonical(parts.grandfathered);
+    protected _processGrandfatheredTags(subtags: Subtags): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
+        if (subtags.grandfathered) {
+            return this._iana.subtags.grandfathered.toValidCanonical(subtags.grandfathered);
         }
         return succeed(undefined);
     }
 
-    protected _postValidateGrandfatheredTag(parts: LanguageTagParts): Result<LanguageTagParts> {
-        if (parts.grandfathered) {
-            return this._iana.subtags.grandfathered.get(parts.grandfathered).onSuccess((grandfathered) => {
+    protected _postValidateGrandfatheredTag(subtags: Subtags): Result<Subtags> {
+        if (subtags.grandfathered) {
+            return this._iana.subtags.grandfathered.get(subtags.grandfathered).onSuccess((grandfathered) => {
                 if (grandfathered.preferredValue) {
                     return LanguageTagParser.parse(grandfathered.preferredValue, this._iana)
-                        .onSuccess((gfParts) => {
+                        .onSuccess((gfSubtags) => {
                             // istanbul ignore next - would require a registry error too hard to test
-                            if (gfParts.grandfathered !== undefined) {
-                                return fail<LanguageTagParts>(
-                                    `preferred value ${grandfathered.preferredValue} of grandfathered tag ${parts.grandfathered} is also grandfathered.`
+                            if (gfSubtags.grandfathered !== undefined) {
+                                return fail<Subtags>(
+                                    `preferred value ${grandfathered.preferredValue} of grandfathered tag ${subtags.grandfathered} is also grandfathered.`
                                 );
                             }
-                            return this.processParts(gfParts);
+                            return this.processSubtags(gfSubtags);
                         })
                         .onFailure(
                             // istanbul ignore next - would require a registry error too hard to test
                             (message) => {
                                 // istanbul ignore next - would require a registry error too hard to test
                                 return fail(
-                                    `grandfathered tag "${parts.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
+                                    `grandfathered tag "${subtags.grandfathered}" has invalid preferred value "${grandfathered.preferredValue}":\n${message}`
                                 );
                             }
                         );
                 }
-                return succeed(parts);
+                return succeed(subtags);
             });
         }
-        return succeed(parts);
+        return succeed(subtags);
     }
 
-    protected _postValidateRedundantTag(parts: LanguageTagParts): Result<LanguageTagParts> {
-        const tag = languageTagPartsToString(parts);
+    protected _postValidateRedundantTag(subtags: Subtags): Result<Subtags> {
+        const tag = subtagsToString(subtags);
         const redundant = this._iana.subtags.redundant.tryGetCanonical(tag);
         if (redundant?.preferredValue) {
             return LanguageTagParser.parse(redundant.preferredValue, this._iana);
         }
-        return succeed(parts);
+        return succeed(subtags);
     }
 
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return super._postValidate(parts).onSuccess((parts) => {
-            if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs.join('-')}: multiple extlang subtags is invalid`);
+    protected _postValidate(subtags: Subtags): Result<Subtags> {
+        return super._postValidate(subtags).onSuccess((subtags) => {
+            if (subtags.extlangs && subtags.extlangs.length > 1) {
+                return fail(`${subtags.extlangs.join('-')}: multiple extlang subtags is invalid`);
             }
-            return this._postValidateGrandfatheredTag(parts).onSuccess((parts) => {
-                return this._postValidateRedundantTag(parts);
+            return this._postValidateGrandfatheredTag(subtags).onSuccess((subtags) => {
+                return this._postValidateRedundantTag(subtags);
             });
         });
     }

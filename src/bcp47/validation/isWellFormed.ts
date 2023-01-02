@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 
+import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
 
-import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
 
-import { LanguageTagParts } from '../common';
+import { Subtags } from '../common';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
 
@@ -36,33 +36,33 @@ import { TagValidity } from './common';
 export class IsWellFormedValidator extends TagValidatorBase {
     public validity: TagValidity = 'well-formed';
 
-    protected _checkLanguage(parts: LanguageTagParts): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
-        return parts.primaryLanguage ? this.iana.subtags.languages.verifyIsWellFormed(parts.primaryLanguage) : succeed(undefined);
+    protected _checkLanguage(subtags: Subtags): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
+        return subtags.primaryLanguage ? this.iana.subtags.languages.verifyIsWellFormed(subtags.primaryLanguage) : succeed(undefined);
     }
 
-    protected _checkExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
-        if (parts.extlangs) {
+    protected _checkExtlangs(subtags: Subtags): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+        if (subtags.extlangs) {
             return allSucceed(
-                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsWellFormed(e)),
-                parts.extlangs
+                subtags.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsWellFormed(e)),
+                subtags.extlangs
             );
         }
         return succeed(undefined);
     }
 
-    protected _checkScript(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
-        return parts.script ? this.iana.subtags.scripts.verifyIsWellFormed(parts.script) : succeed(undefined);
+    protected _checkScript(subtags: Subtags): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
+        return subtags.script ? this.iana.subtags.scripts.verifyIsWellFormed(subtags.script) : succeed(undefined);
     }
 
-    protected _checkRegion(parts: LanguageTagParts): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
-        return parts.region ? this.iana.subtags.regions.verifyIsWellFormed(parts.region) : succeed(undefined);
+    protected _checkRegion(subtags: Subtags): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
+        return subtags.region ? this.iana.subtags.regions.verifyIsWellFormed(subtags.region) : succeed(undefined);
     }
 
-    protected _checkVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
-        if (parts.variants) {
+    protected _checkVariants(subtags: Subtags): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
+        if (subtags.variants) {
             return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsWellFormed(v)),
-                parts.variants
+                subtags.variants.map((v) => this.iana.subtags.variants.verifyIsWellFormed(v)),
+                subtags.variants
             );
         }
         return succeed(undefined);
@@ -73,20 +73,20 @@ export class IsWellFormedValidator extends TagValidatorBase {
     }
 
     protected _checkExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
+        return Bcp47Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
     }
 
-    protected _checkPrivateUseTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
-        if (parts.privateUse) {
+    protected _checkPrivateUseTags(subtags: Subtags): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
+        if (subtags.privateUse) {
             return allSucceed(
-                parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
-                parts.privateUse
+                subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
+                subtags.privateUse
             );
         }
-        return succeed(parts.privateUse);
+        return succeed(subtags.privateUse);
     }
 
-    protected _checkGrandfatheredTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
-        return parts.grandfathered ? this.iana.subtags.grandfathered.verifyIsWellFormed(parts.grandfathered) : succeed(undefined);
+    protected _checkGrandfatheredTags(subtags: Subtags): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
+        return subtags.grandfathered ? this.iana.subtags.grandfathered.verifyIsWellFormed(subtags.grandfathered) : succeed(undefined);
     }
 }

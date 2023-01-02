@@ -39,7 +39,7 @@ import {
     allTestKeys,
     allValidatingKeys,
 } from './languageTagHelpers';
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 
 const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     {
@@ -65,10 +65,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     },
     {
         description: 'invalid primary language',
-        from: 'ENG',
+        from: 'ENG-US',
         expected: [
-            ['ENG', ['default', 'wellFormed']],
-            ['eng', ['wellFormedCanonical']],
+            ['ENG-US', ['default', 'wellFormed']],
+            ['eng-US', ['wellFormedCanonical']],
             [/invalid language/i, allValidatingKeys],
         ],
     },
@@ -294,7 +294,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     },
 ];
 
-const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
+const subtagsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
     {
         description: 'valid non-canonical tag with suppressed script',
         from: {
@@ -358,4 +358,4 @@ const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
 ];
 
 export const tagTestCases = testCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
-export const partsTestCases = partsTestCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);
+export const subtagsTestCases = subtagsTestCaseInit.map(GenericLanguageTagTest.mapInitToTestCases);

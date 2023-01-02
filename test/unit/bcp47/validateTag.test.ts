@@ -24,25 +24,25 @@ import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
 
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 import { ValidateTag } from '../../../src/bcp47';
-import { partsTestCases } from './commonTestCases';
+import { subtagsTestCases } from './commonTestCases';
 
 describe('ValidateTag helpers', () => {
-    describe('validation with parts', () => {
-        class ValidateTagTestCase extends SimpleTagTestCaseBase<LanguageTagParts> {
-            public static get factory(): GenericTagTestCaseFactory<LanguageTagParts, ValidateTagTestCase> {
+    describe('validation with subtags', () => {
+        class ValidateTagTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, ValidateTagTestCase> {
                 return new GenericTagTestCaseFactory(ValidateTagTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<LanguageTagParts>, which: TestKey): ValidateTagTestCase {
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): ValidateTagTestCase {
                 return new ValidateTagTestCase(gtc, which);
             }
 
             public invoke(): void {
                 const validity = this.options?.validity ?? 'unknown';
                 if (typeof this.expected === 'string') {
-                    expect(ValidateTag.checkParts(this.from, validity)).toSucceed();
+                    expect(ValidateTag.validateSubtags(this.from, validity)).toSucceed();
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(true);
@@ -52,7 +52,7 @@ describe('ValidateTag helpers', () => {
                         expect(ValidateTag.isWellFormed(this.from)).toBe(true);
                     }
                 } else if (this.expected instanceof RegExp) {
-                    expect(ValidateTag.checkParts(this.from, validity)).toFailWith(this.expected);
+                    expect(ValidateTag.validateSubtags(this.from, validity)).toFailWith(this.expected);
 
                     if (validity === 'strictly-valid') {
                         expect(ValidateTag.isStrictlyValid(this.from)).toBe(false);
@@ -64,12 +64,12 @@ describe('ValidateTag helpers', () => {
                 }
             }
 
-            protected _getSuccessTestDescription(which: TestKey, from: LanguageTagParts, description: string): string {
+            protected _getSuccessTestDescription(which: TestKey, from: Subtags, description: string): string {
                 const fromDesc = JSON.stringify(from, undefined, 2);
                 return `${which} succeeds for "${description}" (${fromDesc})`;
             }
         }
-        test.each(ValidateTagTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        test.each(ValidateTagTestCase.factory.emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
             tc.invoke();
         });
     });

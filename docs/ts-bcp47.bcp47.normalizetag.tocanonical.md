@@ -4,19 +4,23 @@
 
 ## Bcp47.NormalizeTag.toCanonical() method
 
+Converts a BCP-47 language tag to canonical form. Canonical form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) but are not otherwise modified.
+
 <b>Signature:</b>
 
 ```typescript
-static toCanonical(parts: LanguageTagParts): Result<LanguageTagParts>;
+static toCanonical(subtags: Subtags): Result<Subtags>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The individual [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 
 <b>Returns:</b>
 
-Result&lt;[LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->&gt;
+Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
+
+`Success` with the normalized equivalent [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or `Failure` with details if an error occurs.
 

@@ -4,6 +4,7 @@
 
 ## Bcp47.ValidateTag class
 
+Validation helpers for BCP-47 language tags.
 
 <b>Signature:</b>
 
@@ -15,11 +16,10 @@ export declare class ValidateTag
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [checkParts(parts, wantValidity, haveValidity)](./ts-bcp47.bcp47.validatetag.checkparts.md) | <code>static</code> |  |
-|  [chooseValidator(wantValidity, haveValidity)](./ts-bcp47.bcp47.validatetag.choosevalidator.md) | <code>static</code> |  |
-|  [isCanonical(parts)](./ts-bcp47.bcp47.validatetag.iscanonical.md) | <code>static</code> |  |
-|  [isInPreferredForm(parts)](./ts-bcp47.bcp47.validatetag.isinpreferredform.md) | <code>static</code> |  |
-|  [isStrictlyValid(parts)](./ts-bcp47.bcp47.validatetag.isstrictlyvalid.md) | <code>static</code> |  |
-|  [isValid(parts)](./ts-bcp47.bcp47.validatetag.isvalid.md) | <code>static</code> |  |
-|  [isWellFormed(parts)](./ts-bcp47.bcp47.validatetag.iswellformed.md) | <code>static</code> |  |
+|  [isCanonical(subtags)](./ts-bcp47.bcp47.validatetag.iscanonical.md) | <code>static</code> | Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are in canonical form, meaning that they are at least well-formed as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, and all subtags are also [capitalized as recommended](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1)<!-- -->. |
+|  [isInPreferredForm(subtags)](./ts-bcp47.bcp47.validatetag.isinpreferredform.md) | <code>static</code> | Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are in preferred form. Preferred form is valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and also meets additional preferences specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) - extraneous (suppressed) script tags, deprecated language, extlang, script or region tags or deprecated grandfathered or redundant tags (with a defined preferred-value) are not allowed. |
+|  [isStrictlyValid(subtags)](./ts-bcp47.bcp47.validatetag.isstrictlyvalid.md) | <code>static</code> | Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are strictly valid. A strictly valid tag is both [valid as defined in the RFC](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and meets any other requirements such as [prefix validity](https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8)<!-- -->. |
+|  [isValid(subtags)](./ts-bcp47.bcp47.validatetag.isvalid.md) | <code>static</code> | Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, meaning that all subtags, or the tag itself for grandfathered tags, are defined in the [IANA language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->. |
+|  [isWellFormed(subtags)](./ts-bcp47.bcp47.validatetag.iswellformed.md) | <code>static</code> | Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are well-formed as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, meaning that all subtags meet the grammar defined in the specification. |
+|  [validateSubtags(subtags, wantValidity, haveValidity)](./ts-bcp47.bcp47.validatetag.validatesubtags.md) | <code>static</code> | Validates supplied [subtags](./ts-bcp47.bcp47.subtags.md) to a requested [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->, if necessary. |
 

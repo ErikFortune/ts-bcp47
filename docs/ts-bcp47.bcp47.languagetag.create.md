@@ -4,20 +4,24 @@
 
 ## Bcp47.LanguageTag.create() method
 
+Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied `string` tag or [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied.
+
 <b>Signature:</b>
 
 ```typescript
-static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
+static create(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  from | string \| [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
-|  options | LanguageTagInitOptions | <i>(Optional)</i> |
+|  from | string \| [Subtags](./ts-bcp47.bcp47.subtags.md) | The <code>string</code> tag or [subtags](./ts-bcp47.bcp47.subtags.md) from which the [language tag](./ts-bcp47.bcp47.languagetag.md) is te be constructed. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) set of [init options](./ts-bcp47.bcp47.languagetaginitoptions.md) to guide the validation and normalization of this tag. |
 
 <b>Returns:</b>
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
+
+`Success` with the new [language tag](./ts-bcp47.bcp47.languagetag.md) or `Failure` with details if an error occurs.
 

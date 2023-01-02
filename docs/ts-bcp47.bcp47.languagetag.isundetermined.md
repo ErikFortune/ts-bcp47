@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.isUndetermined property
 
+Determines if this tag represents the special `undetermined` language.
+
 <b>Signature:</b>
 
 ```typescript

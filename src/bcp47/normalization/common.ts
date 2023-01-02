@@ -21,7 +21,7 @@
  */
 
 /**
- * Describes the degree of normalization that has been applied to a language tag.
+ * Describes the degree of normalization of a language tag.
  * @public
  */
 export type TagNormalization = 'unknown' | 'none' | 'canonical' | 'preferred';

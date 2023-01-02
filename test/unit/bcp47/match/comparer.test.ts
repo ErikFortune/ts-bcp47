@@ -21,12 +21,12 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageComparer, matchQuality } from '../../../../src/bcp47/match';
+import { LanguageMatcher, matchQuality } from '../../../../src/bcp47/match';
 import { LanguageTag, LanguageTagInitOptions } from '../../../../src/bcp47/languageTag';
 
 describe('LanguageComparer class', () => {
-    describe('compare method', () => {
-        const comparer = new LanguageComparer();
+    describe('match method', () => {
+        const matcher = new LanguageMatcher();
 
         test.each([
             { description: 'exact primary language match', l1: 'en', l2: 'En', expected: matchQuality.exact },
@@ -161,8 +161,8 @@ describe('LanguageComparer class', () => {
             const lt1 = LanguageTag.create(tc.l1, tc.options).getValueOrThrow();
             const lt2 = LanguageTag.create(tc.l2, tc.options).getValueOrThrow();
 
-            expect(comparer.compare(lt1, lt2)).toSucceedWith(tc.expected);
-            expect(comparer.compare(tc.l1, tc.l2, tc.options)).toSucceedWith(tc.expected);
+            expect(matcher.match(lt1, lt2)).toSucceedWith(tc.expected);
+            expect(matcher.match(tc.l1, tc.l2, tc.options)).toSucceedWith(tc.expected);
         });
     });
 });

@@ -20,11 +20,11 @@
  * SOFTWARE.
  */
 
+import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
 
-import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts } from '../common';
+import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
+import { ExtensionSubtagValue, Subtags } from '../common';
 import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
@@ -35,33 +35,33 @@ import { TagValidity } from './common';
 export class IsValidValidator extends TagValidatorBase {
     public validity: TagValidity = 'valid';
 
-    protected _checkLanguage(parts: LanguageTagParts): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
-        return parts.primaryLanguage ? this.iana.subtags.languages.verifyIsValid(parts.primaryLanguage) : succeed(undefined);
+    protected _checkLanguage(subtags: Subtags): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
+        return subtags.primaryLanguage ? this.iana.subtags.languages.verifyIsValid(subtags.primaryLanguage) : succeed(undefined);
     }
 
-    protected _checkExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
-        if (parts.extlangs) {
+    protected _checkExtlangs(subtags: Subtags): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+        if (subtags.extlangs) {
             return allSucceed(
-                parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsValid(e)),
-                parts.extlangs
+                subtags.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsValid(e)),
+                subtags.extlangs
             );
         }
         return succeed(undefined);
     }
 
-    protected _checkScript(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
-        return parts.script ? this.iana.subtags.scripts.verifyIsValid(parts.script) : succeed(undefined);
+    protected _checkScript(subtags: Subtags): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
+        return subtags.script ? this.iana.subtags.scripts.verifyIsValid(subtags.script) : succeed(undefined);
     }
 
-    protected _checkRegion(parts: LanguageTagParts): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
-        return parts.region ? this.iana.subtags.regions.verifyIsValid(parts.region) : succeed(undefined);
+    protected _checkRegion(subtags: Subtags): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
+        return subtags.region ? this.iana.subtags.regions.verifyIsValid(subtags.region) : succeed(undefined);
     }
 
-    protected _checkVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
-        if (parts.variants) {
+    protected _checkVariants(subtags: Subtags): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
+        if (subtags.variants) {
             return allSucceed(
-                parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
-                parts.variants
+                subtags.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
+                subtags.variants
             ).onSuccess((v) => {
                 return mapResults(v.map((vc) => this.iana.subtags.variants.toCanonical(vc))).onSuccess((canonical) => {
                     return this._verifyUnique('variant subtag', canonical, (v) => v);
@@ -76,35 +76,35 @@ export class IsValidValidator extends TagValidatorBase {
     }
 
     protected _checkExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
+        return Bcp47Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
     }
 
-    protected _checkExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
-        return super._checkExtensions(parts).onSuccess((extensions) => {
+    protected _checkExtensions(subtags: Subtags): Result<ExtensionSubtagValue[] | undefined> {
+        return super._checkExtensions(subtags).onSuccess((extensions) => {
             return this._verifyUnique('extensions', extensions, (e) => e.singleton.toLowerCase());
         });
     }
 
-    protected _checkPrivateUseTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
-        if (parts.privateUse) {
+    protected _checkPrivateUseTags(subtags: Subtags): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
+        if (subtags.privateUse) {
             return allSucceed(
-                parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
-                parts.privateUse
+                subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
+                subtags.privateUse
             );
         }
-        return succeed(parts.privateUse);
+        return succeed(subtags.privateUse);
     }
 
-    protected _checkGrandfatheredTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
-        return parts.grandfathered ? this.iana.subtags.grandfathered.verifyIsValid(parts.grandfathered) : succeed(undefined);
+    protected _checkGrandfatheredTags(subtags: Subtags): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
+        return subtags.grandfathered ? this.iana.subtags.grandfathered.verifyIsValid(subtags.grandfathered) : succeed(undefined);
     }
 
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this._basicPostValidation(parts).onSuccess((parts) => {
-            if (parts.extlangs && parts.extlangs.length > 1) {
-                return fail(`${parts.extlangs.join('-')}: multiple extlang subtags is invalid`);
+    protected _postValidate(subtags: Subtags): Result<Subtags> {
+        return this._basicPostValidation(subtags).onSuccess((validated) => {
+            if (validated.extlangs && validated.extlangs.length > 1) {
+                return fail(`${validated.extlangs.join('-')}: multiple extlang subtags is invalid`);
             }
-            return succeed(parts);
+            return succeed(validated);
         });
     }
 }

@@ -24,9 +24,9 @@ import * as Iana from '../iana';
 
 import { Result, Success, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
-import { ExtensionSubtag } from './subtags/model';
-import { LanguageTagParts } from './common';
-import { Validate } from './subtags';
+import { ExtensionSubtag } from './bcp47Subtags/model';
+import { Subtags } from './common';
+import { Validate } from './bcp47Subtags';
 
 /**
  * @internal
@@ -35,7 +35,7 @@ interface ParserState {
     readonly iana: Iana.LanguageRegistries;
     readonly tag: string;
     readonly subtags: string[];
-    readonly parts: LanguageTagParts;
+    readonly parsedSubtags: Subtags;
     next?: string;
 }
 
@@ -48,24 +48,24 @@ export class LanguageTagParser {
     private constructor() {}
 
     /**
-     * Parses a string representation of a BCP-47 (RFC 5646) language tag,
-     * to produce a {@link Bcp47.LanguageTagParts | LanguageTagParts} which
+     * Parses a string representation of a BCP-47 ({@link https://www.rfc-editor.org/rfc/rfc5646.html | RFC 5646})
+     * language tag, to produce a {@link Bcp47.Subtags | Subtags} object which
      * breaks out each of the subtags.
      * @param tag - The `string` language tag to be parsed.
      * @param iana - Optional {@link Iana.LanguageRegistries | IANA language registries}
      * to be used.
-     * @returns `Success` with the resulting {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with the resulting {@link Bcp47.Subtags | subtags}
      * or `Failure` with details if an error occurs.
      * @public
      */
-    public static parse(tag: string, iana?: Iana.LanguageRegistries): Result<LanguageTagParts> {
+    public static parse(tag: string, iana?: Iana.LanguageRegistries): Result<Subtags> {
         // istanbul ignore next
         iana = iana ?? Iana.DefaultRegistries.languageRegistries;
         const status: ParserState = {
             tag,
             iana,
             subtags: tag.split('-'),
-            parts: {},
+            parsedSubtags: {},
         };
         status.next = status.subtags.shift();
 
@@ -83,7 +83,7 @@ export class LanguageTagParser {
             ],
             status
         ).onSuccess(() => {
-            return succeed(status.parts);
+            return succeed(status.parsedSubtags);
         });
     }
 
@@ -91,44 +91,45 @@ export class LanguageTagParser {
      * Determines if the entire tag matches a registered grandfathered tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with the updated {@link Bcp47.LanguageTagParts | language tag parts}
-     * if a grandfathered tag is found, or `Success` with the supplied parts if no tag is found.
+     * @returns `Success` with the updated {@link Bcp47.Subtags | subtags}
+     * if a grandfathered tag is found, or `Success` with the supplied subtags
+     * if no matching grandfathered tag is found.
      * @
      * @internal
      */
-    protected static _parseGrandfatheredTag(state: ParserState): Success<LanguageTagParts> {
+    protected static _parseGrandfatheredTag(state: ParserState): Success<Subtags> {
         const grandfathered = state.iana.subtags.grandfathered.tryGet(state.tag);
         if (grandfathered) {
-            state.parts.grandfathered = state.tag as Iana.LanguageSubtags.GrandfatheredTag;
+            state.parsedSubtags.grandfathered = state.tag as Iana.LanguageSubtags.GrandfatheredTag;
             // we consumed the whole thing
             state.subtags.splice(0, state.subtags.length);
             state.next = undefined;
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the primary language subtag of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the primary language subtag, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parsePrimaryLanguage(state: ParserState): Result<LanguageTagParts> {
+    protected static _parsePrimaryLanguage(state: ParserState): Result<Subtags> {
         // primary language subtag is required unless the entire tag is grandfathered or consists
         // of only private tags
         if (state.iana.subtags.languages.isWellFormed(state.next)) {
-            state.parts.primaryLanguage = state.next;
+            state.parsedSubtags.primaryLanguage = state.next;
             state.next = state.subtags.shift();
-            return succeed(state.parts);
-        } else if (state.parts.grandfathered !== undefined) {
-            return succeed(state.parts);
+            return succeed(state.parsedSubtags);
+        } else if (state.parsedSubtags.grandfathered !== undefined) {
+            return succeed(state.parsedSubtags);
         } else if (Validate.privateUsePrefix.isWellFormed(state.next)) {
             // just return with no primary language and the private tag
             // parser will be invoked by the parent flow.
-            return succeed(state.parts);
+            return succeed(state.parsedSubtags);
         }
         return fail(`${state.tag}: no primary language subtag`);
     }
@@ -137,94 +138,94 @@ export class LanguageTagParser {
      * Parses the extlang subtag(s) of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include extlang subtags if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parseExtlang(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseExtlang(state: ParserState): Result<Subtags> {
         // optional extlangs subtags
         while (state.iana.subtags.extlangs.isWellFormed(state.next)) {
-            if (state.parts.extlangs === undefined) {
-                state.parts.extlangs = [state.next];
-            } else if (state.parts.extlangs.length < 3) {
-                state.parts.extlangs.push(state.next);
+            if (state.parsedSubtags.extlangs === undefined) {
+                state.parsedSubtags.extlangs = [state.next];
+            } else if (state.parsedSubtags.extlangs.length < 3) {
+                state.parsedSubtags.extlangs.push(state.next);
             } else {
                 return fail(`${state.next}: too many extlang subtags`);
             }
             state.next = state.subtags.shift();
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the script subtag of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the script subtag if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parseScript(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseScript(state: ParserState): Result<Subtags> {
         // optional script subtag
         if (state.iana.subtags.scripts.isWellFormed(state.next)) {
-            state.parts.script = state.next;
+            state.parsedSubtags.script = state.next;
             state.next = state.subtags.shift();
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the region subtag of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the region subtag if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parseRegion(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseRegion(state: ParserState): Result<Subtags> {
         // optional region subtag
         if (state.iana.subtags.regions.isWellFormed(state.next)) {
-            state.parts.region = state.next;
+            state.parsedSubtags.region = state.next;
             state.next = state.subtags.shift();
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the variant subtag(s) of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the variant subtags if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parseVariants(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseVariants(state: ParserState): Result<Subtags> {
         // optional variant subtags
         while (state.iana.subtags.variants.isWellFormed(state.next)) {
-            if (state.parts.variants === undefined) {
-                state.parts.variants = [state.next];
+            if (state.parsedSubtags.variants === undefined) {
+                state.parsedSubtags.variants = [state.next];
             } else {
-                state.parts.variants.push(state.next);
+                state.parsedSubtags.variants.push(state.next);
             }
             state.next = state.subtags.shift();
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the extension subtag(s) of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the extension subtags if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parseExtensions(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseExtensions(state: ParserState): Result<Subtags> {
         // optional extension subtags
         while (state.next !== undefined && Validate.extensionSingleton.isWellFormed(state.next)) {
             const singleton = state.next;
@@ -246,25 +247,25 @@ export class LanguageTagParser {
             }
 
             const value = values.join('-') as ExtensionSubtag;
-            if (state.parts.extensions === undefined) {
-                state.parts.extensions = [{ singleton, value }];
+            if (state.parsedSubtags.extensions === undefined) {
+                state.parsedSubtags.extensions = [{ singleton, value }];
             } else {
-                state.parts.extensions.push({ singleton, value });
+                state.parsedSubtags.extensions.push({ singleton, value });
             }
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
      * Parses the private use subtags of a supplied language tag.
      * @param state - The {@link Bcp47.ParserState | current state} of the
      * parse operation.
-     * @returns `Success` with supplied {@link Bcp47.LanguageTagParts | language tag parts}
+     * @returns `Success` with supplied {@link Bcp47.Subtags | subtags}
      * updated to include the private-use subtags if present, or `Failure` with details if an error
      * occurs.
      * @internal
      */
-    protected static _parsePrivateSubtags(state: ParserState): Result<LanguageTagParts> {
+    protected static _parsePrivateSubtags(state: ParserState): Result<Subtags> {
         // optional private use subtags
         while (state.next != undefined && Validate.privateUsePrefix.isWellFormed(state.next)) {
             const values: string[] = [];
@@ -286,13 +287,13 @@ export class LanguageTagParser {
             }
 
             const value = values.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange;
-            if (state.parts.privateUse === undefined) {
-                state.parts.privateUse = [value];
+            if (state.parsedSubtags.privateUse === undefined) {
+                state.parsedSubtags.privateUse = [value];
             } else {
-                state.parts.privateUse.push(value);
+                state.parsedSubtags.privateUse.push(value);
             }
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 
     /**
@@ -303,10 +304,10 @@ export class LanguageTagParser {
      * if unexpected subtags remain to be parsed.
      * @internal
      */
-    protected static _parseTagEnd(state: ParserState): Result<LanguageTagParts> {
+    protected static _parseTagEnd(state: ParserState): Result<Subtags> {
         if (state.next !== undefined) {
             return fail(`${state.next}: unexpected subtag`);
         }
-        return succeed(state.parts);
+        return succeed(state.parsedSubtags);
     }
 }

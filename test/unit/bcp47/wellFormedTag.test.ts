@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import { Bcp47 } from '../../../src';
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 
 describe('BCP-47 WellFormedTag class', () => {
     describe('create static method', () => {
@@ -66,7 +66,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
             ])('succeeds for %p (%p)', (_desc, tag, expected) => {
                 expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'well-formed' })).toSucceedAndSatisfy((wellFormed) => {
-                    expect(wellFormed.parts).toEqual(expected);
+                    expect(wellFormed.subtags).toEqual(expected);
                     expect(wellFormed.toString()).toEqual(tag);
                 });
             });
@@ -88,7 +88,7 @@ describe('BCP-47 WellFormedTag class', () => {
             });
         });
 
-        describe('with parts', () => {
+        describe('with subtags', () => {
             test.each([
                 ['language only', { primaryLanguage: 'en' }],
                 ['language and extlang', { primaryLanguage: 'ZH', extlangs: ['CMN'] }],
@@ -96,9 +96,9 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['grandfathered', { grandfathered: 'i-klingon' }],
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
-                const parts = from as LanguageTagParts;
-                expect(Bcp47.LanguageTag.createFromParts(parts)).toSucceedAndSatisfy((tag) => {
-                    expect(tag.parts).toEqual(parts);
+                const subtags = from as Subtags;
+                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toSucceedAndSatisfy((tag) => {
+                    expect(tag.subtags).toEqual(subtags);
                 });
             });
 
@@ -126,8 +126,8 @@ describe('BCP-47 WellFormedTag class', () => {
                     /malformed extended language range/i,
                 ],
             ])('fails for %p', (_desc, from, expected) => {
-                const parts = from as LanguageTagParts;
-                expect(Bcp47.LanguageTag.createFromParts(parts)).toFailWith(expected);
+                const subtags = from as Subtags;
+                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toFailWith(expected);
             });
         });
     });

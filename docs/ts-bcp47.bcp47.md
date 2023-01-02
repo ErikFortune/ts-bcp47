@@ -8,27 +8,37 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [LanguageTag](./ts-bcp47.bcp47.languagetag.md) |  |
-|  [NormalizeTag](./ts-bcp47.bcp47.normalizetag.md) |  |
-|  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) |  |
+|  [LanguageTag](./ts-bcp47.bcp47.languagetag.md) | Represents a single BCP-47 language tag. |
+|  [NormalizeTag](./ts-bcp47.bcp47.normalizetag.md) | Normalization helpers for BCP-47 language tags. |
+|  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) | Validation helpers for BCP-47 language tags. |
+
+## Functions
+
+|  Function | Description |
+|  --- | --- |
+|  [match(t1, t2, options)](./ts-bcp47.bcp47.match.md) | Determine how well two language tags match each other. |
+|  [parse(from)](./ts-bcp47.bcp47.parse.md) | <p>Parses a supplied string to produce a collection of individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->.</p><p>The string must be [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) but no additional validation or normalization is applied.</p> |
+|  [tag(from, options)](./ts-bcp47.bcp47.tag.md) | <p>Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from either a specified <code>string</code> description or from (typically parsed) individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->.</p><p>The supplied initializer must be at least [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->. Higher degrees of validation along with any normalizations may be optionally specified.</p> |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
 |  [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md) |  |
-|  [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | Initialization options for parsing or creation of [language tag](./ts-bcp47.bcp47.languagetag.md) objects. |
+|  [Subtags](./ts-bcp47.bcp47.subtags.md) |  |
 
-## Namespaces
+## Variables
 
-|  Namespace | Description |
+|  Variable | Description |
 |  --- | --- |
-|  [Match](./ts-bcp47.bcp47.match.md) |  |
+|  [matchQuality](./ts-bcp47.bcp47.matchquality.md) | Common levels of match quality for a single language match. |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization that has been applied to a language tag. |
+|  [MatchQuality](./ts-bcp47.bcp47.matchquality.md) | Numeric representation of the quality of a language match. Range is 0 (no match) to 1 (exact match). |
+|  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization of a language tag. |
 |  [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | Describes the validation level of a particular tag. |
 

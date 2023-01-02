@@ -4,19 +4,27 @@
 
 ## Bcp47.ValidateTag.isStrictlyValid() method
 
+Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are strictly valid. A strictly valid tag is both [valid as defined in the RFC](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and meets any other requirements such as [prefix validity](https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8)<!-- -->.
+
 <b>Signature:</b>
 
 ```typescript
-static isStrictlyValid(parts: LanguageTagParts): boolean;
+static isStrictlyValid(subtags: Subtags): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
 <b>Returns:</b>
 
 boolean
+
+`true` if the [subtags](./ts-bcp47.bcp47.subtags.md) represent a strictly valid language tag, false otherwise.
+
+## Example
+
+`ca-valencia` is strictly valid, `es-valencia` is not.
 

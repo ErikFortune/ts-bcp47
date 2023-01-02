@@ -4,19 +4,27 @@
 
 ## Bcp47.ValidateTag.isValid() method
 
+Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, meaning that all subtags, or the tag itself for grandfathered tags, are defined in the [IANA language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->.
+
 <b>Signature:</b>
 
 ```typescript
-static isValid(parts: LanguageTagParts): boolean;
+static isValid(subtags: Subtags): boolean;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
+|  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
 <b>Returns:</b>
 
 boolean
+
+`true` if the [subtags](./ts-bcp47.bcp47.subtags.md) represent a valid language tag, false otherwise.
+
+## Example
+
+`en-US` is valid, `eng-US` is not.
 

@@ -21,9 +21,9 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageTagParts, languageTagPartsToString } from '../../../src/bcp47/common';
+import { Subtags, subtagsToString } from '../../../src/bcp47/common';
 
-describe('languageTagPartsToString helper function', () => {
+describe('subtagsToString helper function', () => {
     test.each([
         ['primary language', { primaryLanguage: 'en' }, 'en'],
         ['primary language and extlang', { primaryLanguage: 'zh', extlangs: ['cmn'] }, 'zh-cmn'],
@@ -46,7 +46,7 @@ describe('languageTagPartsToString helper function', () => {
         ['private use tag', { privateUse: ['tag-one'] }, 'x-tag-one'],
         ['private use tags', { primaryLanguage: 'en', privateUse: ['tag-one', 'tag-two'] }, 'en-x-tag-one-x-tag-two'],
     ])('formats %p correctly', (_desc, value, expected) => {
-        const parts = value as LanguageTagParts;
-        expect(languageTagPartsToString(parts)).toBe(expected);
+        const subtags = value as Subtags;
+        expect(subtagsToString(subtags)).toBe(expected);
     });
 });

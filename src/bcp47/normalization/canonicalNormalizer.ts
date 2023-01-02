@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
+import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
 
 import {
     ExtLangSubtag,
@@ -32,9 +32,9 @@ import {
     ScriptSubtag,
     VariantSubtag,
 } from '../../iana/language-subtags';
-import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
-import { LanguageTagParts } from '../common';
+import { Subtags } from '../common';
 import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
 
@@ -44,37 +44,37 @@ import { TagNormalizerBase } from './baseNormalizer';
 export class CanonicalNormalizer extends TagNormalizerBase {
     public readonly normalization: TagNormalization = 'canonical';
 
-    protected _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined> {
-        if (parts.primaryLanguage) {
-            return this._iana.subtags.languages.toCanonical(parts.primaryLanguage);
+    protected _processLanguage(subtags: Subtags): Result<LanguageSubtag | undefined> {
+        if (subtags.primaryLanguage) {
+            return this._iana.subtags.languages.toCanonical(subtags.primaryLanguage);
         }
-        return succeed(parts.primaryLanguage);
+        return succeed(subtags.primaryLanguage);
     }
 
-    protected _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined> {
-        if (parts.extlangs) {
-            return mapResults(parts.extlangs.map((e) => this._iana.subtags.extlangs.toCanonical(e)));
-        }
-        return succeed(undefined);
-    }
-
-    protected _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined> {
-        if (parts.script) {
-            return this._iana.subtags.scripts.toCanonical(parts.script);
+    protected _processExtlangs(subtags: Subtags): Result<ExtLangSubtag[] | undefined> {
+        if (subtags.extlangs) {
+            return mapResults(subtags.extlangs.map((e) => this._iana.subtags.extlangs.toCanonical(e)));
         }
         return succeed(undefined);
     }
 
-    protected _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined> {
-        if (parts.region) {
-            return this._iana.subtags.regions.toCanonical(parts.region);
+    protected _processScript(subtags: Subtags): Result<ScriptSubtag | undefined> {
+        if (subtags.script) {
+            return this._iana.subtags.scripts.toCanonical(subtags.script);
         }
         return succeed(undefined);
     }
 
-    protected _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined> {
-        if (parts.variants) {
-            return mapResults(parts.variants.map((v) => this._iana.subtags.variants.toCanonical(v)));
+    protected _processRegion(subtags: Subtags): Result<RegionSubtag | undefined> {
+        if (subtags.region) {
+            return this._iana.subtags.regions.toCanonical(subtags.region);
+        }
+        return succeed(undefined);
+    }
+
+    protected _processVariants(subtags: Subtags): Result<VariantSubtag[] | undefined> {
+        if (subtags.variants) {
+            return mapResults(subtags.variants.map((v) => this._iana.subtags.variants.toCanonical(v)));
         }
         return succeed(undefined);
     }
@@ -84,19 +84,19 @@ export class CanonicalNormalizer extends TagNormalizerBase {
     }
 
     protected _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.toCanonical(value);
+        return Bcp47Subtags.Validate.extensionSubtag.toCanonical(value);
     }
 
-    protected _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined> {
-        if (parts.privateUse) {
-            return mapResults(parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
+    protected _processPrivateUseTags(subtags: Subtags): Result<ExtendedLanguageRange[] | undefined> {
+        if (subtags.privateUse) {
+            return mapResults(subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
         }
-        return succeed(parts.privateUse);
+        return succeed(subtags.privateUse);
     }
 
-    protected _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined> {
-        if (parts.grandfathered) {
-            return this._iana.subtags.grandfathered.toCanonical(parts.grandfathered);
+    protected _processGrandfatheredTags(subtags: Subtags): Result<GrandfatheredTag | undefined> {
+        if (subtags.grandfathered) {
+            return this._iana.subtags.grandfathered.toCanonical(subtags.grandfathered);
         }
         return succeed(undefined);
     }

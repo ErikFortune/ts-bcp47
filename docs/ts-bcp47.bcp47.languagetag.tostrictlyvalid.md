@@ -4,6 +4,8 @@
 
 ## Bcp47.LanguageTag.toStrictlyValid() method
 
+Gets a confirmed strictly valid representation of this language tag.
+
 <b>Signature:</b>
 
 ```typescript
@@ -12,4 +14,6 @@ toStrictlyValid(): Result<LanguageTag>;
 <b>Returns:</b>
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
+
+`Success` with a strictly valid representation of this [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->, or `Failure` with details if the tag cannot be strictly validated.
 
