@@ -21,9 +21,11 @@
  */
 export { ExtensionSubtagValue, LanguageTagParts } from './common';
 
-export { LanguageTag } from './languageTag';
+export { LanguageTag, LanguageTagInitOptions } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';
 export { TagValidity, ValidateTag } from './validation';
 
 import * as Match from './match';
 export { Match };
+
+export * from './helpers';

@@ -17,11 +17,15 @@ declare namespace Bcp47 {
         ExtensionSubtagValue,
         LanguageTagParts,
         LanguageTag,
+        LanguageTagInitOptions,
         NormalizeTag,
         TagNormalization,
         TagValidity,
         ValidateTag,
-        Match
+        Match,
+        tag,
+        parse,
+        match
     }
 }
 export { Bcp47 }
@@ -406,8 +410,6 @@ class LanguageTag {
     static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // (undocumented)
     static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    // Warning: (ae-forgotten-export) The symbol "LanguageTagInitOptions" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
@@ -545,6 +547,16 @@ declare namespace LanguageTagExtensions_2 {
 }
 
 // @public (undocumented)
+interface LanguageTagInitOptions {
+    // (undocumented)
+    iana?: Iana.LanguageRegistries;
+    // (undocumented)
+    normalization?: TagNormalization;
+    // (undocumented)
+    validity?: TagValidity;
+}
+
+// @public (undocumented)
 interface LanguageTagParts {
     // (undocumented)
     extensions?: ExtensionSubtagValue[];
@@ -577,6 +589,9 @@ declare namespace Match {
         MatchQuality
     }
 }
+
+// @public
+function match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
 
 // @public
 type MatchQuality = keyof typeof matchQuality;
@@ -628,6 +643,9 @@ class NormalizeTag {
     // (undocumented)
     static toPreferred(parts: LanguageTagParts): Result<LanguageTagParts>;
 }
+
+// @public
+function parse(from: string): Result<LanguageTagParts>;
 
 // @internal (undocumented)
 function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]>;
@@ -922,6 +940,9 @@ const scriptSubtag: Converter<ScriptSubtag, unknown>;
 
 // @public (undocumented)
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
+
+// @public
+function tag(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag>;
 
 declare namespace TagConverters {
     export {

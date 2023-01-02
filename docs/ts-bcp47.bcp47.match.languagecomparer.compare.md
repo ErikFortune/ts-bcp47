@@ -16,7 +16,7 @@ compare(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | Lang
 |  --- | --- | --- |
 |  t1 | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string |  |
 |  t2 | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) \| [LanguageTag](./ts-bcp47.bcp47.languagetag.md) \| string |  |
-|  options | LanguageTagInitOptions | <i>(Optional)</i> |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

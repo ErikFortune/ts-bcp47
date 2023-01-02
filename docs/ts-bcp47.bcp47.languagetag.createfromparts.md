@@ -15,7 +15,7 @@ static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  parts | [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
-|  options | LanguageTagInitOptions | <i>(Optional)</i> |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

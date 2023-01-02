@@ -15,7 +15,7 @@ static createFromTag(tag: string, partialOptions?: LanguageTagInitOptions): Resu
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  tag | string |  |
-|  partialOptions | LanguageTagInitOptions | <i>(Optional)</i> |
+|  partialOptions | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> |
 
 <b>Returns:</b>
 

@@ -12,11 +12,20 @@
 |  [NormalizeTag](./ts-bcp47.bcp47.normalizetag.md) |  |
 |  [ValidateTag](./ts-bcp47.bcp47.validatetag.md) |  |
 
+## Functions
+
+|  Function | Description |
+|  --- | --- |
+|  [match(t1, t2, options)](./ts-bcp47.bcp47.match.md) | Determine how well two language tags match each other. |
+|  [parse(from)](./ts-bcp47.bcp47.parse.md) | <p>Parses a supplied string to produce a collection of individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.</p><p>The string must be well-formed according to RFC 5646 but no additional validation or normalization is applied.</p> |
+|  [tag(from, options)](./ts-bcp47.bcp47.tag.md) | <p>Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from either a specified <code>string</code> description or from (typically parsed) individual [language tag parts](./ts-bcp47.bcp47.languagetagparts.md)<!-- -->.</p><p>The supplied initializer must be at least well-formed according to RFC 5646. Higher degrees of validation along with any normalizations may be optionally specified.</p> |
+
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
 |  [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md) |  |
+|  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) |  |
 |  [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
 
 ## Namespaces
