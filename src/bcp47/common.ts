@@ -22,7 +22,7 @@
 
 import * as Iana from '../iana';
 
-import { Model } from './subtags';
+import { Model } from './bcp47Subtags';
 
 /**
  * @public

@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { Converters, Model, Validate } from '../../../../src/bcp47/subtags';
+import { Converters, Model, Validate } from '../../../../src/bcp47/bcp47Subtags';
 
 describe('language tag extension registry validators', () => {
     describe('extension subtag validator', () => {

@@ -31,7 +31,7 @@ import {
     ScriptSubtag,
     VariantSubtag,
 } from '../../iana/language-subtags';
-import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 import { TagNormalization } from './common';

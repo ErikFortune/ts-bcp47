@@ -21,7 +21,7 @@
  */
 
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
+import * as Subtags from '../bcp47Subtags';
 
 import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';

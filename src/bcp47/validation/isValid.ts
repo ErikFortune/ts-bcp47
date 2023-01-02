@@ -21,9 +21,9 @@
  */
 
 import * as Iana from '../../iana';
-import * as Subtags from '../subtags';
+import * as Subtags from '../bcp47Subtags';
 
-import { ExtensionSingleton, ExtensionSubtag } from '../subtags/model';
+import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
 import { ExtensionSubtagValue, LanguageTagParts } from '../common';
 import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';

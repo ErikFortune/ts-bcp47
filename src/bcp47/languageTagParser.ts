@@ -24,9 +24,9 @@ import * as Iana from '../iana';
 
 import { Result, Success, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
-import { ExtensionSubtag } from './subtags/model';
+import { ExtensionSubtag } from './bcp47Subtags/model';
 import { LanguageTagParts } from './common';
-import { Validate } from './subtags';
+import { Validate } from './bcp47Subtags';
 
 /**
  * @internal
