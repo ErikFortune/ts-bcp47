@@ -22,7 +22,8 @@ declare namespace Bcp47 {
         TagNormalization,
         TagValidity,
         ValidateTag,
-        Match,
+        MatchQuality,
+        matchQuality,
         tag,
         parse,
         match
@@ -289,37 +290,6 @@ declare namespace Jar_2 {
     }
 }
 
-// @public
-class LanguageMatcher {
-    constructor(iana?: Iana.LanguageRegistries);
-    // (undocumented)
-    iana: Iana.LanguageRegistries;
-    // (undocumented)
-    match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
-    // (undocumented)
-    matchExtensions(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchExtlang(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchLanguageTags(t1: LanguageTag, t2: LanguageTag): number;
-    // (undocumented)
-    matchPrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchPrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchRegion(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchScript(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    matchVariants(lt1: LanguageTag, lt2: LanguageTag): number;
-    // Warning: (ae-forgotten-export) The symbol "OverridesRegistry" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    overrides: OverridesRegistry;
-    // (undocumented)
-    unsd: Unsd.RegionCodes;
-}
-
 // @public (undocumented)
 class LanguageRegistries {
     // (undocumented)
@@ -561,14 +531,6 @@ function loadLanguageSubtagsJsonFileSync(path: string): Result<Items.RegistryFil
 
 // @internal (undocumented)
 function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.LanguageTagExtensions>;
-
-declare namespace Match {
-    export {
-        LanguageMatcher,
-        matchQuality,
-        MatchQuality
-    }
-}
 
 // @public
 function match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;

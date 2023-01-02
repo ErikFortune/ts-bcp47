@@ -19,13 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 export { ExtensionSubtagValue, LanguageTagParts } from './common';
 
 export { LanguageTag, LanguageTagInitOptions } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';
 export { TagValidity, ValidateTag } from './validation';
 
-import * as Match from './match';
-export { Match };
+export { MatchQuality, matchQuality } from './match';
 
 export * from './helpers';

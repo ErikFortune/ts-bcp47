@@ -75,7 +75,7 @@ export function parse(from: string): Result<LanguageTagParts> {
  * @param options - (optional) A set of {@link Bcp47.LanguageTagInitOptions | language tag options}
  * which control any necessary conversion or parsing.
  * @returns A numeric value in the range 1.0 (exact match) to 0.0 (no match).
- * @see For a set of common levels of similarity, see {@link Bcp47.Match.matchQuality | matchQuality}.
+ * @see For a set of common levels of similarity, see {@link Bcp47.matchQuality | matchQuality}.
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function

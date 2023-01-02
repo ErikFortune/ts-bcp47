@@ -28,16 +28,17 @@
 |  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | Initialization options for parsing or creation of [language tag](./ts-bcp47.bcp47.languagetag.md) objects. |
 |  [LanguageTagParts](./ts-bcp47.bcp47.languagetagparts.md) |  |
 
-## Namespaces
+## Variables
 
-|  Namespace | Description |
+|  Variable | Description |
 |  --- | --- |
-|  [Match](./ts-bcp47.bcp47.match.md) |  |
+|  [matchQuality](./ts-bcp47.bcp47.matchquality.md) | Common levels of match quality for a single language match. |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [MatchQuality](./ts-bcp47.bcp47.matchquality.md) | Numeric representation of the quality of a language match. Range is 0 (no match) to 1 (exact match). |
 |  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization of a language tag. |
 |  [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | Describes the validation level of a particular tag. |
 
