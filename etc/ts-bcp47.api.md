@@ -377,7 +377,7 @@ class LanguageTag {
     // @internal
     protected constructor(subtags: Subtags, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries);
     static create(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
-    static createFromParts(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
+    static createFromSubtags(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag>;
     static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
     protected static _createTransformed(subtags: Subtags, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;

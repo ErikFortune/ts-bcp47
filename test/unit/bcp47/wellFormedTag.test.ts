@@ -97,7 +97,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
                 const parts = from as Subtags;
-                expect(Bcp47.LanguageTag.createFromParts(parts)).toSucceedAndSatisfy((tag) => {
+                expect(Bcp47.LanguageTag.createFromSubtags(parts)).toSucceedAndSatisfy((tag) => {
                     expect(tag.parts).toEqual(parts);
                 });
             });
@@ -127,7 +127,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ],
             ])('fails for %p', (_desc, from, expected) => {
                 const parts = from as Subtags;
-                expect(Bcp47.LanguageTag.createFromParts(parts)).toFailWith(expected);
+                expect(Bcp47.LanguageTag.createFromSubtags(parts)).toFailWith(expected);
             });
         });
     });

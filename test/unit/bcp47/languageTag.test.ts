@@ -53,34 +53,34 @@ describe('LanguageTag class', () => {
         });
     });
 
-    describe('createFromParts static method', () => {
-        class CreateFromPartsTestCase extends SimpleTagTestCaseBase<Subtags> {
-            public static get factory(): GenericTagTestCaseFactory<Subtags, CreateFromPartsTestCase> {
-                return new GenericTagTestCaseFactory(CreateFromPartsTestCase.create);
+    describe('createFromSubtags static method', () => {
+        class createFromSubtagsTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, createFromSubtagsTestCase> {
+                return new GenericTagTestCaseFactory(createFromSubtagsTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): CreateFromPartsTestCase {
-                return new CreateFromPartsTestCase(gtc, which);
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): createFromSubtagsTestCase {
+                return new createFromSubtagsTestCase(gtc, which);
             }
 
             public invoke(): void {
                 if (typeof this.expected === 'string') {
-                    expect(LanguageTag.createFromParts(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.createFromSubtags(this.from, this.options)).toSucceedAndSatisfy((lt) => {
                         expect(lt.tag).toEqual(this.expected);
                     });
                 } else if (this.expected instanceof RegExp) {
-                    expect(LanguageTag.createFromParts(this.from, this.options)).toFailWith(this.expected);
+                    expect(LanguageTag.createFromSubtags(this.from, this.options)).toFailWith(this.expected);
 
                     // special-case extra test for error handling in the interior of the preferred normalizer,
                     // which is otherwise guarded by a preceding call to validate
                     if (this.options?.normalization === 'preferred') {
                         const options = { ...this.options, validity: 'well-formed' as TagValidity };
-                        expect(LanguageTag.createFromParts(this.from, options)).toFailWith(this.expected);
+                        expect(LanguageTag.createFromSubtags(this.from, options)).toFailWith(this.expected);
                     }
                 }
             }
         }
-        test.each(CreateFromPartsTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+        test.each(createFromSubtagsTestCase.factory.emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
             tc.invoke();
         });
     });

@@ -243,7 +243,7 @@ export class LanguageTag {
      * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
      * with details if an error occurs.
      */
-    public static createFromParts(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
+    public static createFromSubtags(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
         return this._createTransformed(subtags, 'unknown', 'unknown', options);
     }
 
@@ -262,7 +262,7 @@ export class LanguageTag {
         if (typeof from === 'string') {
             return this.createFromTag(from, options);
         } else {
-            return this.createFromParts(from, options);
+            return this.createFromSubtags(from, options);
         }
     }
 

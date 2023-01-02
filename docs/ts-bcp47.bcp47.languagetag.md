@@ -34,7 +34,7 @@ The constructor for this class is marked as internal. Third-party code should no
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [create(from, options)](./ts-bcp47.bcp47.languagetag.create.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied <code>string</code> tag or [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied. |
-|  [createFromParts(subtags, options)](./ts-bcp47.bcp47.languagetag.createfromparts.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied. |
+|  [createFromSubtags(subtags, options)](./ts-bcp47.bcp47.languagetag.createfromsubtags.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied [subtags](./ts-bcp47.bcp47.subtags.md) using optional configuration, if supplied. |
 |  [createFromTag(tag, options)](./ts-bcp47.bcp47.languagetag.createfromtag.md) | <code>static</code> | Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied <code>string</code> tag using optional configuration, if supplied. |
 |  [getSuppressedScript()](./ts-bcp47.bcp47.languagetag.getsuppressedscript.md) |  | Returns the <code>Suppress-Script</code> value defined for the primary language of this tag, regardless of whether a different script is defined in this subtag. |
 |  [toCanonical()](./ts-bcp47.bcp47.languagetag.tocanonical.md) |  | Gets a confirmed canonical representation of this language tag. |
