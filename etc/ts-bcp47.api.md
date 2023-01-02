@@ -290,28 +290,28 @@ declare namespace Jar_2 {
 }
 
 // @public
-class LanguageComparer {
+class LanguageMatcher {
     constructor(iana?: Iana.LanguageRegistries);
     // (undocumented)
-    compare(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
-    // (undocumented)
-    compareExtensions(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareExtlang(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareLanguageTags(t1: LanguageTag, t2: LanguageTag): number;
-    // (undocumented)
-    comparePrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    comparePrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareRegion(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareScript(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
-    compareVariants(lt1: LanguageTag, lt2: LanguageTag): number;
-    // (undocumented)
     iana: Iana.LanguageRegistries;
+    // (undocumented)
+    match(t1: LanguageTagParts | LanguageTag | string, t2: LanguageTagParts | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
+    // (undocumented)
+    matchExtensions(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchExtlang(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchLanguageTags(t1: LanguageTag, t2: LanguageTag): number;
+    // (undocumented)
+    matchPrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchPrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchRegion(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchScript(lt1: LanguageTag, lt2: LanguageTag): number;
+    // (undocumented)
+    matchVariants(lt1: LanguageTag, lt2: LanguageTag): number;
     // Warning: (ae-forgotten-export) The symbol "OverridesRegistry" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -584,7 +584,7 @@ function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.Lan
 
 declare namespace Match {
     export {
-        LanguageComparer,
+        LanguageMatcher,
         matchQuality,
         MatchQuality
     }

@@ -21,4 +21,4 @@
  */
 
 export * from './common';
-export { LanguageMatcher } from './comparer';
+export { LanguageMatcher } from './match';

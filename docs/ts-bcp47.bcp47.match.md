@@ -8,7 +8,7 @@
 
 |  Class | Description |
 |  --- | --- |
-|  [LanguageComparer](./ts-bcp47.bcp47.match.languagecomparer.md) | Helper to compare two language tags to determine how closely related they are, applying normalization and language semantics as appropriate. |
+|  [LanguageMatcher](./ts-bcp47.bcp47.match.languagematcher.md) | Helper to compare two language tags to determine how closely related they are, applying normalization and language semantics as appropriate. |
 
 ## Variables
 
