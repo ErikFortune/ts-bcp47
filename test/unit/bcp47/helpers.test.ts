@@ -54,12 +54,12 @@ describe('bcp47 helpers', () => {
         });
 
         describe('from parts', () => {
-            class TagHelperPartsTestCase extends SimpleTagTestCaseBase<Bcp47.LanguageTagParts> {
-                public static get factory(): GenericTagTestCaseFactory<Bcp47.LanguageTagParts, TagHelperPartsTestCase> {
+            class TagHelperPartsTestCase extends SimpleTagTestCaseBase<Bcp47.Subtags> {
+                public static get factory(): GenericTagTestCaseFactory<Bcp47.Subtags, TagHelperPartsTestCase> {
                     return new GenericTagTestCaseFactory(TagHelperPartsTestCase.create);
                 }
 
-                public static create(gtc: GenericLanguageTagTest<Bcp47.LanguageTagParts>, which: TestKey): TagHelperPartsTestCase {
+                public static create(gtc: GenericLanguageTagTest<Bcp47.Subtags>, which: TestKey): TagHelperPartsTestCase {
                     return new TagHelperPartsTestCase(gtc, which);
                 }
 

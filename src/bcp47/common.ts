@@ -35,7 +35,7 @@ export interface ExtensionSubtagValue {
 /**
  * @public
  */
-export interface LanguageTagParts {
+export interface Subtags {
     primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;
     extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];
     script?: Iana.LanguageSubtags.ScriptSubtag;
@@ -48,12 +48,12 @@ export interface LanguageTagParts {
 }
 
 /**
- * Converts a {@link Bcp47.LanguageTagParts | LanguageTagParts} to a string.
- * @param parts - The {@link Bcp47.LanguageTagParts | LanguageTagParts} to be converted.
- * @returns A string representing the supplied {@link Bcp47.LanguageTagParts | LanguageTagParts}.
+ * Converts {@link Bcp47.Subtags | subtags} to a string.
+ * @param parts - The {@link Bcp47.Subtags | subtags} to be converted.
+ * @returns A string representing the supplied {@link Bcp47.Subtags | subtags}.
  * @public
  */
-export function languageTagPartsToString(parts: LanguageTagParts): string {
+export function subtagsToString(parts: Subtags): string {
     if (parts.grandfathered) {
         return parts.grandfathered;
     }

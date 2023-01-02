@@ -24,36 +24,36 @@ import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
 
-import { LanguageTagParts, ValidateTag } from '../../../src/bcp47';
+import { Subtags, ValidateTag } from '../../../src/bcp47';
 import { NormalizeTag } from '../../../src/bcp47';
-import { languageTagPartsToString } from '../../../src/bcp47/common';
 import { partsTestCases } from './commonTestCases';
+import { subtagsToString } from '../../../src/bcp47/common';
 
 describe('NormalizeTag helpers', () => {
     describe('normalization with parts', () => {
-        class NormalizeTagTestCase extends SimpleTagTestCaseBase<LanguageTagParts> {
-            public static get factory(): GenericTagTestCaseFactory<LanguageTagParts, NormalizeTagTestCase> {
+        class NormalizeTagTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, NormalizeTagTestCase> {
                 return new GenericTagTestCaseFactory(NormalizeTagTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<LanguageTagParts>, which: TestKey): NormalizeTagTestCase {
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): NormalizeTagTestCase {
                 return new NormalizeTagTestCase(gtc, which);
             }
 
             public invoke(): void {
                 const normalization = this.options?.normalization ?? 'unknown';
                 if (this.isSuccessTest) {
-                    expect(NormalizeTag.normalizeParts(this.from, normalization)).toSucceedAndSatisfy((lt) => {
-                        expect(languageTagPartsToString(lt)).toEqual(this.expected);
+                    expect(NormalizeTag.normalizeSubtags(this.from, normalization)).toSucceedAndSatisfy((lt) => {
+                        expect(subtagsToString(lt)).toEqual(this.expected);
                     });
 
                     if (normalization === 'preferred') {
                         expect(NormalizeTag.toPreferred(this.from)).toSucceedAndSatisfy((lt) => {
-                            expect(languageTagPartsToString(lt)).toEqual(this.expected);
+                            expect(subtagsToString(lt)).toEqual(this.expected);
                         });
                     } else if (normalization === 'canonical') {
                         expect(NormalizeTag.toCanonical(this.from)).toSucceedAndSatisfy((lt) => {
-                            expect(languageTagPartsToString(lt)).toEqual(this.expected);
+                            expect(subtagsToString(lt)).toEqual(this.expected);
                         });
                     }
                 } else if (this.isFailureTest) {
@@ -61,7 +61,7 @@ describe('NormalizeTag helpers', () => {
                     // normalization to fail.
                     const validate = ValidateTag.validateParts(this.from, this.options?.validity ?? 'unknown');
                     if (validate.isSuccess()) {
-                        expect(NormalizeTag.normalizeParts(this.from, normalization)).toFailWith(this.expected);
+                        expect(NormalizeTag.normalizeSubtags(this.from, normalization)).toFailWith(this.expected);
 
                         if (normalization === 'preferred') {
                             expect(NormalizeTag.toPreferred(this.from)).toFailWith(this.expected);

@@ -20,11 +20,11 @@
  * SOFTWARE.
  */
 
+import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
-import * as Subtags from '../bcp47Subtags';
 
 import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts } from '../common';
+import { ExtensionSubtagValue, Subtags } from '../common';
 import { Result, allSucceed, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { TagValidatorBase } from './baseValidator';
 import { TagValidity } from './common';
@@ -35,11 +35,11 @@ import { TagValidity } from './common';
 export class IsValidValidator extends TagValidatorBase {
     public validity: TagValidity = 'valid';
 
-    protected _checkLanguage(parts: LanguageTagParts): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
+    protected _checkLanguage(parts: Subtags): Result<Iana.LanguageSubtags.LanguageSubtag | undefined> {
         return parts.primaryLanguage ? this.iana.subtags.languages.verifyIsValid(parts.primaryLanguage) : succeed(undefined);
     }
 
-    protected _checkExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+    protected _checkExtlangs(parts: Subtags): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
             return allSucceed(
                 parts.extlangs.map((e) => this.iana.subtags.extlangs.verifyIsValid(e)),
@@ -49,15 +49,15 @@ export class IsValidValidator extends TagValidatorBase {
         return succeed(undefined);
     }
 
-    protected _checkScript(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
+    protected _checkScript(parts: Subtags): Result<Iana.LanguageSubtags.ScriptSubtag | undefined> {
         return parts.script ? this.iana.subtags.scripts.verifyIsValid(parts.script) : succeed(undefined);
     }
 
-    protected _checkRegion(parts: LanguageTagParts): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
+    protected _checkRegion(parts: Subtags): Result<Iana.LanguageSubtags.RegionSubtag | undefined> {
         return parts.region ? this.iana.subtags.regions.verifyIsValid(parts.region) : succeed(undefined);
     }
 
-    protected _checkVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
+    protected _checkVariants(parts: Subtags): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         if (parts.variants) {
             return allSucceed(
                 parts.variants.map((v) => this.iana.subtags.variants.verifyIsValid(v)),
@@ -76,16 +76,16 @@ export class IsValidValidator extends TagValidatorBase {
     }
 
     protected _checkExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag> {
-        return Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
+        return Bcp47Subtags.Validate.extensionSubtag.verifyIsWellFormed(value);
     }
 
-    protected _checkExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
+    protected _checkExtensions(parts: Subtags): Result<ExtensionSubtagValue[] | undefined> {
         return super._checkExtensions(parts).onSuccess((extensions) => {
             return this._verifyUnique('extensions', extensions, (e) => e.singleton.toLowerCase());
         });
     }
 
-    protected _checkPrivateUseTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
+    protected _checkPrivateUseTags(parts: Subtags): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
         if (parts.privateUse) {
             return allSucceed(
                 parts.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsWellFormed(pu)),
@@ -95,11 +95,11 @@ export class IsValidValidator extends TagValidatorBase {
         return succeed(parts.privateUse);
     }
 
-    protected _checkGrandfatheredTags(parts: LanguageTagParts): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
+    protected _checkGrandfatheredTags(parts: Subtags): Result<Iana.LanguageSubtags.GrandfatheredTag | undefined> {
         return parts.grandfathered ? this.iana.subtags.grandfathered.verifyIsValid(parts.grandfathered) : succeed(undefined);
     }
 
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
+    protected _postValidate(parts: Subtags): Result<Subtags> {
         return this._basicPostValidation(parts).onSuccess((parts) => {
             if (parts.extlangs && parts.extlangs.length > 1) {
                 return fail(`${parts.extlangs.join('-')}: multiple extlang subtags is invalid`);

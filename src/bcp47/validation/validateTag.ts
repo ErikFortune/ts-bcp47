@@ -28,7 +28,7 @@ import { IsInPreferredFromValidator } from './isInPreferredForm';
 import { IsStrictlyValidValidator } from './isStrictlyValid';
 import { IsValidValidator } from './isValid';
 import { IsWellFormedValidator } from './isWellFormed';
-import { LanguageTagParts } from '../common';
+import { Subtags } from '../common';
 import { TagValidator } from './baseValidator';
 
 /**
@@ -52,7 +52,7 @@ export class ValidateTag {
      * @example `en-US` is in canonical form, `en-us` is not.
      * @example `eng-US` is in canonical form, `eng-us` is not.
      */
-    public static isCanonical(parts: LanguageTagParts): boolean {
+    public static isCanonical(parts: Subtags): boolean {
         if (!this._isCanonical) {
             this._isCanonical = new IsCanonicalValidator();
         }
@@ -73,7 +73,7 @@ export class ValidateTag {
      * @example `en-US` is in preferred form, `en-Latn-US` is not.
      * @example `cmn` is in preferred form, `zh-cmn-Hans` is not.
      */
-    public static isInPreferredForm(parts: LanguageTagParts): boolean {
+    public static isInPreferredForm(parts: Subtags): boolean {
         if (!this._isInPreferredForm) {
             this._isInPreferredForm = new IsInPreferredFromValidator();
         }
@@ -91,7 +91,7 @@ export class ValidateTag {
      * a strictly valid language tag, false otherwise.
      * @example `ca-valencia` is strictly valid, `es-valencia` is not.
      */
-    public static isStrictlyValid(parts: LanguageTagParts): boolean {
+    public static isStrictlyValid(parts: Subtags): boolean {
         return this.validateParts(parts, 'strictly-valid').isSuccess();
     }
 
@@ -105,7 +105,7 @@ export class ValidateTag {
      * a valid language tag, false otherwise.
      * @example `en-US` is valid, `eng-US` is not.
      */
-    public static isValid(parts: LanguageTagParts): boolean {
+    public static isValid(parts: Subtags): boolean {
         return this.validateParts(parts, 'valid').isSuccess();
     }
 
@@ -119,7 +119,7 @@ export class ValidateTag {
      * @example `en-US` is valid, `english-US` is not.
      * @public
      */
-    public static isWellFormed(parts: LanguageTagParts): boolean {
+    public static isWellFormed(parts: Subtags): boolean {
         return this.validateParts(parts, 'well-formed').isSuccess();
     }
 
@@ -160,7 +160,7 @@ export class ValidateTag {
      * `Failure` with details if an error occurs.
      * @public
      */
-    public static validateParts(parts: LanguageTagParts, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean> {
+    public static validateParts(parts: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean> {
         const validator = this.chooseValidator(wantValidity, haveValidity);
         // istanbul ignore next - a pain to test
         return validator?.checkParts(parts) ?? succeed(true);

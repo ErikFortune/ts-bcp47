@@ -22,7 +22,7 @@
 
 import * as Iana from '../../iana';
 
-import { LanguageTagParts, languageTagPartsToString } from '../common';
+import { Subtags, subtagsToString } from '../common';
 import { NormalizeTag, TagNormalization } from '../normalization';
 import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 
@@ -36,21 +36,21 @@ export class IsStrictlyValidValidator extends IsValidValidator {
     public validity: TagValidity = 'strictly-valid';
     public normalization: TagNormalization = 'unknown';
 
-    protected _checkExtlangs(parts: LanguageTagParts): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+    protected _checkExtlangs(parts: Subtags): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
             return super._checkExtlangs(parts).onSuccess(() => this._validateExtlangPrefix(parts));
         }
         return succeed(undefined);
     }
 
-    protected _checkVariants(parts: LanguageTagParts): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
+    protected _checkVariants(parts: Subtags): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         if (parts.variants) {
             return super._checkVariants(parts).onSuccess((v) => this._validateVariantPrefix(parts, v!));
         }
         return succeed(undefined);
     }
 
-    protected _validateExtlangPrefix(parts: Readonly<LanguageTagParts>): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
+    protected _validateExtlangPrefix(parts: Readonly<Subtags>): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
         if (parts.extlangs) {
             const prefix = this.iana.subtags.languages.toCanonical(parts.primaryLanguage).getValueOrDefault();
             if (!prefix) {
@@ -76,17 +76,17 @@ export class IsStrictlyValidValidator extends IsValidValidator {
     }
 
     protected _validateVariantPrefix(
-        parts: Readonly<LanguageTagParts>,
+        parts: Readonly<Subtags>,
         variants: Iana.LanguageSubtags.VariantSubtag[]
     ): Result<Iana.LanguageSubtags.VariantSubtag[] | undefined> {
         const { primaryLanguage, extlangs, script, region } = parts;
         const nonCanonical = { primaryLanguage, extlangs, script, region };
-        const canonical = NormalizeTag.normalizeParts(nonCanonical, 'canonical');
+        const canonical = NormalizeTag.normalizeSubtags(nonCanonical, 'canonical');
         // istanbul ignore next - should be caught in the first pass
         if (canonical.isFailure()) {
             return fail(`failed to normalize variant prefix: ${canonical.message}`);
         }
-        let prefix = languageTagPartsToString(canonical.value);
+        let prefix = subtagsToString(canonical.value);
 
         return mapResults(
             variants.map((variant) => {

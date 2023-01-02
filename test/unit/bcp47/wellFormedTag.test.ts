@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 import { Bcp47 } from '../../../src';
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 
 describe('BCP-47 WellFormedTag class', () => {
     describe('create static method', () => {
@@ -96,7 +96,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['grandfathered', { grandfathered: 'i-klingon' }],
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
-                const parts = from as LanguageTagParts;
+                const parts = from as Subtags;
                 expect(Bcp47.LanguageTag.createFromParts(parts)).toSucceedAndSatisfy((tag) => {
                     expect(tag.parts).toEqual(parts);
                 });
@@ -126,7 +126,7 @@ describe('BCP-47 WellFormedTag class', () => {
                     /malformed extended language range/i,
                 ],
             ])('fails for %p', (_desc, from, expected) => {
-                const parts = from as LanguageTagParts;
+                const parts = from as Subtags;
                 expect(Bcp47.LanguageTag.createFromParts(parts)).toFailWith(expected);
             });
         });

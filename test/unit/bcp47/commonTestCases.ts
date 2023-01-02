@@ -39,7 +39,7 @@ import {
     allTestKeys,
     allValidatingKeys,
 } from './languageTagHelpers';
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 
 const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     {
@@ -294,7 +294,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
     },
 ];
 
-const partsTestCaseInit: GenericLanguageTagTestInit<LanguageTagParts>[] = [
+const partsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
     {
         description: 'valid non-canonical tag with suppressed script',
         from: {

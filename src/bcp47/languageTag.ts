@@ -22,8 +22,8 @@
 
 import * as Iana from '../iana';
 
-import { LanguageTagParts, UndeterminedLanguage, languageTagPartsToString } from './common';
 import { Result, captureResult, succeed } from '@fgv/ts-utils';
+import { Subtags, UndeterminedLanguage, subtagsToString } from './common';
 import { TagNormalization, mostNormalized } from './normalization/common';
 import { TagValidity, mostValid } from './validation/common';
 
@@ -58,10 +58,11 @@ export interface LanguageTagInitOptions {
  */
 export class LanguageTag {
     /**
-     * The individual {@link Bcp47.LanguageTagParts | language tag parts} for
+     * The individual {@link Bcp47.Subtags | subtags} for
      * this language tag.
      */
-    public readonly parts: Readonly<LanguageTagParts>;
+    public readonly parts: Readonly<Subtags>;
+
     /**
      * A string representation of this language tag.
      */
@@ -109,7 +110,7 @@ export class LanguageTag {
 
     /**
      * Constructs a {@link Bcp47.LanguageTag | LanguageTag }.
-     * @param parts - A {@link Bcp47.LanguageTagParts | LanguageTagParts } from
+     * @param subtags - The {@link Bcp47.Subtags | subtags } from
      * which the tag is constructed.
      * @param validity - Known {@link Bcp47.TagValidity | validation level} of the
      * supplied parts.
@@ -119,11 +120,11 @@ export class LanguageTag {
      * this tag.
      * @internal
      */
-    protected constructor(parts: LanguageTagParts, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
-        this.parts = Object.freeze({ ...parts });
+    protected constructor(subtags: Subtags, validity: TagValidity, normalization: TagNormalization, iana: Iana.LanguageRegistries) {
+        this.parts = Object.freeze({ ...subtags });
         this._normalization = normalization;
         this._validity = validity;
-        this.tag = languageTagPartsToString(parts);
+        this.tag = subtagsToString(subtags);
         this._iana = iana;
 
         if (validity === 'strictly-valid') {
@@ -233,31 +234,31 @@ export class LanguageTag {
 
     /**
      * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied
-     * {@link Bcp47.LanguageTagParts | language tag parts} using optional configuration,
+     * {@link Bcp47.Subtags | subtags} using optional configuration,
      * if supplied.
-     * @param tag - The {@link Bcp47.LanguageTagParts | language tag parts} from which the
+     * @param tag - The {@link Bcp47.Subtags | subtags} from which the
      * {@link Bcp47.LanguageTag | language tag} is te be constructed.
      * @param options - (optional) set of {@link Bcp47.LanguageTagInitOptions | init options}
      * to guide the validation and normalization of this tag.
      * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
      * with details if an error occurs.
      */
-    public static createFromParts(parts: LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
-        return this._createTransformed(parts, 'unknown', 'unknown', options);
+    public static createFromParts(subtags: Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
+        return this._createTransformed(subtags, 'unknown', 'unknown', options);
     }
 
     /**
      * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied `string`
-     * tag or {@link Bcp47.LanguageTagParts | language tag parts} using optional configuration,
+     * tag or {@link Bcp47.Subtags | subtags} using optional configuration,
      * if supplied.
-     * @param from - The `string` tag or {@link Bcp47.LanguageTagParts | language tag parts} from
+     * @param from - The `string` tag or {@link Bcp47.Subtags | subtags} from
      * which the {@link Bcp47.LanguageTag | language tag} is te be constructed.
      * @param options - (optional) set of {@link Bcp47.LanguageTagInitOptions | init options}
      * to guide the validation and normalization of this tag.
      * @returns `Success` with the new {@link Bcp47.LanguageTag | language tag} or `Failure`
      * with details if an error occurs.
      */
-    public static create(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
+    public static create(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
         if (typeof from === 'string') {
             return this.createFromTag(from, options);
         } else {
@@ -267,8 +268,8 @@ export class LanguageTag {
 
     /**
      * Constructs a new {@link Bcp47.LanguageTag | language tag} by applying appropriate transformations
-     * to as supplied {@link Bcp47.LanguageTagParts | LanguageTagParts}.
-     * @param parts - The {@link Bcp47.LanguageTagParts | LanguageTagParts} which represent the tag.
+     * to as supplied {@link Bcp47.Subtags | Bcp47.Subtags}.
+     * @param subtags - The {@link Bcp47.Subtags | subtags} which represent the tag.
      * @param fromValidity - The {@link Bcp47.TagValidity | validation level} of the supplied `parts`.
      * @param fromNormalization - The {@link Bcp47.TagNormalization | normalization level} fo the
      * supplied `parts`.
@@ -278,15 +279,15 @@ export class LanguageTag {
      * @internal
      */
     protected static _createTransformed(
-        parts: LanguageTagParts,
+        subtags: Subtags,
         fromValidity: TagValidity,
         fromNormalization: TagNormalization,
         partialOptions?: LanguageTagInitOptions
     ): Result<LanguageTag> {
         const options = this._getOptions(partialOptions);
-        return ValidateTag.validateParts(parts, options.validity, fromValidity)
+        return ValidateTag.validateParts(subtags, options.validity, fromValidity)
             .onSuccess(() => {
-                return NormalizeTag.normalizeParts(parts, options.normalization, fromNormalization);
+                return NormalizeTag.normalizeSubtags(subtags, options.normalization, fromNormalization);
             })
             .onSuccess((normalized) => {
                 const validity = mostValid(fromValidity, options.validity);

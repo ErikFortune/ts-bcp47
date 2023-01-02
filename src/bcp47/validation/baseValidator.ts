@@ -23,7 +23,7 @@
 import * as Iana from '../../iana';
 
 import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
+import { ExtensionSubtagValue, Subtags, subtagsToString } from '../common';
 import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 import { TagValidity } from './common';
 
@@ -33,7 +33,7 @@ import { TagValidity } from './common';
 export interface TagValidator {
     readonly validity: TagValidity;
 
-    checkParts(parts: LanguageTagParts): Result<true>;
+    checkParts(parts: Subtags): Result<true>;
 }
 
 /**
@@ -48,7 +48,7 @@ export abstract class TagValidatorBase implements TagValidator {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public checkParts(parts: LanguageTagParts): Result<true> {
+    public checkParts(parts: Subtags): Result<true> {
         return allSucceed(
             [
                 this._checkLanguage(parts),
@@ -66,21 +66,21 @@ export abstract class TagValidatorBase implements TagValidator {
         });
     }
 
-    protected _basicPostValidation(parts: LanguageTagParts): Result<LanguageTagParts> {
+    protected _basicPostValidation(parts: Subtags): Result<Subtags> {
         if (parts.primaryLanguage === undefined && parts.grandfathered === undefined && parts.privateUse === undefined) {
-            return fail(`${languageTagPartsToString(parts)}: missing primary language subtag.`);
+            return fail(`${subtagsToString(parts)}: missing primary language subtag.`);
         }
         if (parts.extlangs && parts.extlangs.length > 3) {
-            return fail(`${languageTagPartsToString(parts)}: too many extlang subtags`);
+            return fail(`${subtagsToString(parts)}: too many extlang subtags`);
         }
         return succeed(parts);
     }
 
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
+    protected _postValidate(parts: Subtags): Result<Subtags> {
         return this._basicPostValidation(parts);
     }
 
-    protected _checkExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
+    protected _checkExtensions(parts: Subtags): Result<ExtensionSubtagValue[] | undefined> {
         if (parts.extensions) {
             return allSucceed(
                 parts.extensions.map((ext) => {
@@ -116,13 +116,13 @@ export abstract class TagValidatorBase implements TagValidator {
         return succeed(items);
     }
 
-    protected abstract _checkLanguage(parts: LanguageTagParts): Result<unknown>;
-    protected abstract _checkExtlangs(parts: LanguageTagParts): Result<unknown>;
-    protected abstract _checkScript(parts: LanguageTagParts): Result<unknown>;
-    protected abstract _checkRegion(parts: LanguageTagParts): Result<unknown>;
-    protected abstract _checkVariants(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkLanguage(parts: Subtags): Result<unknown>;
+    protected abstract _checkExtlangs(parts: Subtags): Result<unknown>;
+    protected abstract _checkScript(parts: Subtags): Result<unknown>;
+    protected abstract _checkRegion(parts: Subtags): Result<unknown>;
+    protected abstract _checkVariants(parts: Subtags): Result<unknown>;
     protected abstract _checkExtensionSingleton(singleton: ExtensionSingleton): Result<unknown>;
     protected abstract _checkExtensionSubtagValue(value: ExtensionSubtag): Result<unknown>;
-    protected abstract _checkPrivateUseTags(parts: LanguageTagParts): Result<unknown>;
-    protected abstract _checkGrandfatheredTags(parts: LanguageTagParts): Result<unknown>;
+    protected abstract _checkPrivateUseTags(parts: Subtags): Result<unknown>;
+    protected abstract _checkGrandfatheredTags(parts: Subtags): Result<unknown>;
 }

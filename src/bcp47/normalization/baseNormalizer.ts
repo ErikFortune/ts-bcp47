@@ -32,7 +32,7 @@ import {
     VariantSubtag,
 } from '../../iana/language-subtags';
 import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
-import { ExtensionSubtagValue, LanguageTagParts, languageTagPartsToString } from '../common';
+import { ExtensionSubtagValue, Subtags, subtagsToString } from '../common';
 import { Result, allSucceed, fail, mapResults, populateObject, succeed } from '@fgv/ts-utils';
 import { TagNormalization } from './common';
 
@@ -42,7 +42,7 @@ import { TagNormalization } from './common';
 export interface TagNormalizer {
     readonly normalization: TagNormalization;
 
-    processParts(parts: LanguageTagParts): Result<LanguageTagParts>;
+    processSubtags(subtags: Subtags): Result<Subtags>;
 }
 
 /**
@@ -58,45 +58,45 @@ export abstract class TagNormalizerBase {
         this._iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public processParts(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return populateObject<LanguageTagParts>(
+    public processSubtags(subtags: Subtags): Result<Subtags> {
+        return populateObject<Subtags>(
             {
-                primaryLanguage: () => this._processLanguage(parts),
-                extlangs: () => this._processExtlangs(parts),
-                script: () => this._processScript(parts),
-                region: () => this._processRegion(parts),
-                variants: () => this._processVariants(parts),
-                extensions: () => this._processExtensions(parts),
-                privateUse: () => this._processPrivateUseTags(parts),
-                grandfathered: () => this._processGrandfatheredTags(parts),
+                primaryLanguage: () => this._processLanguage(subtags),
+                extlangs: () => this._processExtlangs(subtags),
+                script: () => this._processScript(subtags),
+                region: () => this._processRegion(subtags),
+                variants: () => this._processVariants(subtags),
+                extensions: () => this._processExtensions(subtags),
+                privateUse: () => this._processPrivateUseTags(subtags),
+                grandfathered: () => this._processGrandfatheredTags(subtags),
             },
             { suppressUndefined: true }
-        ).onSuccess((parts) => {
-            return this._postValidate(parts);
+        ).onSuccess((processed) => {
+            return this._postValidate(processed);
         });
     }
 
-    protected _basicPostValidation(parts: LanguageTagParts): Result<LanguageTagParts> {
+    protected _basicPostValidation(subtags: Subtags): Result<Subtags> {
         // istanbul ignore next - any validation whatsoever catches these so should never happen in practice
-        if (parts.primaryLanguage === undefined && parts.grandfathered === undefined && parts.privateUse === undefined) {
-            return fail(`${languageTagPartsToString(parts)}: missing primary language subtag.`);
+        if (subtags.primaryLanguage === undefined && subtags.grandfathered === undefined && subtags.privateUse === undefined) {
+            return fail(`${subtagsToString(subtags)}: missing primary language subtag.`);
         }
 
         // istanbul ignore next - any validation whatsoever catches these so should never happen in practice
-        if (parts.extlangs && parts.extlangs.length > 3) {
-            return fail(`${languageTagPartsToString(parts)}: too many extlang subtags`);
+        if (subtags.extlangs && subtags.extlangs.length > 3) {
+            return fail(`${subtagsToString(subtags)}: too many extlang subtags`);
         }
-        return succeed(parts);
+        return succeed(subtags);
     }
 
-    protected _postValidate(parts: LanguageTagParts): Result<LanguageTagParts> {
-        return this._basicPostValidation(parts);
+    protected _postValidate(subtags: Subtags): Result<Subtags> {
+        return this._basicPostValidation(subtags);
     }
 
-    protected _processExtensions(parts: LanguageTagParts): Result<ExtensionSubtagValue[] | undefined> {
-        if (parts.extensions) {
+    protected _processExtensions(subtags: Subtags): Result<ExtensionSubtagValue[] | undefined> {
+        if (subtags.extensions) {
             return mapResults(
-                parts.extensions.map((ex) => {
+                subtags.extensions.map((ex) => {
                     return populateObject<ExtensionSubtagValue>({
                         singleton: () => this._processExtensionSingleton(ex.singleton),
                         value: () => this._processExtensionSubtagValue(ex.value),
@@ -104,7 +104,7 @@ export abstract class TagNormalizerBase {
                 })
             );
         }
-        return succeed(parts.extensions);
+        return succeed(subtags.extensions);
     }
 
     protected _verifyUnique<T, TK extends string>(
@@ -129,13 +129,13 @@ export abstract class TagNormalizerBase {
         return succeed(items);
     }
 
-    protected abstract _processLanguage(parts: LanguageTagParts): Result<LanguageSubtag | undefined>;
-    protected abstract _processExtlangs(parts: LanguageTagParts): Result<ExtLangSubtag[] | undefined>;
-    protected abstract _processScript(parts: LanguageTagParts): Result<ScriptSubtag | undefined>;
-    protected abstract _processRegion(parts: LanguageTagParts): Result<RegionSubtag | undefined>;
-    protected abstract _processVariants(parts: LanguageTagParts): Result<VariantSubtag[] | undefined>;
+    protected abstract _processLanguage(subtags: Subtags): Result<LanguageSubtag | undefined>;
+    protected abstract _processExtlangs(subtags: Subtags): Result<ExtLangSubtag[] | undefined>;
+    protected abstract _processScript(subtags: Subtags): Result<ScriptSubtag | undefined>;
+    protected abstract _processRegion(subtags: Subtags): Result<RegionSubtag | undefined>;
+    protected abstract _processVariants(subtags: Subtags): Result<VariantSubtag[] | undefined>;
     protected abstract _processExtensionSingleton(singleton: ExtensionSingleton): Result<ExtensionSingleton>;
     protected abstract _processExtensionSubtagValue(value: ExtensionSubtag): Result<ExtensionSubtag>;
-    protected abstract _processPrivateUseTags(parts: LanguageTagParts): Result<ExtendedLanguageRange[] | undefined>;
-    protected abstract _processGrandfatheredTags(parts: LanguageTagParts): Result<GrandfatheredTag | undefined>;
+    protected abstract _processPrivateUseTags(subtags: Subtags): Result<ExtendedLanguageRange[] | undefined>;
+    protected abstract _processGrandfatheredTags(subtags: Subtags): Result<GrandfatheredTag | undefined>;
 }

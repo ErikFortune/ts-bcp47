@@ -24,7 +24,7 @@ import * as Iana from '../../iana';
 import * as Unsd from '../../unsd';
 
 import { DefaultRegistries, OverridesRegistry } from '../overrides';
-import { GlobalRegion, LanguageTagParts } from '../common';
+import { GlobalRegion, Subtags } from '../common';
 import { IsoAlpha2RegionCode, UnM49RegionCode } from '../../iana/model';
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
@@ -68,8 +68,8 @@ export class LanguageMatcher {
     }
 
     public match(
-        t1: LanguageTagParts | LanguageTag | string,
-        t2: LanguageTagParts | LanguageTag | string,
+        t1: Subtags | LanguageTag | string,
+        t2: Subtags | LanguageTag | string,
         options?: LanguageTagInitOptions
     ): Result<number> {
         const tag1 = t1 instanceof LanguageTag ? succeed(t1) : LanguageTag.create(t1, options);

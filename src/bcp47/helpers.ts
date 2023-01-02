@@ -23,18 +23,18 @@
 import { LanguageTag, LanguageTagInitOptions } from './languageTag';
 import { LanguageMatcher } from './match';
 import { LanguageTagParser } from './languageTagParser';
-import { LanguageTagParts } from './common';
 import { Result } from '@fgv/ts-utils';
+import { Subtags } from './common';
 
 /**
  * Creates a new {@link Bcp47.LanguageTag | language tag} from either a specified `string` description
- * or from (typically parsed) individual {@link Bcp47.LanguageTagParts | language tag parts}.
+ * or from (typically parsed) individual {@link Bcp47.Subtags | subtags}.
  *
  * The supplied initializer must be at least
  * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}.
  * Higher degrees of validation along with any normalizations may be optionally specified.
  *
- * @param from - The `string` or {@link Bcp47.LanguageTagParts | language tag parts} from which
+ * @param from - The `string` or {@link Bcp47.Subtags | subtags} from which
  * the processed tag is to be constructed.
  * @param options - (optional) The {@link Bcp47.LanguageTagInitOptions | options} used to construct
  * and validate the tag.
@@ -43,23 +43,23 @@ import { Result } from '@fgv/ts-utils';
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function
-export function tag(from: string | LanguageTagParts, options?: LanguageTagInitOptions): Result<LanguageTag> {
+export function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
     return LanguageTag.create(from, options);
 }
 
 /**
- * Parses a supplied string to produce a collection of individual {@link Bcp47.LanguageTagParts | language tag parts}.
+ * Parses a supplied string to produce a collection of individual {@link Bcp47.Subtags | subtags}.
  *
  * The string must be {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}
  * but no additional validation or normalization is applied.
  *
  * @param from - The 'string' to be parsed. Must be a well-formed language tag.
- * @returns The parsed individual {@link Bcp47.LanguageTagParts | language tag parts} which correspond
+ * @returns The parsed individual {@link Bcp47.Subtags | subtags} which correspond
  * to the string.
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function
-export function parse(from: string): Result<LanguageTagParts> {
+export function parse(from: string): Result<Subtags> {
     return LanguageTagParser.parse(from);
 }
 
@@ -67,10 +67,10 @@ export function parse(from: string): Result<LanguageTagParts> {
  * Determine how well two language tags match each other.
  *
  * @param t1 - First tag to match, supplied as one of `string`, individual
- * {@link Bcp47.LanguageTagParts | language tag parts}, or constructed
+ * {@link Bcp47.Subtags | subtags}, or constructed
  * {@link Bcp47.LanguageTag | language tag}.
  * @param t2 - Second tag to match, supplied as one of `string`, individual
- * {@link Bcp47.LanguageTagParts | language tag parts}, or constructed
+ * {@link Bcp47.Subtags | subtags}, or constructed
  * {@link Bcp47.LanguageTag | language tag}.
  * @param options - (optional) A set of {@link Bcp47.LanguageTagInitOptions | language tag options}
  * which control any necessary conversion or parsing.
@@ -80,8 +80,8 @@ export function parse(from: string): Result<LanguageTagParts> {
  */
 // istanbul ignore next - tests applied for wrapped function
 export function match(
-    t1: LanguageTagParts | LanguageTag | string,
-    t2: LanguageTagParts | LanguageTag | string,
+    t1: Subtags | LanguageTag | string,
+    t2: Subtags | LanguageTag | string,
     options?: LanguageTagInitOptions
 ): Result<number> {
     return new LanguageMatcher().match(t1, t2, options);

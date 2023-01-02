@@ -23,7 +23,7 @@
 import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
-import { LanguageTag, LanguageTagParts, TagValidity } from '../../../src/bcp47';
+import { LanguageTag, Subtags, TagValidity } from '../../../src/bcp47';
 import { partsTestCases, tagTestCases } from './commonTestCases';
 
 describe('LanguageTag class', () => {
@@ -54,12 +54,12 @@ describe('LanguageTag class', () => {
     });
 
     describe('createFromParts static method', () => {
-        class CreateFromPartsTestCase extends SimpleTagTestCaseBase<LanguageTagParts> {
-            public static get factory(): GenericTagTestCaseFactory<LanguageTagParts, CreateFromPartsTestCase> {
+        class CreateFromPartsTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, CreateFromPartsTestCase> {
                 return new GenericTagTestCaseFactory(CreateFromPartsTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<LanguageTagParts>, which: TestKey): CreateFromPartsTestCase {
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): CreateFromPartsTestCase {
                 return new CreateFromPartsTestCase(gtc, which);
             }
 
@@ -86,15 +86,15 @@ describe('LanguageTag class', () => {
     });
 
     describe('to* methods', () => {
-        class ToMethodTestCase<TFROM extends string | LanguageTagParts> extends SimpleTagTestCaseBase<TFROM> {
-            public static create<TFROM extends string | LanguageTagParts>(
+        class ToMethodTestCase<TFROM extends string | Subtags> extends SimpleTagTestCaseBase<TFROM> {
+            public static create<TFROM extends string | Subtags>(
                 gtc: GenericLanguageTagTest<TFROM>,
                 which: TestKey
             ): ToMethodTestCase<TFROM> {
                 return new ToMethodTestCase(gtc, which);
             }
 
-            public static getFactory<TFROM extends string | LanguageTagParts>(): GenericTagTestCaseFactory<TFROM, ToMethodTestCase<TFROM>> {
+            public static getFactory<TFROM extends string | Subtags>(): GenericTagTestCaseFactory<TFROM, ToMethodTestCase<TFROM>> {
                 return new GenericTagTestCaseFactory(ToMethodTestCase.create);
             }
 
@@ -181,7 +181,7 @@ describe('LanguageTag class', () => {
         });
 
         describe('parts-based test cases', () => {
-            test.each(ToMethodTestCase.getFactory<LanguageTagParts>().emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
+            test.each(ToMethodTestCase.getFactory<Subtags>().emit(allTestKeys, partsTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
         });

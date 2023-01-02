@@ -24,18 +24,18 @@ import '@fgv/ts-utils-jest';
 
 import { GenericLanguageTagTest, GenericTagTestCaseFactory, SimpleTagTestCaseBase, TestKey, allTestKeys } from './languageTagHelpers';
 
-import { LanguageTagParts } from '../../../src/bcp47';
+import { Subtags } from '../../../src/bcp47';
 import { ValidateTag } from '../../../src/bcp47';
 import { partsTestCases } from './commonTestCases';
 
 describe('ValidateTag helpers', () => {
     describe('validation with parts', () => {
-        class ValidateTagTestCase extends SimpleTagTestCaseBase<LanguageTagParts> {
-            public static get factory(): GenericTagTestCaseFactory<LanguageTagParts, ValidateTagTestCase> {
+        class ValidateTagTestCase extends SimpleTagTestCaseBase<Subtags> {
+            public static get factory(): GenericTagTestCaseFactory<Subtags, ValidateTagTestCase> {
                 return new GenericTagTestCaseFactory(ValidateTagTestCase.create);
             }
 
-            public static create(gtc: GenericLanguageTagTest<LanguageTagParts>, which: TestKey): ValidateTagTestCase {
+            public static create(gtc: GenericLanguageTagTest<Subtags>, which: TestKey): ValidateTagTestCase {
                 return new ValidateTagTestCase(gtc, which);
             }
 
@@ -64,7 +64,7 @@ describe('ValidateTag helpers', () => {
                 }
             }
 
-            protected _getSuccessTestDescription(which: TestKey, from: LanguageTagParts, description: string): string {
+            protected _getSuccessTestDescription(which: TestKey, from: Subtags, description: string): string {
                 const fromDesc = JSON.stringify(from, undefined, 2);
                 return `${which} succeeds for "${description}" (${fromDesc})`;
             }

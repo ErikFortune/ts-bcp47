@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 // istanbul ignore file
-export { ExtensionSubtagValue, LanguageTagParts } from './common';
+export { ExtensionSubtagValue, Subtags } from './common';
 
 export { LanguageTag, LanguageTagInitOptions } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';

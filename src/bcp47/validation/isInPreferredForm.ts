@@ -22,7 +22,7 @@
 
 import * as Iana from '../../iana';
 
-import { LanguageTagParts, languageTagPartsToString } from '../common';
+import { Subtags, subtagsToString } from '../common';
 import { Result, fail, succeed } from '@fgv/ts-utils';
 import { NormalizeTag } from '../normalization';
 import { TagValidator } from './baseValidator';
@@ -40,10 +40,10 @@ export class IsInPreferredFromValidator implements TagValidator {
         this.iana = iana ?? Iana.DefaultRegistries.languageRegistries;
     }
 
-    public checkParts(parts: LanguageTagParts): Result<true> {
+    public checkParts(parts: Subtags): Result<true> {
         return NormalizeTag.toPreferred(parts).onSuccess((preferred) => {
-            const want = languageTagPartsToString(preferred);
-            const have = languageTagPartsToString(parts);
+            const want = subtagsToString(preferred);
+            const have = subtagsToString(parts);
             if (want !== have) {
                 return fail(`${have}: does not match preferred form ${want}`);
             }
