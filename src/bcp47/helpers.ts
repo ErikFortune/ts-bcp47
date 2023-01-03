@@ -22,7 +22,6 @@
 
 import { LanguageTag, LanguageTagInitOptions } from './languageTag';
 import { LanguageMatcher } from './match';
-import { LanguageTagParser } from './languageTagParser';
 import { Result } from '@fgv/ts-utils';
 import { Subtags } from './common';
 
@@ -45,22 +44,6 @@ import { Subtags } from './common';
 // istanbul ignore next - tests applied for wrapped function
 export function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
     return LanguageTag.create(from, options);
-}
-
-/**
- * Parses a supplied string to produce a collection of individual {@link Bcp47.Subtags | subtags}.
- *
- * The string must be {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}
- * but no additional validation or normalization is applied.
- *
- * @param from - The 'string' to be parsed. Must be a well-formed language tag.
- * @returns The parsed individual {@link Bcp47.Subtags | subtags} which correspond
- * to the string.
- * @public
- */
-// istanbul ignore next - tests applied for wrapped function
-export function parse(from: string): Result<Subtags> {
-    return LanguageTagParser.parse(from);
 }
 
 /**

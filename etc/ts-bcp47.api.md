@@ -25,7 +25,6 @@ declare namespace Bcp47 {
         MatchQuality,
         matchQuality,
         tag,
-        parse,
         match
     }
 }
@@ -562,9 +561,6 @@ class NormalizeTag {
     static toCanonical(subtags: Subtags): Result<Subtags>;
     static toPreferred(subtags: Subtags): Result<Subtags>;
 }
-
-// @public
-function parse(from: string): Result<Subtags>;
 
 // @internal (undocumented)
 function rangeOfTags<TTAG extends string>(tagConverter: Converter<TTAG>): Converter<TTAG[]>;
