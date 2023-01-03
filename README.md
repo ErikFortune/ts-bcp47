@@ -59,20 +59,16 @@ The full set of subtags that make up a language tag are:
 #### Grandfathered Tags
 The RFC allows for a handful of grandfathered tags which do not meet the current specification.  Those tags are recognized in their entirety and are not composed of subtags, so for grandfathered tags only, even `primary language` is undefined.
 
-### Conformance and Validation
-The specification defines two levels of [conformance](https://www.rfc-editor.org/rfc/rfc5646#section-2.2.9) for language, and this library defines a third.
-
+### Validation
 Tag validation considers the tag in its current form and never changes the tag itself.
 
+The specification defines two levels of [conformance](https://www.rfc-editor.org/rfc/rfc5646#section-2.2.9) for language, and this library defines a third.
 #### Well-Formed Tags
 A `well-formed` tag meets the basic syntactic requirements of the specification, but might not be valid in terms of content.
-
 #### Valid Tags
 A `valid` tag meets both the syntactic and semantic requirements of the specification, meaning that either all subtags or full tag (in the case of grandfathered tags) are registered in the [IANA language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry), and neither extension nor variant tags are repeated.
-
 #### Strictly Valid Tags
 A `strictly valid` tags is valid according to the specification and also meets the rules for variant and extlang prefixes defined by the specification and recorded in the language registry.
-
 #### Examples
 Some examples:
 - `eng-US` is well-formed because it meets the language tag syntax but is not valid because `eng` is not a registered language subtag.
@@ -84,14 +80,14 @@ Some examples:
 ### Normalization
 Normalization transforms a tag to produce a new tag which is semantically identical, but preferred for some reason.
 #### Not-normalized
-A non-normalized must be [`well-formed`](#well-formed-tags) and might be [`valid`](#valid-tags) or [`strictly-valid`](#strictly-valid-tags) but it does not use the letter case conventions recommended in the spec.  For example, `zh-cmn-hans-cn` is  strictly-valid but not normalized.
+A non-normalized must be [`well-formed`](#well-formed-tags) and might be [`valid`](#valid-tags) or [`strictly-valid`](#strictly-valid-tags) but it does not use the letter case conventions recommended in the spec.
 
 #### Canonical Form
-A tag in canonical form meets all of the letter case conventions recommended by the specification, in addition to being at least [`well-formed`](#well-formed-tags).  For example, `zh-cmn-Hans-CN` is both strictly-valid and in canonical form.
+A tag in canonical form meets all of the letter case conventions recommended by the specification, in addition to being at least [`well-formed`](#well-formed-tags).
 
 #### Preferred Form
 In addition to being [`strictly-valid`](#strictly-valid-tags) and [canonical](#canonical-form), tags
-in preferred form do not have any deprecated, redundant or suppressed subtags.  For example, `zh-cmn-Hans-CN` 
+in preferred form do not have any deprecated, redundant or suppressed subtags.
 
 #### Examples
 - `zh-cmn-hans-cn` is strictly valid, but not canonical or preferred.
