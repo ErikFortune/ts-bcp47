@@ -29,16 +29,32 @@ Classes and functions to:
 ### TL; DR
 For those who already understand BCP-47 language tags and just want to get started, here are a few examples:
 ```ts
-import { Bcp} from '@fgv/ts-bcp47';
+import { Bcp47 } from '@fgv/ts-bcp47';
 
-# parse a tag to extract primary language and region
-const {primaryLanguage, region} = Bcp.tag('en-us').orThrow().subtags;
-# primaryLanguage is 'en', region is 'us'
+// parse a tag to extract primary language and region
+const {primaryLanguage, region} = Bcp47.tag('en-us').orThrow().subtags;
+// primaryLanguage is 'en', region is 'us'
 
-# parse a tag to extract primary language and region in canonical form
-const {primaryLanguage, region} = Bcp.tag('en-us', { normalization: 'canonical' }).orThrow().subtags;
-# primary language is 'en', region is 'US'
+// parse a tag to extract primary language and region in canonical form
+const {primaryLanguage, region} = Bcp47.tag('en-us', { normalization: 'canonical' }).orThrow().subtags;
+// primary language is 'en', region is 'US'
 
+// normalize a tag to fully-preferred form
+const preferred = Bcp47.tag('art-lojban', { normalization: 'preferred' }).orThrow().tag;
+// preferred is "jbo"
+
+// tags match regardless of case
+const match = Bcp47.match('es-MX', 'es-mx').orThrow(); // 1.0 (exact)
+
+// suppressed script matches explicit script
+const match = Bcp47.match('es-MX', 'es-latn-mx').orThrow(); // 1.0 (exact)
+
+// macro-region matches contained region well
+const match = Bcp47.match('es-419', 'es-MX').orThrow(); // 0.7 (macroRegion)
+const match = Bcp47.match('es-419', 'es-ES').orThrow(); // 0.3 (sibling)
+
+// region matches neutral fairly well
+const match = Bcp47.match('es', 'es-MX').orThrow(); // 0.6 (neutral)
 ```
 
 *Note:* This library uses the `Result` pattern, so the return value from any method that might fail is a `Result` object that must be tested for success or failure.  These examples use either [orThrow](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.orthrow.md) or [orDefault](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.ordefault.md) to convert an error result to either an exception or undefined.
@@ -90,9 +106,9 @@ In addition to being [`strictly-valid`](#strictly-valid-tags) and [canonical](#c
 in preferred form do not have any deprecated, redundant or suppressed subtags.
 
 #### Examples
-- `zh-cmn-hans-cn` is strictly valid, but not canonical or preferred.
-- `zh-cmn-Hans-CN` is strictly valid and canonical, but not preferred, because the subtag registry lists `zh-cmn-Hans` as redundant, with the preferred value `cmn-Hans`.
-- `cmn-Hans-CN` is strictly valid, canonical and preferred.
+- `zh-cmn-hans` is strictly valid, but not canonical or preferred.
+- `zh-cmn-Hans` is strictly valid and canonical, but not preferred, because the subtag registry lists `zh-cmn-Hans` as redundant, with the preferred value `cmn-Hans`.
+- `cmn-Hans` is strictly valid, canonical and preferred.
 - `en-latn-us` is strictly valid, but not canonical or preferred.
 - `en-Latn-US` is strictly valid and canonical, but not preferred, because the subtag registry lists `Latn` as the suppressed script for the `en` language.
 - `en-US` is strictly valid, canonical and preferred.
