@@ -27,7 +27,7 @@ import { LanguageSubtagRegistry } from '../../../../src/iana/language-subtags';
 describe('LanguageSubtagRegistry class', () => {
     describe('create static method', () => {
         test('creates from a supplied a tag registry', () => {
-            const registry = JarConverters.loadJsonSubtagRegistryFileSync('data/iana/language-subtag-registry.json').getValueOrThrow();
+            const registry = JarConverters.loadJsonSubtagRegistryFileSync('data/iana/language-subtag-registry.json').orThrow();
             expect(LanguageSubtagRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8240);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);

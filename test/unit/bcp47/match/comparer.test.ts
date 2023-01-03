@@ -158,8 +158,8 @@ describe('LanguageComparer class', () => {
                 options: { normalization: 'preferred' } as LanguageTagInitOptions,
             },
         ])('"$l1"/"$l2" yields $expected ($description)', (tc) => {
-            const lt1 = LanguageTag.create(tc.l1, tc.options).getValueOrThrow();
-            const lt2 = LanguageTag.create(tc.l2, tc.options).getValueOrThrow();
+            const lt1 = LanguageTag.create(tc.l1, tc.options).orThrow();
+            const lt2 = LanguageTag.create(tc.l2, tc.options).orThrow();
 
             expect(matcher.match(lt1, lt2)).toSucceedWith(tc.expected);
             expect(matcher.match(tc.l1, tc.l2, tc.options)).toSucceedWith(tc.expected);

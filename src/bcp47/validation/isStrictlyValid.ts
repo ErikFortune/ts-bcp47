@@ -52,7 +52,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
 
     protected _validateExtlangPrefix(subtags: Readonly<Subtags>): Result<Iana.LanguageSubtags.ExtLangSubtag[] | undefined> {
         if (subtags.extlangs) {
-            const prefix = this.iana.subtags.languages.toCanonical(subtags.primaryLanguage).getValueOrDefault();
+            const prefix = this.iana.subtags.languages.toCanonical(subtags.primaryLanguage).orDefault();
             if (!prefix) {
                 return fail('missing primary language for extlang prefix validation.');
             }
@@ -100,7 +100,7 @@ export class IsStrictlyValidValidator extends IsValidValidator {
                 if (def.prefix?.includes(prefix as Iana.LanguageSubtags.ExtendedLanguageRange) === false) {
                     return fail(`invalid prefix "${prefix}" for variant subtag ${variant} (expected "(${def.prefix.join(', ')})").`);
                 }
-                const canonicalVariant = this.iana.subtags.variants.toCanonical(variant).getValueOrDefault();
+                const canonicalVariant = this.iana.subtags.variants.toCanonical(variant).orDefault();
                 prefix = `${prefix}-${canonicalVariant}`;
                 return succeed(variant);
             })

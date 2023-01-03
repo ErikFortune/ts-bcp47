@@ -29,7 +29,7 @@ describe('TagExtensionRegistry class', () => {
         test('creates from a supplied a extension registry', () => {
             const registry = JarConverters.loadJsonLanguageTagExtensionsRegistryFileSync(
                 'data/iana/language-tag-extension-registry.json'
-            ).getValueOrThrow();
+            ).orThrow();
             expect(LanguageTagExtensionRegistry.create(registry)).toSucceedAndSatisfy((tags) => {
                 expect(tags.extensions.getAllKeys()).toHaveLength(2);
             });

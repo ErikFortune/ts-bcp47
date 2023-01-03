@@ -50,7 +50,7 @@ export class LanguageTagExtensionRegistry {
         this.fileDate = registry.fileDate;
         this._all = registry.entries;
         for (const entry of this._all) {
-            this.extensions.add(entry).getValueOrThrow();
+            this.extensions.add(entry).orThrow();
         }
     }
 
@@ -62,21 +62,21 @@ export class LanguageTagExtensionRegistry {
 
     public static load(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadLanguageTagExtensionsJsonFileSync(path).getValueOrThrow();
+            const registry = Converters.loadLanguageTagExtensionsJsonFileSync(path).orThrow();
             return new LanguageTagExtensionRegistry(registry);
         });
     }
 
     public static loadJsonRegistryFile(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
-            const registry = JarConverters.loadJsonLanguageTagExtensionsRegistryFileSync(path).getValueOrThrow();
+            const registry = JarConverters.loadJsonLanguageTagExtensionsRegistryFileSync(path).orThrow();
             return new LanguageTagExtensionRegistry(registry);
         });
     }
 
     public static loadTxtRegistryFile(path: string): Result<LanguageTagExtensionRegistry> {
         return captureResult(() => {
-            const registry = JarConverters.loadTxtLanguageTagExtensionsRegistryFileSync(path).getValueOrThrow();
+            const registry = JarConverters.loadTxtLanguageTagExtensionsRegistryFileSync(path).orThrow();
             return new LanguageTagExtensionRegistry(registry);
         });
     }
