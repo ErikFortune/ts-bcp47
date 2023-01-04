@@ -105,21 +105,21 @@ export class LanguageSubtagRegistry {
 
     public static load(root: string): Result<LanguageSubtagRegistry> {
         return captureResult(() => {
-            const registry = Converters.loadLanguageSubtagsJsonFileSync(path.join(root)).getValueOrThrow();
+            const registry = Converters.loadLanguageSubtagsJsonFileSync(path.join(root)).orThrow();
             return new LanguageSubtagRegistry(registry);
         });
     }
 
     public static loadJsonRegistryFile(root: string): Result<LanguageSubtagRegistry> {
         return captureResult(() => {
-            const registry = JarConverters.loadJsonSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
+            const registry = JarConverters.loadJsonSubtagRegistryFileSync(path.join(root)).orThrow();
             return new LanguageSubtagRegistry(registry);
         });
     }
 
     public static loadTxtRegistryFile(root: string): Result<LanguageSubtagRegistry> {
         return captureResult(() => {
-            const registry = JarConverters.loadTxtSubtagRegistryFileSync(path.join(root)).getValueOrThrow();
+            const registry = JarConverters.loadTxtSubtagRegistryFileSync(path.join(root)).orThrow();
             return new LanguageSubtagRegistry(registry);
         });
     }

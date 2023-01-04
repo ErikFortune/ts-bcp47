@@ -39,8 +39,8 @@ export class LanguageRegistries {
 
     public static load(root: string): Result<LanguageRegistries> {
         return captureResult(() => {
-            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).getValueOrThrow();
-            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).getValueOrThrow();
+            const subtags = LanguageSubtagRegistry.load(path.join(root, 'language-subtags.json')).orThrow();
+            const extensions = LanguageTagExtensionRegistry.load(path.join(root, 'language-tag-extensions.json')).orThrow();
             return new LanguageRegistries(subtags, extensions);
         });
     }

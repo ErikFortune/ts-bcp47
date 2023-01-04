@@ -62,7 +62,7 @@ export class PreferredNormalizer extends TagNormalizerBase {
                 return fail(`invalid primary language subtag "${subtags.primaryLanguage}.`);
             }
 
-            const script = this._iana.subtags.scripts.toValidCanonical(subtags.script).getValueOrDefault();
+            const script = this._iana.subtags.scripts.toValidCanonical(subtags.script).orDefault();
             if (!script) {
                 return fail(`invalid script subtag "${subtags.script}`);
             }

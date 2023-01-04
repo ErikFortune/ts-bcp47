@@ -47,7 +47,7 @@ describe('datedRegistry', () => {
         const converter = CommonConverters.datedRegistry(Converters.string);
         test('succeeds for a well-formed datedRegistry', () => {
             const t: DatedRegistry<string> = {
-                fileDate: CommonConverters.yearMonthDaySpec.convert('2022-01-01').getValueOrThrow(),
+                fileDate: CommonConverters.yearMonthDaySpec.convert('2022-01-01').orThrow(),
                 entries: ['string', 'string', 'string'],
             };
             expect(converter.convert(t)).toSucceedWith(t);
@@ -63,7 +63,7 @@ describe('datedRegistry', () => {
 
         test('fails for an invalid entry', () => {
             const t: DatedRegistry<unknown> = {
-                fileDate: CommonConverters.yearMonthDaySpec.convert('2022-01-01').getValueOrThrow(),
+                fileDate: CommonConverters.yearMonthDaySpec.convert('2022-01-01').orThrow(),
                 entries: ['string', {}, 'string'],
             };
             expect(converter.convert(t)).toFailWith(/not a string/i);

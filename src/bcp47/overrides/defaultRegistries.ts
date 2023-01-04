@@ -33,7 +33,7 @@ export class DefaultRegistries {
 
     public static get overridesRegistry(): OverridesRegistry {
         if (!this._overridesRegistry) {
-            this._overridesRegistry = OverridesRegistry.loadJson('data/bcp/overrides.json').getValueOrThrow();
+            this._overridesRegistry = OverridesRegistry.loadJson('data/bcp/overrides.json').orThrow();
         }
         return this._overridesRegistry;
     }
