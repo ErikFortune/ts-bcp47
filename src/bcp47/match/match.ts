@@ -24,12 +24,11 @@ import * as Iana from '../../iana';
 import * as Unsd from '../../unsd';
 
 import { DefaultRegistries, OverridesRegistry } from '../overrides';
-import { GlobalRegion, Subtags } from '../common';
 import { IsoAlpha2RegionCode, UnM49RegionCode } from '../../iana/model';
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
-import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
-import { Result, succeed } from '@fgv/ts-utils';
 
+import { GlobalRegion } from '../common';
+import { LanguageTag } from '../languageTag';
 import { similarity } from './common';
 
 /**
@@ -65,17 +64,6 @@ export class LanguageMatcher {
         quality = quality > similarity.none ? Math.min(this.matchPrivateUseTags(t1, t2), quality) : quality;
 
         return quality;
-    }
-
-    public match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number> {
-        const tag1 = t1 instanceof LanguageTag ? succeed(t1) : LanguageTag.create(t1, options);
-        const tag2 = t2 instanceof LanguageTag ? succeed(t2) : LanguageTag.create(t2, options);
-
-        return tag1.onSuccess((lt1) => {
-            return tag2.onSuccess((lt2) => {
-                return succeed(this.matchLanguageTags(lt1, lt2));
-            });
-        });
     }
 
     public matchPrimaryLanguage(lt1: LanguageTag, lt2: LanguageTag): number {
@@ -185,6 +173,9 @@ export class LanguageMatcher {
             // istanbul ignore next
             const a2 = o2.affinity?.get(r2) ?? o2.defaultAffinity;
             if (a1 && a2 && a1 === a2) {
+                if (r1 === a1.toUpperCase() || r2 === a2.toUpperCase()) {
+                    return similarity.preferredAffinity;
+                }
                 return similarity.affinity;
             }
         }

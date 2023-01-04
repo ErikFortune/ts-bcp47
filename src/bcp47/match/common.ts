@@ -30,6 +30,7 @@ export const similarity = {
     region: 0.8,
     macroRegion: 0.7,
     neutralRegion: 0.6,
+    preferredAffinity: 0.55,
     affinity: 0.5,
     preferredRegion: 0.4,
     sibling: 0.3,

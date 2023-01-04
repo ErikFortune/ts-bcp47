@@ -20,21 +20,29 @@
  * SOFTWARE.
  */
 
+import { LanguageFilter, LanguageFilterOptions } from './match/filter';
 import { LanguageTag, LanguageTagInitOptions } from './languageTag';
+import { Result, mapResults, succeed } from '@fgv/ts-utils';
 import { LanguageMatcher } from './match';
-import { Result } from '@fgv/ts-utils';
 import { Subtags } from './common';
 
 /**
- * Creates a new {@link Bcp47.LanguageTag | language tag} from either a specified `string` description
- * or from (typically parsed) individual {@link Bcp47.Subtags | subtags}.
+ * Any of the possible ways to represent a language - as a `string`,
+ * parsed {@link Bcp47.Subtags | subtags} or an instantiated
+ * {@link Bcp47.LanguageTag | language tag}.
+ * @public
+ */
+export type LanguageSpec = string | Subtags | LanguageTag;
+
+/**
+ * Creates a new {@link Bcp47.LanguageTag | language tag} from a {@link Bcp47.LanguageSpec | language specifier}
  *
  * The supplied initializer must be at least
  * {@link https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9 | well-formed according to RFC 5646}.
  * Higher degrees of validation along with any normalizations may be optionally specified.
  *
- * @param from - The `string` or {@link Bcp47.Subtags | subtags} from which
- * the processed tag is to be constructed.
+ * @param from - The {@link Bcp47.LanguageSpec | language specifier} from which the tag is to
+ * be created.
  * @param options - (optional) The {@link Bcp47.LanguageTagInitOptions | options} used to construct
  * and validate the tag.
  * @returns `Success` with a valid {@link Bcp47.LanguageTag | language tag} or `Failure` with details
@@ -42,8 +50,22 @@ import { Subtags } from './common';
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function
-export function tag(from: string | Subtags, options?: LanguageTagInitOptions): Result<LanguageTag> {
-    return LanguageTag.create(from, options);
+export function tag(from: LanguageSpec, options?: LanguageTagInitOptions): Result<LanguageTag> {
+    return from instanceof LanguageTag ? succeed(from) : LanguageTag.create(from, options);
+}
+
+/**
+ * Creates an array of {@link Bcp47.LanguageTag | language tags} from an incoming array of
+ * {@link Bcp47.LanguageSpec | language specifiers}.
+ * @param from - The array of {@link Bcp47.LanguageSpec} to be converted.
+ * @param options - (optional) The {@link Bcp47.LanguageTagInitOptions | options} used to construct
+ * and validate any created tags.
+ * @returns `Success` with an array of {@link Bcp47.LanguageTag | language tags}, or `Failure`
+ * with details if an error occurs.
+ * @public
+ */
+export function tags(from: LanguageSpec[], options?: LanguageTagInitOptions): Result<LanguageTag[]> {
+    return mapResults(from.map((f) => tag(f, options)));
 }
 
 /**
@@ -58,14 +80,34 @@ export function tag(from: string | Subtags, options?: LanguageTagInitOptions): R
  * @param options - (optional) A set of {@link Bcp47.LanguageTagInitOptions | language tag options}
  * which control any necessary conversion or parsing.
  * @returns A numeric value in the range 1.0 (exact match) to 0.0 (no match).
- * @see For a set of common levels of similarity, see {@link Bcp47.matchQuality | matchQuality}.
+ * @see For a set of common levels of similarity, see {@link Bcp47.similarity | similarity}.
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function
-export function match(
-    t1: Subtags | LanguageTag | string,
-    t2: Subtags | LanguageTag | string,
-    options?: LanguageTagInitOptions
-): Result<number> {
-    return new LanguageMatcher().match(t1, t2, options);
+export function match(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number> {
+    return tags([t1, t2], options).onSuccess((tags) => {
+        return succeed(new LanguageMatcher().matchLanguageTags(tags[0], tags[1]));
+    });
+}
+
+/**
+ * Matches a list of desired {@link Bcp47.LanguageSpec | languages} to a list of available {@link Bcp47.LanguageSpec | languages},
+ * return a list of matching languages ordered from best to worst.
+ * @param desired - An array of {@link Bcp47.LanguageSpec | language specifications} containing an ordered list of preferred languages.
+ * @param available - An array of {@link Bcp47.LanguageSpec | language specifications} containing an unordered list of available languages.
+ * @param options - (optional) Parameters to control language tag conversion or comparison
+ * @returns `Success` with an ordered list of matching {@link Bcp47.LanguageTag | languages}, or `Failure` with details if
+ * an error occurs.
+ * @public
+ */
+export function filter(
+    desired: LanguageSpec[],
+    available: LanguageSpec[],
+    options?: LanguageTagInitOptions & LanguageFilterOptions
+): Result<LanguageTag[]> {
+    return tags(desired, options).onSuccess((w) => {
+        return tags(available, options).onSuccess((h) => {
+            return succeed(new LanguageFilter().filterLanguageTags(w, h, options));
+        });
+    });
 }
