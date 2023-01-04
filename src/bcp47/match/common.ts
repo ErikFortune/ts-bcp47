@@ -24,7 +24,7 @@
  * Common levels of match quality for a single language match.
  * @public
  */
-export const similarity = {
+export const tagSimilarity = {
     exact: 1.0,
     variant: 0.9,
     region: 0.8,
@@ -43,4 +43,4 @@ export const similarity = {
  * Range is 0 (no match) to 1 (exact match).
  * @public
  */
-export type Similarity = keyof typeof similarity;
+export type TagSimilarity = keyof typeof tagSimilarity;

@@ -22,5 +22,5 @@
 // istanbul ignore file
 
 export * from './common';
-export { LanguageMatcher } from './match';
-export { FilteredLanguage, LanguageFilter, LanguageFilterOptions } from './filter';
+export { LanguageSimilarityMatcher } from './similarity';
+export { MatchingLanguage, LanguageChooser as LanguageFilter, LanguageChooserOptions as LanguageFilterOptions } from './chooser';

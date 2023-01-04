@@ -4,12 +4,12 @@
 
 ## Bcp47.LanguageFilterOptions interface
 
-Options for [language tag list filter](./ts-bcp47.bcp47.filter.md) functions.
+Options for  functions.
 
 <b>Signature:</b>
 
 ```typescript
-export interface LanguageFilterOptions 
+export interface LanguageChooserOptions 
 ```
 
 ## Properties

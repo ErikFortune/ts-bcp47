@@ -50,38 +50,38 @@ describe('README examples recast to jest tests', () => {
 
         test('tags match regardless of case', () => {
             expect(() => {
-                expect(Bcp47.match('es-MX', 'es-mx')).toSucceedWith(1.0);
+                expect(Bcp47.similarity('es-MX', 'es-mx')).toSucceedWith(1.0);
             }).not.toThrow();
         });
 
         test('suppressed script matches explicit script', () => {
             expect(() => {
-                expect(Bcp47.match('es-MX', 'es-latn-mx')).toSucceedWith(1.0);
+                expect(Bcp47.similarity('es-MX', 'es-latn-mx')).toSucceedWith(1.0);
             }).not.toThrow();
         });
 
         test('macro-region matches contained region well', () => {
             expect(() => {
-                expect(Bcp47.match('es-419', 'es-MX')).toSucceedWith(0.7);
-                expect(Bcp47.match('es-419', 'es-ES')).toSucceedWith(0.3);
+                expect(Bcp47.similarity('es-419', 'es-MX')).toSucceedWith(0.7);
+                expect(Bcp47.similarity('es-419', 'es-ES')).toSucceedWith(0.3);
             }).not.toThrow();
         });
 
         test('region matches neutral fairly well', () => {
             expect(() => {
-                expect(Bcp47.match('es', 'es-MX')).toSucceedWith(0.6);
+                expect(Bcp47.similarity('es', 'es-MX')).toSucceedWith(0.6);
             }).not.toThrow();
         });
 
         test('unlike tags do not match', () => {
             expect(() => {
-                expect(Bcp47.match('en', 'es')).toSucceedWith(0.0);
+                expect(Bcp47.similarity('en', 'es')).toSucceedWith(0.0);
             }).not.toThrow();
         });
 
         test('different scripts do not match', () => {
             expect(() => {
-                expect(Bcp47.match('zh-Hans', 'zh-Hant')).toSucceedWith(0.0);
+                expect(Bcp47.similarity('zh-Hans', 'zh-Hant')).toSucceedWith(0.0);
             }).not.toThrow();
         });
     });

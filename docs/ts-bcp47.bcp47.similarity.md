@@ -2,24 +2,27 @@
 
 [Home](./index.md) &gt; [@fgv/ts-bcp47](./ts-bcp47.md) &gt; [Bcp47](./ts-bcp47.bcp47.md) &gt; [similarity](./ts-bcp47.bcp47.similarity.md)
 
-## Bcp47.similarity variable
+## Bcp47.similarity() function
 
-Common levels of match quality for a single language match.
+Determine how similar two language tags are to each other.
 
 <b>Signature:</b>
 
 ```typescript
-similarity: {
-    exact: number;
-    variant: number;
-    region: number;
-    macroRegion: number;
-    neutralRegion: number;
-    preferredAffinity: number;
-    affinity: number;
-    preferredRegion: number;
-    sibling: number;
-    undetermined: number;
-    none: number;
-}
+export declare function similarity(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number>;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  t1 | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | First tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
+|  t2 | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | Second tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) A set of [language tag options](./ts-bcp47.bcp47.languagetaginitoptions.md) which control any necessary conversion or parsing. |
+
+<b>Returns:</b>
+
+Result&lt;number&gt;
+
+A numeric value in the range 1.0 (exact match) to 0.0 (no match).
+
