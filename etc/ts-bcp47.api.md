@@ -22,8 +22,8 @@ declare namespace Bcp47 {
         TagNormalization,
         TagValidity,
         ValidateTag,
-        MatchQuality,
-        matchQuality,
+        Similarity as MatchQuality,
+        similarity as matchQuality,
         tag,
         match
     }
@@ -514,23 +514,6 @@ function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.Lan
 // @public
 function match(t1: Subtags | LanguageTag | string, t2: Subtags | LanguageTag | string, options?: LanguageTagInitOptions): Result<number>;
 
-// @public
-type MatchQuality = keyof typeof matchQuality;
-
-// @public
-const matchQuality: {
-    exact: number;
-    variant: number;
-    region: number;
-    macroRegion: number;
-    neutralRegion: number;
-    affinity: number;
-    preferredRegion: number;
-    sibling: number;
-    undetermined: number;
-    none: number;
-};
-
 declare namespace Model_3 {
     export {
         ExtensionSingleton,
@@ -855,6 +838,23 @@ const scriptSubtag: Converter<ScriptSubtag, unknown>;
 
 // @public (undocumented)
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
+
+// @public
+type Similarity = keyof typeof similarity;
+
+// @public
+const similarity: {
+    exact: number;
+    variant: number;
+    region: number;
+    macroRegion: number;
+    neutralRegion: number;
+    affinity: number;
+    preferredRegion: number;
+    sibling: number;
+    undetermined: number;
+    none: number;
+};
 
 // @public (undocumented)
 interface Subtags {

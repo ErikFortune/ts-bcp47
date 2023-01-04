@@ -55,6 +55,12 @@ const match = Bcp47.match('es-419', 'es-ES').orThrow(); // 0.3 (sibling)
 
 // region matches neutral fairly well
 const match = Bcp47.match('es', 'es-MX').orThrow(); // 0.6 (neutral)
+
+// unlike tags do not match
+const match = Bcp47.match('en', 'es').orThrow(); // 0.0 (none)
+
+// different scripts do not match
+const match = Bcp47.match('zh-Hans', 'zh-Hant').orThrow(); // 0.0 (none)
 ```
 
 *Note:* This library uses the `Result` pattern, so the return value from any method that might fail is a `Result` object that must be tested for success or failure.  These examples use either [orThrow](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.orthrow.md) or [orDefault](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.ordefault.md) to convert an error result to either an exception or undefined.
@@ -112,9 +118,11 @@ in preferred form do not have any deprecated, redundant or suppressed subtags.
 - `en-latn-us` is strictly valid, but not canonical or preferred.
 - `en-Latn-US` is strictly valid and canonical, but not preferred, because the subtag registry lists `Latn` as the suppressed script for the `en` language.
 - `en-US` is strictly valid, canonical and preferred.
-### LanguageTag class
 
-### Subtags object
+### Tag Matching
+The [`match`](docs/ts-bcp47.bcp47.match.md) function matches language tags, using semantic similarity, unlike [RFC 4647](https://www.rfc-editor.org/rfc/rfc4647.html), which relies on purely syntactic rules.  This semantic match yields much better results in many cases.
+
+
 
 ## See Also
 [RFC 5646 - Tags for Identifying Languages](https://www.rfc-editor.org/rfc/rfc5646)

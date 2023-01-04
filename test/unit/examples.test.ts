@@ -72,6 +72,18 @@ describe('README examples recast to jest tests', () => {
                 expect(Bcp47.match('es', 'es-MX')).toSucceedWith(0.6);
             }).not.toThrow();
         });
+
+        test('unlike tags do not match', () => {
+            expect(() => {
+                expect(Bcp47.match('en', 'es')).toSucceedWith(0.0);
+            }).not.toThrow();
+        });
+
+        test('different scripts do not match', () => {
+            expect(() => {
+                expect(Bcp47.match('zh-Hans', 'zh-Hant')).toSucceedWith(0.0);
+            }).not.toThrow();
+        });
     });
 
     describe('validation examples', () => {

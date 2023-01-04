@@ -26,6 +26,6 @@ export { LanguageTag, LanguageTagInitOptions } from './languageTag';
 export { NormalizeTag, TagNormalization } from './normalization';
 export { TagValidity, ValidateTag } from './validation';
 
-export { MatchQuality, matchQuality } from './match';
+export { Similarity as MatchQuality, similarity as matchQuality } from './match';
 
 export * from './helpers';

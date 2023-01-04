@@ -30,7 +30,7 @@ import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { LanguageTag, LanguageTagInitOptions } from '../languageTag';
 import { Result, succeed } from '@fgv/ts-utils';
 
-import { matchQuality } from './common';
+import { similarity } from './common';
 
 /**
  * Helper to compare two language tags to determine how closely related they are,
@@ -53,16 +53,16 @@ export class LanguageMatcher {
         // no primary tag is either all private or grandfathered, which must match
         // exactly.
         if (!t1.subtags.primaryLanguage || !t2.subtags.primaryLanguage) {
-            return t1.toString().toLowerCase() === t2.toString().toLowerCase() ? matchQuality.exact : matchQuality.none;
+            return t1.toString().toLowerCase() === t2.toString().toLowerCase() ? similarity.exact : similarity.none;
         }
 
         let quality = this.matchPrimaryLanguage(t1, t2);
-        quality = quality > matchQuality.none ? Math.min(this.matchExtlang(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.matchScript(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.matchRegion(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.matchVariants(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.matchExtensions(t1, t2), quality) : quality;
-        quality = quality > matchQuality.none ? Math.min(this.matchPrivateUseTags(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchExtlang(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchScript(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchRegion(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchVariants(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchExtensions(t1, t2), quality) : quality;
+        quality = quality > similarity.none ? Math.min(this.matchPrivateUseTags(t1, t2), quality) : quality;
 
         return quality;
     }
@@ -85,30 +85,30 @@ export class LanguageMatcher {
         const l2 = lt2.subtags.primaryLanguage?.toLowerCase();
 
         if (l1 == l2) {
-            return matchQuality.exact;
+            return similarity.exact;
         }
 
         if (lt1.isUndetermined || lt2.isUndetermined) {
-            return matchQuality.undetermined;
+            return similarity.undetermined;
         }
 
-        return matchQuality.none;
+        return similarity.none;
     }
 
     public matchExtlang(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.subtags.extlangs?.length !== lt2.subtags.extlangs?.length) {
-            return matchQuality.none;
+            return similarity.none;
         }
 
         if (lt1.subtags.extlangs) {
             for (let i = 0; i < lt1.subtags.extlangs.length; i++) {
                 if (lt1.subtags.extlangs[i].toLowerCase() !== lt2.subtags.extlangs![i].toLowerCase()) {
-                    return matchQuality.none;
+                    return similarity.none;
                 }
             }
         }
 
-        return matchQuality.exact;
+        return similarity.exact;
     }
 
     public matchScript(lt1: LanguageTag, lt2: LanguageTag): number {
@@ -116,14 +116,14 @@ export class LanguageMatcher {
         const s2 = lt2.effectiveScript?.toLowerCase();
 
         if (s1 === s2) {
-            return matchQuality.exact;
+            return similarity.exact;
         }
 
         if (lt1.isUndetermined || lt2.isUndetermined) {
-            return matchQuality.undetermined;
+            return similarity.undetermined;
         }
 
-        return matchQuality.none;
+        return similarity.none;
     }
 
     public matchRegion(lt1: LanguageTag, lt2: LanguageTag): number {
@@ -131,18 +131,18 @@ export class LanguageMatcher {
         const r2 = lt2.subtags.region?.toUpperCase() as RegionSubtag;
 
         if (r1 === r2) {
-            return matchQuality.exact;
+            return similarity.exact;
         }
 
         // region 001 is equivalent to neutral (no region)
         if (r1 === GlobalRegion || r2 === GlobalRegion) {
             // if one tag is 001 and the other in neutral, exact match
             // otherwise, one tag is 001 so neutral region match
-            return !r1 || !r2 ? matchQuality.exact : matchQuality.neutralRegion;
+            return !r1 || !r2 ? similarity.exact : similarity.neutralRegion;
         }
 
         if (!r1 || !r2) {
-            return matchQuality.neutralRegion;
+            return similarity.neutralRegion;
         }
 
         // macro-region match
@@ -162,13 +162,13 @@ export class LanguageMatcher {
             }
             if (container && contained) {
                 if (this.unsd.getIsContained(container, contained)) {
-                    return matchQuality.macroRegion;
+                    return similarity.macroRegion;
                 }
 
                 // if they're both regions, also check to see if the second region contains the
                 // first
                 if (contained.tier !== 'area' && this.unsd.getIsContained(contained, container)) {
-                    return matchQuality.macroRegion;
+                    return similarity.macroRegion;
                 }
             }
         }
@@ -185,37 +185,37 @@ export class LanguageMatcher {
             // istanbul ignore next
             const a2 = o2.affinity?.get(r2) ?? o2.defaultAffinity;
             if (a1 && a2 && a1 === a2) {
-                return matchQuality.affinity;
+                return similarity.affinity;
             }
         }
 
         // preferred region
         if (o1?.preferredRegion === r1 || o2?.preferredRegion === r2) {
-            return matchQuality.preferredRegion;
+            return similarity.preferredRegion;
         }
 
-        return matchQuality.sibling;
+        return similarity.sibling;
     }
 
     public matchVariants(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.subtags.variants?.length !== lt2.subtags.variants?.length) {
-            return matchQuality.region;
+            return similarity.region;
         }
 
         if (lt1.subtags.variants) {
             for (let i = 0; i < lt1.subtags.variants.length; i++) {
                 if (lt1.subtags.variants[i].toLowerCase() !== lt2.subtags.variants![i].toLowerCase()) {
-                    return matchQuality.region;
+                    return similarity.region;
                 }
             }
         }
 
-        return matchQuality.exact;
+        return similarity.exact;
     }
 
     public matchExtensions(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.subtags.extensions?.length !== lt2.subtags.extensions?.length) {
-            return matchQuality.variant;
+            return similarity.variant;
         }
 
         if (lt1.subtags.extensions) {
@@ -224,27 +224,27 @@ export class LanguageMatcher {
                     lt1.subtags.extensions[i].singleton.toLowerCase() !== lt2.subtags.extensions![i].singleton.toLowerCase() ||
                     lt1.subtags.extensions[i].value.toLowerCase() !== lt2.subtags.extensions![i].value.toLowerCase()
                 ) {
-                    return matchQuality.variant;
+                    return similarity.variant;
                 }
             }
         }
 
-        return matchQuality.exact;
+        return similarity.exact;
     }
 
     public matchPrivateUseTags(lt1: LanguageTag, lt2: LanguageTag): number {
         if (lt1.subtags.privateUse?.length !== lt2.subtags.privateUse?.length) {
-            return matchQuality.variant;
+            return similarity.variant;
         }
 
         if (lt1.subtags.privateUse) {
             for (let i = 0; i < lt1.subtags.privateUse.length; i++) {
                 if (lt1.subtags.privateUse[i].toLowerCase() !== lt2.subtags.privateUse![i].toLowerCase()) {
-                    return matchQuality.variant;
+                    return similarity.variant;
                 }
             }
         }
 
-        return matchQuality.exact;
+        return similarity.exact;
     }
 }

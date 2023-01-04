@@ -9,7 +9,7 @@ Common levels of match quality for a single language match.
 <b>Signature:</b>
 
 ```typescript
-matchQuality: {
+similarity: {
     exact: number;
     variant: number;
     region: number;
