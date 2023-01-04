@@ -122,7 +122,19 @@ in preferred form do not have any deprecated, redundant or suppressed subtags.
 ### Tag Matching
 The [`match`](docs/ts-bcp47.bcp47.match.md) function matches language tags, using semantic similarity, unlike [RFC 4647](https://www.rfc-editor.org/rfc/rfc4647.html), which relies on purely syntactic rules.  This semantic match yields much better results in many cases.
 
+For any given language tag pair, the `match` function returns a similarity score in the range `0.0` (no similarity) to `1.0` (exact match).
 
+The degrees of match similarity are (from most to least similar):
+- `exact` (`1.0`) - The two language tags are semantically identical.
+- `variant` (`0.9`) - The tags vary only in extension or private subtags.
+- `region` (`0.8`) - The tags match on language, script and region but vary in variant, extension or private-use subtags.
+- `macroRegion` (`0.7`) - The tags match on language and script, and one of the region subtags is a macro-region (e.g. `419` for Latin America) which encompasses the second region tag.
+- `neutralRegion` (`0.6`) - The tags match on language and script, and only one of the tags contains a region subtag.
+- `affinity` (`0.5`) - The tags match on language and script, and two region subtags have an orthographic affinity.  Orthographic affinity is defined in this package in the [`overrides.json`](./data/bcp/overrides.json) file.
+- `preferredRegion` (`0.4`) - The tags match on language and script, and one of the tags is the preferred region subtag for the language.  Preferred region is also defined in this package in [`overrides.json`](./data/bcp/overrides.json).
+- `sibling` (`0.3`) - The tags match on language and script but both have region tags that are otherwise unrelated.
+- `undetermined` (`0.2`) - One of the languages is the special language `und`.
+- `none` (`0.0`) - The tags do not match at all.
 
 ## See Also
 [RFC 5646 - Tags for Identifying Languages](https://www.rfc-editor.org/rfc/rfc5646)
