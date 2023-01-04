@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 
 export * from './common';
 export { LanguageMatcher } from './match';
+export { FilteredLanguage, LanguageFilter, LanguageFilterOptions } from './filter';

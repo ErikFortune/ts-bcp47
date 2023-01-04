@@ -27,24 +27,57 @@ import { LanguageTag } from '../languageTag';
 import { Subtags } from '../common';
 
 /**
+ * Represents a single matching filtered language.
  * @public
  */
 export interface FilteredLanguage {
+    /**
+     * Numeric indication of how well the language matches,
+     * from perfect (`1.0`) to not at all (`0.0`).  When
+     * matching an ordered list, languages at the front of
+     * the desired language list are always higher quality.
+     */
     quality: number;
+    /**
+     * The `string` tag of the matched language.
+     */
     tag: string;
+    /**
+     * The matched {@link Bcp47.LanguageTag | language tag}.
+     */
     languageTag: LanguageTag;
 }
 
 /**
+ * Options for {@link Bcp47.filter | language tag list filter} functions.
  * @public
  */
 export interface LanguageFilterOptions {
+    /**
+     * Indicates whether to return the matching language from the
+     * desired list or the available list. Default is `'availableLanguage'`.
+     */
     use?: 'desiredLanguage' | 'availableLanguage';
+
+    /**
+     * Indicates how to filter the language list - `'primaryLanguage'`
+     * indicates the each primary language should appear only once in
+     * the list in its most similar form.  A filter value of `'none'`
+     * reports all matching variants of any primary language in order
+     * of similarity.  Default is `'primaryLanguage'`
+     */
     filter?: 'primaryLanguage' | 'none';
+
+    /**
+     * An optional {@link Bcp47.LanguageSpec | language specification}
+     * indicating a language to be returned if the filter call would
+     * otherwise return an empty list (i.e. no languages match).
+     */
     ultimateFallback?: string | Subtags | LanguageTag;
 }
 
 /**
+ * Default values for a{@link Bcp47.LanguageFilterOptions}.
  * @public
  */
 export const defaultLanguageFilterOptions: LanguageFilterOptions = Object.freeze({
@@ -53,9 +86,14 @@ export const defaultLanguageFilterOptions: LanguageFilterOptions = Object.freeze
 });
 
 /**
+ * Helper to compare a list of 'desired' languages to a list of 'available' language
+ * and return the intersection in order of preference, taking tag semantics into account.
  * @public
  */
 export class LanguageFilter {
+    /**
+     * @internal
+     */
     protected readonly _matcher: LanguageMatcher;
 
     public constructor(iana?: Iana.LanguageRegistries) {
