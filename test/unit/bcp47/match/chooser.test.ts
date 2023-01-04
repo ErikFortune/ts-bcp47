@@ -24,15 +24,15 @@ import '@fgv/ts-utils-jest';
 import { LanguageSpec, LanguageTagInitOptions } from '../../../../src/bcp47';
 
 import { Bcp47 } from '../../../../src';
-import { LanguageFilterOptions } from '../../../../src/bcp47/match/filter';
+import { LanguageChooserOptions } from '../../../../src/bcp47/match/chooser';
 
-describe('filter helper method', () => {
+describe('choose helper method', () => {
     interface FilterTest {
         description: string;
         desired: LanguageSpec[];
         available: LanguageSpec[];
         expected: LanguageSpec[];
-        options?: LanguageTagInitOptions & LanguageFilterOptions;
+        options?: LanguageTagInitOptions & LanguageChooserOptions;
     }
 
     const tests: FilterTest[] = [
@@ -122,7 +122,7 @@ describe('filter helper method', () => {
     ];
 
     test.each(tests)('filter($desired, $available) yields $expected ($description)', (tc) => {
-        expect(Bcp47.filter(tc.desired, tc.available, tc.options)).toSucceedAndSatisfy((filtered) => {
+        expect(Bcp47.choose(tc.desired, tc.available, tc.options)).toSucceedAndSatisfy((filtered) => {
             expect(filtered.map((f) => f.tag)).toEqual(tc.expected);
         });
     });

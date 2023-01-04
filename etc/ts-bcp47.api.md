@@ -22,17 +22,20 @@ declare namespace Bcp47 {
         TagNormalization,
         TagValidity,
         ValidateTag,
-        LanguageFilterOptions,
-        Similarity,
-        similarity,
+        LanguageChooserOptions as LanguageFilterOptions,
+        TagSimilarity,
+        tagSimilarity,
         tag,
         tags,
-        match,
-        filter,
+        similarity,
+        choose,
         LanguageSpec
     }
 }
 export { Bcp47 }
+
+// @public
+function choose(desired: LanguageSpec[], available: LanguageSpec[], options?: LanguageTagInitOptions & LanguageChooserOptions): Result<LanguageTag[]>;
 
 declare namespace Converters {
     export {
@@ -185,9 +188,6 @@ interface FileDateEntry extends RecordJar.JarRecord {
 // @public
 const fileDateEntry: Converters_2.ObjectConverter<FileDateEntry, unknown>;
 
-// @public
-function filter(desired: LanguageSpec[], available: LanguageSpec[], options?: LanguageTagInitOptions & LanguageFilterOptions): Result<LanguageTag[]>;
-
 // @public (undocumented)
 interface GlobalRegion {
     // (undocumented)
@@ -297,7 +297,7 @@ declare namespace Jar_2 {
 }
 
 // @public
-interface LanguageFilterOptions {
+interface LanguageChooserOptions {
     filter?: 'primaryLanguage' | 'none';
     ultimateFallback?: string | Subtags | LanguageTag;
     use?: 'desiredLanguage' | 'availableLanguage';
@@ -527,9 +527,6 @@ function loadLanguageSubtagsJsonFileSync(path: string): Result<Items.RegistryFil
 
 // @internal (undocumented)
 function loadLanguageTagExtensionsJsonFileSync(path: string): Result<Model_3.LanguageTagExtensions>;
-
-// @public
-function match(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number>;
 
 declare namespace Model_3 {
     export {
@@ -857,22 +854,7 @@ const scriptSubtag: Converter<ScriptSubtag, unknown>;
 const scriptSubtag_2: RegExpValidationHelpers<ScriptSubtag, unknown>;
 
 // @public
-type Similarity = keyof typeof similarity;
-
-// @public
-const similarity: {
-    exact: number;
-    variant: number;
-    region: number;
-    macroRegion: number;
-    neutralRegion: number;
-    preferredAffinity: number;
-    affinity: number;
-    preferredRegion: number;
-    sibling: number;
-    undetermined: number;
-    none: number;
-};
+function similarity(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number>;
 
 // @public (undocumented)
 interface Subtags {
@@ -926,6 +908,24 @@ function tagOrStartOfTagRange<TTAG extends string>(tagConverter: Converter<TTAG>
 
 // @public
 function tags(from: LanguageSpec[], options?: LanguageTagInitOptions): Result<LanguageTag[]>;
+
+// @public
+type TagSimilarity = keyof typeof tagSimilarity;
+
+// @public
+const tagSimilarity: {
+    exact: number;
+    variant: number;
+    region: number;
+    macroRegion: number;
+    neutralRegion: number;
+    preferredAffinity: number;
+    affinity: number;
+    preferredRegion: number;
+    sibling: number;
+    undetermined: number;
+    none: number;
+};
 
 // @public
 type TagValidity = 'unknown' | 'well-formed' | 'valid' | 'strictly-valid';

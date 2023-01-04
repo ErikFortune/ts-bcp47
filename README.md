@@ -44,23 +44,23 @@ const preferred = Bcp47.tag('art-lojban', { normalization: 'preferred' }).orThro
 // preferred is "jbo"
 
 // tags match regardless of case
-const match = Bcp47.match('es-MX', 'es-mx').orThrow(); // 1.0 (exact)
+const match = Bcp47.similarity('es-MX', 'es-mx').orThrow(); // 1.0 (exact)
 
 // suppressed script matches explicit script
-const match = Bcp47.match('es-MX', 'es-latn-mx').orThrow(); // 1.0 (exact)
+const match = Bcp47.similarity('es-MX', 'es-latn-mx').orThrow(); // 1.0 (exact)
 
 // macro-region matches contained region well
-const match = Bcp47.match('es-419', 'es-MX').orThrow(); // 0.7 (macroRegion)
-const match = Bcp47.match('es-419', 'es-ES').orThrow(); // 0.3 (sibling)
+const match = Bcp47.similarity('es-419', 'es-MX').orThrow(); // 0.7 (macroRegion)
+const match = Bcp47.similarity('es-419', 'es-ES').orThrow(); // 0.3 (sibling)
 
 // region matches neutral fairly well
-const match = Bcp47.match('es', 'es-MX').orThrow(); // 0.6 (neutral)
+const match = Bcp47.similarity('es', 'es-MX').orThrow(); // 0.6 (neutral)
 
 // unlike tags do not match
-const match = Bcp47.match('en', 'es').orThrow(); // 0.0 (none)
+const match = Bcp47.similarity('en', 'es').orThrow(); // 0.0 (none)
 
 // different scripts do not match
-const match = Bcp47.match('zh-Hans', 'zh-Hant').orThrow(); // 0.0 (none)
+const match = Bcp47.similarity('zh-Hans', 'zh-Hant').orThrow(); // 0.0 (none)
 ```
 
 *Note:* This library uses the `Result` pattern, so the return value from any method that might fail is a `Result` object that must be tested for success or failure.  These examples use either [orThrow](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.orthrow.md) or [orDefault](https://github.com/DidjaRedo/ts-utils/blob/master/docs/ts-utils.iresult.ordefault.md) to convert an error result to either an exception or undefined.
@@ -124,7 +124,7 @@ The [`match`](docs/ts-bcp47.bcp47.match.md) function matches language tags, usin
 
 For any given language tag pair, the `match` function returns a similarity score in the range `0.0` (no similarity) to `1.0` (exact match).
 
-The degrees of match similarity are (from most to least similar):
+The degrees of similarity are (from most to least similar):
 - `exact` (`1.0`) - The two language tags are semantically identical.
 - `variant` (`0.9`) - The tags vary only in extension or private subtags.
 - `region` (`0.8`) - The tags match on language, script and region but vary in variant, extension or private-use subtags.

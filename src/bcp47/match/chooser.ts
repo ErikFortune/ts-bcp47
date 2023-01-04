@@ -22,7 +22,7 @@
 
 import * as Iana from '../../iana';
 
-import { LanguageMatcher } from './match';
+import { LanguageSimilarityMatcher } from './similarity';
 import { LanguageTag } from '../languageTag';
 import { Subtags } from '../common';
 
@@ -30,7 +30,7 @@ import { Subtags } from '../common';
  * Represents a single matching filtered language.
  * @public
  */
-export interface FilteredLanguage {
+export interface MatchingLanguage {
     /**
      * Numeric indication of how well the language matches,
      * from perfect (`1.0`) to not at all (`0.0`).  When
@@ -52,7 +52,7 @@ export interface FilteredLanguage {
  * Options for {@link Bcp47.filter | language tag list filter} functions.
  * @public
  */
-export interface LanguageFilterOptions {
+export interface LanguageChooserOptions {
     /**
      * Indicates whether to return the matching language from the
      * desired list or the available list. Default is `'availableLanguage'`.
@@ -80,7 +80,7 @@ export interface LanguageFilterOptions {
  * Default values for a{@link Bcp47.LanguageFilterOptions}.
  * @public
  */
-export const defaultLanguageFilterOptions: LanguageFilterOptions = Object.freeze({
+export const defaultLanguageChooserOptions: LanguageChooserOptions = Object.freeze({
     use: 'availableLanguage',
     filter: 'primaryLanguage',
 });
@@ -90,27 +90,27 @@ export const defaultLanguageFilterOptions: LanguageFilterOptions = Object.freeze
  * and return the intersection in order of preference, taking tag semantics into account.
  * @public
  */
-export class LanguageFilter {
+export class LanguageChooser {
     /**
      * @internal
      */
-    protected readonly _matcher: LanguageMatcher;
+    protected readonly _matcher: LanguageSimilarityMatcher;
 
     public constructor(iana?: Iana.LanguageRegistries) {
-        this._matcher = new LanguageMatcher(iana);
+        this._matcher = new LanguageSimilarityMatcher(iana);
     }
 
-    public filterLanguageTagsWithDetails(
+    public chooseLanguageTagsWithDetails(
         desiredLanguages: LanguageTag[],
         availableLanguages: LanguageTag[],
-        options?: LanguageFilterOptions
-    ): FilteredLanguage[] {
-        const matched = new Map<string, FilteredLanguage>();
+        options?: LanguageChooserOptions
+    ): MatchingLanguage[] {
+        const matched = new Map<string, MatchingLanguage>();
         const decrement = desiredLanguages.length < 10 ? 0.1 : 1.0 / desiredLanguages.length;
         let base = 1.0;
 
         // fill any missing fields from the default
-        options = { ...defaultLanguageFilterOptions, ...options };
+        options = { ...defaultLanguageChooserOptions, ...options };
 
         for (const want of desiredLanguages) {
             base -= decrement;
@@ -122,7 +122,7 @@ export class LanguageFilter {
                     const tag = languageTag.tag;
                     const key = options.filter === 'primaryLanguage' ? languageTag.subtags.primaryLanguage ?? tag : tag;
 
-                    const match: FilteredLanguage = {
+                    const match: MatchingLanguage = {
                         quality,
                         tag,
                         languageTag,
@@ -155,8 +155,8 @@ export class LanguageFilter {
     public filterLanguageTags(
         desiredLanguages: LanguageTag[],
         availableLanguages: LanguageTag[],
-        options?: LanguageFilterOptions
+        options?: LanguageChooserOptions
     ): LanguageTag[] {
-        return this.filterLanguageTagsWithDetails(desiredLanguages, availableLanguages, options).map((t) => t.languageTag);
+        return this.chooseLanguageTagsWithDetails(desiredLanguages, availableLanguages, options).map((t) => t.languageTag);
     }
 }

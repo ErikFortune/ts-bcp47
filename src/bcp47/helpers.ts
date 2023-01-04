@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
-import { LanguageFilter, LanguageFilterOptions } from './match/filter';
+import { LanguageChooser, LanguageChooserOptions } from './match/chooser';
 import { LanguageTag, LanguageTagInitOptions } from './languageTag';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
-import { LanguageMatcher } from './match';
+import { LanguageSimilarityMatcher } from './match';
 import { Subtags } from './common';
 
 /**
@@ -69,7 +69,7 @@ export function tags(from: LanguageSpec[], options?: LanguageTagInitOptions): Re
 }
 
 /**
- * Determine how well two language tags match each other.
+ * Determine how similar two language tags are to each other.
  *
  * @param t1 - First tag to match, supplied as one of `string`, individual
  * {@link Bcp47.Subtags | subtags}, or constructed
@@ -80,13 +80,13 @@ export function tags(from: LanguageSpec[], options?: LanguageTagInitOptions): Re
  * @param options - (optional) A set of {@link Bcp47.LanguageTagInitOptions | language tag options}
  * which control any necessary conversion or parsing.
  * @returns A numeric value in the range 1.0 (exact match) to 0.0 (no match).
- * @see For a set of common levels of similarity, see {@link Bcp47.similarity | similarity}.
+ * @see For a set of common levels of similarity, see {@link Bcp47.tagSimilarity | similarity}.
  * @public
  */
 // istanbul ignore next - tests applied for wrapped function
-export function match(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number> {
+export function similarity(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number> {
     return tags([t1, t2], options).onSuccess((tags) => {
-        return succeed(new LanguageMatcher().matchLanguageTags(tags[0], tags[1]));
+        return succeed(new LanguageSimilarityMatcher().matchLanguageTags(tags[0], tags[1]));
     });
 }
 
@@ -100,14 +100,14 @@ export function match(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagI
  * an error occurs.
  * @public
  */
-export function filter(
+export function choose(
     desired: LanguageSpec[],
     available: LanguageSpec[],
-    options?: LanguageTagInitOptions & LanguageFilterOptions
+    options?: LanguageTagInitOptions & LanguageChooserOptions
 ): Result<LanguageTag[]> {
     return tags(desired, options).onSuccess((w) => {
         return tags(available, options).onSuccess((h) => {
-            return succeed(new LanguageFilter().filterLanguageTags(w, h, options));
+            return succeed(new LanguageChooser().filterLanguageTags(w, h, options));
         });
     });
 }
