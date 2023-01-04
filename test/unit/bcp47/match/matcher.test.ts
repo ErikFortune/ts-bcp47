@@ -83,9 +83,15 @@ describe('LanguageComparer class', () => {
             },
             {
                 description: 'language affinity applies for related languages',
-                l1: 'en-US',
-                l2: 'en-PH',
+                l1: 'en-AU',
+                l2: 'en-CA',
                 expected: similarity.affinity,
+            },
+            {
+                description: 'preferred language affinity applies for related languages if one is primary',
+                l1: 'en-GB',
+                l2: 'en-AU',
+                expected: similarity.preferredAffinity,
             },
             {
                 description: 'language affinity does not apply for unrelated languages',
@@ -161,8 +167,7 @@ describe('LanguageComparer class', () => {
             const lt1 = LanguageTag.create(tc.l1, tc.options).orThrow();
             const lt2 = LanguageTag.create(tc.l2, tc.options).orThrow();
 
-            expect(matcher.match(lt1, lt2)).toSucceedWith(tc.expected);
-            expect(matcher.match(tc.l1, tc.l2, tc.options)).toSucceedWith(tc.expected);
+            expect(matcher.matchLanguageTags(lt1, lt2)).toBe(tc.expected);
         });
     });
 });

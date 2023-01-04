@@ -147,7 +147,7 @@ describe('bcp47 helpers', () => {
             },
             {
                 description: 'language affinity applies for related languages',
-                l1: 'en-US',
+                l1: 'en-PR',
                 l2: 'en-PH',
                 expected: Bcp47.matchQuality.affinity,
             },

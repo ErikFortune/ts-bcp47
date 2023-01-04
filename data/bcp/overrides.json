@@ -1,14 +1,14 @@
 [
     {
         "language": "en",
-        "defaultAffinity": "gb",
+        "defaultAffinity": "GB",
         "affinity": {
             "us": ["GU", "PH", "PR", "UM", "US", "VI"]
         }
     },
     {
         "language": "es",
-        "defaultAffinity": "latam",
+        "defaultAffinity": "419",
         "affinity": {
             "es": ["ES", "GQ", "IC"]
         }
