@@ -21,13 +21,11 @@
  */
 
 import '@fgv/ts-utils-jest';
-
-import { LanguageSubtag, LanguageSubtagRegistry } from '../../../../src/iana/language-subtags';
-import { YearMonthDaySpec } from '../../../../src/iana/common/model';
+import { Iana } from '../../../../src';
 
 describe('IANA tag registry scope', () => {
-    const iana = LanguageSubtagRegistry.loadJsonRegistryFile('data/iana/language-subtag-registry.json').orThrow();
-    const languages = iana.languages;
+    const iana = Iana.DefaultRegistries.languageRegistries;
+    const languages = iana.subtags.languages;
 
     describe('getAll and getAllKeys', () => {
         test('tags match values', () => {
@@ -140,7 +138,7 @@ describe('IANA tag registry scope', () => {
             if (expected instanceof RegExp) {
                 expect(languages.verifyIsWellFormed(tag)).toFailWith(expected);
             } else {
-                expect(languages.verifyIsWellFormed(tag)).toSucceedWith(tag as LanguageSubtag);
+                expect(languages.verifyIsWellFormed(tag)).toSucceedWith(tag as Iana.LanguageSubtags.LanguageSubtag);
             }
         });
 
@@ -153,7 +151,7 @@ describe('IANA tag registry scope', () => {
             if (expected instanceof RegExp) {
                 expect(languages.verifyIsCanonical(tag)).toFailWith(expected);
             } else {
-                expect(languages.verifyIsCanonical(tag)).toSucceedWith(tag as LanguageSubtag);
+                expect(languages.verifyIsCanonical(tag)).toSucceedWith(tag as Iana.LanguageSubtags.LanguageSubtag);
             }
         });
 
@@ -166,7 +164,7 @@ describe('IANA tag registry scope', () => {
             if (expected instanceof RegExp) {
                 expect(languages.verifyIsValid(tag)).toFailWith(expected);
             } else {
-                expect(languages.verifyIsValid(tag)).toSucceedWith(tag as LanguageSubtag);
+                expect(languages.verifyIsValid(tag)).toSucceedWith(tag as Iana.LanguageSubtags.LanguageSubtag);
             }
         });
     });
@@ -176,7 +174,7 @@ describe('IANA tag registry scope', () => {
             ['en', 'en', 'well-formed, canonical valid'],
             ['EN', 'en', 'well-formed, non-canonical valid'],
         ])('toValidCanonical converts %p to %p (%p)', (tag, expected) => {
-            expect(languages.toValidCanonical(tag)).toSucceedWith(expected as LanguageSubtag);
+            expect(languages.toValidCanonical(tag)).toSucceedWith(expected as Iana.LanguageSubtags.LanguageSubtag);
         });
 
         test.each([
@@ -188,16 +186,16 @@ describe('IANA tag registry scope', () => {
     });
 
     describe('add method', () => {
-        const iana2 = LanguageSubtagRegistry.load('data/iana/language-subtags.json').orThrow();
+        const iana2 = Iana.LanguageSubtags.LanguageSubtagRegistry.load('data/iana/language-subtags.json').orThrow();
         const languages = iana2.languages;
         test('fails to add an item with a non-canonical tag', () => {
-            const validNonCanonical = 'DE' as LanguageSubtag;
+            const validNonCanonical = 'DE' as Iana.LanguageSubtags.LanguageSubtag;
             expect(
                 languages.add({
                     type: 'language',
                     subtag: validNonCanonical,
                     description: ['test data'],
-                    added: '2022-12-01' as YearMonthDaySpec,
+                    added: '2022-12-01' as Iana.Model.YearMonthDaySpec,
                 })
             ).toFailWith(/not in canonical form/i);
         });
@@ -206,10 +204,10 @@ describe('IANA tag registry scope', () => {
             expect(
                 languages.add({
                     type: 'language',
-                    subtag: 'qaa' as LanguageSubtag,
-                    subtagRangeEnd: 'QZZ' as LanguageSubtag,
+                    subtag: 'qaa' as Iana.LanguageSubtags.LanguageSubtag,
+                    subtagRangeEnd: 'QZZ' as Iana.LanguageSubtags.LanguageSubtag,
                     description: ['test data'],
-                    added: '2022-12-01' as YearMonthDaySpec,
+                    added: '2022-12-01' as Iana.Model.YearMonthDaySpec,
                 })
             ).toFailWith(/not in canonical form/i);
         });
@@ -218,10 +216,10 @@ describe('IANA tag registry scope', () => {
             expect(
                 languages.add({
                     type: 'language',
-                    subtag: 'qzz' as LanguageSubtag,
-                    subtagRangeEnd: 'qaa' as LanguageSubtag,
+                    subtag: 'qzz' as Iana.LanguageSubtags.LanguageSubtag,
+                    subtagRangeEnd: 'qaa' as Iana.LanguageSubtags.LanguageSubtag,
                     description: ['test data'],
-                    added: '2022-12-01' as YearMonthDaySpec,
+                    added: '2022-12-01' as Iana.Model.YearMonthDaySpec,
                 })
             ).toFailWith(/invalid range/i);
         });
