@@ -24,11 +24,12 @@ import * as Model from './csv/model';
 
 import { CountryOrArea, Region } from './common';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { loadM49cnvFileSync, m49CsvFile } from './csv/converters';
 
 import { Areas } from './areas';
 import { Regions } from './regions';
 import { UnM49RegionCode } from '../iana/model';
-import { loadM49cnvFileSync } from './csv/converters';
+import defaultRegions from '../../data/unsd/m49.json';
 
 /**
  * @public
@@ -45,16 +46,24 @@ export class RegionCodes {
         this.areas = new Areas();
     }
 
-    public static createFromCsvFile(path: string): Result<RegionCodes> {
-        return loadM49cnvFileSync(path).onSuccess((rows) => {
-            return this.createFromCsv(rows);
-        });
-    }
-
-    public static createFromCsv(rows: Model.M49CsvRow[]): Result<RegionCodes> {
+    public static create(rows: Model.M49CsvRow[]): Result<RegionCodes> {
         const codes = new RegionCodes();
         return codes._importRows(rows).onSuccess(() => {
             return succeed(codes);
+        });
+    }
+
+    public static createFromJson(from: unknown): Result<RegionCodes> {
+        return m49CsvFile.convert(from).onSuccess(RegionCodes.create);
+    }
+
+    public static loadDefault(): Result<RegionCodes> {
+        return this.createFromJson(defaultRegions);
+    }
+
+    public static loadCsv(path: string): Result<RegionCodes> {
+        return loadM49cnvFileSync(path).onSuccess((rows) => {
+            return this.create(rows);
         });
     }
 

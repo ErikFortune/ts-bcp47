@@ -60,12 +60,12 @@ export class LanguageTagExtensionRegistry {
         });
     }
 
-    public static loadJson(from: unknown): Result<LanguageTagExtensionRegistry> {
+    public static createFromJson(from: unknown): Result<LanguageTagExtensionRegistry> {
         return Converters.languageTagExtensions.convert(from).onSuccess(LanguageTagExtensionRegistry.create);
     }
 
     public static loadDefault(): Result<LanguageTagExtensionRegistry> {
-        return this.loadJson(defaultExtensions);
+        return this.createFromJson(defaultExtensions);
     }
 
     public static load(path: string): Result<LanguageTagExtensionRegistry> {

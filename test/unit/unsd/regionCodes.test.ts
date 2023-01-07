@@ -26,9 +26,9 @@ import { IsoAlpha2RegionCode, IsoAlpha3RegionCode, UnM49RegionCode } from '../..
 import { RegionCodes } from '../../../src/unsd';
 
 describe('RegionCodes class', () => {
-    describe('createFromCsvFile static method', () => {
+    describe('loadCsv static method', () => {
         test('constructs from a valid csv file', () => {
-            expect(RegionCodes.createFromCsvFile('data/unsd/m49.csv')).toSucceedAndSatisfy((rc) => {
+            expect(RegionCodes.loadCsv('test/data/unsd/m49.csv')).toSucceedAndSatisfy((rc) => {
                 expect(rc.areas.getAll()).toHaveLength(249);
                 expect(rc.regions.getAll()).toHaveLength(30);
 
@@ -76,7 +76,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists as North/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists as North/i);
         });
 
         test('fails if a region has conflicting tiers', () => {
@@ -104,7 +104,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists as tier region/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists as tier region/i);
         });
 
         test('fails if a region has conflicting tiers', () => {
@@ -136,7 +136,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists with parent 002/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists with parent 002/i);
         });
 
         test('fails if a region has a code but no name', () => {
@@ -153,7 +153,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/must both be present/i);
+            expect(RegionCodes.create(testData)).toFailWith(/must both be present/i);
         });
 
         test('fails if a region has a name but no code', () => {
@@ -169,7 +169,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/must both be present/i);
+            expect(RegionCodes.create(testData)).toFailWith(/must both be present/i);
         });
 
         test('fails if multiple area/country records have the same M.49 code', () => {
@@ -197,7 +197,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists with M.49 code 003/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists with M.49 code 003/i);
         });
 
         test('fails if multiple area/country records have the same alpha-2 code', () => {
@@ -227,7 +227,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists with ISO Alpha-2 code AA/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists with ISO Alpha-2 code AA/i);
         });
 
         test('fails if multiple area/country records have the same alpha-3 code', () => {
@@ -257,7 +257,7 @@ describe('RegionCodes class', () => {
                     smallIslandDevelopingState: false,
                 },
             ];
-            expect(RegionCodes.createFromCsv(testData)).toFailWith(/already exists with ISO Alpha-3 code ABC/i);
+            expect(RegionCodes.create(testData)).toFailWith(/already exists with ISO Alpha-3 code ABC/i);
         });
     });
 });

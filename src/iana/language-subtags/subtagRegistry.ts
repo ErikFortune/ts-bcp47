@@ -104,12 +104,12 @@ export class LanguageSubtagRegistry {
         });
     }
 
-    public static loadDefault(): Result<LanguageSubtagRegistry> {
-        return this.loadJson(defaultSubtags);
+    public static createFromJson(from: unknown): Result<LanguageSubtagRegistry> {
+        return Converters.registryFile.convert(from).onSuccess(LanguageSubtagRegistry.create);
     }
 
-    public static loadJson(from: unknown): Result<LanguageSubtagRegistry> {
-        return Converters.registryFile.convert(from).onSuccess(LanguageSubtagRegistry.create);
+    public static loadDefault(): Result<LanguageSubtagRegistry> {
+        return this.createFromJson(defaultSubtags);
     }
 
     public static load(root: string): Result<LanguageSubtagRegistry> {

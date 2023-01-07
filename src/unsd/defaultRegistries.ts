@@ -33,7 +33,7 @@ export class DefaultRegistries {
 
     public static get regionCodes(): RegionCodes {
         if (!this._regionCodes) {
-            this._regionCodes = RegionCodes.createFromCsvFile('data/unsd/m49.csv').orThrow();
+            this._regionCodes = RegionCodes.loadDefault().orThrow();
         }
         return this._regionCodes;
     }
