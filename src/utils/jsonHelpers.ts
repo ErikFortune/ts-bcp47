@@ -20,5 +20,6 @@
  * SOFTWARE.
  */
 
-export * from './jsonHelpers';
-export * from './validationHelpers';
+export function sanitizeJson<T>(from: T): T {
+    return JSON.parse(JSON.stringify(from)) as T;
+}

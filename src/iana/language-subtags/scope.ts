@@ -33,10 +33,10 @@ import {
     Validate,
     VariantSubtag,
 } from '../jar/language-subtags/tags';
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
+import { ValidationHelpers, sanitizeJson } from '../../utils';
 
 import { RegisteredItemScope } from '../common/registeredItems';
-import { ValidationHelpers } from '../../utils';
 
 /**
  * @internal
@@ -76,9 +76,50 @@ class SubtagScopeWithRange<
 
     public add(entry: TITEM): Result<true> {
         return this._validateEntry(entry).onSuccess(() => {
-            this._items.set(entry.subtag, entry);
-            return succeed(true);
+            return this._addRange(entry);
         });
+    }
+
+    protected _validateEntry(entry: TITEM): Result<true> {
+        const start = entry.subtag;
+        const end = entry.subtagRangeEnd ?? ('' as TTAG);
+        if (end) {
+            return allSucceed([this._validateKey(start), this._validateKey(end), this._validateRange(start, end)], true);
+        }
+        return this._validateKey(start);
+    }
+
+    protected _validateRange(start: TTAG, end: TTAG): Result<true> {
+        return start < end ? succeed(true) : fail(`${start}..${end}: invalid range`);
+    }
+
+    protected _addRange(entry: TITEM): Result<true> {
+        this._items.set(entry.subtag, entry);
+        if (entry.subtagRangeEnd) {
+            let next = this._nextInRange(entry.subtag, entry.subtagRangeEnd);
+            while (next) {
+                const e = sanitizeJson({ ...entry, subtag: next, subtagRangeEnd: undefined });
+                this._items.set(next, e);
+                next = this._nextInRange(next, entry.subtagRangeEnd);
+            }
+        }
+        return succeed(true);
+    }
+
+    protected _nextInRange(current: TTAG, end: TTAG): TTAG | undefined {
+        if (current >= end) {
+            return undefined;
+        }
+        const next = Array.from(current);
+        for (let i = next.length - 1; i >= 0; i--) {
+            if (next[i].toLowerCase() < 'z') {
+                next[i] = String.fromCharCode(next[i].charCodeAt(0) + 1);
+                break;
+            } else {
+                next[i] = 'a';
+            }
+        }
+        return this._validate.toCanonical(next.join('')).getValueOrThrow();
     }
 }
 
