@@ -22,7 +22,7 @@
 
 import '@fgv/ts-utils-jest';
 
-import { ExtLangSubtag, ExtendedLanguageRange, LanguageSubtag, LanguageSubtagRegistry } from '../../../../src/iana/language-subtags';
+import { LanguageSubtag, LanguageSubtagRegistry } from '../../../../src/iana/language-subtags';
 import { YearMonthDaySpec } from '../../../../src/iana/common/model';
 
 describe('IANA tag registry scope', () => {
@@ -189,19 +189,41 @@ describe('IANA tag registry scope', () => {
 
     describe('add method', () => {
         const iana2 = LanguageSubtagRegistry.load('data/iana/language-subtags.json').orThrow();
-        const extlangs = iana2.extlangs;
+        const languages = iana2.languages;
         test('fails to add an item with a non-canonical tag', () => {
-            const validNonCanonical = 'DEU' as ExtLangSubtag;
+            const validNonCanonical = 'DE' as LanguageSubtag;
             expect(
-                extlangs.add({
-                    type: 'extlang',
+                languages.add({
+                    type: 'language',
                     subtag: validNonCanonical,
                     description: ['test data'],
                     added: '2022-12-01' as YearMonthDaySpec,
-                    preferredValue: 'deu' as ExtendedLanguageRange,
-                    prefix: 'en' as LanguageSubtag,
                 })
             ).toFailWith(/not in canonical form/i);
+        });
+
+        test('fails for a non-canonical subtag range end', () => {
+            expect(
+                languages.add({
+                    type: 'language',
+                    subtag: 'qaa' as LanguageSubtag,
+                    subtagRangeEnd: 'QZZ' as LanguageSubtag,
+                    description: ['test data'],
+                    added: '2022-12-01' as YearMonthDaySpec,
+                })
+            ).toFailWith(/not in canonical form/i);
+        });
+
+        test('fails for a inverted subtag range', () => {
+            expect(
+                languages.add({
+                    type: 'language',
+                    subtag: 'qzz' as LanguageSubtag,
+                    subtagRangeEnd: 'qaa' as LanguageSubtag,
+                    description: ['test data'],
+                    added: '2022-12-01' as YearMonthDaySpec,
+                })
+            ).toFailWith(/invalid range/i);
         });
     });
 });

@@ -33,7 +33,7 @@ import {
     Validate,
     VariantSubtag,
 } from '../jar/language-subtags/tags';
-import { Result, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
 import { RegisteredItemScope } from '../common/registeredItems';
 import { ValidationHelpers } from '../../utils';
@@ -76,9 +76,29 @@ class SubtagScopeWithRange<
 
     public add(entry: TITEM): Result<true> {
         return this._validateEntry(entry).onSuccess(() => {
-            this._items.set(entry.subtag, entry);
-            return succeed(true);
+            if (entry.subtagRangeEnd === undefined) {
+                this._items.set(entry.subtag, entry);
+                return succeed(true);
+            }
+            return this._addRange(entry);
         });
+    }
+
+    protected _validateEntry(entry: TITEM): Result<true> {
+        const start = entry.subtag;
+        const end = entry.subtagRangeEnd ?? ('' as TTAG);
+        if (end) {
+            return allSucceed(
+                [this._validateKey(start), this._validateKey(end), start <= end ? succeed(true) : fail(`${start}..${end}: invalid range`)],
+                true
+            );
+        }
+        return this._validateKey(start);
+    }
+
+    protected _addRange(entry: TITEM): Result<true> {
+        this._items.set(entry.subtag, entry);
+        return succeed(true);
     }
 }
 
