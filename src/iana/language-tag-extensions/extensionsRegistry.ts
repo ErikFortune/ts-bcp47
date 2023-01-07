@@ -28,7 +28,7 @@ import { Result, captureResult } from '@fgv/ts-utils';
 
 import { TagExtensionsScope } from './extensionsScope';
 import { YearMonthDaySpec } from '../model';
-
+import defaultExtensions from '../../../data/iana/language-tag-extensions.json';
 /**
  * @public
  */
@@ -58,6 +58,14 @@ export class LanguageTagExtensionRegistry {
         return captureResult(() => {
             return new LanguageTagExtensionRegistry(registry);
         });
+    }
+
+    public static loadJson(from: unknown): Result<LanguageTagExtensionRegistry> {
+        return Converters.languageTagExtensions.convert(from).onSuccess(LanguageTagExtensionRegistry.create);
+    }
+
+    public static loadDefault(): Result<LanguageTagExtensionRegistry> {
+        return this.loadJson(defaultExtensions);
     }
 
     public static load(path: string): Result<LanguageTagExtensionRegistry> {

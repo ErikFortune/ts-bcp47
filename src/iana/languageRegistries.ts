@@ -48,7 +48,7 @@ export class LanguageRegistries {
     public static loadDefault(): Result<LanguageRegistries> {
         return captureResult(() => {
             const subtags = LanguageSubtagRegistry.loadDefault().orThrow();
-            const extensions = LanguageTagExtensionRegistry.load('data/iana/language-tag-extensions.json').orThrow();
+            const extensions = LanguageTagExtensionRegistry.loadDefault().orThrow();
             return new LanguageRegistries(subtags, extensions);
         });
     }
