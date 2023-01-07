@@ -33,7 +33,7 @@ export class DefaultRegistries {
 
     public static get languageRegistries(): LanguageRegistries {
         if (!this._languageRegistries) {
-            this._languageRegistries = LanguageRegistries.load('data/iana').orThrow();
+            this._languageRegistries = LanguageRegistries.loadDefault().orThrow();
         }
         return this._languageRegistries;
     }

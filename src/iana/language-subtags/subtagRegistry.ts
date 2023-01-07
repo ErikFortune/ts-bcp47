@@ -28,6 +28,7 @@ import * as path from 'path';
 import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from '../jar/language-subtags/registry/model';
+import defaultSubtags from '../../../data/iana/language-subtags.json';
 
 /**
  * @public
@@ -101,6 +102,14 @@ export class LanguageSubtagRegistry {
         return captureResult(() => {
             return new LanguageSubtagRegistry(registry);
         });
+    }
+
+    public static loadDefault(): Result<LanguageSubtagRegistry> {
+        return this.loadJson(defaultSubtags);
+    }
+
+    public static loadJson(from: unknown): Result<LanguageSubtagRegistry> {
+        return Converters.registryFile.convert(from).onSuccess(LanguageSubtagRegistry.create);
     }
 
     public static load(root: string): Result<LanguageSubtagRegistry> {

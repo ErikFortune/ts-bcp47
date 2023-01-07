@@ -44,4 +44,12 @@ export class LanguageRegistries {
             return new LanguageRegistries(subtags, extensions);
         });
     }
+
+    public static loadDefault(): Result<LanguageRegistries> {
+        return captureResult(() => {
+            const subtags = LanguageSubtagRegistry.loadDefault().orThrow();
+            const extensions = LanguageTagExtensionRegistry.load('data/iana/language-tag-extensions.json').orThrow();
+            return new LanguageRegistries(subtags, extensions);
+        });
+    }
 }
