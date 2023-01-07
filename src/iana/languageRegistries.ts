@@ -44,4 +44,12 @@ export class LanguageRegistries {
             return new LanguageRegistries(subtags, extensions);
         });
     }
+
+    public static loadDefault(): Result<LanguageRegistries> {
+        return captureResult(() => {
+            const subtags = LanguageSubtagRegistry.loadDefault().orThrow();
+            const extensions = LanguageTagExtensionRegistry.loadDefault().orThrow();
+            return new LanguageRegistries(subtags, extensions);
+        });
+    }
 }
