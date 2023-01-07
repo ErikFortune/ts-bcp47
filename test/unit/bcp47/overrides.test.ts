@@ -20,21 +20,17 @@
  * SOFTWARE.
  */
 
-import { OverridesRegistry } from './overridesRegistry';
+import * as Overrides from '../../../src/bcp47/overrides';
 
-/**
- * @public
- */
-export class DefaultRegistries {
-    /**
-     * @internal
-     */
-    private static _overridesRegistry?: OverridesRegistry = undefined;
+describe('BCP47 overrides registry', () => {
+    const dflt = Overrides.DefaultRegistries.overridesRegistry;
 
-    public static get overridesRegistry(): OverridesRegistry {
-        if (!this._overridesRegistry) {
-            this._overridesRegistry = OverridesRegistry.loadDefault().orThrow();
-        }
-        return this._overridesRegistry;
-    }
-}
+    describe('loadJson static method', () => {
+        test('loads file matching default', () => {
+            expect(() => {
+                const loaded = Overrides.OverridesRegistry.loadJson('data/bcp/overrides.json').orThrow();
+                expect(loaded).toEqual(dflt);
+            }).not.toThrow();
+        });
+    });
+});

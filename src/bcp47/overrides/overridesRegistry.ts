@@ -25,6 +25,7 @@ import * as Model from './model';
 
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
+import defaultOverrides from '../../../data/bcp/overrides.json';
 
 /**
  * @public
@@ -52,14 +53,23 @@ export class OverridesRegistry {
         return succeed(registry);
     }
 
-    public static loadJson(path: string): Result<OverridesRegistry> {
-        return Converters.loadLanguageOverridesFileSync(path)
+    public static createFromJson(from: unknown): Result<OverridesRegistry> {
+        return Converters.languageOverridesFile
+            .convert(from)
             .onSuccess((records) => {
-                return mapResults(records.map(this._overrideFromRecord));
+                return mapResults(records.map(OverridesRegistry._overrideFromRecord));
             })
             .onSuccess((overrides) => {
-                return this.create(overrides);
+                return OverridesRegistry.create(overrides);
             });
+    }
+
+    public static loadDefault(): Result<OverridesRegistry> {
+        return this.createFromJson(defaultOverrides);
+    }
+
+    public static loadJson(path: string): Result<OverridesRegistry> {
+        return Converters.loadLanguageOverridesFileSync(path).onSuccess(OverridesRegistry.createFromJson);
     }
 
     /**
