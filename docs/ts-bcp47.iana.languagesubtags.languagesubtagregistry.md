@@ -36,7 +36,9 @@ The constructor for this class is marked as internal. Third-party code should no
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [create(registry)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.create.md) | <code>static</code> |  |
+|  [createFromJson(from)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.createfromjson.md) | <code>static</code> |  |
 |  [load(root)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.load.md) | <code>static</code> |  |
+|  [loadDefault()](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.loaddefault.md) | <code>static</code> |  |
 |  [loadJsonRegistryFile(root)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.loadjsonregistryfile.md) | <code>static</code> |  |
 |  [loadTxtRegistryFile(root)](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.loadtxtregistryfile.md) | <code>static</code> |  |
 

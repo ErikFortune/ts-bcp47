@@ -49,7 +49,7 @@ export interface MatchingLanguage {
 }
 
 /**
- * Options for {@link Bcp47.filter | language tag list filter} functions.
+ * Options for {@link Bcp47.choose | language tag list filter} functions.
  * @public
  */
 export interface LanguageChooserOptions {

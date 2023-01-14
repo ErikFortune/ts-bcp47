@@ -38,7 +38,7 @@ describe('TagExtensionRegistry class', () => {
 
     describe('load static methods', () => {
         test('loads JSON subtags', () => {
-            expect(LanguageTagExtensionRegistry.load('data/iana/language-tag-extensions.json')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageTagExtensionRegistry.load('src/data/iana/language-tag-extensions.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.extensions.getAllKeys()).toHaveLength(2);
             });
         });

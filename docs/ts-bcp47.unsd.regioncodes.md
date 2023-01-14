@@ -25,8 +25,10 @@ The constructor for this class is marked as internal. Third-party code should no
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [createFromCsv(rows)](./ts-bcp47.unsd.regioncodes.createfromcsv.md) | <code>static</code> |  |
-|  [createFromCsvFile(path)](./ts-bcp47.unsd.regioncodes.createfromcsvfile.md) | <code>static</code> |  |
+|  [create(rows)](./ts-bcp47.unsd.regioncodes.create.md) | <code>static</code> |  |
+|  [createFromJson(from)](./ts-bcp47.unsd.regioncodes.createfromjson.md) | <code>static</code> |  |
 |  [getIsContained(container, contained)](./ts-bcp47.unsd.regioncodes.getiscontained.md) |  |  |
+|  [loadCsv(path)](./ts-bcp47.unsd.regioncodes.loadcsv.md) | <code>static</code> |  |
+|  [loadDefault()](./ts-bcp47.unsd.regioncodes.loaddefault.md) | <code>static</code> |  |
 |  [tryGetRegionOrArea(code)](./ts-bcp47.unsd.regioncodes.trygetregionorarea.md) |  |  |
 

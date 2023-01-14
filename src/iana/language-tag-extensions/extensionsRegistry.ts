@@ -28,7 +28,7 @@ import { Result, captureResult } from '@fgv/ts-utils';
 
 import { TagExtensionsScope } from './extensionsScope';
 import { YearMonthDaySpec } from '../model';
-import defaultExtensions from '../../../data/iana/language-tag-extensions.json';
+import defaultExtensions from '../../data/iana/language-tag-extensions.json';
 /**
  * @public
  */

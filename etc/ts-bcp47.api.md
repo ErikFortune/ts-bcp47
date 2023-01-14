@@ -310,6 +310,8 @@ class LanguageRegistries {
     // (undocumented)
     static load(root: string): Result<LanguageRegistries>;
     // (undocumented)
+    static loadDefault(): Result<LanguageRegistries>;
+    // (undocumented)
     readonly subtags: LanguageSubtagRegistry;
 }
 
@@ -336,6 +338,8 @@ class LanguageSubtagRegistry {
     // (undocumented)
     static create(registry: RegistryFile_2): Result<LanguageSubtagRegistry>;
     // (undocumented)
+    static createFromJson(from: unknown): Result<LanguageSubtagRegistry>;
+    // (undocumented)
     readonly extlangs: Scope.ExtLangSubtagScope;
     // Warning: (ae-forgotten-export) The symbol "YearMonthDaySpec" needs to be exported by the entry point index.d.ts
     //
@@ -349,6 +353,8 @@ class LanguageSubtagRegistry {
     readonly languages: Scope.LanguageSubtagScope;
     // (undocumented)
     static load(root: string): Result<LanguageSubtagRegistry>;
+    // (undocumented)
+    static loadDefault(): Result<LanguageSubtagRegistry>;
     // (undocumented)
     static loadJsonRegistryFile(root: string): Result<LanguageSubtagRegistry>;
     // (undocumented)
@@ -418,6 +424,8 @@ class LanguageTag {
     protected _isValid: undefined | boolean;
     // @internal (undocumented)
     protected _normalization: TagNormalization;
+    // Warning: (ae-forgotten-export) The symbol "LanguageRegistryData" needs to be exported by the entry point index.d.ts
+    readonly registry: LanguageRegistryData;
     readonly subtags: Readonly<Subtags>;
     // @internal (undocumented)
     protected _suppressedScript: undefined | ScriptSubtag | false;
@@ -464,6 +472,8 @@ class LanguageTagExtensionRegistry {
     protected readonly _all: Model_3.LanguageTagExtension[];
     // (undocumented)
     static create(registry: Model_3.LanguageTagExtensions): Result<LanguageTagExtensionRegistry>;
+    // (undocumented)
+    static createFromJson(from: unknown): Result<LanguageTagExtensionRegistry>;
     // Warning: (ae-forgotten-export) The symbol "TagExtensionsScope" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
@@ -472,6 +482,8 @@ class LanguageTagExtensionRegistry {
     readonly fileDate: YearMonthDaySpec_2;
     // (undocumented)
     static load(path: string): Result<LanguageTagExtensionRegistry>;
+    // (undocumented)
+    static loadDefault(): Result<LanguageTagExtensionRegistry>;
     // (undocumented)
     static loadJsonRegistryFile(path: string): Result<LanguageTagExtensionRegistry>;
     // (undocumented)
@@ -585,15 +597,19 @@ class RegionCodes {
     // Warning: (ae-forgotten-export) The symbol "Model_6" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static createFromCsv(rows: Model_6.M49CsvRow[]): Result<RegionCodes>;
+    static create(rows: Model_6.M49CsvRow[]): Result<RegionCodes>;
     // (undocumented)
-    static createFromCsvFile(path: string): Result<RegionCodes>;
+    static createFromJson(from: unknown): Result<RegionCodes>;
     // (undocumented)
     getIsContained(container: Region, contained: CountryOrArea | Region): boolean;
     // @internal
     protected _importRow(row: Model_6.M49CsvRow): Result<true>;
     // @internal
     protected _importRows(rows: Model_6.M49CsvRow[]): Result<true>;
+    // (undocumented)
+    static loadCsv(path: string): Result<RegionCodes>;
+    // (undocumented)
+    static loadDefault(): Result<RegionCodes>;
     // Warning: (ae-forgotten-export) The symbol "Regions" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

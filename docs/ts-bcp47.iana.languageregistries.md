@@ -23,4 +23,5 @@ export declare class LanguageRegistries
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [load(root)](./ts-bcp47.iana.languageregistries.load.md) | <code>static</code> |  |
+|  [loadDefault()](./ts-bcp47.iana.languageregistries.loaddefault.md) | <code>static</code> |  |
 

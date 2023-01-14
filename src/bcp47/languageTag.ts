@@ -27,6 +27,7 @@ import { Subtags, UndeterminedLanguage, subtagsToString } from './common';
 import { TagNormalization, mostNormalized } from './normalization/common';
 import { TagValidity, mostValid } from './validation/common';
 
+import { LanguageRegistryData } from './languageRegistryData';
 import { LanguageTagParser } from './languageTagParser';
 import { NormalizeTag } from './normalization';
 import { ScriptSubtag } from '../iana/language-subtags';
@@ -67,6 +68,12 @@ export class LanguageTag {
      * A string representation of this language tag.
      */
     public readonly tag: string;
+
+    /**
+     * Details about this language tag from the IANA language
+     * registries.
+     */
+    public readonly registry: LanguageRegistryData;
 
     /**
      * @internal
@@ -126,6 +133,7 @@ export class LanguageTag {
         this._validity = validity;
         this.tag = subtagsToString(subtags);
         this._iana = iana;
+        this.registry = new LanguageRegistryData(this.subtags, iana);
 
         if (validity === 'strictly-valid') {
             this._isStrictlyValid = true;
