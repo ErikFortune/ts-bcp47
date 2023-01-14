@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>ts-utils</h1>
+  <h1>@fgv/ts-bcp47</h1>
   Typescript Utilities for BCP-47 Language Tags
 </div>
 
