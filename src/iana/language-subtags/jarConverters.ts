@@ -20,8 +20,8 @@
  * SOFTWARE.
  */
 
-import * as Items from './model';
-import * as Model from '../jar/language-subtags/registry/model';
+import * as JarModel from '../jar/language-subtags/registry/model';
+import * as Model from './model';
 import * as TagConverters from '../jar/language-subtags/tags/converters';
 
 import { Converters, RecordJar, Result } from '@fgv/ts-utils';
@@ -34,7 +34,7 @@ import { registryScopeType } from '../jar/language-subtags/registry/converters';
 /**
  * @internal
  */
-export const registeredLanguage = Converters.transformObject<Model.LanguageSubtagRegistryEntry, Items.RegisteredLanguage>(
+export const registeredLanguage = Converters.transformObject<JarModel.LanguageSubtagRegistryEntry, Model.RegisteredLanguage>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'language'>(['language']) },
         subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.languageSubtag) },
@@ -57,7 +57,7 @@ export const registeredLanguage = Converters.transformObject<Model.LanguageSubta
 /**
  * @internal
  */
-export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagRegistryEntry, Items.RegisteredExtLang>(
+export const registeredExtLang = Converters.transformObject<JarModel.ExtLangSubtagRegistryEntry, Model.RegisteredExtLang>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'extlang'>(['extlang']) },
         subtag: { from: 'Subtag', converter: TagConverters.extlangSubtag },
@@ -80,7 +80,7 @@ export const registeredExtLang = Converters.transformObject<Model.ExtLangSubtagR
 /**
  * @internal
  */
-export const registeredScript = Converters.transformObject<Model.ScriptSubtagRegistryEntry, Items.RegisteredScript>(
+export const registeredScript = Converters.transformObject<JarModel.ScriptSubtagRegistryEntry, Model.RegisteredScript>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'script'>(['script']) },
         subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.scriptSubtag) },
@@ -100,7 +100,7 @@ export const registeredScript = Converters.transformObject<Model.ScriptSubtagReg
 /**
  * @internal
  */
-export const registeredRegion = Converters.transformObject<Model.RegionSubtagRegistryEntry, Items.RegisteredRegion>(
+export const registeredRegion = Converters.transformObject<JarModel.RegionSubtagRegistryEntry, Model.RegisteredRegion>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'region'>(['region']) },
         subtag: { from: 'Subtag', converter: TagConverters.tagOrStartOfTagRange(TagConverters.regionSubtag) },
@@ -120,7 +120,7 @@ export const registeredRegion = Converters.transformObject<Model.RegionSubtagReg
 /**
  * @internal
  */
-export const registeredVariant = Converters.transformObject<Model.VariantSubtagRegistryEntry, Items.RegisteredVariant>(
+export const registeredVariant = Converters.transformObject<JarModel.VariantSubtagRegistryEntry, Model.RegisteredVariant>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'variant'>(['variant']) },
         subtag: { from: 'Subtag', converter: TagConverters.variantSubtag },
@@ -140,7 +140,10 @@ export const registeredVariant = Converters.transformObject<Model.VariantSubtagR
 /**
  * @internal
  */
-export const registeredGrandfatheredTag = Converters.transformObject<Model.GrandfatheredTagRegistryEntry, Items.RegisteredGrandfatheredTag>(
+export const registeredGrandfatheredTag = Converters.transformObject<
+    JarModel.GrandfatheredTagRegistryEntry,
+    Model.RegisteredGrandfatheredTag
+>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'grandfathered'>(['grandfathered']) },
         tag: { from: 'Tag', converter: TagConverters.grandfatheredTag },
@@ -159,7 +162,7 @@ export const registeredGrandfatheredTag = Converters.transformObject<Model.Grand
 /**
  * @internal
  */
-export const registeredRedundantTag = Converters.transformObject<Model.RedundantTagRegistryEntry, Items.RegisteredRedundantTag>(
+export const registeredRedundantTag = Converters.transformObject<JarModel.RedundantTagRegistryEntry, Model.RegisteredRedundantTag>(
     {
         type: { from: 'Type', converter: Converters.enumeratedValue<'redundant'>(['redundant']) },
         tag: { from: 'Tag', converter: TagConverters.redundantTag },
@@ -178,7 +181,7 @@ export const registeredRedundantTag = Converters.transformObject<Model.Redundant
 /**
  * @internal
  */
-export const registeredItem = Converters.discriminatedObject<Items.RegisteredItem>('Type', {
+export const registeredItem = Converters.discriminatedObject<Model.RegisteredItem>('Type', {
     language: registeredLanguage,
     extlang: registeredExtLang,
     script: registeredScript,
@@ -200,7 +203,7 @@ export const registryFile = datedRegistry(registeredItem);
  * or `Failure` with details if an error occurs.
  * @internal
  */
-export function loadJsonSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
+export function loadJsonSubtagRegistryFileSync(path: string): Result<Model.RegistryFile> {
     return convertJsonFileSync(path, registryFile);
 }
 
@@ -211,7 +214,7 @@ export function loadJsonSubtagRegistryFileSync(path: string): Result<Items.Regis
  * or `Failure` with details if an error occurs.
  * @internal
  */
-export function loadTxtSubtagRegistryFileSync(path: string): Result<Items.RegistryFile> {
+export function loadTxtSubtagRegistryFileSync(path: string): Result<Model.RegistryFile> {
     return RecordJar.readRecordJarFileSync(path, {
         arrayFields: ['Comments', 'Description', 'Prefix'],
         fixedContinuationSize: 1,

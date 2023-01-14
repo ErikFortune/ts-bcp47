@@ -47,28 +47,42 @@ describe('LanguageRegistryData class', () => {
                         if (lt.subtags.primaryLanguage) {
                             expect(lt.registry.primaryLanguage).toBeDefined();
                             expect(lt.registry.primaryLanguage!.subtag.toLowerCase()).toEqual(lt.subtags.primaryLanguage?.toLowerCase());
+                        } else {
+                            expect(lt.registry.primaryLanguage).toBeUndefined();
                         }
+
                         if (lt.subtags.extlangs) {
                             expect(lt.registry.extlangs).toBeDefined();
                             expect(lt.registry.extlangs!.map((e) => e.subtag.toLowerCase())).toEqual(
                                 lt.subtags.extlangs.map((e) => e.toLowerCase())
                             );
+                        } else {
+                            expect(lt.registry.extlangs).toBeUndefined();
                         }
+
                         if (lt.effectiveScript) {
                             expect(lt.registry.script).toBeDefined();
                             expect(lt.registry.script!.subtag.toLowerCase()).toEqual(lt.effectiveScript.toLowerCase());
+                        } else {
+                            expect(lt.registry.script).toBeUndefined();
                         }
+
                         if (lt.subtags.region) {
                             expect(lt.registry.region).toBeDefined();
                             expect(lt.registry.region!.subtag.toLowerCase()).toEqual(lt.subtags.region.toLowerCase());
+                        } else {
+                            expect(lt.registry.region).toBeUndefined();
                         }
+
                         if (lt.subtags.grandfathered) {
                             expect(lt.registry.grandfathered).toBeDefined();
-                            expect(lt.registry.grandfathered!.tag.toLowerCase()).toEqual(lt.subtags.grandfathered);
+                            expect(lt.registry.grandfathered!.tag.toLowerCase()).toEqual(lt.subtags.grandfathered.toLowerCase());
+                        } else {
+                            expect(lt.registry.grandfathered).toBeUndefined();
                         }
                     });
                 } else if (this.isFailureTest) {
-                    expect(LanguageTag.create(this.from, this.options)).toFailWith(this.expected);
+                    expect('this line').toBe('unreached');
                 }
             }
 
@@ -85,11 +99,18 @@ describe('LanguageRegistryData class', () => {
                         return undefined;
                 }
                 // we can't do anything with a test case that expects to fail
-                // even basic validation
-                if (gtc.expected.default instanceof RegExp) {
+                if (gtc.expected[which] instanceof RegExp) {
                     return undefined;
                 }
                 return expected;
+            }
+
+            protected _getSuccessTestDescription(testTarget: string, from: TFROM, description: string): string {
+                if (typeof from !== 'string') {
+                    const fromDesc = JSON.stringify(from, undefined, 2);
+                    return `${testTarget} succeeds for "${description}" with registry data for "${this.expected}" (${fromDesc})`;
+                }
+                return `${testTarget} succeeds for "${from}" with registry data for "${this.expected}" (${description})`;
             }
         }
 
