@@ -26,7 +26,9 @@ The constructor for this class is marked as internal. Third-party code should no
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [create(registry)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.create.md) | <code>static</code> |  |
+|  [createFromJson(from)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.createfromjson.md) | <code>static</code> |  |
 |  [load(path)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.load.md) | <code>static</code> |  |
+|  [loadDefault()](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.loaddefault.md) | <code>static</code> |  |
 |  [loadJsonRegistryFile(path)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.loadjsonregistryfile.md) | <code>static</code> |  |
 |  [loadTxtRegistryFile(path)](./ts-bcp47.iana.languagetagextensions.languagetagextensionregistry.loadtxtregistryfile.md) | <code>static</code> |  |
 

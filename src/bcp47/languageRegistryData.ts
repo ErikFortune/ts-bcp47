@@ -25,6 +25,8 @@ import * as Iana from '../iana';
 import { Subtags, subtagsToString } from './common';
 
 /**
+ * Returns all of the data in the IANA language subtags registry for
+ * a set of supplied {@link Bcp47.Subtags | subtags}.
  * @public
  */
 export class LanguageRegistryData {
@@ -58,7 +60,9 @@ export class LanguageRegistryData {
     protected _grandfathered?: Iana.LanguageSubtags.Model.RegisteredGrandfatheredTag | false;
 
     /**
-     * @internal
+     * Constructs a new {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * from a supplied {@link Bcp47.Subtags | subtags} and {@link Iana.LanguageRegistries | language registries}.
+     * @public
      */
     public constructor(subtags: Subtags, iana: Iana.LanguageRegistries) {
         this._iana = iana;
@@ -66,6 +70,9 @@ export class LanguageRegistryData {
     }
 
     /**
+     * Registry data associated with the primary language subtag of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if the primary language is missing or invalid.
      * @public
      */
     public get primaryLanguage(): Iana.LanguageSubtags.Model.RegisteredLanguage | undefined {
@@ -76,6 +83,9 @@ export class LanguageRegistryData {
     }
 
     /**
+     * Registry data associated with the extlang subtag of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if extlang is missing or invalid.
      * @public
      */
     public get extlangs(): Iana.LanguageSubtags.Model.RegisteredExtLang[] | undefined {
@@ -92,6 +102,15 @@ export class LanguageRegistryData {
         return this._extlangs ? this._extlangs : undefined;
     }
 
+    /**
+     * Registry data associated with the script of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if the script cannot be determined.
+     *
+     * Note that script will default to the registry `Suppress-Script` value of the
+     * primary language if no script subtag is present.
+     * @public
+     */
     public get script(): Iana.LanguageSubtags.Model.RegisteredScript | undefined {
         if (this._script === undefined) {
             if (this._subtags.script) {
@@ -110,6 +129,12 @@ export class LanguageRegistryData {
         return this._script ? this._script : undefined;
     }
 
+    /**
+     * Registry data associated with the region subtag of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if the region is missing or invalid.
+     * @public
+     */
     public get region(): Iana.LanguageSubtags.Model.RegisteredRegion | undefined {
         if (this._region === undefined) {
             if (this._subtags.region) {
@@ -122,6 +147,11 @@ export class LanguageRegistryData {
         return this._region ? this._region : undefined;
     }
 
+    /**
+     * Registry data for grandfathered tags, or `undefined` if the tag is not recognized
+     * as a grandfathered tag.
+     * @public
+     */
     public get grandfathered(): Iana.LanguageSubtags.Model.RegisteredGrandfatheredTag | undefined {
         if (this._grandfathered === undefined) {
             if (this._subtags.grandfathered) {
@@ -134,6 +164,12 @@ export class LanguageRegistryData {
         return this._grandfathered ? this._grandfathered : undefined;
     }
 
+    /**
+     * @returns A string representation of the subtags from which this
+     * {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was created.
+     * @public
+     */
     public toString(): string {
         return subtagsToString(this._subtags);
     }

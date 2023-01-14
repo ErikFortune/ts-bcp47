@@ -26,7 +26,7 @@
 |  Interface | Description |
 |  --- | --- |
 |  [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md) |  |
-|  [LanguageFilterOptions](./ts-bcp47.bcp47.languagefilteroptions.md) | Options for  functions. |
+|  [LanguageFilterOptions](./ts-bcp47.bcp47.languagefilteroptions.md) | Options for [language tag list filter](./ts-bcp47.bcp47.choose.md) functions. |
 |  [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | Initialization options for parsing or creation of [language tag](./ts-bcp47.bcp47.languagetag.md) objects. |
 |  [Subtags](./ts-bcp47.bcp47.subtags.md) |  |
 

@@ -4,7 +4,7 @@
 
 ## Bcp47.LanguageFilterOptions interface
 
-Options for  functions.
+Options for [language tag list filter](./ts-bcp47.bcp47.choose.md) functions.
 
 <b>Signature:</b>
 

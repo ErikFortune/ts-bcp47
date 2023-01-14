@@ -25,7 +25,7 @@ import * as Model from './model';
 
 import { LanguageSubtag, RegionSubtag } from '../../iana/language-subtags';
 import { Result, mapResults, succeed } from '@fgv/ts-utils';
-import defaultOverrides from '../../../data/bcp/overrides.json';
+import defaultOverrides from '../../data/bcp/overrides.json';
 
 /**
  * @public

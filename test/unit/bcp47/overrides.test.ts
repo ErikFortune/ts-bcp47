@@ -28,7 +28,7 @@ describe('BCP47 overrides registry', () => {
     describe('loadJson static method', () => {
         test('loads file matching default', () => {
             expect(() => {
-                const loaded = Overrides.OverridesRegistry.loadJson('data/bcp/overrides.json').orThrow();
+                const loaded = Overrides.OverridesRegistry.loadJson('src/data/bcp/overrides.json').orThrow();
                 expect(loaded).toEqual(dflt);
             }).not.toThrow();
         });

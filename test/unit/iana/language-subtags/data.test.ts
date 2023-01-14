@@ -34,12 +34,12 @@ describe('IANA registry data files', () => {
     });
 
     test('can load json', () => {
-        expect(Converters.loadLanguageSubtagsJsonFileSync('data/iana/language-subtags.json')).toSucceed();
+        expect(Converters.loadLanguageSubtagsJsonFileSync('src/data/iana/language-subtags.json')).toSucceed();
     });
 
     test('language-subtag-registry.json, language-subtags.json and registry.txt are equivalent', () => {
         const jsonJar = JarConverters.loadJsonSubtagRegistryFileSync('test/data/iana/language-subtag-registry.json').orThrow();
-        const json = Converters.loadLanguageSubtagsJsonFileSync('data/iana/language-subtags.json').orThrow();
+        const json = Converters.loadLanguageSubtagsJsonFileSync('src/data/iana/language-subtags.json').orThrow();
         const txt = JarConverters.loadTxtSubtagRegistryFileSync('test/data/iana/language-subtag-registry.txt').orThrow();
         expect(jsonJar).toEqual(json);
         expect(json).toEqual(txt);

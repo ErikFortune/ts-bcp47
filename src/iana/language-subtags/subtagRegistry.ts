@@ -28,7 +28,7 @@ import * as path from 'path';
 import { RegisteredItem, RegistryFile } from './model';
 import { Result, captureResult } from '@fgv/ts-utils';
 import { YearMonthDaySpec } from '../jar/language-subtags/registry/model';
-import defaultSubtags from '../../../data/iana/language-subtags.json';
+import defaultSubtags from '../../data/iana/language-subtags.json';
 
 /**
  * @public

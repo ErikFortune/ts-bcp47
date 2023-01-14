@@ -48,7 +48,7 @@ describe('LanguageSubtagRegistry class', () => {
 
     describe('load static methods', () => {
         test('loads JSON subtags', () => {
-            expect(LanguageSubtagRegistry.load('data/iana/language-subtags.json')).toSucceedAndSatisfy((tags) => {
+            expect(LanguageSubtagRegistry.load('src/data/iana/language-subtags.json')).toSucceedAndSatisfy((tags) => {
                 expect(tags.languages.getAllKeys()).toHaveLength(8759);
                 expect(tags.extlangs.getAllKeys()).toHaveLength(252);
                 expect(tags.scripts.getAllKeys()).toHaveLength(261);

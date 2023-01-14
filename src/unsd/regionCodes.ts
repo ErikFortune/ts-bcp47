@@ -29,7 +29,7 @@ import { loadM49cnvFileSync, m49CsvFile } from './csv/converters';
 import { Areas } from './areas';
 import { Regions } from './regions';
 import { UnM49RegionCode } from '../iana/model';
-import defaultRegions from '../../data/unsd/m49.json';
+import defaultRegions from '../data/unsd/m49.json';
 
 /**
  * @public

@@ -26,6 +26,7 @@ The constructor for this class is marked as internal. Third-party code should no
 |  [isStrictlyValid](./ts-bcp47.bcp47.languagetag.isstrictlyvalid.md) | <code>readonly</code> | boolean | Whether if this language tag is strictly valid. |
 |  [isUndetermined](./ts-bcp47.bcp47.languagetag.isundetermined.md) | <code>readonly</code> | boolean | Determines if this tag represents the special <code>undetermined</code> language. |
 |  [isValid](./ts-bcp47.bcp47.languagetag.isvalid.md) | <code>readonly</code> | boolean | Whether this language tag is valid. |
+|  [registry](./ts-bcp47.bcp47.languagetag.registry.md) | <code>readonly</code> | LanguageRegistryData | Details about this language tag from the IANA language registries. |
 |  [subtags](./ts-bcp47.bcp47.languagetag.subtags.md) | <code>readonly</code> | Readonly&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt; | The individual [subtags](./ts-bcp47.bcp47.subtags.md) for this language tag. |
 |  [tag](./ts-bcp47.bcp47.languagetag.tag.md) | <code>readonly</code> | string | A string representation of this language tag. |
 

@@ -80,6 +80,8 @@ describe('LanguageRegistryData class', () => {
                         } else {
                             expect(lt.registry.grandfathered).toBeUndefined();
                         }
+
+                        expect(lt.tag.toString()).toEqual(lt.registry.toString());
                     });
                 } else if (this.isFailureTest) {
                     expect('this line').toBe('unreached');

@@ -24,7 +24,7 @@ import '@fgv/ts-utils-jest';
 import { Iana } from '../../../../src';
 
 describe('IANA tag registry scope', () => {
-    const iana = Iana.LanguageRegistries.load('data/iana').orThrow();
+    const iana = Iana.LanguageRegistries.load('src/data/iana').orThrow();
     const languages = iana.subtags.languages;
 
     describe('getAll and getAllKeys', () => {
@@ -186,7 +186,7 @@ describe('IANA tag registry scope', () => {
     });
 
     describe('add method', () => {
-        const iana2 = Iana.LanguageSubtags.LanguageSubtagRegistry.load('data/iana/language-subtags.json').orThrow();
+        const iana2 = Iana.LanguageSubtags.LanguageSubtagRegistry.load('src/data/iana/language-subtags.json').orThrow();
         const languages = iana2.languages;
         test('fails to add an item with a non-canonical tag', () => {
             const validNonCanonical = 'DE' as Iana.LanguageSubtags.LanguageSubtag;
