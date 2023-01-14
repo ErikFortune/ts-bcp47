@@ -22,7 +22,7 @@
 
 import * as Iana from '../iana';
 
-import { Subtags } from './common';
+import { Subtags, subtagsToString } from './common';
 
 /**
  * @public
@@ -132,5 +132,9 @@ export class LanguageRegistryData {
             }
         }
         return this._grandfathered ? this._grandfathered : undefined;
+    }
+
+    public toString(): string {
+        return subtagsToString(this._subtags);
     }
 }
