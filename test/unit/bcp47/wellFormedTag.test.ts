@@ -65,10 +65,12 @@ describe('BCP-47 WellFormedTag class', () => {
                 ],
                 ['only private tags', 'x-en-US-x-some-other-tag', { privateUse: ['en-US', 'some-other-tag'] }],
             ])('succeeds for %p (%p)', (_desc, tag, expected) => {
-                expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'well-formed' })).toSucceedAndSatisfy((wellFormed) => {
-                    expect(wellFormed.subtags).toEqual(expected);
-                    expect(wellFormed.toString()).toEqual(tag);
-                });
+                expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'well-formed' })).toSucceedAndSatisfy(
+                    (wellFormed: Bcp47.LanguageTag) => {
+                        expect(wellFormed.subtags).toEqual(expected);
+                        expect(wellFormed.toString()).toEqual(tag);
+                    }
+                );
             });
 
             test.each([
@@ -97,7 +99,7 @@ describe('BCP-47 WellFormedTag class', () => {
                 ['private use only', { privateUse: ['some-private-tag'] }],
             ])('succeeds for %p', (_desc, from) => {
                 const subtags = from as Subtags;
-                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toSucceedAndSatisfy((tag) => {
+                expect(Bcp47.LanguageTag.createFromSubtags(subtags)).toSucceedAndSatisfy((tag: Bcp47.LanguageTag) => {
                     expect(tag.subtags).toEqual(subtags);
                 });
             });

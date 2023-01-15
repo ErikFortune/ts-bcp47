@@ -39,7 +39,7 @@ describe('LanguageTag class', () => {
 
             public invoke(): void {
                 if (typeof this.expected === 'string') {
-                    expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         expect(lt.tag).toEqual(this.expected);
                     });
                 } else if (this.expected instanceof RegExp) {
@@ -65,7 +65,7 @@ describe('LanguageTag class', () => {
 
             public invoke(): void {
                 if (typeof this.expected === 'string') {
-                    expect(LanguageTag.createFromSubtags(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.createFromSubtags(this.from, this.options)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         expect(lt.tag).toEqual(this.expected);
                     });
                 } else if (this.expected instanceof RegExp) {
@@ -100,21 +100,21 @@ describe('LanguageTag class', () => {
 
             public invoke(): void {
                 if (this.isSuccessTest) {
-                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         if (this.options?.normalization === 'preferred') {
-                            expect(lt.toPreferred()).toSucceedAndSatisfy((plt) => {
+                            expect(lt.toPreferred()).toSucceedAndSatisfy((plt: LanguageTag) => {
                                 expect(plt.tag).toEqual(this.expected);
                             });
                         } else if (this.options?.validity == 'strictly-valid') {
-                            expect(lt.toStrictlyValid()).toSucceedAndSatisfy((slt) => {
+                            expect(lt.toStrictlyValid()).toSucceedAndSatisfy((slt: LanguageTag) => {
                                 expect(slt.tag).toEqual(this.expected);
                             });
                         } else if (this.options?.validity == 'valid') {
-                            expect(lt.toValid()).toSucceedAndSatisfy((vlt) => {
+                            expect(lt.toValid()).toSucceedAndSatisfy((vlt: LanguageTag) => {
                                 expect(vlt.tag).toEqual(this.expected);
                             });
                         } else if (this.options?.normalization === 'canonical') {
-                            expect(lt.toCanonical()).toSucceedAndSatisfy((clt) => {
+                            expect(lt.toCanonical()).toSucceedAndSatisfy((clt: LanguageTag) => {
                                 expect(clt.tag).toEqual(this.expected);
                             });
                         } else {
@@ -122,7 +122,7 @@ describe('LanguageTag class', () => {
                         }
                     });
                 } else if (this.isFailureTest) {
-                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.create(this.from)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         if (this.options?.normalization === 'preferred') {
                             expect(lt.toPreferred()).toFailWith(this.expected);
                         } else if (this.options?.validity == 'strictly-valid') {
