@@ -45,9 +45,11 @@ describe('ValidTag class', () => {
             ['valid i- grandfathered tag', 'i-ami', 'i-ami'],
             ['valid other grandfathered tag', 'en-GB-oed', 'en-GB-oed'],
         ])('succeeds for %p', (_desc, tag, expected) => {
-            expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy((valid) => {
-                expect(valid.toString()).toEqual(expected);
-            });
+            expect(Bcp47.LanguageTag.createFromTag(tag, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy(
+                (valid: Bcp47.LanguageTag) => {
+                    expect(valid.toString()).toEqual(expected);
+                }
+            );
         });
 
         test.each([
@@ -133,7 +135,7 @@ describe('ValidTag class', () => {
         ])('succeeds for %p', (_desc, from, expected) => {
             const subtags = from as Bcp47.Subtags;
             expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy(
-                (t) => {
+                (t: Bcp47.LanguageTag) => {
                     expect(t.subtags).toEqual(expected);
                 }
             );

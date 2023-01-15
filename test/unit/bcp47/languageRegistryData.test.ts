@@ -42,7 +42,7 @@ describe('LanguageRegistryData class', () => {
 
             public invoke(): void {
                 if (this.isSuccessTest) {
-                    expect(LanguageTag.create(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                    expect(LanguageTag.create(this.from, this.options)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         expect(lt.tag).toEqual(this.expected);
                         if (lt.subtags.primaryLanguage) {
                             expect(lt.registry.primaryLanguage).toBeDefined();

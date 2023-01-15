@@ -66,7 +66,7 @@ export const m49CsvFile = Converters.arrayOf(m49CsvRow);
  * details if an error occurs.
  * @internal
  */
-export function loadM49cnvFileSync(csvPath: string): Result<Model.M49CsvRow[]> {
+export function loadM49csvFileSync(csvPath: string): Result<Model.M49CsvRow[]> {
     return readCsvFileSync(csvPath, { delimiter: ';' }).onSuccess((csv) => {
         return m49CsvFile.convert(csv);
     });

@@ -24,7 +24,7 @@ import * as Model from './csv/model';
 
 import { CountryOrArea, Region } from './common';
 import { Result, allSucceed, succeed } from '@fgv/ts-utils';
-import { loadM49cnvFileSync, m49CsvFile } from './csv/converters';
+import { loadM49csvFileSync, m49CsvFile } from './csv/converters';
 
 import { Areas } from './areas';
 import { Regions } from './regions';
@@ -62,7 +62,7 @@ export class RegionCodes {
     }
 
     public static loadCsv(path: string): Result<RegionCodes> {
-        return loadM49cnvFileSync(path).onSuccess((rows) => {
+        return loadM49csvFileSync(path).onSuccess((rows) => {
             return this.create(rows);
         });
     }

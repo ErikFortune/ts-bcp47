@@ -28,7 +28,7 @@ import { RegionCodes } from '../../../src/unsd';
 describe('RegionCodes class', () => {
     describe('loadCsv static method', () => {
         test('constructs from a valid csv file', () => {
-            expect(RegionCodes.loadCsv('test/data/unsd/m49.csv')).toSucceedAndSatisfy((rc) => {
+            expect(RegionCodes.loadCsv('test/data/unsd/m49.csv')).toSucceedAndSatisfy((rc: RegionCodes) => {
                 expect(rc.areas.getAll()).toHaveLength(249);
                 expect(rc.regions.getAll()).toHaveLength(30);
 

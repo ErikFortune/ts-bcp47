@@ -122,7 +122,7 @@ describe('choose helper method', () => {
     ];
 
     test.each(tests)('filter($desired, $available) yields $expected ($description)', (tc) => {
-        expect(Bcp47.choose(tc.desired, tc.available, tc.options)).toSucceedAndSatisfy((filtered) => {
+        expect(Bcp47.choose(tc.desired, tc.available, tc.options)).toSucceedAndSatisfy((filtered: Bcp47.LanguageTag[]) => {
             expect(filtered.map((f) => f.tag)).toEqual(tc.expected);
         });
     });

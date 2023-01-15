@@ -40,7 +40,7 @@ describe('bcp47 helpers', () => {
 
                 public invoke(): void {
                     if (typeof this.expected === 'string') {
-                        expect(Bcp47.tag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                        expect(Bcp47.tag(this.from, this.options)).toSucceedAndSatisfy((lt: Bcp47.LanguageTag) => {
                             expect(lt.tag).toEqual(this.expected);
                         });
                     } else if (this.expected instanceof RegExp) {
@@ -65,7 +65,7 @@ describe('bcp47 helpers', () => {
 
                 public invoke(): void {
                     if (typeof this.expected === 'string') {
-                        expect(Bcp47.tag(this.from, this.options)).toSucceedAndSatisfy((lt) => {
+                        expect(Bcp47.tag(this.from, this.options)).toSucceedAndSatisfy((lt: Bcp47.LanguageTag) => {
                             expect(lt.tag).toEqual(this.expected);
                         });
                     } else if (this.expected instanceof RegExp) {
