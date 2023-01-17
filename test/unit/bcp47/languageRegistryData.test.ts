@@ -74,6 +74,24 @@ describe('LanguageRegistryData class', () => {
                             expect(lt.registry.region).toBeUndefined();
                         }
 
+                        if (lt.subtags.variants) {
+                            expect(lt.registry.variants).toBeDefined();
+                            expect(lt.registry.variants!.map((v) => v.subtag.toLowerCase())).toEqual(
+                                lt.subtags.variants.map((e) => e.toLowerCase())
+                            );
+                        } else {
+                            expect(lt.registry.variants).toBeUndefined();
+                        }
+
+                        if (lt.subtags.extensions) {
+                            expect(lt.registry.extensions).toBeDefined();
+                            expect(lt.registry.extensions!.map((v) => v.singleton.toLowerCase())).toEqual(
+                                lt.subtags.extensions.map((e) => e.singleton.toLowerCase())
+                            );
+                        } else {
+                            expect(lt.registry.extensions).toBeUndefined();
+                        }
+
                         if (lt.subtags.grandfathered) {
                             expect(lt.registry.grandfathered).toBeDefined();
                             expect(lt.registry.grandfathered!.tag.toLowerCase()).toEqual(lt.subtags.grandfathered.toLowerCase());

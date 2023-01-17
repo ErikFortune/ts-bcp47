@@ -23,7 +23,7 @@
 import { Brand } from '@fgv/ts-utils';
 
 /**
- * @internal
+ * @public
  */
 export type ExtensionSubtag = Brand<string, 'ExtensionSubtag'>;
 
@@ -38,6 +38,6 @@ export type PrivateUseSubtag = Brand<string, 'PrivateUseSubtag'>;
 export type PrivateUsePrefix = Brand<string, 'PrivateUsePrefix'>;
 
 /**
- * @internal
+ * @public
  */
 export { ExtensionSingleton } from '../../iana/language-tag-extensions/model';

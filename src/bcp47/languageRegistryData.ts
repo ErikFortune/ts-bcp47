@@ -20,9 +20,59 @@
  * SOFTWARE.
  */
 
+import * as Bcp47 from '../bcp47';
 import * as Iana from '../iana';
 
 import { Subtags, subtagsToString } from './common';
+
+/**
+ * Represents a single extlang subtag with corresponding registry data,
+ * if present.
+ * @public
+ */
+export interface RegisteredExtLangValue {
+    /**
+     * A {@link Iana.LanguageSubtags.ExtLangSubtag | extlang subtag} from
+     * the original language tag.
+     */
+    subtag: Iana.LanguageSubtags.ExtLangSubtag;
+    /**
+     * The {@link Iana.LanguageSubtag.Model.RegisteredExtLang | IANA subtag registry entry}
+     * for this subtag, or `undefined` if the subtag is not registered.
+     */
+    registry?: Iana.LanguageSubtags.Model.RegisteredExtLang;
+}
+
+/**
+ * Represents a single variant subtag with corresponding registry data,
+ * if present.
+ * @public
+ */
+export interface RegisteredVariantValue {
+    /**
+     * A {@link Iana.LanguageSubtags.VariantSubtag | variant subtag} from
+     * the original language tag.
+     */
+    subtag: Iana.LanguageSubtags.VariantSubtag;
+    /**
+     * The {@link Iana.LanguageSubtag.Model.RegisteredVariant | IANA subtag registry entry}
+     * for this subtag, or `undefined` if the subtag is not registered.
+     */
+    registry?: Iana.LanguageSubtags.Model.RegisteredVariant;
+}
+
+/**
+ * Represents a single extension subtag with corresponding registry data,
+ * if present.
+ * @public
+ */
+export interface RegisteredExtensionValue extends Bcp47.ExtensionSubtagValue {
+    /**
+     * The lanugage extensions registry entry for the associated subtag,
+     * or `undefined` if the extension is not registered.
+     */
+    registry?: Iana.LanguageTagExtensions.Model.LanguageTagExtension;
+}
 
 /**
  * Returns all of the data in the IANA language subtags registry for
@@ -45,7 +95,7 @@ export class LanguageRegistryData {
     /**
      * @internal
      */
-    protected _extlangs?: Iana.LanguageSubtags.Model.RegisteredExtLang[] | false;
+    protected _extlangs?: RegisteredExtLangValue[] | false;
     /**
      * @internal
      */
@@ -54,6 +104,14 @@ export class LanguageRegistryData {
      * @internal
      */
     protected _region?: Iana.LanguageSubtags.Model.RegisteredRegion | false;
+    /**
+     * @internal
+     */
+    protected _variants?: RegisteredVariantValue[] | false;
+    /**
+     * @internal
+     */
+    protected _extensions?: RegisteredExtensionValue[] | false;
     /**
      * @internal
      */
@@ -88,12 +146,15 @@ export class LanguageRegistryData {
      * was constructed, or `undefined` if extlang is missing or invalid.
      * @public
      */
-    public get extlangs(): Iana.LanguageSubtags.Model.RegisteredExtLang[] | undefined {
+    public get extlangs(): RegisteredExtLangValue[] | undefined {
         if (this._extlangs === undefined) {
             if (this._subtags.extlangs !== undefined) {
-                this._extlangs = this._subtags.extlangs
-                    .map((e) => this._iana.subtags.extlangs.tryGet(e))
-                    .filter((e): e is Iana.LanguageSubtags.Model.RegisteredExtLang => e !== undefined);
+                this._extlangs = this._subtags.extlangs.map((e) => {
+                    return {
+                        subtag: e,
+                        registry: this._iana.subtags.extlangs.tryGet(e),
+                    };
+                });
             }
             if (!this._subtags.extlangs || this._subtags.extlangs.length === 0) {
                 this._extlangs = false;
@@ -145,6 +206,52 @@ export class LanguageRegistryData {
             }
         }
         return this._region ? this._region : undefined;
+    }
+
+    /**
+     * Registry data associated with the variant subtags of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if variant subtags are missing or invalid.
+     * @public
+     */
+    public get variants(): RegisteredVariantValue[] | undefined {
+        if (this._variants === undefined) {
+            if (this._subtags.variants !== undefined) {
+                this._variants = this._subtags.variants.map((v) => {
+                    return {
+                        subtag: v,
+                        registry: this._iana.subtags.variants.tryGet(v),
+                    };
+                });
+            }
+            if (!this._subtags.variants || this._subtags.variants.length === 0) {
+                this._variants = false;
+            }
+        }
+        return this._variants ? this._variants : undefined;
+    }
+
+    /**
+     * Registry data associated with the extension subtags of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if extension subtags are missing or invalid.
+     * @public
+     */
+    public get extensions(): RegisteredExtensionValue[] | undefined {
+        if (this._extensions === undefined) {
+            if (this._subtags.extensions !== undefined) {
+                this._extensions = this._subtags.extensions.map((e) => {
+                    return {
+                        ...e,
+                        registry: this._iana.extensions.extensions.tryGet(e.singleton),
+                    };
+                });
+            }
+            if (!this._subtags.variants || this._subtags.variants.length === 0) {
+                this._variants = false;
+            }
+        }
+        return this._extensions ? this._extensions : undefined;
     }
 
     /**
