@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-readonly value: Model.ExtensionSubtag;
+readonly value: ExtensionSubtag;
 ```
