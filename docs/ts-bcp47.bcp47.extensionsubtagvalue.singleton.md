@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-readonly singleton: Model.ExtensionSingleton;
+readonly singleton: ExtensionSingleton;
 ```

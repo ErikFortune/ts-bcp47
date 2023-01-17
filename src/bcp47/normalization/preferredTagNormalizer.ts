@@ -29,6 +29,7 @@ import { Result, fail, mapResults, succeed } from '@fgv/ts-utils';
 import { LanguageTagParser } from '../languageTagParser';
 import { TagNormalization } from './common';
 import { TagNormalizerBase } from './baseNormalizer';
+import { sanitizeJson } from '../../utils';
 
 /**
  * @public
@@ -159,14 +160,43 @@ export class PreferredNormalizer extends TagNormalizerBase {
         return succeed(subtags);
     }
 
-    protected _postValidate(subtags: Subtags): Result<Subtags> {
-        return super._postValidate(subtags).onSuccess((subtags) => {
-            if (subtags.extlangs && subtags.extlangs.length > 1) {
+    protected _postValidateExtLangs(subtags: Subtags): Result<Subtags> {
+        if (subtags.extlangs) {
+            if (subtags.extlangs.length > 1) {
                 return fail(`${subtags.extlangs.join('-')}: multiple extlang subtags is invalid`);
             }
-            return this._postValidateGrandfatheredTag(subtags).onSuccess((subtags) => {
+            if (subtags.extlangs.length > 0) {
+                const registry = this._iana.subtags.extlangs.tryGet(subtags.extlangs[0]);
+                if (registry) {
+                    if (registry.preferredValue && registry.prefix === /* istanbul ignore next */ subtags.primaryLanguage?.toLowerCase()) {
+                        const preferred = this._iana.subtags.languages.tryGet(registry.preferredValue);
+                        if (preferred) {
+                            return succeed(
+                                sanitizeJson({
+                                    ...subtags,
+                                    primaryLanguage: preferred.subtag,
+                                    extlangs: undefined,
+                                })
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        return succeed(subtags);
+    }
+
+    protected _postValidate(subtags: Subtags): Result<Subtags> {
+        return super
+            ._postValidate(subtags)
+            .onSuccess((subtags) => {
+                return this._postValidateExtLangs(subtags);
+            })
+            .onSuccess((subtags) => {
+                return this._postValidateGrandfatheredTag(subtags);
+            })
+            .onSuccess((subtags) => {
                 return this._postValidateRedundantTag(subtags);
             });
-        });
     }
 }

@@ -15,6 +15,6 @@ export interface ExtensionSubtagValue
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [singleton](./ts-bcp47.bcp47.extensionsubtagvalue.singleton.md) | <code>readonly</code> | Model.ExtensionSingleton |  |
-|  [value](./ts-bcp47.bcp47.extensionsubtagvalue.value.md) | <code>readonly</code> | Model.ExtensionSubtag |  |
+|  [singleton](./ts-bcp47.bcp47.extensionsubtagvalue.singleton.md) | <code>readonly</code> | [ExtensionSingleton](./ts-bcp47.bcp47.extensionsingleton.md) |  |
+|  [value](./ts-bcp47.bcp47.extensionsubtagvalue.value.md) | <code>readonly</code> | [ExtensionSubtag](./ts-bcp47.bcp47.extensionsubtag.md) |  |
 

@@ -64,6 +64,11 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         ],
     },
     {
+        description: 'valid private primary language',
+        from: 'qpn',
+        expected: [['qpn', allTestKeys]],
+    },
+    {
         description: 'invalid primary language',
         from: 'ENG-US',
         expected: [
@@ -78,6 +83,14 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         expected: [
             ['zh-cmn', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['cmn', allPreferredKeys],
+        ],
+    },
+    {
+        description: 'valid canonical extlang with additional tags',
+        from: 'zh-cmn-CN-x-private',
+        expected: [
+            ['zh-cmn-CN-x-private', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['cmn-CN-x-private', allPreferredKeys],
         ],
     },
     {
@@ -290,6 +303,19 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-gb-oed', allNonCanonicalTestKeys],
             ['en-GB-oed', allNonPreferredCanonicalKeys],
             ['en-GB-oxendict', allPreferredKeys],
+        ],
+    },
+    {
+        description: 'valid redundant tag with no preferredValue',
+        from: 'mn-Mong',
+        expected: [['mn-Mong', allTestKeys]],
+    },
+    {
+        description: 'valid redundant tag with preferred value',
+        from: 'sgn-BR',
+        expected: [
+            ['sgn-BR', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
+            ['bzs', allPreferredKeys],
         ],
     },
 ];

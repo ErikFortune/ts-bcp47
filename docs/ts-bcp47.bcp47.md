@@ -40,6 +40,8 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [ExtensionSingleton](./ts-bcp47.bcp47.extensionsingleton.md) |  |
+|  [ExtensionSubtag](./ts-bcp47.bcp47.extensionsubtag.md) |  |
 |  [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | Any of the possible ways to represent a language - as a <code>string</code>, parsed [subtags](./ts-bcp47.bcp47.subtags.md) or an instantiated [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
 |  [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | Describes the degree of normalization of a language tag. |
 |  [TagSimilarity](./ts-bcp47.bcp47.tagsimilarity.md) | Numeric representation of the quality of a language match. Range is 0 (no match) to 1 (exact match). |

@@ -22,14 +22,15 @@
 
 import * as Iana from '../iana';
 
-import { Model } from './bcp47Subtags';
+import { ExtensionSingleton, ExtensionSubtag } from './bcp47Subtags/model';
+export { ExtensionSingleton, ExtensionSubtag };
 
 /**
  * @public
  */
 export interface ExtensionSubtagValue {
-    readonly singleton: Model.ExtensionSingleton;
-    readonly value: Model.ExtensionSubtag;
+    readonly singleton: ExtensionSingleton;
+    readonly value: ExtensionSubtag;
 }
 
 /**
