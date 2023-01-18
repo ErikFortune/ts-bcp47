@@ -281,6 +281,11 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         ],
     },
     {
+        description: 'valid extension and private use subtag',
+        from: 'en-US-u-us-x-test',
+        expected: [['en-US-u-us-x-test', allTestKeys]],
+    },
+    {
         description: 'valid grandfathered tag with no preferredValue',
         from: 'i-Mingo',
         expected: [

@@ -239,7 +239,7 @@ export class LanguageTagParser {
             if (
                 state.next !== undefined &&
                 !Validate.extensionSingleton.isWellFormed(state.next) &&
-                !Validate.extensionSingleton.isWellFormed(state.next)
+                !Validate.privateUsePrefix.isWellFormed(state.next)
             ) {
                 return fail(`${state.next}: malformed extension subtag`);
             } else if (values.length < 1) {
