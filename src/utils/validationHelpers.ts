@@ -39,7 +39,7 @@ export interface ValidationHelpersConstructorParams<T extends string, TC = unkno
 }
 
 /**
- * @internal
+ * @public
  */
 export class ValidationHelpers<T extends string, TC = unknown> {
     public readonly description: string;

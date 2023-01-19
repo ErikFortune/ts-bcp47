@@ -24,4 +24,5 @@ import * as Bcp47 from './bcp47';
 import * as Iana from './iana';
 import * as Unsd from './unsd';
 
+export { ValidationHelpers } from './utils/validationHelpers';
 export { Bcp47, Iana, Unsd };
