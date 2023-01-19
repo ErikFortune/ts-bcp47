@@ -564,6 +564,9 @@ declare namespace Model_3 {
 }
 
 // @public
+type Normalizer<T extends string, TC = unknown> = (val: T, context?: TC) => Result<T>;
+
+// @public
 class NormalizeTag {
     // Warning: (ae-forgotten-export) The symbol "TagNormalizer" needs to be exported by the entry point index.d.ts
     //
@@ -972,6 +975,15 @@ declare namespace Unsd {
 }
 export { Unsd }
 
+declare namespace Utils {
+    export {
+        Normalizer,
+        ValidationHelpers,
+        ValidationHelpersConstructorParams
+    }
+}
+export { Utils }
+
 declare namespace Validate {
     export {
         languageSubtag_2 as languageSubtag,
@@ -1012,6 +1024,32 @@ class ValidateTag {
     static isValid(subtags: Subtags): boolean;
     static isWellFormed(subtags: Subtags): boolean;
     static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
+}
+
+// @public
+class ValidationHelpers<T extends string, TC = unknown> {
+    constructor(init: ValidationHelpersConstructorParams<T, TC>);
+    readonly converter: Converter<T, TC>;
+    readonly description: string;
+    readonly isCanonical: TypeGuardWithContext<T, TC>;
+    readonly isWellFormed: TypeGuardWithContext<T, TC>;
+    toCanonical(from: unknown, context?: TC): Result<T>;
+    // @internal (undocumented)
+    protected readonly _toCanonical?: Normalizer<T, TC>;
+    verifyIsCanonical(from: unknown, context?: TC): Result<T>;
+    verifyIsWellFormed(from: unknown, context?: TC): Result<T>;
+}
+
+// @public
+interface ValidationHelpersConstructorParams<T extends string, TC = unknown> {
+    // (undocumented)
+    description: string;
+    // (undocumented)
+    isCanonical: Validation.TypeGuardWithContext<T, TC>;
+    // (undocumented)
+    isWellFormed: Validation.TypeGuardWithContext<T, TC>;
+    // (undocumented)
+    toCanonical?: Normalizer<T, TC>;
 }
 
 // @public
