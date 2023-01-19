@@ -19,10 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// istanbul ignore file
 
-import * as Bcp47 from './bcp47';
-import * as Iana from './iana';
-import * as Unsd from './unsd';
-import * as Utils from './utils/public';
-
-export { Bcp47, Iana, Unsd, Utils };
+export { Normalizer, ValidationHelpers, ValidationHelpersConstructorParams } from './validationHelpers';
