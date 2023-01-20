@@ -223,6 +223,54 @@ export class LanguageTag {
     }
 
     /**
+     * Whether this language tag is a grandfathered tag.
+     */
+    public get isGrandfathered(): boolean {
+        return this.subtags.grandfathered !== undefined;
+    }
+
+    /**
+     * Gets a text description of this tag.
+     */
+    public get description(): string {
+        const parts: string[] = [];
+        if (!this.subtags.grandfathered) {
+            if (this.registry.primaryLanguage || this.subtags.primaryLanguage) {
+                parts.push((this.registry.primaryLanguage?.description[0] ?? this.subtags.primaryLanguage)!);
+            }
+            if (this.registry.extlangs) {
+                for (const e of this.registry.extlangs) {
+                    parts.push(`/ ${e.registry?.description[0] ?? e.subtag}`);
+                }
+            }
+            if (this.subtags.script) {
+                parts.push(`in ${this.registry.script?.description[0] ?? this.subtags.script} script`);
+            }
+            if (this.subtags.region) {
+                parts.push(`as spoken in ${this.registry.region?.description[0] ?? this.subtags.region}`);
+            }
+            if (this.registry.variants && this.registry.variants.length > 0) {
+                for (const e of this.registry.variants) {
+                    parts.push(`(${e.registry?.description[0] ?? e.subtag})`);
+                }
+            }
+            if (this.registry.extensions && this.registry.extensions.length > 0) {
+                for (const e of this.registry.extensions) {
+                    parts.push(`(${e.registry?.description[0] ?? `-${e.singleton}`} "${e.value}")`);
+                }
+            }
+            if (this.subtags.privateUse && this.subtags.privateUse.length > 0) {
+                for (const e of this.subtags.privateUse) {
+                    parts.push(`(-x "${e}")`);
+                }
+            }
+        } else {
+            parts.push(`${this.tag} (grandfathered)`);
+        }
+        return parts.join(' ');
+    }
+
+    /**
      * Creates a new {@link Bcp47.LanguageTag | language tag} from a supplied `string` tag
      * using optional configuration, if supplied.
      * @param tag - The `string` tag from which the {@link Bcp47.LanguageTag | language tag}

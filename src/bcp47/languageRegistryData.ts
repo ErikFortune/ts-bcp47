@@ -103,6 +103,10 @@ export class LanguageRegistryData {
     /**
      * @internal
      */
+    protected _effectiveScript?: Iana.LanguageSubtags.Model.RegisteredScript | false;
+    /**
+     * @internal
+     */
     protected _region?: Iana.LanguageSubtags.Model.RegisteredRegion | false;
     /**
      * @internal
@@ -168,8 +172,6 @@ export class LanguageRegistryData {
      * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
      * was constructed, or `undefined` if the script cannot be determined.
      *
-     * Note that script will default to the registry `Suppress-Script` value of the
-     * primary language if no script subtag is present.
      * @public
      */
     public get script(): Iana.LanguageSubtags.Model.RegisteredScript | undefined {
@@ -178,16 +180,36 @@ export class LanguageRegistryData {
                 this._script = this._iana.subtags.scripts.tryGet(this._subtags.script);
             }
             if (!this._script) {
-                const suppressed = this.primaryLanguage?.suppressScript;
-                if (suppressed) {
-                    this._script = this._iana.subtags.scripts.tryGet(suppressed);
-                }
-            }
-            if (!this._script) {
                 this._script = false;
             }
         }
         return this._script ? this._script : undefined;
+    }
+
+    /**
+     * Registry data associated with the script of the language tag from
+     * which this {@link Bcp47.LanguageTagRegistryData | Bcp47.LanguageTagRegistryData}
+     * was constructed, or `undefined` if the script cannot be determined.
+     *
+     * Note that effectiveScript will default to the registry `Suppress-Script` value of the
+     * primary language if no script subtag is present.
+     * @public
+     */
+    public get effectiveScript(): Iana.LanguageSubtags.Model.RegisteredScript | undefined {
+        if (this._effectiveScript === undefined) {
+            if (this._subtags.script) {
+                this._effectiveScript = this._iana.subtags.scripts.tryGet(this._subtags.script);
+            } else if (!this._effectiveScript) {
+                const suppressed = this.primaryLanguage?.suppressScript;
+                if (suppressed) {
+                    this._effectiveScript = this._iana.subtags.scripts.tryGet(suppressed);
+                }
+            }
+            if (!this._effectiveScript) {
+                this._effectiveScript = false;
+            }
+        }
+        return this._effectiveScript ? this._effectiveScript : undefined;
     }
 
     /**

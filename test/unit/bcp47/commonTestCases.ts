@@ -46,6 +46,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         description: 'valid canonical primary language',
         from: 'en',
         expected: [['en', allTestKeys]],
+        expectedDescription: [['English', allTestKeys]],
     },
     {
         description: 'valid non-canonical primary language',
@@ -62,11 +63,13 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['in', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['id', allPreferredKeys],
         ],
+        expectedDescription: [['Indonesian', allTestKeys]],
     },
     {
         description: 'valid private primary language',
         from: 'qpn',
         expected: [['qpn', allTestKeys]],
+        expectedDescription: [['Private use', allTestKeys]],
     },
     {
         description: 'invalid primary language',
@@ -76,6 +79,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['eng-US', ['wellFormedCanonical']],
             [/invalid language/i, allValidatingKeys],
         ],
+        expectedDescription: [['ENG as spoken in United States', ['wellFormed']]],
     },
     {
         description: 'valid canonical extlang',
@@ -84,6 +88,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['zh-cmn', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['cmn', allPreferredKeys],
         ],
+        expectedDescription: [
+            ['Chinese / Mandarin Chinese', ['wellFormed']],
+            ['Mandarin Chinese', ['preferred']],
+        ],
     },
     {
         description: 'valid canonical extlang with additional tags',
@@ -91,6 +99,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         expected: [
             ['zh-cmn-CN-x-private', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['cmn-CN-x-private', allPreferredKeys],
+        ],
+        expectedDescription: [
+            ['Chinese / Mandarin Chinese as spoken in China (-x "private")', ['wellFormed']],
+            ['Mandarin Chinese as spoken in China (-x "private")', ['preferred']],
         ],
     },
     {
@@ -110,6 +122,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['zh-han', ['wellFormedCanonical']],
             [/invalid extlang/i, allValidatingKeys],
         ],
+        expectedDescription: [['Chinese / Han', ['wellFormed']]],
     },
     {
         description: 'valid extlang with invalid prefix',
@@ -119,6 +132,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-cmn-US', ['wellFormedCanonical', 'validCanonical', 'preferred']],
             [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
         ],
+        expectedDescription: [['English / Mandarin Chinese as spoken in United States', ['wellFormed']]],
     },
     {
         description: 'multiple extlang',
@@ -127,6 +141,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['zh-cmn-yue', ['default', 'wellFormed', 'wellFormedCanonical']],
             [/multiple extlang/i, allValidatingKeys],
         ],
+        expectedDescription: [['Chinese / Mandarin Chinese / Yue Chinese', ['wellFormed']]],
     },
     {
         description: 'valid non-canonical, non-suppressed script',
@@ -135,6 +150,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['zh-LATN', allNonCanonicalTestKeys],
             ['zh-Latn', allCanonicalTestKeys],
         ],
+        expectedDescription: [['Chinese in Latin script', ['wellFormed', 'preferred']]],
     },
     {
         description: 'valid non-canonical, suppressed script',
@@ -143,6 +159,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-LATN', allNonCanonicalTestKeys],
             ['en-Latn', allNonPreferredCanonicalKeys],
             ['en', allPreferredKeys],
+        ],
+        expectedDescription: [
+            ['English in Latin script', ['wellFormed']],
+            ['English', ['preferred']],
         ],
     },
     {
@@ -153,6 +173,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-Aaaa', ['wellFormedCanonical']],
             [/invalid script/i, allValidatingKeys],
         ],
+        expectedDescription: [['English in AaaA script', ['wellFormed']]],
     },
     {
         description: 'valid non-canonical iso3166-2 region',
@@ -161,11 +182,13 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-aq', allNonCanonicalTestKeys],
             ['en-AQ', allCanonicalTestKeys],
         ],
+        expectedDescription: [['English as spoken in Antarctica', ['wellFormed', 'preferred']]],
     },
     {
         description: 'valid non-canonical UN M.49 region',
         from: 'es-419',
         expected: [['es-419', allTestKeys]],
+        expectedDescription: [['Spanish as spoken in Latin America and the Caribbean', allTestKeys]],
     },
     {
         description: 'invalid region',
@@ -174,6 +197,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-AJ', ['default', 'wellFormed', 'wellFormedCanonical']],
             [/invalid region/i, allValidatingKeys],
         ],
+        expectedDescription: [['English as spoken in AJ', ['wellFormed']]],
     },
     {
         description: 'strictly valid non-canonical variant',
@@ -182,6 +206,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['ca-Valencia', allNonCanonicalTestKeys],
             ['ca-valencia', allCanonicalTestKeys],
         ],
+        expectedDescription: [['Catalan (Valencian)', ['wellFormed']]],
     },
     {
         description: 'not strictly-valid non-canonical variant',
@@ -191,6 +216,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['fr-valencia', ['wellFormedCanonical', 'validCanonical', 'preferred']],
             [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
         ],
+        expectedDescription: [['French (Valencian)', ['wellFormed']]],
     },
     {
         description: 'valid but deprecated region',
@@ -199,11 +225,16 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-BU', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['en-MM', allPreferredKeys],
         ],
+        expectedDescription: [
+            ['English as spoken in Burma', ['wellFormed']],
+            ['English as spoken in Myanmar', ['preferred']],
+        ],
     },
     {
         description: 'any prefix for variant with no registered prefix',
         from: 'en-alalc97',
         expected: [['en-alalc97', allTestKeys]],
+        expectedDescription: [['English (ALA-LC Romanization, 1997 edition)', ['wellFormed']]],
     },
     {
         description: 'strictly valid with two variants',
@@ -212,6 +243,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['SL-Rozaj-Lipaw', allNonCanonicalTestKeys],
             ['sl-rozaj-lipaw', allCanonicalTestKeys],
         ],
+        expectedDescription: [['Slovenian (Resian) (The Lipovaz dialect of Resian)', ['wellFormed']]],
     },
     {
         description: 'strictly valid with multiple variants',
@@ -220,6 +252,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['SL-Rozaj-biske-1994', allNonCanonicalTestKeys],
             ['sl-rozaj-biske-1994', allCanonicalTestKeys],
         ],
+        expectedDescription: [['Slovenian (Resian) (The San Giorgio dialect of Resian) (Standardized Resian orthography)', ['wellFormed']]],
     },
     {
         description: 'not strictly valid with multiple variants',
@@ -229,6 +262,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['sl-rozaj-1996', ['wellFormedCanonical', 'validCanonical', 'preferred']],
             [/invalid prefix/i, ['strictlyValid', 'strictlyValidCanonical', 'strictlyValidPreferred']],
         ],
+        expectedDescription: [['Slovenian (Resian) (German orthography of 1996)', ['wellFormed']]],
     },
     {
         description: 'invalid variant',
@@ -237,14 +271,16 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['ca-ES-xyzzy', ['default', 'wellFormed', 'wellFormedCanonical']],
             [/invalid variant/i, allValidatingKeys],
         ],
+        expectedDescription: [['Catalan as spoken in Spain (xyzzy)', ['wellFormed']]],
     },
     {
-        description: 'invalid variant',
+        description: 'invalid duplicate variant',
         from: 'ca-valencia-valencia',
         expected: [
             ['ca-valencia-valencia', ['default', 'wellFormed', 'wellFormedCanonical']],
             [/duplicate variant/i, allValidatingKeys],
         ],
+        expectedDescription: [['Catalan (Valencian) (Valencian)', ['wellFormed']]],
     },
     {
         description: 'valid extensions',
@@ -252,6 +288,9 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         expected: [
             ['en-us-u-en-US-t-MT', allNonCanonicalTestKeys],
             ['en-US-u-en-US-t-mt', allCanonicalTestKeys],
+        ],
+        expectedDescription: [
+            ['English as spoken in United States (Unicode Locale "en-US") (Specifying Transformed Content "MT")', ['wellFormed']],
         ],
     },
     {
@@ -262,6 +301,7 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['es-US-a-extend', ['wellFormedCanonical']],
             [/invalid.*extension/i, allValidatingKeys],
         ],
+        expectedDescription: [['Spanish as spoken in United States (-a "extend")', ['wellFormed']]],
     },
     {
         description: 'duplicate extension',
@@ -279,11 +319,16 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-x-Pig-Latin', allNonCanonicalTestKeys],
             ['en-x-pig-latin', allCanonicalTestKeys],
         ],
+        expectedDescription: [
+            ['English (-x "Pig-Latin")', ['wellFormed']],
+            ['English (-x "pig-latin")', ['preferred']],
+        ],
     },
     {
         description: 'valid extension and private use subtag',
         from: 'en-US-u-us-x-test',
         expected: [['en-US-u-us-x-test', allTestKeys]],
+        expectedDescription: [['English as spoken in United States (Unicode Locale "us") (-x "test")', ['wellFormed']]],
     },
     {
         description: 'valid grandfathered tag with no preferredValue',
@@ -292,6 +337,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['i-Mingo', allNonCanonicalTestKeys],
             ['i-mingo', allCanonicalTestKeys],
         ],
+        expectedDescription: [
+            ['i-Mingo (grandfathered)', ['wellFormed']],
+            ['i-mingo (grandfathered)', ['preferred']],
+        ],
     },
     {
         description: 'valid grandfathered tag with preferredValue',
@@ -299,6 +348,10 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         expected: [
             ['art-lojban', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['jbo', allPreferredKeys],
+        ],
+        expectedDescription: [
+            ['art-lojban (grandfathered)', ['wellFormed']],
+            ['Lojban', ['preferred']],
         ],
     },
     {
@@ -309,11 +362,16 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['en-GB-oed', allNonPreferredCanonicalKeys],
             ['en-GB-oxendict', allPreferredKeys],
         ],
+        expectedDescription: [
+            ['en-gb-oed (grandfathered)', ['wellFormed']],
+            ['English as spoken in United Kingdom (Oxford English Dictionary spelling)', ['preferred']],
+        ],
     },
     {
         description: 'valid redundant tag with no preferredValue',
         from: 'mn-Mong',
         expected: [['mn-Mong', allTestKeys]],
+        expectedDescription: [['Mongolian in Mongolian script', allTestKeys]],
     },
     {
         description: 'valid redundant tag with preferred value',
@@ -322,6 +380,16 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
             ['sgn-BR', [...allNonCanonicalTestKeys, ...allNonPreferredCanonicalKeys]],
             ['bzs', allPreferredKeys],
         ],
+        expectedDescription: [
+            ['Sign languages as spoken in Brazil', ['wellFormed']],
+            ['Brazilian Sign Language', ['preferred']],
+        ],
+    },
+    {
+        description: 'completely private tag with multiple tags',
+        from: 'x-thing-x-other-thing-x-last-thing',
+        expected: [['x-thing-x-other-thing-x-last-thing', allTestKeys]],
+        expectedDescription: [['(-x "thing") (-x "other-thing") (-x "last-thing")', allTestKeys]],
     },
 ];
 

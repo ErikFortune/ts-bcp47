@@ -41,6 +41,7 @@ describe('LanguageTag class', () => {
                 if (typeof this.expected === 'string') {
                     expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt: LanguageTag) => {
                         expect(lt.tag).toEqual(this.expected);
+                        expect(lt.isGrandfathered).toEqual(lt.subtags.grandfathered !== undefined);
                     });
                 } else if (this.expected instanceof RegExp) {
                     expect(LanguageTag.createFromTag(this.from, this.options)).toFailWith(this.expected);
@@ -184,6 +185,51 @@ describe('LanguageTag class', () => {
             test.each(ToMethodTestCase.getFactory<Subtags>().emit(allTestKeys, subtagsTestCases))('%p', (_desc, tc) => {
                 tc.invoke();
             });
+        });
+    });
+
+    describe('description getter', () => {
+        class DescriptionTestCase extends SimpleTagTestCaseBase<string> {
+            public static get factory(): GenericTagTestCaseFactory<string, DescriptionTestCase> {
+                return new GenericTagTestCaseFactory(DescriptionTestCase.create);
+            }
+
+            public static create(gtc: GenericLanguageTagTest<string>, which: TestKey): DescriptionTestCase {
+                return new DescriptionTestCase(gtc, which);
+            }
+
+            public invoke(): void {
+                if (typeof this.expected === 'string') {
+                    expect(LanguageTag.createFromTag(this.from, this.options)).toSucceedAndSatisfy((lt: LanguageTag) => {
+                        expect(lt.description).toEqual(this.expected);
+                    });
+                }
+            }
+
+            protected _getExpectedValue(
+                which: TestKey,
+                gtc: GenericLanguageTagTest<string, string | RegExp>,
+                expected: string | RegExp | undefined
+            ): string | RegExp | undefined {
+                // just well formed and preferred are fine
+                if (which !== 'wellFormed' && which !== 'preferred') {
+                    return undefined;
+                }
+
+                // we can't do anything with a test case that expects to fail
+                if (expected instanceof RegExp) {
+                    return undefined;
+                }
+
+                if (gtc.expectedDescription?.[which] && typeof gtc.expectedDescription[which] === 'string') {
+                    return gtc.expectedDescription[which];
+                }
+                return undefined;
+            }
+        }
+
+        test.each(DescriptionTestCase.factory.emit(allTestKeys, tagTestCases))('%p', (_desc, tc) => {
+            tc.invoke();
         });
     });
 });

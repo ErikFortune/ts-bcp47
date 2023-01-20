@@ -70,12 +70,14 @@ export interface GenericLanguageTagTestInit<TFROM, TEXPECTED = string | RegExp> 
     description: string;
     from: TFROM;
     expected: [TEXPECTED | undefined, TestKey[]][];
+    expectedDescription?: [string | undefined, TestKey[]][];
 }
 
 export class GenericLanguageTagTest<TFROM, TEXPECTED = string | RegExp> {
     public readonly description: string;
     public readonly from: TFROM;
     public readonly expected: GenericLanguageTagTestExpected<TEXPECTED>;
+    public readonly expectedDescription?: GenericLanguageTagTestExpected<string>;
     public constructor(init: GenericLanguageTagTestInit<TFROM, TEXPECTED>) {
         this.description = init.description;
         this.from = init.from;
@@ -85,6 +87,17 @@ export class GenericLanguageTagTest<TFROM, TEXPECTED = string | RegExp> {
             for (const key of value[1]) {
                 this.expected[key] = value[0];
             }
+        }
+
+        if (init.expectedDescription) {
+            this.expectedDescription = {};
+            for (const value of init.expectedDescription) {
+                for (const key of value[1]) {
+                    this.expectedDescription[key] = value[0];
+                }
+            }
+        } else {
+            this.expectedDescription = undefined;
         }
     }
 
@@ -111,6 +124,7 @@ export interface TagTestCase<TFROM, TEXPECTED = string | RegExp> {
     description: string;
     from: TFROM;
     expected?: TEXPECTED;
+    expectedDescription?: string;
     invoke(): void;
 }
 
@@ -148,6 +162,7 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
     public readonly from: TFROM;
     public readonly options: LanguageTagInitOptions | undefined;
     public readonly expected?: string | RegExp;
+    public readonly expectedDescription?: string;
 
     public constructor(gtc: GenericLanguageTagTest<TFROM>, which: TestKey) {
         this.from = gtc.from;
@@ -155,6 +170,7 @@ export abstract class SimpleTagTestCaseBase<TFROM> implements TagTestCase<TFROM>
 
         const expected = gtc.expected[which];
         this.expected = this._getExpectedValue(which, gtc, expected);
+        this.expectedDescription = gtc.expectedDescription?.[which];
 
         const target = this._getTestTarget(which, gtc);
 

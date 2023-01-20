@@ -20,8 +20,10 @@ The constructor for this class is marked as internal. Third-party code should no
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [description](./ts-bcp47.bcp47.languagetag.description.md) | <code>readonly</code> | string | Gets a text description of this tag. |
 |  [effectiveScript](./ts-bcp47.bcp47.languagetag.effectivescript.md) | <code>readonly</code> | [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) \| undefined | The effective script of this language tag, if known. The effective script is the script subtag in the tag itself, if present, or the <code>Suppress-Script</code> defined in the [IANA subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) for the primary language of this tag. Can be <code>undefined</code> if neither the tag nor the IANA registry define a script. |
 |  [isCanonical](./ts-bcp47.bcp47.languagetag.iscanonical.md) | <code>readonly</code> | boolean | Whether this language tag is in canonical form. |
+|  [isGrandfathered](./ts-bcp47.bcp47.languagetag.isgrandfathered.md) | <code>readonly</code> | boolean | Whether this language tag is a grandfathered tag. |
 |  [isPreferred](./ts-bcp47.bcp47.languagetag.ispreferred.md) | <code>readonly</code> | boolean | Whether this language tag is in preferred form. |
 |  [isStrictlyValid](./ts-bcp47.bcp47.languagetag.isstrictlyvalid.md) | <code>readonly</code> | boolean | Whether if this language tag is strictly valid. |
 |  [isUndetermined](./ts-bcp47.bcp47.languagetag.isundetermined.md) | <code>readonly</code> | boolean | Determines if this tag represents the special <code>undetermined</code> language. |
