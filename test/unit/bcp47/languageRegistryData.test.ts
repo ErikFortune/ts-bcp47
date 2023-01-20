@@ -60,11 +60,18 @@ describe('LanguageRegistryData class', () => {
                             expect(lt.registry.extlangs).toBeUndefined();
                         }
 
-                        if (lt.effectiveScript) {
+                        if (lt.subtags.script) {
                             expect(lt.registry.script).toBeDefined();
-                            expect(lt.registry.script!.subtag.toLowerCase()).toEqual(lt.effectiveScript.toLowerCase());
+                            expect(lt.registry.script!.subtag.toLowerCase()).toEqual(lt.subtags.script.toLowerCase());
                         } else {
                             expect(lt.registry.script).toBeUndefined();
+                        }
+
+                        if (lt.effectiveScript) {
+                            expect(lt.registry.effectiveScript).toBeDefined();
+                            expect(lt.registry.effectiveScript!.subtag.toLowerCase()).toEqual(lt.effectiveScript.toLowerCase());
+                        } else {
+                            expect(lt.registry.effectiveScript).toBeUndefined();
                         }
 
                         if (lt.subtags.region) {

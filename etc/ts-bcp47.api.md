@@ -406,6 +406,7 @@ class LanguageTag {
     static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
     // @internal
     protected static _createTransformed(subtags: Subtags, fromValidity: TagValidity, fromNormalization: TagNormalization, partialOptions?: LanguageTagInitOptions): Result<LanguageTag>;
+    get description(): string;
     get effectiveScript(): ScriptSubtag | undefined;
     // @internal
     protected static _getOptions(options?: LanguageTagInitOptions): Required<LanguageTagInitOptions>;
@@ -415,6 +416,7 @@ class LanguageTag {
     get isCanonical(): boolean;
     // @internal (undocumented)
     protected _isCanonical: undefined | boolean;
+    get isGrandfathered(): boolean;
     get isPreferred(): boolean;
     // @internal (undocumented)
     protected _isPreferred: undefined | boolean;
