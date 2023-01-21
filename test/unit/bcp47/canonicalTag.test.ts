@@ -34,7 +34,7 @@ describe('CanonicalTag class', () => {
             ['valid tag with deprecated primary language', 'in', { primaryLanguage: 'id' }],
             ['valid tag with suppressed script', 'en-Latn', { primaryLanguage: 'en' }],
             ['valid tag with deprecated region', 'en-BU', { primaryLanguage: 'en', region: 'MM' }],
-            ['completely private tag', 'x-en-GB', { privateUse: ['en-GB'] }],
+            ['completely private tag', 'x-en-GB', { privateUse: ['en', 'GB'] }],
         ])('succeeds for %p', (_desc, tag, expected) => {
             expect(Bcp47.LanguageTag.createFromTag(tag, { normalization: 'preferred' })).toSucceedAndSatisfy((preferred) => {
                 expect(preferred.subtags).toEqual(expected);

@@ -89,7 +89,10 @@ export class CanonicalNormalizer extends TagNormalizerBase {
 
     protected _processPrivateUseTags(subtags: Subtags): Result<ExtendedLanguageRange[] | undefined> {
         if (subtags.privateUse) {
-            return mapResults(subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(pu)));
+            const merged = subtags.privateUse.join('-');
+            return Iana.LanguageSubtags.Validate.extendedLanguageRange.toCanonical(merged).onSuccess((canon) => {
+                return succeed(canon.split('-') as ExtendedLanguageRange[]);
+            });
         }
         return succeed(subtags.privateUse);
     }

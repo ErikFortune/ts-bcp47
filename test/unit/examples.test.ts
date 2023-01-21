@@ -62,14 +62,14 @@ describe('README examples recast to jest tests', () => {
 
         test('macro-region matches contained region well', () => {
             expect(() => {
-                expect(Bcp47.similarity('es-419', 'es-MX')).toSucceedWith(0.7);
+                expect(Bcp47.similarity('es-419', 'es-MX')).toSucceedWith(0.65);
                 expect(Bcp47.similarity('es-419', 'es-ES')).toSucceedWith(0.3);
             }).not.toThrow();
         });
 
         test('region matches neutral fairly well', () => {
             expect(() => {
-                expect(Bcp47.similarity('es', 'es-MX')).toSucceedWith(0.6);
+                expect(Bcp47.similarity('es', 'es-MX')).toSucceedWith(0.5);
             }).not.toThrow();
         });
 

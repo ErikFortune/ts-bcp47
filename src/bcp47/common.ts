@@ -65,7 +65,7 @@ export function subtagsToString(subtags: Subtags): string {
         subtags.region,
         ...(subtags.variants ?? []),
         ...(subtags.extensions ?? []).map((e) => `${e.singleton}-${e.value}`),
-        ...(subtags.privateUse ?? []).map((p) => `x-${p}`),
+        ...(subtags.privateUse && subtags.privateUse.length > 0 ? [`x-${subtags.privateUse.join('-')}`] : []),
     ]
         .filter((s): s is string => s !== undefined)
         .join('-');

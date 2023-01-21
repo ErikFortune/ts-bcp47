@@ -131,7 +131,7 @@ describe('ValidTag class', () => {
                 { primaryLanguage: 'es', variants: ['Valencia', 'lipaw'] },
                 { primaryLanguage: 'es', variants: ['valencia', 'lipaw'] },
             ],
-            ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag-one'] }],
+            ['valid private tag', { privateUse: ['Tag-one'] }, { privateUse: ['tag', 'one'] }],
         ])('succeeds for %p', (_desc, from, expected) => {
             const subtags = from as Bcp47.Subtags;
             expect(Bcp47.LanguageTag.createFromSubtags(subtags, { validity: 'valid', normalization: 'canonical' })).toSucceedAndSatisfy(

@@ -267,31 +267,22 @@ export class LanguageTagParser {
      */
     protected static _parsePrivateSubtags(state: ParserState): Result<Subtags> {
         // optional private use subtags
-        while (state.next != undefined && Validate.privateUsePrefix.isWellFormed(state.next)) {
+        if (state.next != undefined && Validate.privateUsePrefix.isWellFormed(state.next)) {
             const values: string[] = [];
             state.next = state.subtags.shift();
 
-            while (
-                state.next &&
-                !Validate.privateUsePrefix.isWellFormed(state.next) &&
-                Iana.LanguageSubtags.Validate.extendedLanguageRange.isWellFormed(state.next)
-            ) {
+            while (state.next && state.next.length > 1 && Iana.LanguageSubtags.Validate.extendedLanguageRange.isWellFormed(state.next)) {
                 values.push(state.next);
                 state.next = state.subtags.shift();
             }
 
-            if (state.next !== undefined && !Validate.privateUsePrefix.isWellFormed(state.next)) {
+            if (state.next !== undefined) {
                 return fail(`${state.next}: malformed private-use subtag`);
             } else if (values.length < 1) {
                 return fail(`${state.tag}: private-use tag must have at least one subtag.`);
             }
 
-            const value = values.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange;
-            if (state.parsedSubtags.privateUse === undefined) {
-                state.parsedSubtags.privateUse = [value];
-            } else {
-                state.parsedSubtags.privateUse.push(value);
-            }
+            state.parsedSubtags.privateUse = values as Iana.LanguageSubtags.ExtendedLanguageRange[];
         }
         return succeed(state.parsedSubtags);
     }
