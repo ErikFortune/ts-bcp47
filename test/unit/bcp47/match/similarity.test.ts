@@ -21,8 +21,9 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageSimilarityMatcher, tagSimilarity } from '../../../../src/bcp47/match';
+import { LanguageSimilarityMatcher, subtagMismatchPenalty, tagSimilarity } from '../../../../src/bcp47/match';
 import { LanguageTag, LanguageTagInitOptions } from '../../../../src/bcp47/languageTag';
+import { Bcp47 } from '../../../../src';
 
 describe('LanguageSimilarityComparer class', () => {
     describe('matchLanguageTags method', () => {
@@ -168,11 +169,43 @@ describe('LanguageSimilarityComparer class', () => {
                 expected: tagSimilarity.exact,
                 options: { normalization: 'preferred' } as LanguageTagInitOptions,
             },
+            {
+                description: 'matching variant does not override mismatched region',
+                l1: 'ca-ES-valencia',
+                l2: 'ca-FR-valencia',
+                expected: tagSimilarity.sibling,
+            },
         ])('"$l1"/"$l2" yields $expected ($description)', (tc) => {
             const lt1 = LanguageTag.create(tc.l1, tc.options).orThrow();
             const lt2 = LanguageTag.create(tc.l2, tc.options).orThrow();
 
             expect(matcher.matchLanguageTags(lt1, lt2)).toBe(tc.expected);
+        });
+    });
+
+    describe('torture tests', () => {
+        test.each([
+            {
+                description: 'single variant match overrides affinity or preference',
+                base: 'ca-ES-valencia',
+                compare: [
+                    { lang: 'ca-ES', similarity: tagSimilarity.region },
+                    { lang: 'ca-valencia', similarity: tagSimilarity.neutralRegion },
+                    { lang: 'ca-150-valencia', similarity: tagSimilarity.macroRegion },
+                    { lang: 'ca-ES-valencia', similarity: tagSimilarity.exact },
+                ],
+                expectedOrder: ['ca-ES-valencia', 'ca-ES', 'ca-150-valencia', 'ca-valencia'],
+            },
+        ])(`Match "$base" against yields order "$expectedOrder"`, (tc) => {
+            const base = Bcp47.tag(tc.base).orThrow();
+            for (const t of tc.compare) {
+                expect(Bcp47.similarity(base, t.lang).orThrow()).toEqual(t.similarity);
+            }
+
+            const langs = tc.compare
+                .map((t) => Bcp47.tag(t.lang).orThrow())
+                .sort((l1, l2) => Bcp47.similarity(base, l2).orThrow() - Bcp47.similarity(tc.base, l1).orThrow());
+            expect(langs.map((l) => l.tag)).toEqual(tc.expectedOrder);
         });
     });
 });

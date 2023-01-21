@@ -260,9 +260,7 @@ export class LanguageTag {
                 }
             }
             if (this.subtags.privateUse && this.subtags.privateUse.length > 0) {
-                for (const e of this.subtags.privateUse) {
-                    parts.push(`(-x "${e}")`);
-                }
+                parts.push(`(-x "${this.subtags.privateUse.join('-')}")`);
             }
         } else {
             parts.push(`${this.tag} (grandfathered)`);

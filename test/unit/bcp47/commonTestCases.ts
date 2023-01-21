@@ -386,10 +386,21 @@ const testCaseInit: GenericLanguageTagTestInit<string>[] = [
         ],
     },
     {
-        description: 'completely private tag with multiple tags',
+        description: 'invalid private tag',
         from: 'x-thing-x-other-thing-x-last-thing',
-        expected: [['x-thing-x-other-thing-x-last-thing', allTestKeys]],
-        expectedDescription: [['(-x "thing") (-x "other-thing") (-x "last-thing")', allTestKeys]],
+        expected: [[/malformed private-use/i, allTestKeys]],
+    },
+    {
+        description: 'completely private tag with multiple tags',
+        from: 'x-some-bunch-of-things',
+        expected: [
+            ['x-some-bunch-of-things', allNonCanonicalTestKeys],
+            ['x-some-bunch-OF-things', allCanonicalTestKeys],
+        ],
+        expectedDescription: [
+            ['(-x "some-bunch-of-things")', ['wellFormed']],
+            ['(-x "some-bunch-OF-things")', ['preferred']],
+        ],
     },
 ];
 
@@ -400,7 +411,7 @@ const subtagsTestCaseInit: GenericLanguageTagTestInit<Subtags>[] = [
             primaryLanguage: 'en' as LanguageSubtag,
             script: 'latn' as ScriptSubtag,
             region: 'us' as RegionSubtag,
-            privateUse: ['Non-Canon' as ExtendedLanguageRange],
+            privateUse: ['Non', 'Canon'] as ExtendedLanguageRange[],
         },
         expected: [
             ['en-latn-us-x-Non-Canon', ['default', 'wellFormed', 'valid', 'strictlyValid']],

@@ -21,6 +21,16 @@
  */
 
 /**
+ * Penalty for a mismatched value for some subtags.
+ * @public
+ */
+export const subtagMismatchPenalty = {
+    private: 0.05,
+    extension: 0.04,
+    variant: 0.1,
+};
+
+/**
  * Common levels of match quality for a single language match.
  * @public
  */
@@ -28,13 +38,13 @@ export const tagSimilarity = {
     exact: 1.0,
     variant: 0.9,
     region: 0.8,
-    macroRegion: 0.7,
-    neutralRegion: 0.6,
-    preferredAffinity: 0.55,
-    affinity: 0.5,
-    preferredRegion: 0.4,
+    macroRegion: 0.65,
+    neutralRegion: 0.5,
+    preferredAffinity: 0.45,
+    affinity: 0.4,
+    preferredRegion: 0.35,
     sibling: 0.3,
-    undetermined: 0.2,
+    undetermined: 0.1,
     none: 0,
 };
 

@@ -24,7 +24,7 @@ import * as Bcp47Subtags from '../bcp47Subtags';
 import * as Iana from '../../iana';
 
 import { ExtensionSingleton, ExtensionSubtag } from '../bcp47Subtags/model';
-import { Result, allSucceed, succeed } from '@fgv/ts-utils';
+import { Result, allSucceed, fail, succeed } from '@fgv/ts-utils';
 
 import { Subtags } from '../common';
 import { TagValidatorBase } from './baseValidator';
@@ -81,10 +81,12 @@ export class IsCanonicalValidator extends TagValidatorBase {
 
     protected _checkPrivateUseTags(subtags: Subtags): Result<Iana.LanguageSubtags.ExtendedLanguageRange[] | undefined> {
         if (subtags.privateUse) {
-            return allSucceed(
-                subtags.privateUse.map((pu) => Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsCanonical(pu)),
-                subtags.privateUse
+            const result = Iana.LanguageSubtags.Validate.extendedLanguageRange.verifyIsCanonical(
+                subtags.privateUse.join('-') as Iana.LanguageSubtags.ExtendedLanguageRange
             );
+            if (result.isFailure()) {
+                return fail(result.message);
+            }
         }
         return succeed(subtags.privateUse);
     }
