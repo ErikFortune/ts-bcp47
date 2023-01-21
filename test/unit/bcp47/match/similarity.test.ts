@@ -21,7 +21,7 @@
  */
 
 import '@fgv/ts-utils-jest';
-import { LanguageSimilarityMatcher, subtagMismatchPenalty, tagSimilarity } from '../../../../src/bcp47/match';
+import { LanguageSimilarityMatcher, tagSimilarity } from '../../../../src/bcp47/match';
 import { LanguageTag, LanguageTagInitOptions } from '../../../../src/bcp47/languageTag';
 import { Bcp47 } from '../../../../src';
 
