@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.extendedLanguageRange variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extendedLanguageRange: import("@fgv/ts-utils").Converter<import("./common").ExtendedLanguageRange, unknown>

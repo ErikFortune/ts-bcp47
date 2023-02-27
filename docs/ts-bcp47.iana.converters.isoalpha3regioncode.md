@@ -6,7 +6,7 @@
 
 Validating converter from string [Iana.Model.IsoAlpha3RegionCode](./ts-bcp47.iana.model.isoalpha3regioncode.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isoAlpha3RegionCode: Converter<import("./model").IsoAlpha3RegionCode, unknown>

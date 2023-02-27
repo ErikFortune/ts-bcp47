@@ -6,7 +6,7 @@
 
 Describes the validation level of a particular tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TagValidity = 'unknown' | 'well-formed' | 'valid' | 'strictly-valid';

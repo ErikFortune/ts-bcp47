@@ -4,7 +4,7 @@
 
 ## Unsd.IntermediateRegion.areas property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 areas: CountryOrArea[];

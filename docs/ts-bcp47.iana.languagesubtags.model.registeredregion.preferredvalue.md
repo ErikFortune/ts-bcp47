@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredRegion.preferredValue property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly preferredValue?: RegionSubtag;

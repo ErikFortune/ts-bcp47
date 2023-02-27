@@ -6,7 +6,7 @@
 
 Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are in preferred form. Preferred form is valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and also meets additional preferences specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) - extraneous (suppressed) script tags, deprecated language, extlang, script or region tags or deprecated grandfathered or redundant tags (with a defined preferred-value) are not allowed.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static isInPreferredForm(subtags: Subtags): boolean;
@@ -18,7 +18,7 @@ static isInPreferredForm(subtags: Subtags): boolean;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

@@ -6,7 +6,7 @@
 
 Describes the group of tags validated by these helpers.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly description: string;

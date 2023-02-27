@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.collections property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly collections: Scope.LanguageSubtagScope;

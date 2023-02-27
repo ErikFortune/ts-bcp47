@@ -5,7 +5,7 @@
 ## Iana.LanguageTagExtensions.Converters.extensionSingleton variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extensionSingleton: import("@fgv/ts-utils").Converter<Iana.LanguageTagExtensions.Model.ExtensionSingleton, unknown>

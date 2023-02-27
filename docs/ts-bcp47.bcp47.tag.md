@@ -8,7 +8,7 @@ Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a [language s
 
 The supplied initializer must be at least [well-formed according to RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->. Higher degrees of validation along with any normalizations may be optionally specified.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function tag(from: LanguageSpec, options?: LanguageTagInitOptions): Result<LanguageTag>;
@@ -19,9 +19,9 @@ export declare function tag(from: LanguageSpec, options?: LanguageTagInitOptions
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  from | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | The [language specifier](./ts-bcp47.bcp47.languagespec.md) from which the tag is to be created. |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) The [options](./ts-bcp47.bcp47.languagetaginitoptions.md) used to construct and validate the tag. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | _(Optional)_ (optional) The [options](./ts-bcp47.bcp47.languagetaginitoptions.md) used to construct and validate the tag. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
 

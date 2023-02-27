@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredRedundantTag.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly type: 'redundant';

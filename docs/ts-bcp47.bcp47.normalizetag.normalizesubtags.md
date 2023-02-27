@@ -6,7 +6,7 @@
 
 Normalizes supplied [subtags](./ts-bcp47.bcp47.subtags.md) to a requested [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->, if necessary. If no normalization is necessary, returns the supplied subtags.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static normalizeSubtags(subtags: Subtags, wantNormalization: TagNormalization, haveNormalization?: TagNormalization): Result<Subtags>;
@@ -18,9 +18,9 @@ static normalizeSubtags(subtags: Subtags, wantNormalization: TagNormalization, h
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 |  wantNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | The desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->. |
-|  haveNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | <i>(Optional)</i> (optional) The current [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->. |
+|  haveNormalization | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | _(Optional)_ (optional) The current [normalization level](./ts-bcp47.bcp47.tagnormalization.md)<!-- -->. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
 

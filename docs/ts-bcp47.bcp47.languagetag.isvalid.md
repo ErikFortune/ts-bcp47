@@ -6,7 +6,7 @@
 
 Whether this language tag is valid.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isValid(): boolean;

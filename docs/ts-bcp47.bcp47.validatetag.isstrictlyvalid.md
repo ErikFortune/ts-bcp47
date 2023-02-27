@@ -6,7 +6,7 @@
 
 Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are strictly valid. A strictly valid tag is both [valid as defined in the RFC](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9) and meets any other requirements such as [prefix validity](https://www.rfc-editor.org/rfc/rfc5646.html#section-3.1.8)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static isStrictlyValid(subtags: Subtags): boolean;
@@ -18,7 +18,7 @@ static isStrictlyValid(subtags: Subtags): boolean;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

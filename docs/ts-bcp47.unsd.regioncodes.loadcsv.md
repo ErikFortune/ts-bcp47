@@ -4,7 +4,7 @@
 
 ## Unsd.RegionCodes.loadCsv() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadCsv(path: string): Result<RegionCodes>;
@@ -16,7 +16,7 @@ static loadCsv(path: string): Result<RegionCodes>;
 |  --- | --- | --- |
 |  path | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[RegionCodes](./ts-bcp47.unsd.regioncodes.md)<!-- -->&gt;
 

@@ -6,7 +6,7 @@
 
 Common levels of match quality for a single language match.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 tagSimilarity: {

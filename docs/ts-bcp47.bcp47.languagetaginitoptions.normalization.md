@@ -6,7 +6,7 @@
 
 Desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md) (optional).
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 normalization?: TagNormalization;

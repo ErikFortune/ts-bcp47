@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.macrolanguages property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly macrolanguages: Scope.LanguageSubtagScope;

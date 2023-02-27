@@ -4,7 +4,7 @@
 
 ## Iana.LanguageRegistries.extensions property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly extensions: LanguageTagExtensionRegistry;

@@ -6,7 +6,7 @@
 
 Helper function which creates a converter that returns a validated [DatedRegistry](./ts-bcp47.iana.model.datedregistry.md) containing entries of supplied template type `T`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function datedRegistry<T, TC = unknown>(entryConverter: Converter<T, TC>): Converter<DatedRegistry<T>, TC>;
@@ -18,7 +18,7 @@ export declare function datedRegistry<T, TC = unknown>(entryConverter: Converter
 |  --- | --- | --- |
 |  entryConverter | Converter&lt;T, TC&gt; | A <code>Converter&lt;T&gt;</code> to validate each entry |
 
-<b>Returns:</b>
+**Returns:**
 
 Converter&lt;DatedRegistry&lt;T&gt;, TC&gt;
 

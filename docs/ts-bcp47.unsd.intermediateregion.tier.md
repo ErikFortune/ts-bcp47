@@ -4,7 +4,7 @@
 
 ## Unsd.IntermediateRegion.tier property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 tier: RegionTier;

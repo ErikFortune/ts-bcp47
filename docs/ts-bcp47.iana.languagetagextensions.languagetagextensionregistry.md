@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class LanguageTagExtensionRegistry 

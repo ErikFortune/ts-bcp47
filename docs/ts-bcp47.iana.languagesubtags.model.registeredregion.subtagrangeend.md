@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredRegion.subtagRangeEnd property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtagRangeEnd?: RegionSubtag;

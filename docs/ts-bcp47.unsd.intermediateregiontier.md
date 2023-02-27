@@ -5,7 +5,7 @@
 ## Unsd.IntermediateRegionTier type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type IntermediateRegionTier = 'region' | 'subRegion' | 'intermediateRegion';

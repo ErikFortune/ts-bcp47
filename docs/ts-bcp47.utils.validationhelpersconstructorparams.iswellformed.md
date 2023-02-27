@@ -4,7 +4,7 @@
 
 ## Utils.ValidationHelpersConstructorParams.isWellFormed property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isWellFormed: Validation.TypeGuardWithContext<T, TC>;

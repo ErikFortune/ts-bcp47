@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.subtag property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtag: ScriptSubtag;

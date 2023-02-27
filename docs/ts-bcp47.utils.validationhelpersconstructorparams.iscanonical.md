@@ -4,7 +4,7 @@
 
 ## Utils.ValidationHelpersConstructorParams.isCanonical property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isCanonical: Validation.TypeGuardWithContext<T, TC>;

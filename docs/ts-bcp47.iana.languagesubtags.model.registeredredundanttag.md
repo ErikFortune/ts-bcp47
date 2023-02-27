@@ -5,22 +5,22 @@
 ## Iana.LanguageSubtags.Model.RegisteredRedundantTag interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredRedundantTag extends RegisteredTag<'redundant', RedundantTag> 
 ```
-<b>Extends:</b> RegisteredTag&lt;'redundant', [RedundantTag](./ts-bcp47.iana.languagesubtags.redundanttag.md)<!-- -->&gt;
+**Extends:** RegisteredTag&lt;'redundant', [RedundantTag](./ts-bcp47.iana.languagesubtags.redundanttag.md)<!-- -->&gt;
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [added](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.added.md) | <code>readonly</code> | Model.YearMonthDaySpec |  |
-|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.comments.md) | <code>readonly</code> | string\[\] | <i>(Optional)</i> |
-|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | <i>(Optional)</i> |
+|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.comments.md) | <code>readonly</code> | string\[\] | _(Optional)_ |
+|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | _(Optional)_ |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.description.md) | <code>readonly</code> | string\[\] |  |
-|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.preferredvalue.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md) | <i>(Optional)</i> |
+|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.preferredvalue.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md) | _(Optional)_ |
 |  [tag](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.tag.md) | <code>readonly</code> | [RedundantTag](./ts-bcp47.iana.languagesubtags.redundanttag.md) |  |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredredundanttag.type.md) | <code>readonly</code> | 'redundant' |  |
 

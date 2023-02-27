@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.redundantTag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 redundantTag: TagValidationHelpers<RedundantTag, unknown>

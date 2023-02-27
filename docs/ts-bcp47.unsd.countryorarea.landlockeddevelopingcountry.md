@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.landlockedDevelopingCountry property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 landlockedDevelopingCountry: boolean;

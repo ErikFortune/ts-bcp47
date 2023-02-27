@@ -6,7 +6,7 @@
 
 Determines if this tag represents the special `undetermined` language.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isUndetermined(): boolean;

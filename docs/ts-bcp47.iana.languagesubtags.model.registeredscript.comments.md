@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.comments property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly comments?: string[];

@@ -6,7 +6,7 @@
 
 Converts a supplied `unknown` to the canonical form of the tag validated by these helpers.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toCanonical(from: unknown, context?: TC): Result<T>;
@@ -17,9 +17,9 @@ toCanonical(from: unknown, context?: TC): Result<T>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  from | unknown | The <code>unknown</code> to be converted. |
-|  context | TC | <i>(Optional)</i> Optional context used in the conversion. |
+|  context | TC | _(Optional)_ Optional context used in the conversion. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;T&gt;
 

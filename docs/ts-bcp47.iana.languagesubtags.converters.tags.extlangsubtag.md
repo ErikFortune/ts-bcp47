@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.extlangSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extlangSubtag: Converter<import("./model").ExtLangSubtag, unknown>

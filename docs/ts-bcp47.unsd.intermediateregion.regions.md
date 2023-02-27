@@ -4,7 +4,7 @@
 
 ## Unsd.IntermediateRegion.regions property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 regions: IntermediateRegion[];

@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.extendedLanguageRange variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extendedLanguageRange: TagValidationHelpers<ExtendedLanguageRange, unknown>

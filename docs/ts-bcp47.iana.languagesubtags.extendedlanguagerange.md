@@ -6,7 +6,7 @@
 
 An extended language subtag as used in the IANA language registry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type ExtendedLanguageRange = Brand<string, 'ExtendedLanguageRange'>;

@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.variantSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 variantSubtag: RegExpValidationHelpers<VariantSubtag, unknown>

@@ -4,7 +4,7 @@
 
 ## Unsd.RegionCodes.createFromJson() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static createFromJson(from: unknown): Result<RegionCodes>;
@@ -16,7 +16,7 @@ static createFromJson(from: unknown): Result<RegionCodes>;
 |  --- | --- | --- |
 |  from | unknown |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[RegionCodes](./ts-bcp47.unsd.regioncodes.md)<!-- -->&gt;
 

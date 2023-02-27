@@ -6,7 +6,7 @@
 
 A dated collection of registry entries of a specified templated type.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface DatedRegistry<T> 

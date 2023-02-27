@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.redundant property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly redundant: Scope.RedundantTagScope;

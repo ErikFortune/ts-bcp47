@@ -6,7 +6,7 @@
 
 Whether this language tag is a grandfathered tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isGrandfathered(): boolean;

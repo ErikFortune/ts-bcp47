@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.extlangSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extlangSubtag: RegExpValidationHelpers<ExtLangSubtag, unknown>

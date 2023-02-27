@@ -5,10 +5,10 @@
 ## Unsd.RegionTier type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RegionTier = 'global' | IntermediateRegionTier;
 ```
-<b>References:</b> [IntermediateRegionTier](./ts-bcp47.unsd.intermediateregiontier.md)
+**References:** [IntermediateRegionTier](./ts-bcp47.unsd.intermediateregiontier.md)
 

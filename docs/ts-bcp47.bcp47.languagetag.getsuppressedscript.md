@@ -6,12 +6,12 @@
 
 Returns the `Suppress-Script` value defined for the primary language of this tag, regardless of whether a different script is defined in this subtag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 getSuppressedScript(): ScriptSubtag | undefined;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) \| undefined
 

@@ -6,7 +6,7 @@
 
 Indicates whether to return the matching language from the desired list or the available list. Default is `'availableLanguage'`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 use?: 'desiredLanguage' | 'availableLanguage';

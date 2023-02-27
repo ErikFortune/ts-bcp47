@@ -4,7 +4,7 @@
 
 ## Unsd.GlobalRegion.tier property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 tier: 'global';

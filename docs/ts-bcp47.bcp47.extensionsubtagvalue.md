@@ -5,7 +5,7 @@
 ## Bcp47.ExtensionSubtagValue interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface ExtensionSubtagValue 

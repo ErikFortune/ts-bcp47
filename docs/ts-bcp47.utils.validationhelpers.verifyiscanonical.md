@@ -6,7 +6,7 @@
 
 Determints if a supplied `unknown` is a well-formed, canonical representation of the tag validated by these helpers.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 verifyIsCanonical(from: unknown, context?: TC): Result<T>;
@@ -17,9 +17,9 @@ verifyIsCanonical(from: unknown, context?: TC): Result<T>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  from | unknown | The <code>unknown</code> to be validated. |
-|  context | TC | <i>(Optional)</i> Optional context used in the validation. |
+|  context | TC | _(Optional)_ Optional context used in the validation. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;T&gt;
 

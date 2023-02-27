@@ -6,7 +6,7 @@
 
 Whether this language tag is in preferred form.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isPreferred(): boolean;

@@ -6,7 +6,7 @@
 
 Determine how similar two language tags are to each other.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function similarity(t1: LanguageSpec, t2: LanguageSpec, options?: LanguageTagInitOptions): Result<number>;
@@ -18,9 +18,9 @@ export declare function similarity(t1: LanguageSpec, t2: LanguageSpec, options?:
 |  --- | --- | --- |
 |  t1 | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | First tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
 |  t2 | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md) | Second tag to match, supplied as one of <code>string</code>, individual [subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, or constructed [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->. |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) A set of [language tag options](./ts-bcp47.bcp47.languagetaginitoptions.md) which control any necessary conversion or parsing. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | _(Optional)_ (optional) A set of [language tag options](./ts-bcp47.bcp47.languagetaginitoptions.md) which control any necessary conversion or parsing. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;number&gt;
 

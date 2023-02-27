@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.load() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static load(path: string): Result<LanguageTagExtensionRegistry>;
@@ -16,7 +16,7 @@ static load(path: string): Result<LanguageTagExtensionRegistry>;
 |  --- | --- | --- |
 |  path | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;LanguageTagExtensionRegistry&gt;
 

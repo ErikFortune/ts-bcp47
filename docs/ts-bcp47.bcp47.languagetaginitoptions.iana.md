@@ -6,7 +6,7 @@
 
 The [IANA language subtag and extension registries](./ts-bcp47.iana.languageregistries.md) to be used for the request (optional).
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 iana?: Iana.LanguageRegistries;

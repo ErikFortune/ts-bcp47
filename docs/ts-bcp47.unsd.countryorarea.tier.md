@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.tier property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 tier: 'area';

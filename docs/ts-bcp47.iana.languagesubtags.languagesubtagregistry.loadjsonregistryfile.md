@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.loadJsonRegistryFile() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadJsonRegistryFile(root: string): Result<LanguageSubtagRegistry>;
@@ -16,7 +16,7 @@ static loadJsonRegistryFile(root: string): Result<LanguageSubtagRegistry>;
 |  --- | --- | --- |
 |  root | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageSubtagRegistry](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.md)<!-- -->&gt;
 

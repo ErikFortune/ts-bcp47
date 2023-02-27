@@ -6,10 +6,10 @@
 
 Any of the possible ways to represent a language - as a `string`<!-- -->, parsed [subtags](./ts-bcp47.bcp47.subtags.md) or an instantiated [language tag](./ts-bcp47.bcp47.languagetag.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type LanguageSpec = string | Subtags | LanguageTag;
 ```
-<b>References:</b> [Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, [LanguageTag](./ts-bcp47.bcp47.languagetag.md)
+**References:** [Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->, [LanguageTag](./ts-bcp47.bcp47.languagetag.md)
 

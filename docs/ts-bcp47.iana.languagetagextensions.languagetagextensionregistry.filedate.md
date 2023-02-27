@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.fileDate property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly fileDate: YearMonthDaySpec;

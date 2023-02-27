@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.code property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 code: UnM49RegionCode;

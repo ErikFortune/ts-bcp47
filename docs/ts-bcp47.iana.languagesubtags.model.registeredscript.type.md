@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly type: 'script';

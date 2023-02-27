@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.grandfatheredTag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 grandfatheredTag: TagValidationHelpers<GrandfatheredTag, unknown>

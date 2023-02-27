@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.variants property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly variants: Scope.VariantSubtagScope;

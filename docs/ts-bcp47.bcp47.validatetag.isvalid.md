@@ -6,7 +6,7 @@
 
 Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are valid as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, meaning that all subtags, or the tag itself for grandfathered tags, are defined in the [IANA language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static isValid(subtags: Subtags): boolean;
@@ -18,7 +18,7 @@ static isValid(subtags: Subtags): boolean;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

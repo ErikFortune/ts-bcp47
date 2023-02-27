@@ -6,7 +6,7 @@
 
 Determines if supplied [subtags](./ts-bcp47.bcp47.subtags.md) are well-formed as specified by [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.9)<!-- -->, meaning that all subtags meet the grammar defined in the specification.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static isWellFormed(subtags: Subtags): boolean;
@@ -18,7 +18,7 @@ static isWellFormed(subtags: Subtags): boolean;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to test. |
 
-<b>Returns:</b>
+**Returns:**
 
 boolean
 

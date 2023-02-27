@@ -5,26 +5,26 @@
 ## Iana.LanguageSubtags.Model.RegisteredExtLang interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredExtLang extends RegisteredSubtag<'extlang', ExtLangSubtag> 
 ```
-<b>Extends:</b> RegisteredSubtag&lt;'extlang', [ExtLangSubtag](./ts-bcp47.iana.languagesubtags.extlangsubtag.md)<!-- -->&gt;
+**Extends:** RegisteredSubtag&lt;'extlang', [ExtLangSubtag](./ts-bcp47.iana.languagesubtags.extlangsubtag.md)<!-- -->&gt;
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [added](./ts-bcp47.iana.languagesubtags.model.registeredextlang.added.md) | <code>readonly</code> | Model.YearMonthDaySpec |  |
-|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.comments.md) | <code>readonly</code> | string\[\] | <i>(Optional)</i> |
-|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | <i>(Optional)</i> |
+|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.comments.md) | <code>readonly</code> | string\[\] | _(Optional)_ |
+|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | _(Optional)_ |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredextlang.description.md) | <code>readonly</code> | string\[\] |  |
-|  [macrolanguage?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.macrolanguage.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | <i>(Optional)</i> |
+|  [macrolanguage?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.macrolanguage.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | _(Optional)_ |
 |  [preferredValue](./ts-bcp47.iana.languagesubtags.model.registeredextlang.preferredvalue.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md) |  |
 |  [prefix](./ts-bcp47.iana.languagesubtags.model.registeredextlang.prefix.md) | <code>readonly</code> | [LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) |  |
-|  [scope?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.scope.md) | <code>readonly</code> | Model.RegistryEntryScope | <i>(Optional)</i> |
+|  [scope?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.scope.md) | <code>readonly</code> | Model.RegistryEntryScope | _(Optional)_ |
 |  [subtag](./ts-bcp47.iana.languagesubtags.model.registeredextlang.subtag.md) | <code>readonly</code> | [ExtLangSubtag](./ts-bcp47.iana.languagesubtags.extlangsubtag.md) |  |
-|  [suppressScript?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.suppressscript.md) | <code>readonly</code> | [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | <i>(Optional)</i> |
+|  [suppressScript?](./ts-bcp47.iana.languagesubtags.model.registeredextlang.suppressscript.md) | <code>readonly</code> | [ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | _(Optional)_ |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredextlang.type.md) | <code>readonly</code> | 'extlang' |  |
 

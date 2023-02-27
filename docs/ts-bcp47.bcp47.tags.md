@@ -6,7 +6,7 @@
 
 Creates an array of [language tags](./ts-bcp47.bcp47.languagetag.md) from an incoming array of [language specifiers](./ts-bcp47.bcp47.languagespec.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function tags(from: LanguageSpec[], options?: LanguageTagInitOptions): Result<LanguageTag[]>;
@@ -17,9 +17,9 @@ export declare function tags(from: LanguageSpec[], options?: LanguageTagInitOpti
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  from | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md)<!-- -->\[\] | The array of [Bcp47.LanguageSpec](./ts-bcp47.bcp47.languagespec.md) to be converted. |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) The [options](./ts-bcp47.bcp47.languagetaginitoptions.md) used to construct and validate any created tags. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | _(Optional)_ (optional) The [options](./ts-bcp47.bcp47.languagetaginitoptions.md) used to construct and validate any created tags. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->\[\]&gt;
 

@@ -5,7 +5,7 @@
 ## Bcp47.Subtags interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface Subtags 
@@ -15,12 +15,12 @@ export interface Subtags
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [extensions?](./ts-bcp47.bcp47.subtags.extensions.md) |  | [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [extlangs?](./ts-bcp47.bcp47.subtags.extlangs.md) |  | [Iana.LanguageSubtags.ExtLangSubtag](./ts-bcp47.iana.languagesubtags.extlangsubtag.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [grandfathered?](./ts-bcp47.bcp47.subtags.grandfathered.md) |  | [Iana.LanguageSubtags.GrandfatheredTag](./ts-bcp47.iana.languagesubtags.grandfatheredtag.md) | <i>(Optional)</i> |
-|  [primaryLanguage?](./ts-bcp47.bcp47.subtags.primarylanguage.md) |  | [Iana.LanguageSubtags.LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | <i>(Optional)</i> |
-|  [privateUse?](./ts-bcp47.bcp47.subtags.privateuse.md) |  | [Iana.LanguageSubtags.ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md)<!-- -->\[\] | <i>(Optional)</i> |
-|  [region?](./ts-bcp47.bcp47.subtags.region.md) |  | [Iana.LanguageSubtags.RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | <i>(Optional)</i> |
-|  [script?](./ts-bcp47.bcp47.subtags.script.md) |  | [Iana.LanguageSubtags.ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | <i>(Optional)</i> |
-|  [variants?](./ts-bcp47.bcp47.subtags.variants.md) |  | [Iana.LanguageSubtags.VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md)<!-- -->\[\] | <i>(Optional)</i> |
+|  [extensions?](./ts-bcp47.bcp47.subtags.extensions.md) |  | [ExtensionSubtagValue](./ts-bcp47.bcp47.extensionsubtagvalue.md)<!-- -->\[\] | _(Optional)_ |
+|  [extlangs?](./ts-bcp47.bcp47.subtags.extlangs.md) |  | [Iana.LanguageSubtags.ExtLangSubtag](./ts-bcp47.iana.languagesubtags.extlangsubtag.md)<!-- -->\[\] | _(Optional)_ |
+|  [grandfathered?](./ts-bcp47.bcp47.subtags.grandfathered.md) |  | [Iana.LanguageSubtags.GrandfatheredTag](./ts-bcp47.iana.languagesubtags.grandfatheredtag.md) | _(Optional)_ |
+|  [primaryLanguage?](./ts-bcp47.bcp47.subtags.primarylanguage.md) |  | [Iana.LanguageSubtags.LanguageSubtag](./ts-bcp47.iana.languagesubtags.languagesubtag.md) | _(Optional)_ |
+|  [privateUse?](./ts-bcp47.bcp47.subtags.privateuse.md) |  | [Iana.LanguageSubtags.ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md)<!-- -->\[\] | _(Optional)_ |
+|  [region?](./ts-bcp47.bcp47.subtags.region.md) |  | [Iana.LanguageSubtags.RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | _(Optional)_ |
+|  [script?](./ts-bcp47.bcp47.subtags.script.md) |  | [Iana.LanguageSubtags.ScriptSubtag](./ts-bcp47.iana.languagesubtags.scriptsubtag.md) | _(Optional)_ |
+|  [variants?](./ts-bcp47.bcp47.subtags.variants.md) |  | [Iana.LanguageSubtags.VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md)<!-- -->\[\] | _(Optional)_ |
 

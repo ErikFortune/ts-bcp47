@@ -6,7 +6,7 @@
 
 The effective script of this language tag, if known. The effective script is the script subtag in the tag itself, if present, or the `Suppress-Script` defined in the [IANA subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) for the primary language of this tag. Can be `undefined` if neither the tag nor the IANA registry define a script.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get effectiveScript(): ScriptSubtag | undefined;

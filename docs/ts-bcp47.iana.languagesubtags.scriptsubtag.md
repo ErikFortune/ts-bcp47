@@ -6,7 +6,7 @@
 
 Script subtag in the IANA language subtag registry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type ScriptSubtag = Brand<string, 'ScriptSubtag'>;

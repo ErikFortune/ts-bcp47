@@ -4,7 +4,7 @@
 
 ## Unsd.RegionCodes.create() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static create(rows: Model.M49CsvRow[]): Result<RegionCodes>;
@@ -16,7 +16,7 @@ static create(rows: Model.M49CsvRow[]): Result<RegionCodes>;
 |  --- | --- | --- |
 |  rows | Model.M49CsvRow\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[RegionCodes](./ts-bcp47.unsd.regioncodes.md)<!-- -->&gt;
 

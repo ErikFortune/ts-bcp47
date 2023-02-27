@@ -5,7 +5,7 @@
 ## Iana.LanguageTagExtensions.Validate.extensionSingleton variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extensionSingleton: RegExpValidationHelpers<Model.ExtensionSingleton, unknown>

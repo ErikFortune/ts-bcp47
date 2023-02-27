@@ -4,12 +4,12 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.loadDefault() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadDefault(): Result<LanguageSubtagRegistry>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageSubtagRegistry](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.md)<!-- -->&gt;
 

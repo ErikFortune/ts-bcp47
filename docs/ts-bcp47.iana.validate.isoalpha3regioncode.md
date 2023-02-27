@@ -5,7 +5,7 @@
 ## Iana.Validate.isoAlpha3RegionCode variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isoAlpha3RegionCode: RegExpValidationHelpers<Model.IsoAlpha3RegionCode, unknown>

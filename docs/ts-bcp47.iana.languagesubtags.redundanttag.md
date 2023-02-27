@@ -6,7 +6,7 @@
 
 Legacy language tag registered as redundant in the IANA language subtag registry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RedundantTag = Brand<string, 'RedundantTag'>;

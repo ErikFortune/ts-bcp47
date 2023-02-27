@@ -6,7 +6,7 @@
 
 Validating converter from string [Iana.Model.YearMonthDaySpec](./ts-bcp47.iana.model.yearmonthdayspec.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 yearMonthDaySpec: Converter<import("./model").YearMonthDaySpec, unknown>

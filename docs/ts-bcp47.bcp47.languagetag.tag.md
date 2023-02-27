@@ -6,7 +6,7 @@
 
 A string representation of this language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly tag: string;

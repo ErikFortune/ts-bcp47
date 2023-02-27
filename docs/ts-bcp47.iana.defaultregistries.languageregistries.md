@@ -4,7 +4,7 @@
 
 ## Iana.DefaultRegistries.languageRegistries property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static get languageRegistries(): LanguageRegistries;

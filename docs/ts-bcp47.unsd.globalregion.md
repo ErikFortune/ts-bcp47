@@ -5,7 +5,7 @@
 ## Unsd.GlobalRegion interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface GlobalRegion 

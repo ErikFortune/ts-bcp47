@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredExtLang.scope property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly scope?: Model.RegistryEntryScope;

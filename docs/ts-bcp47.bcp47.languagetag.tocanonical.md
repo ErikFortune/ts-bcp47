@@ -6,12 +6,12 @@
 
 Gets a confirmed canonical representation of this language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toCanonical(): Result<LanguageTag>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
 

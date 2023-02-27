@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.grandfathered property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly grandfathered: Scope.GrandfatheredTagScope;

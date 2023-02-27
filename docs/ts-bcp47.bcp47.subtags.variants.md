@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.variants property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 variants?: Iana.LanguageSubtags.VariantSubtag[];

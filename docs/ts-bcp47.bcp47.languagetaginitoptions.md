@@ -6,7 +6,7 @@
 
 Initialization options for parsing or creation of [language tag](./ts-bcp47.bcp47.languagetag.md) objects.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface LanguageTagInitOptions 
@@ -16,7 +16,7 @@ export interface LanguageTagInitOptions
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [iana?](./ts-bcp47.bcp47.languagetaginitoptions.iana.md) |  | [Iana.LanguageRegistries](./ts-bcp47.iana.languageregistries.md) | <i>(Optional)</i> The [IANA language subtag and extension registries](./ts-bcp47.iana.languageregistries.md) to be used for the request (optional). |
-|  [normalization?](./ts-bcp47.bcp47.languagetaginitoptions.normalization.md) |  | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | <i>(Optional)</i> Desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md) (optional). |
-|  [validity?](./ts-bcp47.bcp47.languagetaginitoptions.validity.md) |  | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | <i>(Optional)</i> Desired [validity level](./ts-bcp47.bcp47.tagvalidity.md) (optional). |
+|  [iana?](./ts-bcp47.bcp47.languagetaginitoptions.iana.md) |  | [Iana.LanguageRegistries](./ts-bcp47.iana.languageregistries.md) | _(Optional)_ The [IANA language subtag and extension registries](./ts-bcp47.iana.languageregistries.md) to be used for the request (optional). |
+|  [normalization?](./ts-bcp47.bcp47.languagetaginitoptions.normalization.md) |  | [TagNormalization](./ts-bcp47.bcp47.tagnormalization.md) | _(Optional)_ Desired [normalization level](./ts-bcp47.bcp47.tagnormalization.md) (optional). |
+|  [validity?](./ts-bcp47.bcp47.languagetaginitoptions.validity.md) |  | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | _(Optional)_ Desired [validity level](./ts-bcp47.bcp47.tagvalidity.md) (optional). |
 

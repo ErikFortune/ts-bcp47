@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.grandfatheredTag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 grandfatheredTag: Converter<import("./model").GrandfatheredTag, unknown>

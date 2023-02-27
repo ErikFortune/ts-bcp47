@@ -6,7 +6,7 @@
 
 Validating converter from string [Iana.Model.UnM49RegionCode](./ts-bcp47.iana.model.unm49regioncode.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 unM49RegionCode: Converter<import("./model").UnM49RegionCode, unknown>

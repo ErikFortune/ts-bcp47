@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.scriptSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 scriptSubtag: Converter<import("./model").ScriptSubtag, unknown>

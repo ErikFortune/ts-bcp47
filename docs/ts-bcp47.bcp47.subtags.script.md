@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.script property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 script?: Iana.LanguageSubtags.ScriptSubtag;

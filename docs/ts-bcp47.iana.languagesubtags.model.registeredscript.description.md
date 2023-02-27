@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.description property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly description: string[];

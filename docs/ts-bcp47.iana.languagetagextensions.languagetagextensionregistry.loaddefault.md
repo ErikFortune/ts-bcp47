@@ -4,12 +4,12 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.loadDefault() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadDefault(): Result<LanguageTagExtensionRegistry>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;LanguageTagExtensionRegistry&gt;
 
