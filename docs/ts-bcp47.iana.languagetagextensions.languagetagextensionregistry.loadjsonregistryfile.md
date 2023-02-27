@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.loadJsonRegistryFile() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadJsonRegistryFile(path: string): Result<LanguageTagExtensionRegistry>;
@@ -16,7 +16,7 @@ static loadJsonRegistryFile(path: string): Result<LanguageTagExtensionRegistry>;
 |  --- | --- | --- |
 |  path | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;LanguageTagExtensionRegistry&gt;
 

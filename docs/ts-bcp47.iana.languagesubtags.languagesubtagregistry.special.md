@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.special property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly special: Scope.LanguageSubtagScope;

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredExtLang.preferredValue property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly preferredValue: ExtendedLanguageRange;

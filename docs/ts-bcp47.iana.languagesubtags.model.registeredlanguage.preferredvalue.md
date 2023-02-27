@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredLanguage.preferredValue property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly preferredValue?: LanguageSubtag;

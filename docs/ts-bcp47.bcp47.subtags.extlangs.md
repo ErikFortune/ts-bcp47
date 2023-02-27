@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.extlangs property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extlangs?: Iana.LanguageSubtags.ExtLangSubtag[];

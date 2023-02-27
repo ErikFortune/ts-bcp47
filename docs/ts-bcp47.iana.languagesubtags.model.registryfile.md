@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Model.RegistryFile type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RegistryFile = DatedRegistry<RegisteredItem>;

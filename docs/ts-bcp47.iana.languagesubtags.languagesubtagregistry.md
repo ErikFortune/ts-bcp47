@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class LanguageSubtagRegistry 

@@ -6,7 +6,7 @@
 
 A `Convereter` which converts `unknown` to the tag type validated by these helpers, if possible.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly converter: Converter<T, TC>;

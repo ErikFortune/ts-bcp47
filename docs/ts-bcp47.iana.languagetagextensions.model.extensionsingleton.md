@@ -5,7 +5,7 @@
 ## Iana.LanguageTagExtensions.Model.ExtensionSingleton type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type ExtensionSingleton = Brand<string, 'ExtensionSingleton'>;

@@ -5,7 +5,7 @@
 ## Unsd.DefaultRegistries class
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class DefaultRegistries 
@@ -15,5 +15,5 @@ export declare class DefaultRegistries
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [regionCodes](./ts-bcp47.unsd.defaultregistries.regioncodes.md) | <p><code>readonly</code></p><p><code>static</code></p> | [RegionCodes](./ts-bcp47.unsd.regioncodes.md) |  |
+|  [regionCodes](./ts-bcp47.unsd.defaultregistries.regioncodes.md) | <p><code>static</code></p><p><code>readonly</code></p> | [RegionCodes](./ts-bcp47.unsd.regioncodes.md) |  |
 

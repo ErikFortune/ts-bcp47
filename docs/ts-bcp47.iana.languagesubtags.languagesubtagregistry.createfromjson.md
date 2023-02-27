@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.createFromJson() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static createFromJson(from: unknown): Result<LanguageSubtagRegistry>;
@@ -16,7 +16,7 @@ static createFromJson(from: unknown): Result<LanguageSubtagRegistry>;
 |  --- | --- | --- |
 |  from | unknown |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageSubtagRegistry](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.md)<!-- -->&gt;
 

@@ -6,7 +6,7 @@
 
 A function which accepts a value of the expected type and reformats it to match the canonical presentation form.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Normalizer<T extends string, TC = unknown> = (val: T, context?: TC) => Result<T>;

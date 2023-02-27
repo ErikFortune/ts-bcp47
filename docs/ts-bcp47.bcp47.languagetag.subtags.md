@@ -6,7 +6,7 @@
 
 The individual [subtags](./ts-bcp47.bcp47.subtags.md) for this language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtags: Readonly<Subtags>;

@@ -5,7 +5,7 @@
 ## Iana.Validate.yearMonthDateSpec variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 yearMonthDateSpec: RegExpValidationHelpers<Model.YearMonthDaySpec, unknown>

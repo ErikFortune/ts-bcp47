@@ -4,7 +4,7 @@
 
 ## Iana.Model.DatedRegistry.entries property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 entries: T[];

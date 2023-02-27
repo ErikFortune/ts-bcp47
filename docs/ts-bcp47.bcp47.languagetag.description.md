@@ -6,7 +6,7 @@
 
 Gets a text description of this tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get description(): string;

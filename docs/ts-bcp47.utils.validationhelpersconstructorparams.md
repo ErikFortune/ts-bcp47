@@ -6,7 +6,7 @@
 
 Initializer for [validation helpers](./ts-bcp47.utils.validationhelpers.md)<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface ValidationHelpersConstructorParams<T extends string, TC = unknown> 
@@ -19,5 +19,5 @@ export interface ValidationHelpersConstructorParams<T extends string, TC = unkno
 |  [description](./ts-bcp47.utils.validationhelpersconstructorparams.description.md) |  | string |  |
 |  [isCanonical](./ts-bcp47.utils.validationhelpersconstructorparams.iscanonical.md) |  | Validation.TypeGuardWithContext&lt;T, TC&gt; |  |
 |  [isWellFormed](./ts-bcp47.utils.validationhelpersconstructorparams.iswellformed.md) |  | Validation.TypeGuardWithContext&lt;T, TC&gt; |  |
-|  [toCanonical?](./ts-bcp47.utils.validationhelpersconstructorparams.tocanonical.md) |  | [Normalizer](./ts-bcp47.utils.normalizer.md)<!-- -->&lt;T, TC&gt; | <i>(Optional)</i> |
+|  [toCanonical?](./ts-bcp47.utils.validationhelpersconstructorparams.tocanonical.md) |  | [Normalizer](./ts-bcp47.utils.normalizer.md)<!-- -->&lt;T, TC&gt; | _(Optional)_ |
 

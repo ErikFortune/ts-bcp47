@@ -6,12 +6,12 @@
 
 Gets a confirmed strictly valid representation of this language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toStrictlyValid(): Result<LanguageTag>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
 

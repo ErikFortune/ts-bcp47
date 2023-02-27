@@ -6,7 +6,7 @@
 
 Whether this language tag is in canonical form.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isCanonical(): boolean;

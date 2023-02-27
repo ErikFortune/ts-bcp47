@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.create() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static create(registry: Model.LanguageTagExtensions): Result<LanguageTagExtensionRegistry>;
@@ -16,7 +16,7 @@ static create(registry: Model.LanguageTagExtensions): Result<LanguageTagExtensio
 |  --- | --- | --- |
 |  registry | Model.LanguageTagExtensions |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;LanguageTagExtensionRegistry&gt;
 

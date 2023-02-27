@@ -5,7 +5,7 @@
 ## Iana.Validate.unM49RegionCode variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 unM49RegionCode: RegExpValidationHelpers<Model.UnM49RegionCode, unknown>

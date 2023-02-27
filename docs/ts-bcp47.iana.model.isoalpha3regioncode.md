@@ -6,7 +6,7 @@
 
 Represents an ISO 3166 Alpha-3 region code.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type IsoAlpha3RegionCode = Brand<string, 'IsoAlpha3RegionCode'>;

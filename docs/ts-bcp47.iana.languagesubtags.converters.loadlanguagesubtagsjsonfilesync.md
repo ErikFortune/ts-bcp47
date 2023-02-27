@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Converters.loadLanguageSubtagsJsonFileSync() function
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function loadLanguageSubtagsJsonFileSync(path: string): Result<Model.RegistryFile>;
@@ -16,7 +16,7 @@ export declare function loadLanguageSubtagsJsonFileSync(path: string): Result<Mo
 |  --- | --- | --- |
 |  path | string | String path from which file is to be loaded. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;Model.RegistryFile&gt;
 

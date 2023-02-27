@@ -6,7 +6,7 @@
 
 Validates supplied [subtags](./ts-bcp47.bcp47.subtags.md) to a requested [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->, if necessary.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity?: TagValidity): Result<boolean>;
@@ -18,9 +18,9 @@ static validateSubtags(subtags: Subtags, wantValidity: TagValidity, haveValidity
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The [subtags](./ts-bcp47.bcp47.subtags.md) to be validated. |
 |  wantValidity | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | The desired [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->. |
-|  haveValidity | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | <i>(Optional)</i> (optional) The current [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->. |
+|  haveValidity | [TagValidity](./ts-bcp47.bcp47.tagvalidity.md) | _(Optional)_ (optional) The current [validity level](./ts-bcp47.bcp47.tagvalidity.md)<!-- -->. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;boolean&gt;
 

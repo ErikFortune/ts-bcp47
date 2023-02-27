@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.added property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly added: Model.YearMonthDaySpec;

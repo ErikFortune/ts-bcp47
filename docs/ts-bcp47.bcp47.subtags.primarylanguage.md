@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.primaryLanguage property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 primaryLanguage?: Iana.LanguageSubtags.LanguageSubtag;

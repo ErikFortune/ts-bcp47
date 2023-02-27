@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.redundantTag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 redundantTag: Converter<import("./model").RedundantTag, unknown>

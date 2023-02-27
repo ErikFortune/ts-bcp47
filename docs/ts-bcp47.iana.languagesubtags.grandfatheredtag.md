@@ -6,7 +6,7 @@
 
 Legacy language tag registered as grandfathered in the IANA language subtag registry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type GrandfatheredTag = Brand<string, 'GrandfatheredTag'>;

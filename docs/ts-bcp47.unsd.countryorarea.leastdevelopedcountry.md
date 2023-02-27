@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.leastDevelopedCountry property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 leastDevelopedCountry: boolean;

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredLanguage.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly type: 'language';

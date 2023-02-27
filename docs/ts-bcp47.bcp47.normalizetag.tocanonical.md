@@ -6,7 +6,7 @@
 
 Converts a BCP-47 language tag to canonical form. Canonical form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) but are not otherwise modified.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static toCanonical(subtags: Subtags): Result<Subtags>;
@@ -18,7 +18,7 @@ static toCanonical(subtags: Subtags): Result<Subtags>;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The individual [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
 

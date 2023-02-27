@@ -4,7 +4,7 @@
 
 ## Utils.ValidationHelpersConstructorParams.toCanonical property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toCanonical?: Normalizer<T, TC>;

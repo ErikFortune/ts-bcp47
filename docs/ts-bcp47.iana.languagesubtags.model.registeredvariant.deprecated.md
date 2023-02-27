@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredVariant.deprecated property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly deprecated?: Model.YearMonthDaySpec;

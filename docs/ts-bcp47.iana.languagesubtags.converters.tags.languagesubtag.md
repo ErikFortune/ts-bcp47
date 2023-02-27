@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.languageSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 languageSubtag: Converter<LanguageSubtag, unknown>

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredLanguage.suppressScript property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly suppressScript?: ScriptSubtag;

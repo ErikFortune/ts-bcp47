@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredExtLang.macrolanguage property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly macrolanguage?: LanguageSubtag;

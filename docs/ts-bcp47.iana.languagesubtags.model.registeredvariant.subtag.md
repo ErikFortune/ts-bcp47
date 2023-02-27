@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredVariant.subtag property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtag: VariantSubtag;

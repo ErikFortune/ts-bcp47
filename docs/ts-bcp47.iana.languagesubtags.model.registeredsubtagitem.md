@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Model.RegisteredSubtagItem type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RegisteredSubtagItem = RegisteredLanguage | RegisteredExtLang | RegisteredScript | RegisteredRegion | RegisteredVariant;

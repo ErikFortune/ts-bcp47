@@ -6,7 +6,7 @@
 
 Creates a new [language tag](./ts-bcp47.bcp47.languagetag.md) from a supplied `string` tag using optional configuration, if supplied.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<LanguageTag>;
@@ -17,9 +17,9 @@ static createFromTag(tag: string, options?: LanguageTagInitOptions): Result<Lang
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  tag | string | The <code>string</code> tag from which the [language tag](./ts-bcp47.bcp47.languagetag.md) is te be constructed. |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | <i>(Optional)</i> (optional) set of [init options](./ts-bcp47.bcp47.languagetaginitoptions.md) to guide the validation and normalization of this tag. |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) | _(Optional)_ (optional) set of [init options](./ts-bcp47.bcp47.languagetaginitoptions.md) to guide the validation and normalization of this tag. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->&gt;
 

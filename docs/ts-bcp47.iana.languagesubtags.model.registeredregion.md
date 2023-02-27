@@ -5,23 +5,23 @@
 ## Iana.LanguageSubtags.Model.RegisteredRegion interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredRegion extends RegisteredSubtagWithRange<'region', RegionSubtag> 
 ```
-<b>Extends:</b> RegisteredSubtagWithRange&lt;'region', [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md)<!-- -->&gt;
+**Extends:** RegisteredSubtagWithRange&lt;'region', [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md)<!-- -->&gt;
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [added](./ts-bcp47.iana.languagesubtags.model.registeredregion.added.md) | <code>readonly</code> | Model.YearMonthDaySpec |  |
-|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredregion.comments.md) | <code>readonly</code> | string\[\] | <i>(Optional)</i> |
-|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredregion.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | <i>(Optional)</i> |
+|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredregion.comments.md) | <code>readonly</code> | string\[\] | _(Optional)_ |
+|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredregion.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | _(Optional)_ |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredregion.description.md) | <code>readonly</code> | string\[\] |  |
-|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredregion.preferredvalue.md) | <code>readonly</code> | [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | <i>(Optional)</i> |
+|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredregion.preferredvalue.md) | <code>readonly</code> | [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | _(Optional)_ |
 |  [subtag](./ts-bcp47.iana.languagesubtags.model.registeredregion.subtag.md) | <code>readonly</code> | [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) |  |
-|  [subtagRangeEnd?](./ts-bcp47.iana.languagesubtags.model.registeredregion.subtagrangeend.md) | <code>readonly</code> | [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | <i>(Optional)</i> |
+|  [subtagRangeEnd?](./ts-bcp47.iana.languagesubtags.model.registeredregion.subtagrangeend.md) | <code>readonly</code> | [RegionSubtag](./ts-bcp47.iana.languagesubtags.regionsubtag.md) | _(Optional)_ |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredregion.type.md) | <code>readonly</code> | 'region' |  |
 

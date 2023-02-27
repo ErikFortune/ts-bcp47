@@ -4,7 +4,7 @@
 
 ## Iana.Model.DatedRegistry.fileDate property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 fileDate: YearMonthDaySpec;

@@ -4,7 +4,7 @@
 
 ## Unsd.DefaultRegistries.regionCodes property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static get regionCodes(): RegionCodes;

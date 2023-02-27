@@ -4,12 +4,12 @@
 
 ## Iana.LanguageRegistries.loadDefault() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadDefault(): Result<LanguageRegistries>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageRegistries](./ts-bcp47.iana.languageregistries.md)<!-- -->&gt;
 

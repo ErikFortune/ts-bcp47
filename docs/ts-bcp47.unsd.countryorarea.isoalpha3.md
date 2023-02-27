@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.isoAlpha3 property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 isoAlpha3?: IsoAlpha3RegionCode;

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.extlangs property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly extlangs: Scope.ExtLangSubtagScope;

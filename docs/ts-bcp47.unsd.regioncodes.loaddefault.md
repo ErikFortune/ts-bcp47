@@ -4,12 +4,12 @@
 
 ## Unsd.RegionCodes.loadDefault() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static loadDefault(): Result<RegionCodes>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[RegionCodes](./ts-bcp47.unsd.regioncodes.md)<!-- -->&gt;
 

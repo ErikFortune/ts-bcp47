@@ -4,7 +4,7 @@
 
 ## Iana.LanguageTagExtensions.LanguageTagExtensionRegistry.createFromJson() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static createFromJson(from: unknown): Result<LanguageTagExtensionRegistry>;
@@ -16,7 +16,7 @@ static createFromJson(from: unknown): Result<LanguageTagExtensionRegistry>;
 |  --- | --- | --- |
 |  from | unknown |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;LanguageTagExtensionRegistry&gt;
 

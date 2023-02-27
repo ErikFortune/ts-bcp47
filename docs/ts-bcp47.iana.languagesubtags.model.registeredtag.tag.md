@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredTag.tag property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly tag: TTAG;

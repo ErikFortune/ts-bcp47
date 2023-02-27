@@ -6,7 +6,7 @@
 
 Converts a BCP-47 language tag to preferred form. Preferred form uses the recommended capitalization rules specified in [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1.1) and also applies additional preferred values specified in the [language subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)<!-- -->: extraneous (suppressed) script tags are removed, deprecated language, extlang, script or region tags are replaced with up-to-date preferred values, and grandfathered or redundant tags with a defined preferred-value are replaced in their entirety with the new preferred value.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static toPreferred(subtags: Subtags): Result<Subtags>;
@@ -18,7 +18,7 @@ static toPreferred(subtags: Subtags): Result<Subtags>;
 |  --- | --- | --- |
 |  subtags | [Subtags](./ts-bcp47.bcp47.subtags.md) | The individual [subtags](./ts-bcp47.bcp47.subtags.md) to be normalized. |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[Subtags](./ts-bcp47.bcp47.subtags.md)<!-- -->&gt;
 

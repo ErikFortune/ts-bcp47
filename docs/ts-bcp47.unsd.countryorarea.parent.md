@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.parent property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 parent: Region;

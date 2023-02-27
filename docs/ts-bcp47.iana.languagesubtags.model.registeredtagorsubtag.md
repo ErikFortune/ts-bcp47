@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Model.RegisteredTagOrSubtag type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RegisteredTagOrSubtag<TTYPE extends Model.RegistryEntryType, TTAG extends string> = RegisteredSubtag<TTYPE, TTAG> | RegisteredSubtagWithRange<TTYPE, TTAG> | RegisteredTag<TTYPE, TTAG>;

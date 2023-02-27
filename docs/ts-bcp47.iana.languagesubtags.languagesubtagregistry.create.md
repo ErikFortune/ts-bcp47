@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.create() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static create(registry: RegistryFile): Result<LanguageSubtagRegistry>;
@@ -16,7 +16,7 @@ static create(registry: RegistryFile): Result<LanguageSubtagRegistry>;
 |  --- | --- | --- |
 |  registry | RegistryFile |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageSubtagRegistry](./ts-bcp47.iana.languagesubtags.languagesubtagregistry.md)<!-- -->&gt;
 

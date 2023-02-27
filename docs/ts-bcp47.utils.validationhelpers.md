@@ -6,7 +6,7 @@
 
 A collection of validation and normalization helpers for constrained string types.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class ValidationHelpers<T extends string, TC = unknown> 

@@ -6,7 +6,7 @@
 
 Details about this language tag from the IANA language registries.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly registry: LanguageRegistryData;

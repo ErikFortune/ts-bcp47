@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.extensions property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 extensions?: ExtensionSubtagValue[];

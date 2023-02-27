@@ -6,7 +6,7 @@
 
 Constructs new [validation helpers](./ts-bcp47.utils.validationhelpers.md) from supplied initializers.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(init: ValidationHelpersConstructorParams<T, TC>);

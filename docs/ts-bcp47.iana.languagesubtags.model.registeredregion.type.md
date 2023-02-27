@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredRegion.type property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly type: 'region';

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredVariant.prefix property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly prefix?: ExtendedLanguageRange[];

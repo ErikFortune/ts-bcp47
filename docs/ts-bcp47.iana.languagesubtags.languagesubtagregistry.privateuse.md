@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.privateUse property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly privateUse: Scope.LanguageSubtagScope;

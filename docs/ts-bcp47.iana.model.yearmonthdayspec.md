@@ -6,7 +6,7 @@
 
 Represents a date string in the format YYYY-MM-DD.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type YearMonthDaySpec = Brand<string, 'YearMonthDaySpec'>;

@@ -4,7 +4,7 @@
 
 ## Iana.LanguageRegistries.load() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static load(root: string): Result<LanguageRegistries>;
@@ -16,7 +16,7 @@ static load(root: string): Result<LanguageRegistries>;
 |  --- | --- | --- |
 |  root | string |  |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageRegistries](./ts-bcp47.iana.languageregistries.md)<!-- -->&gt;
 

@@ -6,12 +6,12 @@
 
 Gets a string representation of this language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toString(): string;
 ```
-<b>Returns:</b>
+**Returns:**
 
 string
 

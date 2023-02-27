@@ -4,7 +4,7 @@
 
 ## Iana.LanguageRegistries.subtags property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtags: LanguageSubtagRegistry;

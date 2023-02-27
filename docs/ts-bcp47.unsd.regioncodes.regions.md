@@ -4,7 +4,7 @@
 
 ## Unsd.RegionCodes.regions property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly regions: Regions;

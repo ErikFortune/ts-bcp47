@@ -5,10 +5,10 @@
 ## Unsd.Region type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type Region = GlobalRegion | IntermediateRegion;
 ```
-<b>References:</b> [GlobalRegion](./ts-bcp47.unsd.globalregion.md)<!-- -->, [IntermediateRegion](./ts-bcp47.unsd.intermediateregion.md)
+**References:** [GlobalRegion](./ts-bcp47.unsd.globalregion.md)<!-- -->, [IntermediateRegion](./ts-bcp47.unsd.intermediateregion.md)
 

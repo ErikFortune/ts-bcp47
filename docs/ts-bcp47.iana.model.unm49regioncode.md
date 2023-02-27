@@ -6,7 +6,7 @@
 
 Represents a UN M.49 numeric region code.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type UnM49RegionCode = Brand<string, 'UnM49RegionCode'>;

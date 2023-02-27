@@ -6,7 +6,7 @@
 
 Represents a single BCP-47 language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class LanguageTag 

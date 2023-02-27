@@ -4,7 +4,7 @@
 
 ## Bcp47.ExtensionSubtagValue.value property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly value: ExtensionSubtag;

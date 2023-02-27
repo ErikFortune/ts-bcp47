@@ -4,7 +4,7 @@
 
 ## Unsd.CountryOrArea.smallIslandDevelopingState property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 smallIslandDevelopingState: boolean;

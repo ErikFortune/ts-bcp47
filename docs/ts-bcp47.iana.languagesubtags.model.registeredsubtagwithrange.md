@@ -5,12 +5,12 @@
 ## Iana.LanguageSubtags.Model.RegisteredSubtagWithRange interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredSubtagWithRange<TTYPE extends Model.RegistryEntryType, TTAG extends string> extends RegisteredSubtag<TTYPE, TTAG> 
 ```
-<b>Extends:</b> RegisteredSubtag&lt;TTYPE, TTAG&gt;
+**Extends:** RegisteredSubtag&lt;TTYPE, TTAG&gt;
 
 ## Properties
 
@@ -18,6 +18,6 @@ export interface RegisteredSubtagWithRange<TTYPE extends Model.RegistryEntryType
 |  --- | --- | --- | --- |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredsubtagwithrange.description.md) | <code>readonly</code> | string\[\] |  |
 |  [subtag](./ts-bcp47.iana.languagesubtags.model.registeredsubtagwithrange.subtag.md) | <code>readonly</code> | TTAG |  |
-|  [subtagRangeEnd?](./ts-bcp47.iana.languagesubtags.model.registeredsubtagwithrange.subtagrangeend.md) | <code>readonly</code> | TTAG | <i>(Optional)</i> |
+|  [subtagRangeEnd?](./ts-bcp47.iana.languagesubtags.model.registeredsubtagwithrange.subtagrangeend.md) | <code>readonly</code> | TTAG | _(Optional)_ |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredsubtagwithrange.type.md) | <code>readonly</code> | TTYPE |  |
 

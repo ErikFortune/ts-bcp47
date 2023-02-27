@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.region property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 region?: Iana.LanguageSubtags.RegionSubtag;

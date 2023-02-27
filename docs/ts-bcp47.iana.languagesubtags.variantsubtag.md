@@ -6,7 +6,7 @@
 
 Variant subtag in the IANA language subtag registry.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type VariantSubtag = Brand<string, 'VariantSubtag'>;

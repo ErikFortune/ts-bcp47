@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Converters.Tags.regionSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 regionSubtag: Converter<import("./model").RegionSubtag, unknown>

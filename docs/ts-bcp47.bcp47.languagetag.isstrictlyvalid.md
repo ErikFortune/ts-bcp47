@@ -6,7 +6,7 @@
 
 Whether if this language tag is strictly valid.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get isStrictlyValid(): boolean;

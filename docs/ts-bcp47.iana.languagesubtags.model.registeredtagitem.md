@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Model.RegisteredTagItem type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type RegisteredTagItem = RegisteredGrandfatheredTag | RegisteredRedundantTag;

@@ -5,22 +5,22 @@
 ## Iana.LanguageSubtags.Model.RegisteredGrandfatheredTag interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredGrandfatheredTag extends RegisteredTag<'grandfathered', GrandfatheredTag> 
 ```
-<b>Extends:</b> RegisteredTag&lt;'grandfathered', [GrandfatheredTag](./ts-bcp47.iana.languagesubtags.grandfatheredtag.md)<!-- -->&gt;
+**Extends:** RegisteredTag&lt;'grandfathered', [GrandfatheredTag](./ts-bcp47.iana.languagesubtags.grandfatheredtag.md)<!-- -->&gt;
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [added](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.added.md) | <code>readonly</code> | Model.YearMonthDaySpec |  |
-|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.comments.md) | <code>readonly</code> | string\[\] | <i>(Optional)</i> |
-|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | <i>(Optional)</i> |
+|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.comments.md) | <code>readonly</code> | string\[\] | _(Optional)_ |
+|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | _(Optional)_ |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.description.md) | <code>readonly</code> | string\[\] |  |
-|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.preferredvalue.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md) | <i>(Optional)</i> |
+|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.preferredvalue.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md) | _(Optional)_ |
 |  [tag](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.tag.md) | <code>readonly</code> | [GrandfatheredTag](./ts-bcp47.iana.languagesubtags.grandfatheredtag.md) |  |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredgrandfatheredtag.type.md) | <code>readonly</code> | 'grandfathered' |  |
 

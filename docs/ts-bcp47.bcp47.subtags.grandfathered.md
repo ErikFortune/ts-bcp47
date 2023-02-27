@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.grandfathered property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 grandfathered?: Iana.LanguageSubtags.GrandfatheredTag;

@@ -6,7 +6,7 @@
 
 Converter for the file date record found at the start of a registry file.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 fileDateEntry: Converters.ObjectConverter<FileDateEntry, unknown>

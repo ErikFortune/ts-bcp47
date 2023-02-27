@@ -4,7 +4,7 @@
 
 ## Bcp47.ExtensionSubtagValue.singleton property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly singleton: ExtensionSingleton;

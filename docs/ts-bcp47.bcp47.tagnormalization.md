@@ -6,7 +6,7 @@
 
 Describes the degree of normalization of a language tag.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export type TagNormalization = 'unknown' | 'none' | 'canonical' | 'preferred';

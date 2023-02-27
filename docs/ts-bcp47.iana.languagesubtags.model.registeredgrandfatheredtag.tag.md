@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredGrandfatheredTag.tag property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly tag: GrandfatheredTag;

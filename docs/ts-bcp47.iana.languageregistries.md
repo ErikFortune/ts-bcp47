@@ -5,7 +5,7 @@
 ## Iana.LanguageRegistries class
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class LanguageRegistries 

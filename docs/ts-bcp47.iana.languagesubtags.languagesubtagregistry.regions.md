@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.LanguageSubtagRegistry.regions property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly regions: Scope.RegionSubtagScope;

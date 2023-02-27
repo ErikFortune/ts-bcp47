@@ -6,7 +6,7 @@
 
 An optional [language specification](./ts-bcp47.bcp47.languagespec.md) indicating a language to be returned if the filter call would otherwise return an empty list (i.e. no languages match).
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 ultimateFallback?: string | Subtags | LanguageTag;

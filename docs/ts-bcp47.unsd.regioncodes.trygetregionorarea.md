@@ -4,7 +4,7 @@
 
 ## Unsd.RegionCodes.tryGetRegionOrArea() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 tryGetRegionOrArea(code: UnM49RegionCode): Region | CountryOrArea | undefined;
@@ -16,7 +16,7 @@ tryGetRegionOrArea(code: UnM49RegionCode): Region | CountryOrArea | undefined;
 |  --- | --- | --- |
 |  code | UnM49RegionCode |  |
 
-<b>Returns:</b>
+**Returns:**
 
 [Region](./ts-bcp47.unsd.region.md) \| [CountryOrArea](./ts-bcp47.unsd.countryorarea.md) \| undefined
 

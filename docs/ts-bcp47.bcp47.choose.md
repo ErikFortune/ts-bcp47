@@ -6,7 +6,7 @@
 
 Matches a list of desired [languages](./ts-bcp47.bcp47.languagespec.md) to a list of available [languages](./ts-bcp47.bcp47.languagespec.md)<!-- -->, return a list of matching languages ordered from best to worst.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function choose(desired: LanguageSpec[], available: LanguageSpec[], options?: LanguageTagInitOptions & LanguageChooserOptions): Result<LanguageTag[]>;
@@ -18,9 +18,9 @@ export declare function choose(desired: LanguageSpec[], available: LanguageSpec[
 |  --- | --- | --- |
 |  desired | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md)<!-- -->\[\] | An array of [language specifications](./ts-bcp47.bcp47.languagespec.md) containing an ordered list of preferred languages. |
 |  available | [LanguageSpec](./ts-bcp47.bcp47.languagespec.md)<!-- -->\[\] | An array of [language specifications](./ts-bcp47.bcp47.languagespec.md) containing an unordered list of available languages. |
-|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) &amp; LanguageChooserOptions | <i>(Optional)</i> (optional) Parameters to control language tag conversion or comparison |
+|  options | [LanguageTagInitOptions](./ts-bcp47.bcp47.languagetaginitoptions.md) &amp; LanguageChooserOptions | _(Optional)_ (optional) Parameters to control language tag conversion or comparison |
 
-<b>Returns:</b>
+**Returns:**
 
 Result&lt;[LanguageTag](./ts-bcp47.bcp47.languagetag.md)<!-- -->\[\]&gt;
 

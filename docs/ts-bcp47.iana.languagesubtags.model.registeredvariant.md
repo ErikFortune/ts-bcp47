@@ -5,23 +5,23 @@
 ## Iana.LanguageSubtags.Model.RegisteredVariant interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface RegisteredVariant extends RegisteredSubtag<'variant', VariantSubtag> 
 ```
-<b>Extends:</b> RegisteredSubtag&lt;'variant', [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md)<!-- -->&gt;
+**Extends:** RegisteredSubtag&lt;'variant', [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md)<!-- -->&gt;
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [added](./ts-bcp47.iana.languagesubtags.model.registeredvariant.added.md) | <code>readonly</code> | Model.YearMonthDaySpec |  |
-|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.comments.md) | <code>readonly</code> | string\[\] | <i>(Optional)</i> |
-|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | <i>(Optional)</i> |
+|  [comments?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.comments.md) | <code>readonly</code> | string\[\] | _(Optional)_ |
+|  [deprecated?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.deprecated.md) | <code>readonly</code> | Model.YearMonthDaySpec | _(Optional)_ |
 |  [description](./ts-bcp47.iana.languagesubtags.model.registeredvariant.description.md) | <code>readonly</code> | string\[\] |  |
-|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.preferredvalue.md) | <code>readonly</code> | [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md) | <i>(Optional)</i> |
-|  [prefix?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.prefix.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md)<!-- -->\[\] | <i>(Optional)</i> |
+|  [preferredValue?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.preferredvalue.md) | <code>readonly</code> | [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md) | _(Optional)_ |
+|  [prefix?](./ts-bcp47.iana.languagesubtags.model.registeredvariant.prefix.md) | <code>readonly</code> | [ExtendedLanguageRange](./ts-bcp47.iana.languagesubtags.extendedlanguagerange.md)<!-- -->\[\] | _(Optional)_ |
 |  [subtag](./ts-bcp47.iana.languagesubtags.model.registeredvariant.subtag.md) | <code>readonly</code> | [VariantSubtag](./ts-bcp47.iana.languagesubtags.variantsubtag.md) |  |
 |  [type](./ts-bcp47.iana.languagesubtags.model.registeredvariant.type.md) | <code>readonly</code> | 'variant' |  |
 

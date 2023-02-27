@@ -6,7 +6,7 @@
 
 Normalization helpers for BCP-47 language tags.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class NormalizeTag 

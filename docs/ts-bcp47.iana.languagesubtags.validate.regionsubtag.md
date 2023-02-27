@@ -5,7 +5,7 @@
 ## Iana.LanguageSubtags.Validate.regionSubtag variable
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 regionSubtag: RegExpValidationHelpers<RegionSubtag, unknown>

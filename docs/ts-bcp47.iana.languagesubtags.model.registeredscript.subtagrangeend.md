@@ -4,7 +4,7 @@
 
 ## Iana.LanguageSubtags.Model.RegisteredScript.subtagRangeEnd property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 readonly subtagRangeEnd?: ScriptSubtag;

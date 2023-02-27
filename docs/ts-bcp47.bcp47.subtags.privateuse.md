@@ -4,7 +4,7 @@
 
 ## Bcp47.Subtags.privateUse property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 privateUse?: Iana.LanguageSubtags.ExtendedLanguageRange[];
