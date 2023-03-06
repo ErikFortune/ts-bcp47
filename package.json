@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/ErikFortune/ts-bcp47#readme",
   "devDependencies": {
-    "@fgv/ts-json": "1.9.0",
+    "@fgv/ts-json": "1.9.4",
     "@fgv/ts-utils": "^1.9.3",
     "@fgv/ts-utils-jest": "^1.9.3",
     "@microsoft/api-documenter": "^7.21.5",
