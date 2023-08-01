@@ -44,7 +44,7 @@ import { RegisteredItemScope } from '../common/registeredItems';
 class SubtagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
-    TITEM extends Items.RegisteredSubtag<TTYPE, TTAG>
+    TITEM extends Items.RegisteredSubtag<TTYPE, TTAG>,
 > extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
     protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
         super(type, validate);
@@ -68,7 +68,7 @@ class SubtagScope<
 class SubtagScopeWithRange<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
-    TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>
+    TITEM extends Items.RegisteredSubtagWithRange<TTYPE, TTAG>,
 > extends SubtagScope<TTYPE, TTAG, TITEM> {
     protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
         super(type, validate);
@@ -129,7 +129,7 @@ class SubtagScopeWithRange<
 class TagScope<
     TTYPE extends Model.RegistryEntryType,
     TTAG extends string,
-    TITEM extends Items.RegisteredTag<TTYPE, TTAG>
+    TITEM extends Items.RegisteredTag<TTYPE, TTAG>,
 > extends RegisteredItemScope<TTYPE, TTAG, TITEM> {
     protected constructor(type: TTYPE, validate: ValidationHelpers<TTAG>) {
         super(type, validate);
